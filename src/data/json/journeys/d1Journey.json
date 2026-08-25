@@ -1,0 +1,205 @@
+{
+  "d1Journey": {
+    "id": "d1-classificazione",
+    "pillar": "D1",
+    "title": "Classificazione professioni e competenze",
+    "subtitle": "Dall'accreditamento alla valutazione: un percorso in 7 tappe",
+    "colorVar": "--chart-teal",
+    "steps": [
+      {
+        "id": "d1-overview",
+        "title": "Panoramica Classificazione",
+        "question": "Quanto è maturo il sistema di classificazione professionale?",
+        "description": "Visione d'insieme dei 5 indicatori strategici del Pillar D1. Il radar mostra la posizione dell'ente sulla maturità del modello professionale: dall'accreditamento al catalogo, passando per la mappatura e la valutazione delle competenze.",
+        "kpiIds": [
+          "IAC",
+          "IIMP/R",
+          "ICPR",
+          "ICVC",
+          "IACU"
+        ],
+        "impacts": [],
+        "insights": {
+          "IAC": "Il 75% degli enti ha attivato i profili professionali: l'adesione al catalogo è buona ma non ancora completa.",
+          "IIMP/R": "Il rapporto profili/organico è allo 0,7%: il modello professionale è ancora in fase iniziale di implementazione.",
+          "ICPR": "Il 61% del personale ha un profilo assegnato: oltre un terzo dell'organico è ancora scoperto.",
+          "ICVC": "Il 72% del personale con profilo è stato valutato: buona copertura delle valutazioni.",
+          "IACU": "L'adeguatezza del capitale umano è all'83%: gap residuo del 17% tra competenze possedute e richieste."
+        }
+      },
+      {
+        "id": "d1-adesione",
+        "title": "Adesione al Catalogo",
+        "question": "Gli enti stanno aderendo al sistema professionale?",
+        "description": "IAC misura la quota di amministrazioni accreditate che hanno effettivamente attivato i profili professionali su Minerva. Un valore alto indica che gli enti non si limitano a registrarsi ma adottano concretamente il catalogo.",
+        "kpiIds": [
+          "IAC"
+        ],
+        "impacts": [
+          {
+            "pillar": "D4",
+            "indicatorId": "ISCP",
+            "label": "Sviluppo professionale",
+            "reason": "Il catalogo professionale è prerequisito per strutturare percorsi di sviluppo"
+          },
+          {
+            "pillar": "D4",
+            "indicatorId": "IDFP",
+            "label": "Famiglie professionali",
+            "reason": "L'attivazione dei profili alimenta la diversificazione delle famiglie professionali"
+          }
+        ],
+        "insights": {
+          "IAC": "Su 30 enti accreditati, il 75% ha attivato i profili: l'adesione è buona ma resta un quarto degli enti da coinvolgere."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D1",
+          "indicator": "IAC"
+        }
+      },
+      {
+        "id": "d1-implementazione",
+        "title": "Implementazione del Modello",
+        "question": "Quanto è articolato il sistema professionale?",
+        "description": "IIMP/R misura il rapporto tra profili professionali definiti e organico. Un valore fisiologicamente basso è normale perché ogni profilo copre più dipendenti; valori molto bassi indicano un sistema ancora embrionale.",
+        "kpiIds": [
+          "IIMP/R"
+        ],
+        "impacts": [
+          {
+            "pillar": "D3",
+            "indicatorId": "DDP",
+            "label": "Domanda professionale",
+            "reason": "Profili professionali chiari migliorano la definizione dei bandi"
+          },
+          {
+            "pillar": "D4",
+            "indicatorId": "ICRP",
+            "label": "Copertura ruoli",
+            "reason": "L'articolazione del modello determina quanti ruoli sono disponibili"
+          }
+        ],
+        "insights": {
+          "IIMP/R": "1.256 profili professionali e 896 profili di ruolo su 191.410 dipendenti. Il sistema è avviato ma ancora poco articolato."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D1",
+          "indicator": "IIMP/R"
+        }
+      },
+      {
+        "id": "d1-copertura",
+        "title": "Copertura Sistema Professionale",
+        "question": "Quanti dipendenti hanno un profilo assegnato?",
+        "description": "ICPR indica la quota di personale con un profilo professionale assegnato. Valori sotto il 70% segnalano che una parte significativa dell'organico è ancora senza classificazione, limitando la capacità di gestire competenze e formazione.",
+        "kpiIds": [
+          "ICPR"
+        ],
+        "impacts": [
+          {
+            "pillar": "D4",
+            "indicatorId": "CGC",
+            "label": "Gestione competenze",
+            "reason": "Senza profilo assegnato non è possibile pianificare lo sviluppo formativo"
+          },
+          {
+            "pillar": "D4",
+            "indicatorId": "CQT",
+            "label": "Coerenza titoli",
+            "reason": "La copertura dei profili permette di verificare l'allineamento titoli-qualifiche"
+          }
+        ],
+        "insights": {
+          "ICPR": "Il 61% del personale ha un profilo professionale assegnato. Il 39% (oltre 370.000 dipendenti) è ancora scoperto."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D1",
+          "indicator": "ICPR"
+        }
+      },
+      {
+        "id": "d1-valutazioni",
+        "title": "Valutazione Competenze",
+        "question": "Il personale con profilo è stato valutato?",
+        "description": "ICVC misura la quota di personale con profilo che ha ricevuto una valutazione delle competenze. La valutazione è il passaggio critico per trasformare il catalogo teorico in uno strumento gestionale.",
+        "kpiIds": [
+          "ICVC"
+        ],
+        "impacts": [
+          {
+            "pillar": "D4",
+            "indicatorId": "ICEC",
+            "label": "Coerenza evolutiva",
+            "reason": "La valutazione è necessaria per misurare l'impatto della formazione sulle competenze"
+          },
+          {
+            "pillar": "D5",
+            "indicatorId": "IDC",
+            "label": "Dinamicità carriera",
+            "reason": "Le valutazioni alimentano i percorsi di sviluppo professionale"
+          }
+        ],
+        "insights": {
+          "ICVC": "689.080 su 957.045 dipendenti con profilo sono stati valutati (72%). Restano 267.965 da valutare."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D1",
+          "indicator": "ICVC"
+        }
+      },
+      {
+        "id": "d1-adeguatezza",
+        "title": "Adeguatezza Capitale Umano",
+        "question": "Le competenze sono allineate ai requisiti?",
+        "description": "IACU misura la distanza tra le competenze possedute e quelle richieste dal profilo. Un gap elevato segnala la necessità di interventi formativi mirati per colmare le carenze più critiche.",
+        "kpiIds": [
+          "IACU"
+        ],
+        "impacts": [
+          {
+            "pillar": "D4",
+            "indicatorId": "TCF",
+            "label": "Copertura formativa",
+            "reason": "Il gap di competenze definisce il fabbisogno formativo prioritario"
+          },
+          {
+            "pillar": "D4",
+            "indicatorId": "IESF",
+            "label": "Efficacia formativa",
+            "reason": "L'adeguatezza è il benchmark per valutare se la formazione colma i gap"
+          },
+          {
+            "pillar": "D3",
+            "indicatorId": "IAR",
+            "label": "Reclutamento",
+            "reason": "Gap persistenti possono richiedere reclutamento esterno di competenze"
+          }
+        ],
+        "insights": {
+          "IACU": "Copertura competenze all'83%. Il gap residuo del 17% indica aree dove la formazione o il reclutamento devono intervenire."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D1",
+          "indicator": "IACU"
+        }
+      },
+      {
+        "id": "d1-atomico",
+        "title": "Dato Atomico",
+        "question": "Dove posso trovare il dettaglio dei profili e delle competenze?",
+        "description": "Accesso diretto alle tabelle operative di Minerva (profili, competenze, valutazioni) e Syllabus (assessment digitali). Dati filtrabili per ente, famiglia professionale e area di competenza.",
+        "kpiIds": [],
+        "impacts": [],
+        "drillTarget": {
+          "level": "operational",
+          "source": "minerva"
+        }
+      }
+    ]
+  }
+}

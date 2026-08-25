@@ -1,0 +1,1414 @@
+{
+  "guidedJourneys": {
+    "d1-classificazione": {
+      "id": "d1-classificazione",
+      "pillar": "D1",
+      "title": "Classificazione professioni e competenze",
+      "subtitle": "Dall'accreditamento alla valutazione: un percorso in 7 tappe",
+      "colorVar": "--chart-teal",
+      "steps": [
+        {
+          "id": "d1-overview",
+          "title": "Panoramica Classificazione",
+          "question": "Quanto è maturo il sistema di classificazione professionale?",
+          "description": "Visione d'insieme dei 5 indicatori strategici del Pillar D1. Il radar mostra la posizione dell'ente sulla maturità del modello professionale: dall'accreditamento al catalogo, passando per la mappatura e la valutazione delle competenze.",
+          "kpiIds": [
+            "IAC",
+            "IIMP/R",
+            "ICPR",
+            "ICVC",
+            "IACU"
+          ],
+          "impacts": [],
+          "insights": {
+            "IAC": "Il 75% degli enti ha attivato i profili professionali: l'adesione al catalogo è buona ma non ancora completa.",
+            "IIMP/R": "Il rapporto profili/organico è allo 0,7%: il modello professionale è ancora in fase iniziale di implementazione.",
+            "ICPR": "Il 61% del personale ha un profilo assegnato: oltre un terzo dell'organico è ancora scoperto.",
+            "ICVC": "Il 72% del personale con profilo è stato valutato: buona copertura delle valutazioni.",
+            "IACU": "L'adeguatezza del capitale umano è all'83%: gap residuo del 17% tra competenze possedute e richieste."
+          }
+        },
+        {
+          "id": "d1-adesione",
+          "title": "Adesione al Catalogo",
+          "question": "Gli enti stanno aderendo al sistema professionale?",
+          "description": "IAC misura la quota di amministrazioni accreditate che hanno effettivamente attivato i profili professionali su Minerva. Un valore alto indica che gli enti non si limitano a registrarsi ma adottano concretamente il catalogo.",
+          "kpiIds": [
+            "IAC"
+          ],
+          "impacts": [
+            {
+              "pillar": "D4",
+              "indicatorId": "ISCP",
+              "label": "Sviluppo professionale",
+              "reason": "Il catalogo professionale è prerequisito per strutturare percorsi di sviluppo"
+            },
+            {
+              "pillar": "D4",
+              "indicatorId": "IDFP",
+              "label": "Famiglie professionali",
+              "reason": "L'attivazione dei profili alimenta la diversificazione delle famiglie professionali"
+            }
+          ],
+          "insights": {
+            "IAC": "Su 30 enti accreditati, il 75% ha attivato i profili: l'adesione è buona ma resta un quarto degli enti da coinvolgere."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D1",
+            "indicator": "IAC"
+          }
+        },
+        {
+          "id": "d1-implementazione",
+          "title": "Implementazione del Modello",
+          "question": "Quanto è articolato il sistema professionale?",
+          "description": "IIMP/R misura il rapporto tra profili professionali definiti e organico. Un valore fisiologicamente basso è normale perché ogni profilo copre più dipendenti; valori molto bassi indicano un sistema ancora embrionale.",
+          "kpiIds": [
+            "IIMP/R"
+          ],
+          "impacts": [
+            {
+              "pillar": "D3",
+              "indicatorId": "DDP",
+              "label": "Domanda professionale",
+              "reason": "Profili professionali chiari migliorano la definizione dei bandi"
+            },
+            {
+              "pillar": "D4",
+              "indicatorId": "ICRP",
+              "label": "Copertura ruoli",
+              "reason": "L'articolazione del modello determina quanti ruoli sono disponibili"
+            }
+          ],
+          "insights": {
+            "IIMP/R": "1.256 profili professionali e 896 profili di ruolo su 191.410 dipendenti. Il sistema è avviato ma ancora poco articolato."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D1",
+            "indicator": "IIMP/R"
+          }
+        },
+        {
+          "id": "d1-copertura",
+          "title": "Copertura Sistema Professionale",
+          "question": "Quanti dipendenti hanno un profilo assegnato?",
+          "description": "ICPR indica la quota di personale con un profilo professionale assegnato. Valori sotto il 70% segnalano che una parte significativa dell'organico è ancora senza classificazione, limitando la capacità di gestire competenze e formazione.",
+          "kpiIds": [
+            "ICPR"
+          ],
+          "impacts": [
+            {
+              "pillar": "D4",
+              "indicatorId": "CGC",
+              "label": "Gestione competenze",
+              "reason": "Senza profilo assegnato non è possibile pianificare lo sviluppo formativo"
+            },
+            {
+              "pillar": "D4",
+              "indicatorId": "CQT",
+              "label": "Coerenza titoli",
+              "reason": "La copertura dei profili permette di verificare l'allineamento titoli-qualifiche"
+            }
+          ],
+          "insights": {
+            "ICPR": "Il 61% del personale ha un profilo professionale assegnato. Il 39% (oltre 370.000 dipendenti) è ancora scoperto."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D1",
+            "indicator": "ICPR"
+          }
+        },
+        {
+          "id": "d1-valutazioni",
+          "title": "Valutazione Competenze",
+          "question": "Il personale con profilo è stato valutato?",
+          "description": "ICVC misura la quota di personale con profilo che ha ricevuto una valutazione delle competenze. La valutazione è il passaggio critico per trasformare il catalogo teorico in uno strumento gestionale.",
+          "kpiIds": [
+            "ICVC"
+          ],
+          "impacts": [
+            {
+              "pillar": "D4",
+              "indicatorId": "ICEC",
+              "label": "Coerenza evolutiva",
+              "reason": "La valutazione è necessaria per misurare l'impatto della formazione sulle competenze"
+            },
+            {
+              "pillar": "D5",
+              "indicatorId": "IDC",
+              "label": "Dinamicità carriera",
+              "reason": "Le valutazioni alimentano i percorsi di sviluppo professionale"
+            }
+          ],
+          "insights": {
+            "ICVC": "689.080 su 957.045 dipendenti con profilo sono stati valutati (72%). Restano 267.965 da valutare."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D1",
+            "indicator": "ICVC"
+          }
+        },
+        {
+          "id": "d1-adeguatezza",
+          "title": "Adeguatezza Capitale Umano",
+          "question": "Le competenze sono allineate ai requisiti?",
+          "description": "IACU misura la distanza tra le competenze possedute e quelle richieste dal profilo. Un gap elevato segnala la necessità di interventi formativi mirati per colmare le carenze più critiche.",
+          "kpiIds": [
+            "IACU"
+          ],
+          "impacts": [
+            {
+              "pillar": "D4",
+              "indicatorId": "TCF",
+              "label": "Copertura formativa",
+              "reason": "Il gap di competenze definisce il fabbisogno formativo prioritario"
+            },
+            {
+              "pillar": "D4",
+              "indicatorId": "IESF",
+              "label": "Efficacia formativa",
+              "reason": "L'adeguatezza è il benchmark per valutare se la formazione colma i gap"
+            },
+            {
+              "pillar": "D3",
+              "indicatorId": "IAR",
+              "label": "Reclutamento",
+              "reason": "Gap persistenti possono richiedere reclutamento esterno di competenze"
+            }
+          ],
+          "insights": {
+            "IACU": "Copertura competenze all'83%. Il gap residuo del 17% indica aree dove la formazione o il reclutamento devono intervenire."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D1",
+            "indicator": "IACU"
+          }
+        },
+        {
+          "id": "d1-atomico",
+          "title": "Dato Atomico",
+          "question": "Dove posso trovare il dettaglio dei profili e delle competenze?",
+          "description": "Accesso diretto alle tabelle operative di Minerva (profili, competenze, valutazioni) e Syllabus (assessment digitali). Dati filtrabili per ente, famiglia professionale e area di competenza.",
+          "kpiIds": [],
+          "impacts": [],
+          "drillTarget": {
+            "level": "operational",
+            "source": "minerva"
+          }
+        }
+      ]
+    },
+    "d2-fabbisogni": {
+      "id": "d2-fabbisogni",
+      "pillar": "D2",
+      "title": "Analisi dei fabbisogni",
+      "subtitle": "Dalla strategia al ricambio generazionale: un percorso in 6 tappe",
+      "colorVar": "--chart-blue",
+      "steps": [
+        {
+          "id": "d2-overview",
+          "title": "Quadro Strategico",
+          "question": "Quanto è efficace la programmazione dei fabbisogni?",
+          "description": "L'indice composito IGF aggrega 4 componenti: dotazione organica (IRS), dinamica assunzioni/cessazioni (IDP), stabilità contrattuale (PTI) e ricambio generazionale (IRG). Rappresenta la capacità dell'ente di governare strategicamente il proprio capitale umano. L'IGF si colloca al livello Executive: è il risultato di una trasformazione funzionale — non una semplice media — dei 4 indicatori sintetici sottostanti, che a loro volta derivano dall'aggregazione dei dati operativi del Conto Annuale.",
+          "kpiIds": [
+            "IGF"
+          ],
+          "impacts": [],
+          "insights": {
+            "IGF": "L'indice complessivo di governo del fabbisogno è al 46%: meno della metà della capacità programmata viene effettivamente realizzata."
+          },
+          "conditionalNarratives": {
+            "high": "Governo strategico consolidato: l'IGF ≥ 0,70 indica che l'ente governa efficacemente tutte le dimensioni del fabbisogno. Il focus si sposta sulla qualificazione dell'organico (IRS, IDP, PTI, IRG) e sull'ottimizzazione dei processi.",
+            "medium": "Configurazione intermedia: l'IGF tra 0,40 e 0,60 segnala squilibri interni tra le componenti. È necessario identificare la dimensione limitante (tipicamente IRG o IDP) e concentrare le risorse su di essa per sbloccare il potenziale complessivo.",
+            "low": "Debole governo del fabbisogno: l'IGF ≤ 0,30 indica criticità strutturali. L'ente non riesce a programmare efficacemente il personale. La diagnostica deve partire dalla componente più critica per definire un piano di intervento urgente."
+          }
+        },
+        {
+          "id": "d2-dotazione",
+          "title": "Dotazione Organica",
+          "question": "L'organico copre il fabbisogno?",
+          "description": "IRS misura il rapporto tra personale in servizio e dotazione organica prevista. È un indicatore sintetico che trasforma i dati operativi di organico e dotazione in una misura normalizzata di copertura. Valori vicini a 1 indicano piena copertura; valori bassi segnalano scoperture critiche che richiedono interventi di reclutamento.",
+          "kpiIds": [
+            "IRS"
+          ],
+          "impacts": [
+            {
+              "pillar": "D6",
+              "indicatorId": "TVO",
+              "label": "Tasso vacancy",
+              "reason": "Le vacancy dipendono direttamente dalla scopertura organica"
+            }
+          ],
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D2",
+            "indicator": "IRS"
+          }
+        },
+        {
+          "id": "d2-dinamica",
+          "title": "Dinamica Assunzioni/Cessazioni",
+          "question": "Il saldo tra assunti e cessati è positivo o negativo?",
+          "description": "IDP confronta il flusso di assunzioni con quello di cessazioni. È un indicatore sintetico che trasforma i dati atomici (tabelle assunti e cessati del Conto Annuale) in una misura normalizzata di sostenibilità del turnover. Un saldo negativo indica che l'ente perde più personale di quanto ne acquisisca.",
+          "kpiIds": [
+            "IDP_Norm"
+          ],
+          "impacts": [
+            {
+              "pillar": "D3",
+              "indicatorId": "IAR",
+              "label": "Attivazione reclutamento",
+              "reason": "Il saldo negativo dovrebbe attivare procedure di reclutamento"
+            },
+            {
+              "pillar": "D3",
+              "indicatorId": "TCPB",
+              "label": "Copertura posti",
+              "reason": "L'efficacia delle assunzioni determina se il saldo migliora"
+            }
+          ],
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D2",
+            "indicator": "IDP_Norm"
+          }
+        },
+        {
+          "id": "d2-stabilita",
+          "title": "Stabilità Contrattuale",
+          "question": "Le assunzioni sono a tempo indeterminato?",
+          "description": "PTI indica la quota di assunzioni a tempo indeterminato sul totale. È un indicatore sintetico che trasforma i dati sulle causali di assunzione in una misura di investimento strutturale nel personale. Un valore alto segnala stabilità; un valore basso indica precarietà.",
+          "kpiIds": [
+            "PTI"
+          ],
+          "impacts": [
+            {
+              "pillar": "D5",
+              "indicatorId": "IDC",
+              "label": "Dinamicità carriera",
+              "reason": "La stabilità contrattuale è prerequisito per percorsi di carriera"
+            }
+          ],
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D2",
+            "indicator": "PTI"
+          }
+        },
+        {
+          "id": "d2-ricambio",
+          "title": "Ricambio Generazionale",
+          "question": "Il personale si sta rinnovando?",
+          "description": "IRG misura il rapporto tra under-35 e over-60. È un indicatore sintetico che trasforma i dati anagrafici dell'organico in una misura del rinnovamento della forza lavoro. Valori molto bassi indicano un invecchiamento critico che richiede politiche aggressive di reclutamento giovani.",
+          "kpiIds": [
+            "IRG_Norm"
+          ],
+          "impacts": [
+            {
+              "pillar": "D3",
+              "indicatorId": "IAR",
+              "label": "Attivazione reclutamento",
+              "reason": "Il ricambio generazionale determina l'urgenza di nuove procedure"
+            },
+            {
+              "pillar": "D6",
+              "indicatorId": "ISG",
+              "label": "Sostenibilità generaz.",
+              "reason": "Il bilanciamento anagrafico incide sulla sostenibilità a lungo termine"
+            },
+            {
+              "pillar": "D6",
+              "indicatorId": "TEP",
+              "label": "Cessazioni attese",
+              "reason": "Gli over-60 alimentano il flusso di cessazioni per pensionamento"
+            }
+          ],
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D2",
+            "indicator": "IRG_Norm"
+          }
+        },
+        {
+          "id": "d2-atomico",
+          "title": "Dato Atomico",
+          "question": "Dove posso analizzare i dati di dettaglio?",
+          "description": "Accesso diretto alle tabelle operative del Conto Annuale (dotazione, cessazioni, assunzioni per causale) e alla programmazione PTFP. Dati filtrabili per ente, comparto, contratto e anno.",
+          "kpiIds": [],
+          "impacts": [],
+          "drillTarget": {
+            "level": "operational",
+            "source": "conto-annuale"
+          }
+        }
+      ]
+    },
+    "d3-selezione": {
+      "id": "d3-selezione",
+      "pillar": "D3",
+      "title": "Selezione del personale",
+      "subtitle": "Dal fabbisogno alla copertura dei posti: un percorso in 8 tappe",
+      "colorVar": "--chart-green",
+      "steps": [
+        {
+          "id": "d3-fabbisogno",
+          "title": "Dimensione del fabbisogno",
+          "question": "Qual è la pressione demografica sul reclutamento?",
+          "description": "Prima di analizzare le procedure concorsuali, occorre quantificare il fabbisogno strutturale: l'incidenza dei dipendenti con età ≥ 60 anni sul totale determina l'urgenza e la scala del reclutamento necessario. Un'incidenza elevata segnala un rischio di depauperamento dell'organico nei prossimi 5 anni.",
+          "kpiIds": [],
+          "impacts": [
+            {
+              "pillar": "D6",
+              "indicatorId": "TEP",
+              "label": "Tasso cessazione atteso",
+              "reason": "L'incidenza degli over-60 alimenta direttamente il flusso di cessazioni per pensionamento"
+            },
+            {
+              "pillar": "D6",
+              "indicatorId": "ISG",
+              "label": "Indice sostenibilità generaz.",
+              "reason": "Il rapporto under-35/over-55 contestualizza la sostenibilità futura dell'organico"
+            },
+            {
+              "pillar": "D2",
+              "indicatorId": "IRG_Norm",
+              "label": "Ricambio generazionale",
+              "reason": "Il ricambio generazionale determina quanta pressione grava sulle nuove assunzioni"
+            }
+          ],
+          "operativeCorrelations": [
+            {
+              "label": "Distribuzione per fasce d'età",
+              "description": "Analisi della piramide anagrafica per quartili e confronto con benchmark di comparto",
+              "relatedKpiId": "TEP",
+              "drillTarget": {
+                "level": "operational",
+                "source": "conto-annuale",
+                "indicator": "analisi-eta"
+              }
+            },
+            {
+              "label": "Cessazioni attese per anno",
+              "description": "Proiezione dei pensionamenti nei prossimi 5 anni in base all'età anagrafica",
+              "relatedKpiId": "ISG",
+              "drillTarget": {
+                "level": "operational",
+                "source": "conto-annuale",
+                "indicator": "previsione-cessazioni"
+              }
+            }
+          ],
+          "drillTarget": {
+            "level": "operational",
+            "source": "conto-annuale",
+            "indicator": "analisi-eta"
+          }
+        },
+        {
+          "id": "d3-attivazione",
+          "title": "Attivazione vs Fabbisogno",
+          "question": "L'ente sta reclutando abbastanza rispetto al fabbisogno?",
+          "description": "L'indicatore IAR confronta i posti banditi con i dipendenti ≥ 63 anni (proxy del fabbisogno generazionale). Un valore basso segnala che l'ente non sta attivando procedure sufficienti a compensare le cessazioni attese.",
+          "kpiIds": [
+            "IAR"
+          ],
+          "impacts": [
+            {
+              "pillar": "D2",
+              "indicatorId": "IGF",
+              "label": "Governo fabbisogno",
+              "reason": "Il piano dei fabbisogni determina quanti posti dovrebbero essere banditi"
+            },
+            {
+              "pillar": "D2",
+              "indicatorId": "IRG_Norm",
+              "label": "Ricambio generazionale",
+              "reason": "Il tasso di ricambio indica la pressione demografica sulle assunzioni"
+            },
+            {
+              "pillar": "D6",
+              "indicatorId": "TEP",
+              "label": "Tasso cessazione atteso",
+              "reason": "Gli over-63 in uscita definiscono l'urgenza del reclutamento"
+            }
+          ],
+          "operativeCorrelations": [
+            {
+              "label": "Pubblicazioni medie per PA",
+              "description": "Numero medio di bandi pubblicati per amministrazione: misura l'intensità di attivazione del recruiting",
+              "relatedKpiId": "IAR",
+              "drillTarget": {
+                "level": "operational",
+                "source": "inpa",
+                "indicator": "inpa-bandi"
+              }
+            },
+            {
+              "label": "Posti banditi",
+              "description": "Totale posti messi a bando: numeratore dell'IAR",
+              "relatedKpiId": "IAR",
+              "drillTarget": {
+                "level": "operational",
+                "source": "inpa",
+                "indicator": "inpa-bandi"
+              }
+            },
+            {
+              "label": "Cessati per anno",
+              "description": "Flusso annuo di cessazioni dall'organico: denominatore implicito del fabbisogno",
+              "relatedKpiId": "TVO",
+              "drillTarget": {
+                "level": "operational",
+                "source": "conto-annuale",
+                "indicator": "cessazioni"
+              }
+            },
+            {
+              "label": "Tasso di sostituzione",
+              "description": "Rapporto assunti/cessati: misura la capacità dell'ente di compensare le uscite",
+              "relatedKpiId": "IDP_Norm",
+              "drillTarget": {
+                "level": "synthetic",
+                "pillar": "D2",
+                "indicator": "IDP_Norm"
+              }
+            }
+          ],
+          "insights": {
+            "IAR": "Su 100 posti che servirebbero per coprire le uscite attese, solo 14 sono stati effettivamente banditi. L'ente non sta attivando procedure sufficienti."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D3",
+            "indicator": "IAR"
+          }
+        },
+        {
+          "id": "d3-domanda",
+          "title": "Struttura della Domanda",
+          "question": "Come si distribuisce la domanda professionale?",
+          "description": "DDP misura la concentrazione delle posizioni ricercate per settore/categoria. Una distribuzione squilibrata può indicare carenze nella programmazione o una domanda distorta rispetto ai fabbisogni reali dell'ente.",
+          "kpiIds": [
+            "DDP"
+          ],
+          "impacts": [
+            {
+              "pillar": "D1",
+              "indicatorId": "ICPR",
+              "label": "Copertura profili",
+              "reason": "La struttura della domanda riflette la coerenza con il sistema di classificazione professionale"
+            },
+            {
+              "pillar": "D2",
+              "indicatorId": "IGF",
+              "label": "Governo fabbisogno",
+              "reason": "La composizione dei posti banditi dovrebbe riflettere le priorità della programmazione"
+            }
+          ],
+          "operativeCorrelations": [
+            {
+              "label": "% pubblicazioni per categoria",
+              "description": "Distribuzione dei bandi per categoria contrattuale: evidenzia dove si concentra la domanda",
+              "relatedKpiId": "DDP",
+              "drillTarget": {
+                "level": "operational",
+                "source": "inpa",
+                "indicator": "inpa-bandi"
+              }
+            },
+            {
+              "label": "% candidature per figura ricercata",
+              "description": "Distribuzione delle candidature per profilo: mostra quali figure attirano più interesse",
+              "relatedKpiId": "DDP",
+              "drillTarget": {
+                "level": "operational",
+                "source": "inpa",
+                "indicator": "inpa-candidature"
+              }
+            }
+          ],
+          "drillTarget": {
+            "level": "operational",
+            "source": "inpa",
+            "indicator": "inpa-bandi"
+          }
+        },
+        {
+          "id": "d3-attrattivita",
+          "title": "Attrattività e Partecipazione",
+          "question": "I bandi attirano candidati? Da dove vengono?",
+          "description": "IAP misura le candidature per posto. Un valore basso segnala scarsa attrattività dell'ente nel mercato del lavoro pubblico. L'analisi incrocia la provenienza territoriale (IAT) e il livello di qualificazione (ISC) per comprendere la natura della partecipazione.",
+          "kpiIds": [
+            "IAP",
+            "IAT"
+          ],
+          "impacts": [
+            {
+              "pillar": "D1",
+              "indicatorId": "IAC",
+              "label": "Catalogo professionale",
+              "reason": "Profili professionali chiari e ben descritti aumentano l'attrattività dei bandi"
+            },
+            {
+              "pillar": "D5",
+              "indicatorId": "IDC",
+              "label": "Sviluppo carriera",
+              "reason": "Le opportunità di carriera influenzano la decisione di candidarsi"
+            }
+          ],
+          "operativeCorrelations": [
+            {
+              "label": "Iscritti residenti nell'area",
+              "description": "Numero di candidati residenti nella provincia/regione del bando: misura il bacino locale",
+              "relatedKpiId": "IAP",
+              "drillTarget": {
+                "level": "operational",
+                "source": "inpa",
+                "indicator": "inpa-candidature"
+              }
+            },
+            {
+              "label": "Intensità partecipazione locale",
+              "description": "Rapporto candidature locali/popolazione attiva: indica la penetrazione nel mercato del lavoro locale",
+              "relatedKpiId": "IAP"
+            },
+            {
+              "label": "ISC (Sovra-qualificazione)",
+              "description": "Quota di candidati con titolo superiore al richiesto: segnala attrattività per over-qualified o mismatch",
+              "relatedKpiId": "ISC",
+              "drillTarget": {
+                "level": "synthetic",
+                "pillar": "D3",
+                "indicator": "ISC"
+              }
+            },
+            {
+              "label": "IAT (Attrazione territoriale)",
+              "description": "Quota di candidature extra-regione: misura la capacità di attrarre talenti da fuori",
+              "relatedKpiId": "IAT",
+              "drillTarget": {
+                "level": "synthetic",
+                "pillar": "D3",
+                "indicator": "IAT"
+              }
+            },
+            {
+              "label": "% candidature per area geografica",
+              "description": "Distribuzione territoriale delle candidature: evidenzia bacini di provenienza",
+              "relatedKpiId": "IAT",
+              "drillTarget": {
+                "level": "operational",
+                "source": "inpa",
+                "indicator": "inpa-candidature"
+              }
+            }
+          ],
+          "drillTarget": {
+            "level": "operational",
+            "source": "inpa",
+            "indicator": "inpa-candidature"
+          }
+        },
+        {
+          "id": "d3-selettivita",
+          "title": "Selettività delle Procedure",
+          "question": "Le procedure riescono a selezionare le persone giuste?",
+          "description": "TSC misura il tasso di successo concorsuale (idonei/candidati). Un valore molto alto può indicare bassa selettività, molto basso una procedura troppo restrittiva o candidati inadeguati. La pressione competitiva (candidature/posizioni) contestualizza il risultato.",
+          "kpiIds": [
+            "TSC"
+          ],
+          "impacts": [
+            {
+              "pillar": "D1",
+              "indicatorId": "ICPR",
+              "label": "Copertura profili",
+              "reason": "La coerenza tra profili richiesti e competenze selezionate determina la qualità del match"
+            },
+            {
+              "pillar": "D4",
+              "indicatorId": "CGC",
+              "label": "Competenze",
+              "reason": "Le competenze dei selezionati determinano il gap formativo successivo all'ingresso"
+            }
+          ],
+          "operativeCorrelations": [
+            {
+              "label": "Numero candidature per bando",
+              "description": "Volume assoluto di candidature: la pressione competitiva condiziona la selettività",
+              "relatedKpiId": "TSC",
+              "drillTarget": {
+                "level": "operational",
+                "source": "inpa",
+                "indicator": "inpa-candidature"
+              }
+            },
+            {
+              "label": "Candidature/posizioni (pressione)",
+              "description": "Rapporto candidature/posti: misura l'intensità della competizione per ogni posizione",
+              "relatedKpiId": "TSC",
+              "drillTarget": {
+                "level": "operational",
+                "source": "inpa",
+                "indicator": "inpa-candidature"
+              }
+            }
+          ],
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D3",
+            "indicator": "TSC"
+          }
+        },
+        {
+          "id": "d3-tempi",
+          "title": "Efficienza Tempi Procedurali",
+          "question": "Quanto durano le procedure concorsuali?",
+          "description": "TCP misura i giorni medi tra pubblicazione del bando e approvazione della graduatoria. Tempi lunghi generano costi organizzativi, scoraggiano i candidati e ritardano la copertura del fabbisogno. L'analisi incrocia il volume di graduatorie pubblicate e la pressione delle cessazioni.",
+          "kpiIds": [
+            "TCP"
+          ],
+          "impacts": [
+            {
+              "pillar": "D2",
+              "indicatorId": "IDP_Norm",
+              "label": "Direzione progressività",
+              "reason": "Ritardi nelle procedure bloccano la traduzione del piano in assunzioni effettive"
+            },
+            {
+              "pillar": "D6",
+              "indicatorId": "TVO",
+              "label": "Tasso vacancy",
+              "reason": "Tempi lunghi mantengono elevate le vacancy operative"
+            }
+          ],
+          "operativeCorrelations": [
+            {
+              "label": "% graduatorie pubblicate",
+              "description": "Quota di procedure che hanno raggiunto la fase di graduatoria: misura il completamento del ciclo",
+              "relatedKpiId": "TCP",
+              "drillTarget": {
+                "level": "operational",
+                "source": "lavoro-pubblico",
+                "indicator": "lp-distribuzione"
+              }
+            },
+            {
+              "label": "Numero candidature",
+              "description": "Il volume di candidature incide sui tempi di valutazione e correzione delle prove",
+              "relatedKpiId": "TCP",
+              "drillTarget": {
+                "level": "operational",
+                "source": "inpa",
+                "indicator": "inpa-candidature"
+              }
+            },
+            {
+              "label": "Cessati per anno",
+              "description": "La pressione delle cessazioni rende più urgente la riduzione dei tempi procedurali",
+              "relatedKpiId": "TVO",
+              "drillTarget": {
+                "level": "operational",
+                "source": "conto-annuale",
+                "indicator": "cessazioni"
+              }
+            }
+          ],
+          "drillTarget": {
+            "level": "operational",
+            "source": "inpa",
+            "indicator": "inpa-durata"
+          }
+        },
+        {
+          "id": "d3-esito",
+          "title": "Esito Finale: Copertura Posti",
+          "question": "Quanti posti vengono effettivamente coperti?",
+          "description": "TCPB indica la percentuale di posti banditi effettivamente coperti con assunzioni. Valori sotto il 100% segnalano inefficienze nel funnel (rinunce vincitori, graduatorie inutilizzate). Il TUG (Tasso utilizzo graduatorie) misura quanti idonei vengono effettivamente assunti.",
+          "kpiIds": [
+            "TCPB"
+          ],
+          "impacts": [
+            {
+              "pillar": "D2",
+              "indicatorId": "IRS",
+              "label": "Replica strutturale",
+              "reason": "La copertura effettiva determina se la dotazione organica viene mantenuta"
+            },
+            {
+              "pillar": "D6",
+              "indicatorId": "TVO",
+              "label": "Tasso vacancy",
+              "reason": "Posti non coperti alimentano direttamente le vacancy operative"
+            }
+          ],
+          "operativeCorrelations": [
+            {
+              "label": "Candidature totali",
+              "description": "Il volume di candidature disponibili condiziona la possibilità di copertura",
+              "relatedKpiId": "TCPB",
+              "drillTarget": {
+                "level": "operational",
+                "source": "inpa",
+                "indicator": "inpa-candidature"
+              }
+            },
+            {
+              "label": "Candidature/posizioni",
+              "description": "Il rapporto candidature/posti misura la profondità del bacino di reclutamento",
+              "relatedKpiId": "TCPB",
+              "drillTarget": {
+                "level": "operational",
+                "source": "inpa",
+                "indicator": "inpa-candidature"
+              }
+            },
+            {
+              "label": "% graduatorie utilizzate",
+              "description": "Quota di graduatorie da cui sono state effettuate assunzioni: misura l'utilizzo effettivo degli esiti concorsuali",
+              "relatedKpiId": "TUG",
+              "drillTarget": {
+                "level": "operational",
+                "source": "lavoro-pubblico",
+                "indicator": "lp-distribuzione"
+              }
+            },
+            {
+              "label": "Tasso di sostituzione",
+              "description": "Rapporto assunti/cessati: misura se le assunzioni compensano le uscite",
+              "relatedKpiId": "IDP_Norm",
+              "drillTarget": {
+                "level": "synthetic",
+                "pillar": "D2",
+                "indicator": "IDP_Norm"
+              }
+            },
+            {
+              "label": "TUG (Utilizzo graduatorie)",
+              "description": "Idonei assunti / Idonei totali: misura quanto l'ente sfrutta il bacino di idonei disponibili",
+              "relatedKpiId": "TUG",
+              "drillTarget": {
+                "level": "synthetic",
+                "pillar": "D3",
+                "indicator": "TUG"
+              }
+            }
+          ],
+          "drillTarget": {
+            "level": "operational",
+            "source": "inpa",
+            "indicator": "inpa-graduatorie"
+          }
+        },
+        {
+          "id": "d3-atomico",
+          "title": "Dato Atomico",
+          "question": "Dove posso trovare il dettaglio delle singole procedure?",
+          "description": "Accesso diretto alle tabelle operative di InPA (bandi, candidature) e Lavoro Pubblico (graduatorie, tempi). Dati filtrabili per ente, territorio, tipologia di procedura e anno.",
+          "kpiIds": [],
+          "impacts": [],
+          "drillTarget": {
+            "level": "operational",
+            "source": "inpa"
+          }
+        }
+      ]
+    },
+    "d4-sviluppo": {
+      "id": "d4-sviluppo",
+      "pillar": "D4",
+      "title": "Sviluppo professionale",
+      "subtitle": "Dalla formazione alla crescita delle competenze: un percorso in 8 tappe",
+      "colorVar": "--chart-orange",
+      "steps": [
+        {
+          "id": "d4-overview",
+          "title": "Panoramica Sviluppo",
+          "question": "Quanto è efficace il sistema di sviluppo professionale?",
+          "description": "Visione d'insieme della capacità dell'ente di formare, sviluppare e valorizzare il proprio personale. L'indice composito CGC aggrega copertura formativa, intensità, dinamicità interna e coerenza titoli-qualifiche.",
+          "kpiIds": [
+            "CGC",
+            "ISCP",
+            "IESF"
+          ],
+          "impacts": [],
+          "insights": {
+            "CGC": "La capacità di gestione delle competenze è al 58%: sistema parzialmente strutturato con eccellente intensità formativa (IFM=0,92) ma dinamicità carriera bassissima (DPI=0,025).",
+            "ISCP": "Lo sviluppo del capitale professionale è al 54%: il sistema Minerva è moderatamente strutturato.",
+            "IESF": "L'efficacia formativa è al 54%: buona qualificazione ma basso tasso di completamento corsi."
+          }
+        },
+        {
+          "id": "d4-copertura",
+          "title": "Copertura Formativa",
+          "question": "Quanti dipendenti vengono effettivamente formati?",
+          "description": "TCF misura la quota di personale che ha ricevuto almeno un intervento formativo nell'anno. Un valore sotto il 60% indica che una parte significativa dell'organico è esclusa dai percorsi di sviluppo.",
+          "kpiIds": [
+            "TCF"
+          ],
+          "impacts": [
+            {
+              "pillar": "D1",
+              "indicatorId": "IACU",
+              "label": "Adeguatezza competenze",
+              "reason": "La formazione è lo strumento principale per colmare i gap di competenze"
+            },
+            {
+              "pillar": "D6",
+              "indicatorId": "IQP",
+              "label": "Qualificazione",
+              "reason": "La formazione contribuisce all'innalzamento del livello di qualificazione"
+            }
+          ],
+          "insights": {
+            "TCF": "109.041 dipendenti formati su 191.410 totali (57%): oltre 82.000 dipendenti non hanno ricevuto formazione nell'anno."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D4",
+            "indicator": "TCF"
+          }
+        },
+        {
+          "id": "d4-intensita",
+          "title": "Intensità Formativa",
+          "question": "Quante ore di formazione riceve ogni dipendente?",
+          "description": "IFM misura le ore medie di formazione per dipendente formato, normalizzate rispetto al target annuale. Valori alti indicano che chi viene formato riceve un investimento significativo.",
+          "kpiIds": [
+            "IFM_Norm"
+          ],
+          "impacts": [
+            {
+              "pillar": "D1",
+              "indicatorId": "ICVC",
+              "label": "Valutazioni competenze",
+              "reason": "L'intensità formativa dovrebbe tradursi in miglioramento delle valutazioni"
+            }
+          ],
+          "insights": {
+            "IFM_Norm": "L'intensità formativa è eccellente (IFM=0,92): 12,5 ore medie per dipendente formato. Chi è formato riceve un investimento adeguato."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D4",
+            "indicator": "IFM_Norm"
+          }
+        },
+        {
+          "id": "d4-dinamicita",
+          "title": "Dinamicità Interna",
+          "question": "Le progressioni di carriera funzionano?",
+          "description": "DPI misura la quota di personale che ha avuto una progressione verticale. Valori sotto il 5% indicano una forte rigidità della struttura organizzativa che limita la motivazione e il trattenimento dei talenti.",
+          "kpiIds": [
+            "DPI_Norm"
+          ],
+          "impacts": [
+            {
+              "pillar": "D5",
+              "indicatorId": "IDC",
+              "label": "Dinamicità carriera",
+              "reason": "Le progressioni verticali sono una componente chiave della dinamicità della carriera"
+            },
+            {
+              "pillar": "D3",
+              "indicatorId": "IAP",
+              "label": "Attrattività",
+              "reason": "La mancanza di progressioni riduce l'attrattività dell'ente per i candidati esterni"
+            }
+          ],
+          "insights": {
+            "DPI_Norm": "Solo 7.670 progressioni verticali su 206.174 dipendenti (3,7%). La mobilità interna è quasi inesistente."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D4",
+            "indicator": "DPI_Norm"
+          }
+        },
+        {
+          "id": "d4-coerenza",
+          "title": "Coerenza Titoli-Qualifiche",
+          "question": "I titoli di studio corrispondono alle qualifiche?",
+          "description": "CQT verifica l'allineamento tra titolo di studio posseduto e qualifica ricoperta. Un disallineamento significativo può indicare sottoutilizzo del capitale umano o necessità di riqualificazione.",
+          "kpiIds": [
+            "CQT"
+          ],
+          "impacts": [
+            {
+              "pillar": "D3",
+              "indicatorId": "ISC",
+              "label": "Sovra-qualificazione",
+              "reason": "Il disallineamento si riflette anche nella sovra-qualificazione dei candidati"
+            },
+            {
+              "pillar": "D6",
+              "indicatorId": "IQP",
+              "label": "Qualificazione personale",
+              "reason": "La coerenza titoli-qualifiche è complementare alla qualificazione complessiva"
+            }
+          ],
+          "insights": {
+            "CQT": "Il 78% del personale ha un titolo coerente con la qualifica. Il 22% (42.111 dipendenti) presenta disallineamento."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D4",
+            "indicator": "CQT"
+          }
+        },
+        {
+          "id": "d4-sviluppo-prof",
+          "title": "Sviluppo Capitale Professionale",
+          "question": "Il sistema Minerva funziona?",
+          "description": "ISCP aggrega tre sotto-indicatori Minerva: sviluppo tecnico-professionale (ISTP), diversificazione famiglie professionali (IDFP) e copertura ruoli professionali (ICRP). Rappresenta la maturità del sistema di classificazione e sviluppo.",
+          "kpiIds": [
+            "ISCP",
+            "ISTP_Norm",
+            "IDFP",
+            "ICRP"
+          ],
+          "impacts": [
+            {
+              "pillar": "D1",
+              "indicatorId": "ICPR",
+              "label": "Copertura profili",
+              "reason": "Lo sviluppo professionale dipende dalla copertura del sistema di classificazione"
+            },
+            {
+              "pillar": "D1",
+              "indicatorId": "IAC",
+              "label": "Adesione catalogo",
+              "reason": "L'utilizzo attivo del catalogo alimenta lo sviluppo professionale"
+            }
+          ],
+          "insights": {
+            "ISCP": "Sviluppo professionale moderato (ISCP=0,54): 8 famiglie attive su 15 e 48% dei profili con specializzazione.",
+            "ISTP_Norm": "Il 48% dei profili ha un percorso specialistico attivo: la strutturazione è parziale.",
+            "IDFP": "8 famiglie professionali attive su 15 del catalogo DFP: diversificazione al 55%.",
+            "ICRP": "Tutti i 13 ruoli della bridge sono coperti, ma la media ente è 0,52."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D4",
+            "indicator": "ISCP"
+          }
+        },
+        {
+          "id": "d4-efficacia",
+          "title": "Efficacia Formativa",
+          "question": "La formazione produce risultati?",
+          "description": "IESF aggrega efficacia del completamento (IEF), qualificazione (ICQ) e coerenza evolutiva delle competenze (ICEC). Misura se la formazione si traduce effettivamente in miglioramento delle competenze.",
+          "kpiIds": [
+            "IESF",
+            "IEF_Norm",
+            "ICQ",
+            "ICEC"
+          ],
+          "impacts": [
+            {
+              "pillar": "D1",
+              "indicatorId": "IACU",
+              "label": "Adeguatezza capitale umano",
+              "reason": "L'efficacia formativa è il meccanismo principale per migliorare l'adeguatezza"
+            },
+            {
+              "pillar": "D6",
+              "indicatorId": "IEQ",
+              "label": "Evoluzione qualificazione",
+              "reason": "La formazione efficace contribuisce all'innalzamento della qualificazione nel tempo"
+            }
+          ],
+          "insights": {
+            "IESF": "Efficacia formativa complessiva al 54%. Criticità nel completamento (IEF=0,38) ma buona qualificazione (ICQ=0,63).",
+            "IEF_Norm": "Solo il 38% dei corsi viene completato con successo: alto tasso di abbandono.",
+            "ICQ": "63% dei completamenti ottiene una qualificazione formale.",
+            "ICEC": "61% dei gap iniziali di competenze colmato dalla formazione: impatto moderato."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D4",
+            "indicator": "IESF"
+          }
+        },
+        {
+          "id": "d4-atomico",
+          "title": "Dato Atomico",
+          "question": "Dove posso analizzare i dati di dettaglio?",
+          "description": "Accesso diretto alle tabelle operative del Conto Annuale (formazione, progressioni, titoli), Syllabus (corsi, completamenti, assessment) e Minerva (profili, competenze, famiglie professionali).",
+          "kpiIds": [],
+          "impacts": [],
+          "drillTarget": {
+            "level": "operational",
+            "source": "conto-annuale"
+          }
+        }
+      ]
+    },
+    "d5-rewarding": {
+      "id": "d5-rewarding",
+      "pillar": "D5",
+      "title": "Rewarding e sviluppo della carriera",
+      "subtitle": "Dalle progressioni alla crescita retributiva: un percorso in 5 tappe",
+      "colorVar": "--chart-purple",
+      "steps": [
+        {
+          "id": "d5-overview",
+          "title": "Panoramica Carriera",
+          "question": "Quanto è dinamica la carriera nell'ente?",
+          "description": "L'indice composito IDC aggrega due componenti: la dinamicità interna (progressioni verticali) e la crescita strutturale retributiva. Rappresenta la capacità dell'ente di offrire percorsi di crescita professionale ed economica.",
+          "kpiIds": [
+            "IDC"
+          ],
+          "impacts": [],
+          "insights": {
+            "IDC": "La dinamicità della carriera è al 26%: molto bassa. Solo il 3,7% del personale ha avuto progressioni e la crescita retributiva è contenuta (+2,5%)."
+          }
+        },
+        {
+          "id": "d5-progressioni",
+          "title": "Progressioni Verticali",
+          "question": "Il personale ha opportunità di avanzamento?",
+          "description": "DPI misura il rapporto tra progressioni verticali effettuate e personale totale. Valori sotto il 5% indicano una struttura organizzativa rigida dove la mobilità verso l'alto è quasi inesistente.",
+          "kpiIds": [
+            "DPI_Norm_D5"
+          ],
+          "impacts": [
+            {
+              "pillar": "D3",
+              "indicatorId": "IAP",
+              "label": "Attrattività bandi",
+              "reason": "La mancanza di carriere scoraggia i candidati esterni"
+            },
+            {
+              "pillar": "D6",
+              "indicatorId": "TVO",
+              "label": "Variazione organico",
+              "reason": "La stagnazione delle carriere può accelerare le dimissioni volontarie"
+            },
+            {
+              "pillar": "D4",
+              "indicatorId": "DPI_Norm",
+              "label": "Dinamicità D4",
+              "reason": "Lo stesso indicatore è componente dell'indice CGC di sviluppo"
+            }
+          ],
+          "insights": {
+            "DPI_Norm_D5": "Solo 7.670 progressioni verticali su 206.174 dipendenti (3,7%). La mobilità interna è praticamente ferma."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D5",
+            "indicator": "DPI_Norm_D5"
+          }
+        },
+        {
+          "id": "d5-retribuzione",
+          "title": "Crescita Retributiva",
+          "question": "Gli stipendi crescono in modo significativo?",
+          "description": "ICS misura la variazione della retribuzione media strutturale anno su anno, normalizzata. Valori bassi indicano che il sistema retributivo non premia adeguatamente l'esperienza e la crescita professionale.",
+          "kpiIds": [
+            "ICS_Norm"
+          ],
+          "impacts": [
+            {
+              "pillar": "D3",
+              "indicatorId": "IAP",
+              "label": "Attrattività posizioni",
+              "reason": "Retribuzioni competitive sono fondamentali per attrarre candidati qualificati"
+            },
+            {
+              "pillar": "D6",
+              "indicatorId": "IQP",
+              "label": "Qualificazione",
+              "reason": "Retribuzioni basse scoraggiano i laureati dal rimanere nella PA"
+            }
+          ],
+          "insights": {
+            "ICS_Norm": "Crescita retributiva +2,5% anno su anno (850€ su 34.200€ medi). Al netto dell'inflazione, la crescita reale è circa +0,5%."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D5",
+            "indicator": "ICS_Norm"
+          }
+        },
+        {
+          "id": "d5-impatto",
+          "title": "Impatto sulla Sostenibilità",
+          "question": "Come influisce la carriera sulla tenuta dell'organico?",
+          "description": "La stagnazione delle carriere e la bassa crescita retributiva hanno effetti sistemici sulla capacità dell'ente di trattenere il personale qualificato e di attrarre nuovi talenti. Questa tappa analizza i collegamenti con gli indicatori di sostenibilità.",
+          "kpiIds": [
+            "IDC"
+          ],
+          "impacts": [
+            {
+              "pillar": "D6",
+              "indicatorId": "ISG",
+              "label": "Squilibrio generazionale",
+              "reason": "I giovani abbandonano più facilmente se non vedono prospettive di carriera"
+            },
+            {
+              "pillar": "D6",
+              "indicatorId": "VQF",
+              "label": "Quota femminile",
+              "reason": "Le barriere alle progressioni possono essere non neutre rispetto al genere"
+            },
+            {
+              "pillar": "D2",
+              "indicatorId": "IGF",
+              "label": "Governo fabbisogno",
+              "reason": "La perdita di personale qualificato aumenta il fabbisogno di nuove assunzioni"
+            }
+          ],
+          "insights": {
+            "IDC": "Con IDC al 26%, l'ente rischia di perdere i talenti migliori verso il settore privato o altre amministrazioni più dinamiche."
+          }
+        },
+        {
+          "id": "d5-atomico",
+          "title": "Dato Atomico",
+          "question": "Dove posso analizzare i dati di dettaglio?",
+          "description": "Accesso diretto alle tabelle operative del Conto Annuale (progressioni verticali e orizzontali, retribuzioni per qualifica e categoria). Dati filtrabili per ente, comparto, contratto e anno.",
+          "kpiIds": [],
+          "impacts": [],
+          "drillTarget": {
+            "level": "operational",
+            "source": "conto-annuale"
+          }
+        }
+      ]
+    },
+    "d6-sostenibilita": {
+      "id": "d6-sostenibilita",
+      "pillar": "D6",
+      "title": "Sostenibilità ed evoluzione",
+      "subtitle": "Dall'organico all'equilibrio di genere: un percorso in 8 tappe",
+      "colorVar": "--chart-red",
+      "steps": [
+        {
+          "id": "d6-overview",
+          "title": "Panoramica Sostenibilità",
+          "question": "L'organico è sostenibile nel medio-lungo periodo?",
+          "description": "Il Pillar D6 raccoglie 10 indicatori strategici che monitorano la tenuta dell'organico, l'equilibrio generazionale, la qualificazione, l'equità di genere e le nuove modalità di lavoro. Insieme definiscono la capacità dell'ente di affrontare le sfide future.",
+          "kpiIds": [
+            "TVO",
+            "ISG",
+            "TEP",
+            "IQP",
+            "VQF",
+            "IDLA"
+          ],
+          "impacts": [],
+          "insights": {
+            "TVO": "L'organico si è ridotto dello 0,4%: sostanziale stabilità con lieve contrazione (−766 unità).",
+            "ISG": "Rapporto over 55/under 40 pari a 1,51:1 — forte squilibrio generazionale.",
+            "TEP": "Il 27% del personale è prossimo al pensionamento: esposizione elevata.",
+            "IQP": "Il 65% del personale è laureato: buon livello di qualificazione.",
+            "VQF": "Le donne rappresentano il 57,5% dell'organico.",
+            "IDLA": "Il 48,5% del personale è in lavoro agile."
+          }
+        },
+        {
+          "id": "d6-organico",
+          "title": "Variazione Organico",
+          "question": "L'organico cresce, è stabile o si riduce?",
+          "description": "TVO misura la variazione percentuale dell'organico rispetto all'anno precedente. Valori negativi indicano contrazione della forza lavoro; valori positivi espansione. La stabilità è il primo segnale di sostenibilità.",
+          "kpiIds": [
+            "TVO"
+          ],
+          "impacts": [
+            {
+              "pillar": "D2",
+              "indicatorId": "IRS",
+              "label": "Replica strutturale",
+              "reason": "La variazione dell'organico dipende dal bilanciamento assunzioni/cessazioni"
+            },
+            {
+              "pillar": "D2",
+              "indicatorId": "IDP_Norm",
+              "label": "Progressività",
+              "reason": "Il saldo assunti-cessati determina direttamente la variazione dell'organico"
+            }
+          ],
+          "insights": {
+            "TVO": "Da 192.176 (2022) a 191.410 (2023): saldo di −766 unità (−0,4%). Contrazione minima ma persistente."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D6",
+            "indicator": "TVO"
+          }
+        },
+        {
+          "id": "d6-generazionale",
+          "title": "Equilibrio Generazionale",
+          "question": "L'ente sta invecchiando troppo?",
+          "description": "ISG confronta il personale over 55 con gli under 40 (1=equilibrio). TEP indica la quota di personale prossimo al pensionamento. Insieme segnalano quanto è urgente il ricambio generazionale.",
+          "kpiIds": [
+            "ISG",
+            "TEP"
+          ],
+          "impacts": [
+            {
+              "pillar": "D2",
+              "indicatorId": "IRG_Norm",
+              "label": "Ricambio generazionale",
+              "reason": "Lo squilibrio generazionale determina l'urgenza del ricambio"
+            },
+            {
+              "pillar": "D3",
+              "indicatorId": "IAR",
+              "label": "Attivazione reclutamento",
+              "reason": "L'invecchiamento richiede l'attivazione di nuove procedure concorsuali"
+            }
+          ],
+          "insights": {
+            "ISG": "901.313 over 55 contro 624.699 under 40: rapporto 1,51:1. Forte squilibrio generazionale verso l'invecchiamento.",
+            "TEP": "Il 27% del personale (446.353) ha più di 60 anni e uscirà nei prossimi 5 anni."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D6",
+            "indicator": "ISG"
+          }
+        },
+        {
+          "id": "d6-qualificazione",
+          "title": "Qualificazione del Personale",
+          "question": "Il livello di istruzione è adeguato?",
+          "description": "IQP misura la quota di laureati sull'organico. IEQ monitora la crescita di questa quota nel tempo. Insieme indicano se l'ente sta investendo nel capitale umano qualificato.",
+          "kpiIds": [
+            "IQP",
+            "IEQ"
+          ],
+          "impacts": [
+            {
+              "pillar": "D4",
+              "indicatorId": "CQT",
+              "label": "Coerenza titoli",
+              "reason": "La qualificazione è il presupposto per la coerenza titoli-qualifiche"
+            },
+            {
+              "pillar": "D3",
+              "indicatorId": "ISC",
+              "label": "Sovra-qualificazione",
+              "reason": "Un organico già qualificato può attrarre candidati ancora più qualificati"
+            }
+          ],
+          "insights": {
+            "IQP": "124.417 laureati su 191.410 dipendenti (65%). Buon livello di qualificazione.",
+            "IEQ": "La quota di laureati è cresciuta dal 59% al 65% in 3 anni (+6 punti). Trend positivo."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D6",
+            "indicator": "IQP"
+          }
+        },
+        {
+          "id": "d6-genere",
+          "title": "Equità di Genere",
+          "question": "C'è equilibrio di genere nell'organico e nella dirigenza?",
+          "description": "VQF indica la quota femminile complessiva, IPD la parità nella dirigenza e IRG il riequilibrio nelle assunzioni. Insieme fotografano l'equità di genere a tutti i livelli dell'organizzazione.",
+          "kpiIds": [
+            "VQF",
+            "IPD",
+            "IRG_genere"
+          ],
+          "impacts": [
+            {
+              "pillar": "D5",
+              "indicatorId": "IDC",
+              "label": "Dinamicità carriera",
+              "reason": "L'equità di genere nelle progressioni è componente della dinamicità della carriera"
+            }
+          ],
+          "insights": {
+            "VQF": "Le donne sono il 57,5% dell'organico (110.085 su 191.410). Lieve sovra-rappresentazione.",
+            "IPD": "Parità dirigenziale al 55%: 34.900 donne dirigenti TI su 61.374 totali. Moderata rappresentazione.",
+            "IRG_genere": "57% donne nelle nuove assunzioni vs 57,5% nell'organico: rapporto 0,99 (neutralità quasi perfetta)."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D6",
+            "indicator": "VQF"
+          }
+        },
+        {
+          "id": "d6-flessibilita",
+          "title": "Flessibilità e Lavoro Agile",
+          "question": "L'ente adotta nuove modalità di lavoro?",
+          "description": "IFL misura i contratti flessibili, IDLA la diffusione del lavoro agile. Questi indicatori mostrano quanto l'ente sta innovando le modalità organizzative per migliorare produttività e benessere del personale.",
+          "kpiIds": [
+            "IFL",
+            "IDLA"
+          ],
+          "impacts": [
+            {
+              "pillar": "D3",
+              "indicatorId": "IAP",
+              "label": "Attrattività",
+              "reason": "La flessibilità lavorativa è un fattore di attrattività per i candidati"
+            },
+            {
+              "pillar": "D5",
+              "indicatorId": "IDC",
+              "label": "Dinamicità carriera",
+              "reason": "Il lavoro agile può facilitare percorsi di sviluppo più flessibili"
+            }
+          ],
+          "insights": {
+            "IFL": "Solo 202 lavoratori flessibili su 191.410 (0,1%): la flessibilità contrattuale è praticamente assente.",
+            "IDLA": "92.775 in lavoro agile (48,5%): ampia diffusione, forte crescita post-pandemia (+25pp in 3 anni)."
+          },
+          "drillTarget": {
+            "level": "synthetic",
+            "pillar": "D6",
+            "indicator": "IDLA"
+          }
+        },
+        {
+          "id": "d6-trend",
+          "title": "Trend e Proiezioni",
+          "question": "Come stanno evolvendo gli indicatori nel tempo?",
+          "description": "Gli indicatori di trend (TEPD, TFL, TDLA) misurano la velocità di cambiamento della parità dirigenziale, della flessibilità e del lavoro agile. Permettono di valutare se le politiche dell'ente stanno producendo effetti nel medio periodo.",
+          "kpiIds": [
+            "TEPD",
+            "TFL",
+            "TDLA"
+          ],
+          "impacts": [],
+          "insights": {
+            "TEPD": "Parità dirigenziale in miglioramento: IPD cresciuta da 0,48 a 0,55 in 3 anni (+0,07).",
+            "TFL": "Flessibilità contrattuale stabile e marginale: nessun progresso significativo.",
+            "TDLA": "Lavoro agile dal 20% al 45% in 3 anni (+25pp): forte accelerazione post-pandemia."
+          }
+        },
+        {
+          "id": "d6-atomico",
+          "title": "Dato Atomico",
+          "question": "Dove posso analizzare i dati di dettaglio?",
+          "description": "Accesso diretto alle tabelle operative del Conto Annuale (occupazione, età, genere, modalità di lavoro) e della KPI Rilevazione (dirigenza, lavoro agile). Dati filtrabili per ente, comparto, contratto e anno.",
+          "kpiIds": [],
+          "impacts": [],
+          "drillTarget": {
+            "level": "operational",
+            "source": "conto-annuale"
+          }
+        }
+      ]
+    }
+  },
+  "pillarToJourney": {
+    "D1": "d1-classificazione",
+    "D2": "d2-fabbisogni",
+    "D3": "d3-selezione",
+    "D4": "d4-sviluppo",
+    "D5": "d5-rewarding",
+    "D6": "d6-sostenibilita"
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "d5Journey": {
+    "id": "d5-rewarding",
+    "pillar": "D5",
+    "title": "Rewarding e sviluppo della carriera",
+    "subtitle": "Dalle progressioni alla crescita retributiva: un percorso in 5 tappe",
+    "colorVar": "--chart-purple",
+    "steps": [
+      {
+        "id": "d5-overview",
+        "title": "Panoramica Carriera",
+        "question": "Quanto è dinamica la carriera nell'ente?",
+        "description": "L'indice composito IDC aggrega due componenti: la dinamicità interna (progressioni verticali) e la crescita strutturale retributiva. Rappresenta la capacità dell'ente di offrire percorsi di crescita professionale ed economica.",
+        "kpiIds": [
+          "IDC"
+        ],
+        "impacts": [],
+        "insights": {
+          "IDC": "La dinamicità della carriera è al 26%: molto bassa. Solo il 3,7% del personale ha avuto progressioni e la crescita retributiva è contenuta (+2,5%)."
+        }
+      },
+      {
+        "id": "d5-progressioni",
+        "title": "Progressioni Verticali",
+        "question": "Il personale ha opportunità di avanzamento?",
+        "description": "DPI misura il rapporto tra progressioni verticali effettuate e personale totale. Valori sotto il 5% indicano una struttura organizzativa rigida dove la mobilità verso l'alto è quasi inesistente.",
+        "kpiIds": [
+          "DPI_Norm_D5"
+        ],
+        "impacts": [
+          {
+            "pillar": "D3",
+            "indicatorId": "IAP",
+            "label": "Attrattività bandi",
+            "reason": "La mancanza di carriere scoraggia i candidati esterni"
+          },
+          {
+            "pillar": "D6",
+            "indicatorId": "TVO",
+            "label": "Variazione organico",
+            "reason": "La stagnazione delle carriere può accelerare le dimissioni volontarie"
+          },
+          {
+            "pillar": "D4",
+            "indicatorId": "DPI_Norm",
+            "label": "Dinamicità D4",
+            "reason": "Lo stesso indicatore è componente dell'indice CGC di sviluppo"
+          }
+        ],
+        "insights": {
+          "DPI_Norm_D5": "Solo 7.670 progressioni verticali su 206.174 dipendenti (3,7%). La mobilità interna è praticamente ferma."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D5",
+          "indicator": "DPI_Norm_D5"
+        }
+      },
+      {
+        "id": "d5-retribuzione",
+        "title": "Crescita Retributiva",
+        "question": "Gli stipendi crescono in modo significativo?",
+        "description": "ICS misura la variazione della retribuzione media strutturale anno su anno, normalizzata. Valori bassi indicano che il sistema retributivo non premia adeguatamente l'esperienza e la crescita professionale.",
+        "kpiIds": [
+          "ICS_Norm"
+        ],
+        "impacts": [
+          {
+            "pillar": "D3",
+            "indicatorId": "IAP",
+            "label": "Attrattività posizioni",
+            "reason": "Retribuzioni competitive sono fondamentali per attrarre candidati qualificati"
+          },
+          {
+            "pillar": "D6",
+            "indicatorId": "IQP",
+            "label": "Qualificazione",
+            "reason": "Retribuzioni basse scoraggiano i laureati dal rimanere nella PA"
+          }
+        ],
+        "insights": {
+          "ICS_Norm": "Crescita retributiva +2,5% anno su anno (850€ su 34.200€ medi). Al netto dell'inflazione, la crescita reale è circa +0,5%."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D5",
+          "indicator": "ICS_Norm"
+        }
+      },
+      {
+        "id": "d5-impatto",
+        "title": "Impatto sulla Sostenibilità",
+        "question": "Come influisce la carriera sulla tenuta dell'organico?",
+        "description": "La stagnazione delle carriere e la bassa crescita retributiva hanno effetti sistemici sulla capacità dell'ente di trattenere il personale qualificato e di attrarre nuovi talenti. Questa tappa analizza i collegamenti con gli indicatori di sostenibilità.",
+        "kpiIds": [
+          "IDC"
+        ],
+        "impacts": [
+          {
+            "pillar": "D6",
+            "indicatorId": "ISG",
+            "label": "Squilibrio generazionale",
+            "reason": "I giovani abbandonano più facilmente se non vedono prospettive di carriera"
+          },
+          {
+            "pillar": "D6",
+            "indicatorId": "VQF",
+            "label": "Quota femminile",
+            "reason": "Le barriere alle progressioni possono essere non neutre rispetto al genere"
+          },
+          {
+            "pillar": "D2",
+            "indicatorId": "IGF",
+            "label": "Governo fabbisogno",
+            "reason": "La perdita di personale qualificato aumenta il fabbisogno di nuove assunzioni"
+          }
+        ],
+        "insights": {
+          "IDC": "Con IDC al 26%, l'ente rischia di perdere i talenti migliori verso il settore privato o altre amministrazioni più dinamiche."
+        }
+      },
+      {
+        "id": "d5-atomico",
+        "title": "Dato Atomico",
+        "question": "Dove posso analizzare i dati di dettaglio?",
+        "description": "Accesso diretto alle tabelle operative del Conto Annuale (progressioni verticali e orizzontali, retribuzioni per qualifica e categoria). Dati filtrabili per ente, comparto, contratto e anno.",
+        "kpiIds": [],
+        "impacts": [],
+        "drillTarget": {
+          "level": "operational",
+          "source": "conto-annuale"
+        }
+      }
+    ]
+  }
+}

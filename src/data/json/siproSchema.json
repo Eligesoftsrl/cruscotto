@@ -1,0 +1,2341 @@
+{
+  "siproTables": [
+    {
+      "name": "lk_enti",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Anagrafica degli enti pubblici con dati territoriali e classificazione per comparto",
+      "columns": [
+        {
+          "name": "ente_id",
+          "type": "int4",
+          "nullable": false,
+          "defaultVal": "nextval('lk_enti_seq')",
+          "pk": true
+        },
+        {
+          "name": "codice_ente",
+          "type": "varchar(20)",
+          "nullable": true
+        },
+        {
+          "name": "denominazione",
+          "type": "varchar(70)",
+          "nullable": false
+        },
+        {
+          "name": "data_aggiornamento",
+          "type": "timestamp",
+          "nullable": false
+        },
+        {
+          "name": "citta",
+          "type": "varchar(50)",
+          "nullable": true
+        },
+        {
+          "name": "provincia",
+          "type": "varchar(50)",
+          "nullable": true
+        },
+        {
+          "name": "regione",
+          "type": "varchar(50)",
+          "nullable": true
+        },
+        {
+          "name": "ripartizioni",
+          "type": "varchar(50)",
+          "nullable": true
+        },
+        {
+          "name": "codice_ipa",
+          "type": "varchar(50)",
+          "nullable": true
+        },
+        {
+          "name": "tipo",
+          "type": "varchar(50)",
+          "nullable": true
+        },
+        {
+          "name": "comparto",
+          "type": "varchar(50)",
+          "nullable": true
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_minerva_comparto",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Comparti contrattuali del sistema Minerva",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(50)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_picchi_frequenza_annuale_processi",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Frequenze annuali dei picchi di carico dei processi",
+      "columns": [
+        {
+          "name": "picchi_frequenza_id",
+          "type": "int2",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "frequenza",
+          "type": "varchar(30)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_picchi_intensita_processi",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Livelli di intensità dei picchi di carico dei processi",
+      "columns": [
+        {
+          "name": "picchi_intensita_id",
+          "type": "int2",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "intensita",
+          "type": "varchar(30)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_ruoli",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Ruoli utente dell'applicazione (admin, operatore, ecc.)",
+      "columns": [
+        {
+          "name": "ruolo_id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "nome",
+          "type": "varchar(50)",
+          "nullable": true
+        },
+        {
+          "name": "abbreviazione",
+          "type": "varchar",
+          "nullable": true
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_copertura_profili_di_ruolo",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Range di copertura dei profili di ruolo (percentuale)",
+      "columns": [
+        {
+          "name": "copertura_id",
+          "type": "int2",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "range_min",
+          "type": "float8",
+          "nullable": false
+        },
+        {
+          "name": "range_max",
+          "type": "float8",
+          "nullable": false
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(20)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_criticita_processi",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Tipologie di criticità associate ai processi organizzativi",
+      "columns": [
+        {
+          "name": "criticita_proc_id",
+          "type": "bpchar(3)",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "categoria_proc_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "categoria",
+          "type": "varchar(200)",
+          "nullable": false
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(400)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_criticita_uo",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Tipologie di criticità delle Unità Organizzative",
+      "columns": [
+        {
+          "name": "criticita_id",
+          "type": "bpchar(3)",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "categoria_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "categoria",
+          "type": "varchar(60)",
+          "nullable": false
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(100)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_esecuzione_processo",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Modalità di esecuzione dei processi",
+      "columns": [
+        {
+          "name": "esecuzione_processo_id",
+          "type": "int2",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(50)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_grado_rilevanza_processi",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Gradi di rilevanza strategica dei processi",
+      "columns": [
+        {
+          "name": "grado_id",
+          "type": "int2",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(100)",
+          "nullable": true
+        },
+        {
+          "name": "dettaglio",
+          "type": "varchar(100)",
+          "nullable": true
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_lavoro_agile_fasi",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Classificazione delle fasi per compatibilità con lavoro agile",
+      "columns": [
+        {
+          "name": "lavoro_agile_id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(50)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_livelli_resp_uo",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Livelli di responsabilità delle Unità Organizzative",
+      "columns": [
+        {
+          "name": "livello_resp_id",
+          "type": "int2",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(30)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_livello_digitalizzazione_fasi",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Livelli di digitalizzazione delle fasi di processo",
+      "columns": [
+        {
+          "name": "livello_digitalizzazione_id",
+          "type": "int2",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(30)",
+          "nullable": true
+        },
+        {
+          "name": "valore",
+          "type": "int4",
+          "nullable": true,
+          "defaultVal": "0"
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_obiettivi_strategici_processi",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Obiettivi strategici a cui i processi possono contribuire",
+      "columns": [
+        {
+          "name": "obiettivo_id",
+          "type": "int2",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(30)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_opzionale_fasi",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Classificazione delle fasi opzionali nei processi",
+      "columns": [
+        {
+          "name": "fase_opzionale_id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(100)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_outsourcing_fasi",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Classificazione outsourcing delle fasi di processo",
+      "columns": [
+        {
+          "name": "outsourcing_id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(100)",
+          "nullable": false
+        },
+        {
+          "name": "valore",
+          "type": "int4",
+          "nullable": true,
+          "defaultVal": "0"
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_semplificazione_processi",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Tipologie di semplificazione applicabili ai processi",
+      "columns": [
+        {
+          "name": "semplificazione_id",
+          "type": "int2",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(100)",
+          "nullable": true
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_stato_organizzazione",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Stati del ciclo di vita dell'organizzazione",
+      "columns": [
+        {
+          "name": "stato_organizzazione_id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(20)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_stato_processi",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Stati del ciclo di vita dei processi (bozza, pubblicato, ecc.)",
+      "columns": [
+        {
+          "name": "stato_processo_id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(20)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_tipologia_funzione",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Tipologie di funzione organizzativa (line, staff, ecc.)",
+      "columns": [
+        {
+          "name": "tipologia_id",
+          "type": "int2",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "funzione",
+          "type": "varchar(30)",
+          "nullable": false
+        },
+        {
+          "name": "tipologia",
+          "type": "varchar(100)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_tipologia_ruolo_processi",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Tipologie di ruolo nei processi (responsabile, partecipante, ecc.)",
+      "columns": [
+        {
+          "name": "tipologia_ruolo_id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "tipologia",
+          "type": "varchar(30)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_uo",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Tipologie di Unità Organizzativa",
+      "columns": [
+        {
+          "name": "uo_id",
+          "type": "int2",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(50)",
+          "nullable": true
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_sipo_vincoli_semplificazione_processi",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Vincoli alla semplificazione dei processi (normativi, tecnologici, ecc.)",
+      "columns": [
+        {
+          "name": "vincolo_id",
+          "type": "int2",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(50)",
+          "nullable": true
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "lk_minerva_area_contrattuale",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Aree contrattuali del sistema Minerva, legate al comparto",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "id_comparto",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "codice",
+          "type": "varchar(15)",
+          "nullable": false
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(50)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "id_comparto",
+          "refTable": "lk_minerva_comparto",
+          "refColumn": "id"
+        }
+      ]
+    },
+    {
+      "name": "lk_minerva_dimensione_professionale",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Dimensioni professionali Minerva per comparto",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "id_comparto",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "codice",
+          "type": "varchar(20)",
+          "nullable": false
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(50)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "id_comparto",
+          "refTable": "lk_minerva_comparto",
+          "refColumn": "id"
+        }
+      ]
+    },
+    {
+      "name": "lk_minerva_famiglia_professionale",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Famiglie professionali Minerva per comparto",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "id_comparto",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "codice",
+          "type": "varchar(20)",
+          "nullable": false
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(100)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "id_comparto",
+          "refTable": "lk_minerva_comparto",
+          "refColumn": "id"
+        }
+      ]
+    },
+    {
+      "name": "lk_minerva_profilo_professionale",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Profili professionali Minerva con legame a famiglia, area e dimensione",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "id_famiglia_professionale",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "id_area_contrattuale",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "id_dimensione_professionale",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "codice",
+          "type": "varchar(20)",
+          "nullable": false
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(100)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "id_dimensione_professionale",
+          "refTable": "lk_minerva_dimensione_professionale",
+          "refColumn": "id"
+        },
+        {
+          "column": "id_famiglia_professionale",
+          "refTable": "lk_minerva_famiglia_professionale",
+          "refColumn": "id"
+        }
+      ]
+    },
+    {
+      "name": "lk_minerva_ambito_ruolo",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Ambiti di ruolo Minerva legati alla famiglia professionale",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "id_famiglia_professionale",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "codice",
+          "type": "varchar(20)",
+          "nullable": false
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(100)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "id_famiglia_professionale",
+          "refTable": "lk_minerva_famiglia_professionale",
+          "refColumn": "id"
+        }
+      ]
+    },
+    {
+      "name": "lk_minerva_profilo_ruolo",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Profili di ruolo Minerva con legame ad ambito e profilo professionale",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "id_ambito_ruolo",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "id_profilo_professionale",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "codice",
+          "type": "varchar(20)",
+          "nullable": false
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(100)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "id_ambito_ruolo",
+          "refTable": "lk_minerva_ambito_ruolo",
+          "refColumn": "id"
+        },
+        {
+          "column": "id_profilo_professionale",
+          "refTable": "lk_minerva_profilo_professionale",
+          "refColumn": "id"
+        }
+      ]
+    },
+    {
+      "name": "lk_sipo_profili_di_ruolo",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Profili di ruolo SIPrO dell'ente con mapping a Minerva",
+      "columns": [
+        {
+          "name": "profilo_ruolo_id",
+          "type": "int4",
+          "nullable": false,
+          "defaultVal": "nextval('lk_sipo_profili_di_ruolo_seq')",
+          "pk": true
+        },
+        {
+          "name": "codice_profilo",
+          "type": "varchar(20)",
+          "nullable": true
+        },
+        {
+          "name": "profilo_ruolo",
+          "type": "varchar(50)",
+          "nullable": false
+        },
+        {
+          "name": "comparto",
+          "type": "varchar(50)",
+          "nullable": false
+        },
+        {
+          "name": "ente_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "id_sipo_profilo_professionale",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "data_inserimento",
+          "type": "timestamp",
+          "nullable": false
+        },
+        {
+          "name": "user_inserimento_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "data_modifica",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "user_modifica_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "data_eliminazione",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "user_eliminazione_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "id_comparto",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "id_area_contrattuale",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "id_famiglia_professionale",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "id_minerva_profilo_professionale",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "id_ambito_ruolo",
+          "type": "int4",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "ente_id",
+          "refTable": "lk_enti",
+          "refColumn": "ente_id"
+        },
+        {
+          "column": "user_inserimento_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "user_modifica_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "user_eliminazione_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        }
+      ]
+    },
+    {
+      "name": "lk_sipo_profili_professionali",
+      "schema": "gru_test",
+      "category": "lookup",
+      "description": "Profili professionali SIPrO dell'ente",
+      "columns": [
+        {
+          "name": "profilo_professionale_id",
+          "type": "int4",
+          "nullable": false,
+          "defaultVal": "nextval('lk_sipo_profili_professionali_seq')",
+          "pk": true
+        },
+        {
+          "name": "codice_profilo_professionale",
+          "type": "varchar(20)",
+          "nullable": false
+        },
+        {
+          "name": "profilo_professionale",
+          "type": "varchar(50)",
+          "nullable": false
+        },
+        {
+          "name": "ente_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "data_inserimento",
+          "type": "timestamp",
+          "nullable": false
+        },
+        {
+          "name": "user_inserimento_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "data_modifica",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "user_modifica_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "data_eliminazione",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "user_eliminazione_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "dimensione_professionale_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "area_contrattuale_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "famiglia_professionale_id",
+          "type": "int4",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "ente_id",
+          "refTable": "lk_enti",
+          "refColumn": "ente_id"
+        },
+        {
+          "column": "user_inserimento_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "user_modifica_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "user_eliminazione_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        }
+      ]
+    },
+    {
+      "name": "ft_sipo_catalogo_processi",
+      "schema": "gru_test",
+      "category": "fact",
+      "description": "Catalogo centralizzato dei processi organizzativi (template)",
+      "columns": [
+        {
+          "name": "processo_catalogo_id",
+          "type": "int4",
+          "nullable": false,
+          "defaultVal": "nextval('ft_sipo_catalogo_processi_seq')",
+          "pk": true
+        },
+        {
+          "name": "data_fine",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "denominazione",
+          "type": "varchar(100)",
+          "nullable": false
+        },
+        {
+          "name": "tipologia_id",
+          "type": "int2",
+          "nullable": false
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(400)",
+          "nullable": false
+        },
+        {
+          "name": "descrizione_input",
+          "type": "varchar(400)",
+          "nullable": false
+        },
+        {
+          "name": "descrizione_output",
+          "type": "varchar(400)",
+          "nullable": false
+        },
+        {
+          "name": "coinvolgimento_amministrazioni",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "giorni_previsti",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "picchi_stagionali",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "presidio_continuativo",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "processo_semplificazione_id",
+          "type": "int2",
+          "nullable": false
+        },
+        {
+          "name": "esecuzione_processo_id",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "1"
+        },
+        {
+          "name": "ente_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "note_eliminazione",
+          "type": "varchar(1000)",
+          "nullable": true
+        },
+        {
+          "name": "data_inserimento",
+          "type": "timestamp",
+          "nullable": false
+        },
+        {
+          "name": "user_inserimento_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "data_modifica",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "user_modifica_id",
+          "type": "int4",
+          "nullable": true
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "ente_id",
+          "refTable": "lk_enti",
+          "refColumn": "ente_id"
+        },
+        {
+          "column": "esecuzione_processo_id",
+          "refTable": "lk_sipo_esecuzione_processo",
+          "refColumn": "esecuzione_processo_id"
+        },
+        {
+          "column": "processo_semplificazione_id",
+          "refTable": "lk_sipo_semplificazione_processi",
+          "refColumn": "semplificazione_id"
+        },
+        {
+          "column": "tipologia_id",
+          "refTable": "lk_sipo_tipologia_funzione",
+          "refColumn": "tipologia_id"
+        },
+        {
+          "column": "user_inserimento_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "user_modifica_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        }
+      ]
+    },
+    {
+      "name": "ft_sipo_catalogo_vincoli_processi",
+      "schema": "gru_test",
+      "category": "fact",
+      "description": "Associazione N:N tra processi del catalogo e vincoli alla semplificazione",
+      "columns": [
+        {
+          "name": "processo_catalogo_id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "vincoli_semplificazione_id",
+          "type": "int2",
+          "nullable": false,
+          "pk": true
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "processo_catalogo_id",
+          "refTable": "ft_sipo_catalogo_processi",
+          "refColumn": "processo_catalogo_id"
+        },
+        {
+          "column": "vincoli_semplificazione_id",
+          "refTable": "lk_sipo_vincoli_semplificazione_processi",
+          "refColumn": "vincolo_id"
+        }
+      ]
+    },
+    {
+      "name": "ft_sipo_organizzazione",
+      "schema": "gru_test",
+      "category": "fact",
+      "description": "Organizzazioni/assetti organizzativi degli enti con ciclo di vita",
+      "columns": [
+        {
+          "name": "organizzazione_id",
+          "type": "int4",
+          "nullable": false,
+          "defaultVal": "nextval('ft_sipo_organizzazione_seq')",
+          "pk": true
+        },
+        {
+          "name": "ente_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "stato_organizzazione_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "denominazione",
+          "type": "varchar(100)",
+          "nullable": false
+        },
+        {
+          "name": "data_inserimento",
+          "type": "timestamp",
+          "nullable": false
+        },
+        {
+          "name": "user_inserimento_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "data_modifica",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "user_modifica_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "data_ultima_formalizzazione",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "user_ultima_formalizzazione_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "data_eliminazione",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "user_eliminazione_id",
+          "type": "int4",
+          "nullable": true
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "ente_id",
+          "refTable": "lk_enti",
+          "refColumn": "ente_id"
+        },
+        {
+          "column": "stato_organizzazione_id",
+          "refTable": "lk_sipo_stato_organizzazione",
+          "refColumn": "stato_organizzazione_id"
+        },
+        {
+          "column": "user_inserimento_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "user_modifica_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "user_ultima_formalizzazione_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "user_eliminazione_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        }
+      ]
+    },
+    {
+      "name": "ft_sipo_provvedimenti_organizzazione",
+      "schema": "gru_test",
+      "category": "fact",
+      "description": "Provvedimenti formali associati alle organizzazioni",
+      "columns": [
+        {
+          "name": "provvedimenti_organizzazione_id",
+          "type": "int4",
+          "nullable": false,
+          "defaultVal": "nextval('ft_sipo_provvedimenti_organizzazione_seq')",
+          "pk": true
+        },
+        {
+          "name": "organizzazione_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "denominazione",
+          "type": "varchar(100)",
+          "nullable": false
+        },
+        {
+          "name": "data_adozione_provvedimento",
+          "type": "timestamp",
+          "nullable": false
+        },
+        {
+          "name": "data_formalizzazione",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "user_formalizzazione_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "data_modifica",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "user_modifica_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "data_eliminazione",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "user_eliminazione_id",
+          "type": "int4",
+          "nullable": true
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "organizzazione_id",
+          "refTable": "ft_sipo_organizzazione",
+          "refColumn": "organizzazione_id"
+        },
+        {
+          "column": "user_formalizzazione_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "user_modifica_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "user_eliminazione_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        }
+      ]
+    },
+    {
+      "name": "ft_sipo_uo",
+      "schema": "gru_test",
+      "category": "fact",
+      "description": "Unità Organizzative con struttura gerarchica ad albero",
+      "columns": [
+        {
+          "name": "uo_id",
+          "type": "int4",
+          "nullable": false,
+          "defaultVal": "nextval('ft_sipo_uo_seq')",
+          "pk": true
+        },
+        {
+          "name": "parent_uo_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "ente_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "data_fine_validita",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "denominazione",
+          "type": "varchar(100)",
+          "nullable": false
+        },
+        {
+          "name": "nome_responsabile",
+          "type": "varchar(50)",
+          "nullable": true
+        },
+        {
+          "name": "livello_gerarchico",
+          "type": "int2",
+          "nullable": false
+        },
+        {
+          "name": "livello_resp_id",
+          "type": "int2",
+          "nullable": false
+        },
+        {
+          "name": "risorse_dotazione",
+          "type": "float8",
+          "nullable": false
+        },
+        {
+          "name": "risorse_servizio_tempo_ind",
+          "type": "float8",
+          "nullable": false
+        },
+        {
+          "name": "descrizione_attivita",
+          "type": "varchar(1000)",
+          "nullable": true
+        },
+        {
+          "name": "risorse_servizio_tempo_det",
+          "type": "float8",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "data_inserimento",
+          "type": "timestamp",
+          "nullable": false
+        },
+        {
+          "name": "user_inserimento_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "data_modifica",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "user_modifica_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "organizzazione_id",
+          "type": "int4",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "ente_id",
+          "refTable": "lk_enti",
+          "refColumn": "ente_id"
+        },
+        {
+          "column": "organizzazione_id",
+          "refTable": "ft_sipo_organizzazione",
+          "refColumn": "organizzazione_id"
+        },
+        {
+          "column": "livello_resp_id",
+          "refTable": "lk_sipo_livelli_resp_uo",
+          "refColumn": "livello_resp_id"
+        },
+        {
+          "column": "user_inserimento_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "user_modifica_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        }
+      ]
+    },
+    {
+      "name": "ft_sipo_criticita_uo",
+      "schema": "gru_test",
+      "category": "fact",
+      "description": "Associazione N:N tra Unità Organizzative e criticità",
+      "columns": [
+        {
+          "name": "uo_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "criticita_id",
+          "type": "bpchar(3)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "uo_id",
+          "refTable": "ft_sipo_uo",
+          "refColumn": "uo_id"
+        },
+        {
+          "column": "criticita_id",
+          "refTable": "lk_sipo_criticita_uo",
+          "refColumn": "criticita_id"
+        }
+      ]
+    },
+    {
+      "name": "ft_sipo_processi",
+      "schema": "gru_test",
+      "category": "fact",
+      "description": "Processi organizzativi dell'ente con workflow di approvazione completo",
+      "columns": [
+        {
+          "name": "processo_id",
+          "type": "int4",
+          "nullable": false,
+          "defaultVal": "nextval('ft_sipo_processi_seq')",
+          "pk": true
+        },
+        {
+          "name": "ente_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "data_fine",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "denominazione",
+          "type": "varchar(100)",
+          "nullable": false
+        },
+        {
+          "name": "tipologia_id",
+          "type": "int2",
+          "nullable": false
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(400)",
+          "nullable": false
+        },
+        {
+          "name": "uo_responsabile_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "obiettivo_strategico_id",
+          "type": "int2",
+          "nullable": true
+        },
+        {
+          "name": "grado_rilevanza_id",
+          "type": "int2",
+          "nullable": true
+        },
+        {
+          "name": "descrizione_input",
+          "type": "varchar(400)",
+          "nullable": false
+        },
+        {
+          "name": "descrizione_output",
+          "type": "varchar(400)",
+          "nullable": false
+        },
+        {
+          "name": "coinvolgimento_amministrazioni",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "giorni_previsti",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "tempo_medio_effettivo",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "picchi_stagionali",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "picchi_frequenza_id",
+          "type": "int2",
+          "nullable": true
+        },
+        {
+          "name": "picchi_intensita_id",
+          "type": "int2",
+          "nullable": true
+        },
+        {
+          "name": "picchi_descrizione",
+          "type": "varchar(400)",
+          "nullable": true
+        },
+        {
+          "name": "presidio_continuativo",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "processo_semplificazione_id",
+          "type": "int2",
+          "nullable": false
+        },
+        {
+          "name": "da_catalogo",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "note_compilatore",
+          "type": "varchar(1000)",
+          "nullable": true
+        },
+        {
+          "name": "esecuzione_processo_id",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "1"
+        },
+        {
+          "name": "catalogo_processo_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "stato_processo_id",
+          "type": "int4",
+          "nullable": false,
+          "defaultVal": "1"
+        },
+        {
+          "name": "data_pubblicazione",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "utente_pubblicazione_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "note_revisione",
+          "type": "varchar(1000)",
+          "nullable": true
+        },
+        {
+          "name": "data_revisione",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "utente_revisione_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "data_validazione",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "utente_validazione_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "data_inserimento",
+          "type": "timestamp",
+          "nullable": false
+        },
+        {
+          "name": "user_inserimento_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "data_modifica",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "user_modifica_id",
+          "type": "int4",
+          "nullable": true
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "catalogo_processo_id",
+          "refTable": "ft_sipo_catalogo_processi",
+          "refColumn": "processo_catalogo_id"
+        },
+        {
+          "column": "uo_responsabile_id",
+          "refTable": "ft_sipo_uo",
+          "refColumn": "uo_id"
+        },
+        {
+          "column": "ente_id",
+          "refTable": "lk_enti",
+          "refColumn": "ente_id"
+        },
+        {
+          "column": "picchi_frequenza_id",
+          "refTable": "lk_picchi_frequenza_annuale_processi",
+          "refColumn": "picchi_frequenza_id"
+        },
+        {
+          "column": "picchi_intensita_id",
+          "refTable": "lk_picchi_intensita_processi",
+          "refColumn": "picchi_intensita_id"
+        },
+        {
+          "column": "esecuzione_processo_id",
+          "refTable": "lk_sipo_esecuzione_processo",
+          "refColumn": "esecuzione_processo_id"
+        },
+        {
+          "column": "grado_rilevanza_id",
+          "refTable": "lk_sipo_grado_rilevanza_processi",
+          "refColumn": "grado_id"
+        },
+        {
+          "column": "obiettivo_strategico_id",
+          "refTable": "lk_sipo_obiettivi_strategici_processi",
+          "refColumn": "obiettivo_id"
+        },
+        {
+          "column": "processo_semplificazione_id",
+          "refTable": "lk_sipo_semplificazione_processi",
+          "refColumn": "semplificazione_id"
+        },
+        {
+          "column": "stato_processo_id",
+          "refTable": "lk_sipo_stato_processi",
+          "refColumn": "stato_processo_id"
+        },
+        {
+          "column": "tipologia_id",
+          "refTable": "lk_sipo_tipologia_funzione",
+          "refColumn": "tipologia_id"
+        },
+        {
+          "column": "user_inserimento_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "user_modifica_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "utente_pubblicazione_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "utente_revisione_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "utente_validazione_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        }
+      ]
+    },
+    {
+      "name": "ft_sipo_vincoli_processi",
+      "schema": "gru_test",
+      "category": "fact",
+      "description": "Associazione N:N tra processi e vincoli alla semplificazione",
+      "columns": [
+        {
+          "name": "processo_id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "vincoli_semplificazione_id",
+          "type": "int2",
+          "nullable": false,
+          "pk": true
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "processo_id",
+          "refTable": "ft_sipo_processi",
+          "refColumn": "processo_id"
+        },
+        {
+          "column": "vincoli_semplificazione_id",
+          "refTable": "lk_sipo_vincoli_semplificazione_processi",
+          "refColumn": "vincolo_id"
+        }
+      ]
+    },
+    {
+      "name": "ft_sipo_criticita_processi",
+      "schema": "gru_test",
+      "category": "fact",
+      "description": "Associazione N:N tra processi e criticità",
+      "columns": [
+        {
+          "name": "processo_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "criticita_processo_id",
+          "type": "bpchar(3)",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "processo_id",
+          "refTable": "ft_sipo_processi",
+          "refColumn": "processo_id"
+        },
+        {
+          "column": "criticita_processo_id",
+          "refTable": "lk_sipo_criticita_processi",
+          "refColumn": "criticita_proc_id"
+        }
+      ]
+    },
+    {
+      "name": "ft_sipo_catalogo_fasi",
+      "schema": "gru_test",
+      "category": "fact",
+      "description": "Fasi dei processi del catalogo centralizzato (template fasi)",
+      "columns": [
+        {
+          "name": "processo_catalogo_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "fase_catalogo_id",
+          "type": "int4",
+          "nullable": false,
+          "defaultVal": "nextval('ft_sipo_catalogo_fasi_seq')",
+          "pk": true
+        },
+        {
+          "name": "ordinale",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "1"
+        },
+        {
+          "name": "nome_fase",
+          "type": "varchar(100)",
+          "nullable": false
+        },
+        {
+          "name": "peso_fase",
+          "type": "int2",
+          "nullable": false
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(500)",
+          "nullable": false
+        },
+        {
+          "name": "lavoro_agile_id",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "fase_digitale",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "fase_opzionale_id",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "data_inserimento",
+          "type": "timestamp",
+          "nullable": false
+        },
+        {
+          "name": "user_inserimento_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "data_modifica",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "user_modifica_id",
+          "type": "int4",
+          "nullable": true
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "processo_catalogo_id",
+          "refTable": "ft_sipo_catalogo_processi",
+          "refColumn": "processo_catalogo_id"
+        },
+        {
+          "column": "user_inserimento_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        },
+        {
+          "column": "user_modifica_id",
+          "refTable": "login",
+          "refColumn": "login_id"
+        }
+      ]
+    },
+    {
+      "name": "ft_sipo_fasi",
+      "schema": "gru_test",
+      "category": "fact",
+      "description": "Fasi operative dei processi dell'ente con attributi di digitalizzazione e outsourcing",
+      "columns": [
+        {
+          "name": "processo_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "fase_id",
+          "type": "int4",
+          "nullable": false,
+          "defaultVal": "nextval('ft_sipo_fasi_seq')",
+          "pk": true
+        },
+        {
+          "name": "parent_id",
+          "type": "int2",
+          "nullable": true
+        },
+        {
+          "name": "ordinale",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "1"
+        },
+        {
+          "name": "nome_fase",
+          "type": "varchar(100)",
+          "nullable": false
+        },
+        {
+          "name": "peso_fase",
+          "type": "int2",
+          "nullable": false
+        },
+        {
+          "name": "descrizione",
+          "type": "varchar(500)",
+          "nullable": false
+        },
+        {
+          "name": "uo_responsabile_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "lavoro_agile",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "in_outsourcing",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "fase_digitale",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "livello_digitalizzazione_id",
+          "type": "int2",
+          "nullable": true
+        },
+        {
+          "name": "fase_opzionale",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "data_inserimento",
+          "type": "timestamp",
+          "nullable": false
+        },
+        {
+          "name": "lavoro_agile_id",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "outsourcing_id",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "fase_opzionale_id",
+          "type": "int2",
+          "nullable": false,
+          "defaultVal": "0"
+        },
+        {
+          "name": "user_inserimento_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "data_modifica",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "user_modifica_id",
+          "type": "int4",
+          "nullable": true
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "processo_id",
+          "refTable": "ft_sipo_processi",
+          "refColumn": "processo_id"
+        },
+        {
+          "column": "lavoro_agile_id",
+          "refTable": "lk_sipo_lavoro_agile_fasi",
+          "refColumn": "lavoro_agile_id"
+        },
+        {
+          "column": "livello_digitalizzazione_id",
+          "refTable": "lk_sipo_livello_digitalizzazione_fasi",
+          "refColumn": "livello_digitalizzazione_id"
+        },
+        {
+          "column": "fase_opzionale_id",
+          "refTable": "lk_sipo_opzionale_fasi",
+          "refColumn": "fase_opzionale_id"
+        },
+        {
+          "column": "outsourcing_id",
+          "refTable": "lk_sipo_outsourcing_fasi",
+          "refColumn": "outsourcing_id"
+        }
+      ]
+    },
+    {
+      "name": "ft_sipo_fasi_uo_partecipanti",
+      "schema": "gru_test",
+      "category": "fact",
+      "description": "Associazione N:N tra fasi e UO partecipanti",
+      "columns": [
+        {
+          "name": "fase_id",
+          "type": "int2",
+          "nullable": false
+        },
+        {
+          "name": "uo_partecipante_id",
+          "type": "int2",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "fase_id",
+          "refTable": "ft_sipo_fasi",
+          "refColumn": "fase_id"
+        },
+        {
+          "column": "uo_partecipante_id",
+          "refTable": "ft_sipo_uo",
+          "refColumn": "uo_id"
+        }
+      ]
+    },
+    {
+      "name": "ft_sipo_profili_di_ruolo_fasi",
+      "schema": "gru_test",
+      "category": "fact",
+      "description": "Assegnazione profili di ruolo alle fasi con FTE programmati e assegnati",
+      "columns": [
+        {
+          "name": "id_profilo_di_ruolo",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "fte_programmati",
+          "type": "float4",
+          "nullable": false
+        },
+        {
+          "name": "fte_assegnati",
+          "type": "float4",
+          "nullable": false
+        },
+        {
+          "name": "percentuale_impegno",
+          "type": "int2",
+          "nullable": false
+        },
+        {
+          "name": "fase_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "profilo_fase_id",
+          "type": "int4",
+          "nullable": false,
+          "defaultVal": "nextval('ft_sipo_profili_di_ruolo_fasi_seq')",
+          "pk": true
+        },
+        {
+          "name": "sipo_profilo_di_ruolo_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "riva_profilo_di_ruolo_id",
+          "type": "int4",
+          "nullable": true
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "fase_id",
+          "refTable": "ft_sipo_fasi",
+          "refColumn": "fase_id"
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "schema": "gru_test",
+      "category": "system",
+      "description": "Utenti dell'applicazione con credenziali e ruolo",
+      "columns": [
+        {
+          "name": "login_id",
+          "type": "int4",
+          "nullable": false,
+          "pk": true
+        },
+        {
+          "name": "username",
+          "type": "varchar(25)",
+          "nullable": true
+        },
+        {
+          "name": "password",
+          "type": "varchar(64)",
+          "nullable": true
+        },
+        {
+          "name": "nome",
+          "type": "varchar(50)",
+          "nullable": true
+        },
+        {
+          "name": "cognome",
+          "type": "varchar(50)",
+          "nullable": true
+        },
+        {
+          "name": "email",
+          "type": "varchar(50)",
+          "nullable": true
+        },
+        {
+          "name": "ruolo_id",
+          "type": "int4",
+          "nullable": true
+        }
+      ],
+      "foreignKeys": [
+        {
+          "column": "ruolo_id",
+          "refTable": "lk_ruoli",
+          "refColumn": "ruolo_id"
+        }
+      ]
+    },
+    {
+      "name": "login_enti",
+      "schema": "gru_test",
+      "category": "system",
+      "description": "Associazione N:N tra utenti (login) e enti abilitati",
+      "columns": [
+        {
+          "name": "login_id",
+          "type": "int4",
+          "nullable": false
+        },
+        {
+          "name": "ente_id",
+          "type": "int4",
+          "nullable": false
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "sipo_audit_log",
+      "schema": "gru_test",
+      "category": "system",
+      "description": "Log di audit per tracciare tutte le operazioni CRUD nel sistema",
+      "columns": [
+        {
+          "name": "audit_log_id",
+          "type": "int4",
+          "nullable": false,
+          "defaultVal": "nextval('audit_log_seq')",
+          "pk": true
+        },
+        {
+          "name": "timestamp",
+          "type": "timestamp",
+          "nullable": true
+        },
+        {
+          "name": "service_name",
+          "type": "varchar(100)",
+          "nullable": true
+        },
+        {
+          "name": "entity_name",
+          "type": "varchar(50)",
+          "nullable": true
+        },
+        {
+          "name": "entity_id",
+          "type": "varchar(50)",
+          "nullable": true
+        },
+        {
+          "name": "operation",
+          "type": "varchar(50)",
+          "nullable": true
+        },
+        {
+          "name": "old_value",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "new_value",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "user_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "correlation_id",
+          "type": "varchar(50)",
+          "nullable": true
+        },
+        {
+          "name": "ente_id",
+          "type": "int4",
+          "nullable": true
+        },
+        {
+          "name": "error",
+          "type": "int4",
+          "nullable": true
+        }
+      ],
+      "foreignKeys": []
+    }
+  ]
+}

@@ -1,0 +1,232 @@
+{
+  "d4Journey": {
+    "id": "d4-sviluppo",
+    "pillar": "D4",
+    "title": "Sviluppo professionale",
+    "subtitle": "Dalla formazione alla crescita delle competenze: un percorso in 8 tappe",
+    "colorVar": "--chart-orange",
+    "steps": [
+      {
+        "id": "d4-overview",
+        "title": "Panoramica Sviluppo",
+        "question": "Quanto è efficace il sistema di sviluppo professionale?",
+        "description": "Visione d'insieme della capacità dell'ente di formare, sviluppare e valorizzare il proprio personale. L'indice composito CGC aggrega copertura formativa, intensità, dinamicità interna e coerenza titoli-qualifiche.",
+        "kpiIds": [
+          "CGC",
+          "ISCP",
+          "IESF"
+        ],
+        "impacts": [],
+        "insights": {
+          "CGC": "La capacità di gestione delle competenze è al 58%: sistema parzialmente strutturato con eccellente intensità formativa (IFM=0,92) ma dinamicità carriera bassissima (DPI=0,025).",
+          "ISCP": "Lo sviluppo del capitale professionale è al 54%: il sistema Minerva è moderatamente strutturato.",
+          "IESF": "L'efficacia formativa è al 54%: buona qualificazione ma basso tasso di completamento corsi."
+        }
+      },
+      {
+        "id": "d4-copertura",
+        "title": "Copertura Formativa",
+        "question": "Quanti dipendenti vengono effettivamente formati?",
+        "description": "TCF misura la quota di personale che ha ricevuto almeno un intervento formativo nell'anno. Un valore sotto il 60% indica che una parte significativa dell'organico è esclusa dai percorsi di sviluppo.",
+        "kpiIds": [
+          "TCF"
+        ],
+        "impacts": [
+          {
+            "pillar": "D1",
+            "indicatorId": "IACU",
+            "label": "Adeguatezza competenze",
+            "reason": "La formazione è lo strumento principale per colmare i gap di competenze"
+          },
+          {
+            "pillar": "D6",
+            "indicatorId": "IQP",
+            "label": "Qualificazione",
+            "reason": "La formazione contribuisce all'innalzamento del livello di qualificazione"
+          }
+        ],
+        "insights": {
+          "TCF": "109.041 dipendenti formati su 191.410 totali (57%): oltre 82.000 dipendenti non hanno ricevuto formazione nell'anno."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D4",
+          "indicator": "TCF"
+        }
+      },
+      {
+        "id": "d4-intensita",
+        "title": "Intensità Formativa",
+        "question": "Quante ore di formazione riceve ogni dipendente?",
+        "description": "IFM misura le ore medie di formazione per dipendente formato, normalizzate rispetto al target annuale. Valori alti indicano che chi viene formato riceve un investimento significativo.",
+        "kpiIds": [
+          "IFM_Norm"
+        ],
+        "impacts": [
+          {
+            "pillar": "D1",
+            "indicatorId": "ICVC",
+            "label": "Valutazioni competenze",
+            "reason": "L'intensità formativa dovrebbe tradursi in miglioramento delle valutazioni"
+          }
+        ],
+        "insights": {
+          "IFM_Norm": "L'intensità formativa è eccellente (IFM=0,92): 12,5 ore medie per dipendente formato. Chi è formato riceve un investimento adeguato."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D4",
+          "indicator": "IFM_Norm"
+        }
+      },
+      {
+        "id": "d4-dinamicita",
+        "title": "Dinamicità Interna",
+        "question": "Le progressioni di carriera funzionano?",
+        "description": "DPI misura la quota di personale che ha avuto una progressione verticale. Valori sotto il 5% indicano una forte rigidità della struttura organizzativa che limita la motivazione e il trattenimento dei talenti.",
+        "kpiIds": [
+          "DPI_Norm"
+        ],
+        "impacts": [
+          {
+            "pillar": "D5",
+            "indicatorId": "IDC",
+            "label": "Dinamicità carriera",
+            "reason": "Le progressioni verticali sono una componente chiave della dinamicità della carriera"
+          },
+          {
+            "pillar": "D3",
+            "indicatorId": "IAP",
+            "label": "Attrattività",
+            "reason": "La mancanza di progressioni riduce l'attrattività dell'ente per i candidati esterni"
+          }
+        ],
+        "insights": {
+          "DPI_Norm": "Solo 7.670 progressioni verticali su 206.174 dipendenti (3,7%). La mobilità interna è quasi inesistente."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D4",
+          "indicator": "DPI_Norm"
+        }
+      },
+      {
+        "id": "d4-coerenza",
+        "title": "Coerenza Titoli-Qualifiche",
+        "question": "I titoli di studio corrispondono alle qualifiche?",
+        "description": "CQT verifica l'allineamento tra titolo di studio posseduto e qualifica ricoperta. Un disallineamento significativo può indicare sottoutilizzo del capitale umano o necessità di riqualificazione.",
+        "kpiIds": [
+          "CQT"
+        ],
+        "impacts": [
+          {
+            "pillar": "D3",
+            "indicatorId": "ISC",
+            "label": "Sovra-qualificazione",
+            "reason": "Il disallineamento si riflette anche nella sovra-qualificazione dei candidati"
+          },
+          {
+            "pillar": "D6",
+            "indicatorId": "IQP",
+            "label": "Qualificazione personale",
+            "reason": "La coerenza titoli-qualifiche è complementare alla qualificazione complessiva"
+          }
+        ],
+        "insights": {
+          "CQT": "Il 78% del personale ha un titolo coerente con la qualifica. Il 22% (42.111 dipendenti) presenta disallineamento."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D4",
+          "indicator": "CQT"
+        }
+      },
+      {
+        "id": "d4-sviluppo-prof",
+        "title": "Sviluppo Capitale Professionale",
+        "question": "Il sistema Minerva funziona?",
+        "description": "ISCP aggrega tre sotto-indicatori Minerva: sviluppo tecnico-professionale (ISTP), diversificazione famiglie professionali (IDFP) e copertura ruoli professionali (ICRP). Rappresenta la maturità del sistema di classificazione e sviluppo.",
+        "kpiIds": [
+          "ISCP",
+          "ISTP_Norm",
+          "IDFP",
+          "ICRP"
+        ],
+        "impacts": [
+          {
+            "pillar": "D1",
+            "indicatorId": "ICPR",
+            "label": "Copertura profili",
+            "reason": "Lo sviluppo professionale dipende dalla copertura del sistema di classificazione"
+          },
+          {
+            "pillar": "D1",
+            "indicatorId": "IAC",
+            "label": "Adesione catalogo",
+            "reason": "L'utilizzo attivo del catalogo alimenta lo sviluppo professionale"
+          }
+        ],
+        "insights": {
+          "ISCP": "Sviluppo professionale moderato (ISCP=0,54): 8 famiglie attive su 15 e 48% dei profili con specializzazione.",
+          "ISTP_Norm": "Il 48% dei profili ha un percorso specialistico attivo: la strutturazione è parziale.",
+          "IDFP": "8 famiglie professionali attive su 15 del catalogo DFP: diversificazione al 55%.",
+          "ICRP": "Tutti i 13 ruoli della bridge sono coperti, ma la media ente è 0,52."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D4",
+          "indicator": "ISCP"
+        }
+      },
+      {
+        "id": "d4-efficacia",
+        "title": "Efficacia Formativa",
+        "question": "La formazione produce risultati?",
+        "description": "IESF aggrega efficacia del completamento (IEF), qualificazione (ICQ) e coerenza evolutiva delle competenze (ICEC). Misura se la formazione si traduce effettivamente in miglioramento delle competenze.",
+        "kpiIds": [
+          "IESF",
+          "IEF_Norm",
+          "ICQ",
+          "ICEC"
+        ],
+        "impacts": [
+          {
+            "pillar": "D1",
+            "indicatorId": "IACU",
+            "label": "Adeguatezza capitale umano",
+            "reason": "L'efficacia formativa è il meccanismo principale per migliorare l'adeguatezza"
+          },
+          {
+            "pillar": "D6",
+            "indicatorId": "IEQ",
+            "label": "Evoluzione qualificazione",
+            "reason": "La formazione efficace contribuisce all'innalzamento della qualificazione nel tempo"
+          }
+        ],
+        "insights": {
+          "IESF": "Efficacia formativa complessiva al 54%. Criticità nel completamento (IEF=0,38) ma buona qualificazione (ICQ=0,63).",
+          "IEF_Norm": "Solo il 38% dei corsi viene completato con successo: alto tasso di abbandono.",
+          "ICQ": "63% dei completamenti ottiene una qualificazione formale.",
+          "ICEC": "61% dei gap iniziali di competenze colmato dalla formazione: impatto moderato."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D4",
+          "indicator": "IESF"
+        }
+      },
+      {
+        "id": "d4-atomico",
+        "title": "Dato Atomico",
+        "question": "Dove posso analizzare i dati di dettaglio?",
+        "description": "Accesso diretto alle tabelle operative del Conto Annuale (formazione, progressioni, titoli), Syllabus (corsi, completamenti, assessment) e Minerva (profili, competenze, famiglie professionali).",
+        "kpiIds": [],
+        "impacts": [],
+        "drillTarget": {
+          "level": "operational",
+          "source": "conto-annuale"
+        }
+      }
+    ]
+  }
+}

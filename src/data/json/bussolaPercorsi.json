@@ -1,0 +1,2893 @@
+{
+  "bussolaPercorsi": [
+    {
+      "id": "criticita",
+      "question": "Quadro delle criticità: indicatori in zona di attenzione e priorità di intervento",
+      "subtitle": "2 pillar sotto soglia, 10 indicatori rossi",
+      "valueProposition": "Individuare le criticità prioritarie e definire le azioni correttive in ordine di urgenza",
+      "icon": "AlertTriangle",
+      "category": "attention",
+      "steps": [
+        {
+          "title": "Reclutamento in difficoltà (D3)",
+          "description": "Il pillar D3 Recruiting è il più critico. Le procedure concorsuali non riescono ad attrarre candidati in tempi adeguati. Questo compromette il ricambio generazionale.",
+          "indicators": [
+            {
+              "id": "IAP",
+              "label": "Attrattività posizioni",
+              "value": 0.7,
+              "description": "Candidature per posizione aperta",
+              "status": "green",
+              "numerator": 18750,
+              "denominator": 1250,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.62
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.64
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.66
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.68
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.7
+                }
+              ],
+              "benchmark": 0.65,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Rapporto tra candidature ricevute e posizioni aperte. Valori >0.60 indicano buona attrattività.",
+              "pillar": "D3",
+              "source": "inpa",
+              "dataSource": {
+                "table": "dw_inpa_bandi",
+                "formula": "SUM(num_candidature_submitted) / SUM(num_posti)"
+              },
+              "indicatorTarget": "inpa-attrattivita"
+            },
+            {
+              "id": "TCP",
+              "label": "Tempo completamento procedure",
+              "value": 0.48,
+              "description": "Durata media 156 giorni su 300 normativi",
+              "status": "yellow",
+              "numerator": 156,
+              "denominator": 300,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.55
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.52
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.5
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.49
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.48
+                }
+              ],
+              "benchmark": 0.55,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Rapporto invertito tra giorni medi effettivi e giorni normativi. Più basso = procedure più lente.",
+              "pillar": "D3",
+              "source": "inpa",
+              "dataSource": {
+                "table": "dw_lp_graduatorie",
+                "formula": "1 − AVG(tcp_giorni) / 300"
+              },
+              "indicatorTarget": "inpa-tempi-dettaglio"
+            },
+            {
+              "id": "TCPB",
+              "label": "Copertura posti banditi",
+              "value": 0.58,
+              "description": "Posti coperti su posti banditi",
+              "status": "yellow",
+              "numerator": 725,
+              "denominator": 1250,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.65
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.62
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.6
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.59
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.58
+                }
+              ],
+              "benchmark": 0.68,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Posti effettivamente coperti diviso posti messi a bando. Misura l'efficacia del reclutamento.",
+              "pillar": "D3",
+              "source": "inpa",
+              "dataSource": {
+                "table": "dw_lp_graduatorie",
+                "formula": "SUM(num_vincitori_assunti) / SUM(num_posti_banditi)"
+              },
+              "indicatorTarget": "inpa-graduatorie"
+            },
+            {
+              "id": "DDP",
+              "label": "Distribuzione domanda",
+              "value": 0.52,
+              "description": "Concentrazione area amministrativa",
+              "status": "yellow",
+              "numerator": 9100,
+              "denominator": 17500,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.48
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.49
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.5
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.51
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.52
+                }
+              ],
+              "benchmark": 0.45,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Indice di diversificazione delle candidature per area funzionale. Valori alti = concentrazione.",
+              "pillar": "D3",
+              "source": "inpa",
+              "dataSource": {
+                "table": "dw_inpa_bandi",
+                "formula": "MAX(candidature_area) / SUM(candidature)"
+              },
+              "indicatorTarget": "inpa-domanda-offerta"
+            }
+          ],
+          "insight": {
+            "type": "danger",
+            "text": "Il recruiting necessita di interventi strutturali: tempi troppo lunghi e posti scoperti."
+          },
+          "cta": {
+            "label": "Analisi reclutamento",
+            "source": "inpa"
+          }
+        },
+        {
+          "title": "Sostenibilità organizzativa a rischio (D6)",
+          "description": "Il pillar D6 evidenzia un'organizzazione sotto pressione: il rischio pensionamento è elevato e lo squilibrio generazionale si accentua anno dopo anno.",
+          "indicators": [
+            {
+              "id": "TVO",
+              "label": "Turnover",
+              "value": 0.45,
+              "description": "Tasso di ricambio del personale",
+              "status": "yellow",
+              "numerator": 580,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.38
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.4
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.42
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.44
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.45
+                }
+              ],
+              "benchmark": 0.52,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Rapporto tra somma entrate+uscite e organico medio. Misura la dinamicità del ricambio.",
+              "pillar": "D6",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_assunti · dw_cessati",
+                "formula": "(Σ assunti + Σ cessati) / organico"
+              },
+              "indicatorTarget": "tasso-turnover"
+            },
+            {
+              "id": "TEP",
+              "label": "Esposizione pensionamento",
+              "value": 0.31,
+              "description": "31% del personale in uscita entro 36 mesi",
+              "status": "red",
+              "numerator": 3983,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.24
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.25
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.27
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.29
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.31
+                }
+              ],
+              "benchmark": 0.2,
+              "benchmarkLabel": "Soglia critica",
+              "methodology": "Personale che matura i requisiti pensionistici entro 36 mesi / personale totale. Soglia critica: 20%.",
+              "pillar": "D6",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_eta",
+                "formula": "Σ(E60+E65+E68) / totale personale"
+              },
+              "indicatorTarget": "previsione-cessazioni"
+            },
+            {
+              "id": "ISG",
+              "label": "Squilibrio generazionale",
+              "value": 0.35,
+              "description": "Rapporto under-35 / over-55 squilibrato",
+              "status": "red",
+              "numerator": 900,
+              "denominator": 6167,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.42
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.4
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.38
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.36
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.35
+                }
+              ],
+              "benchmark": 0.5,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Rapporto tra under-35 e over-55. Valori <0.50 indicano squilibrio generazionale crescente.",
+              "pillar": "D6",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_eta",
+                "formula": "Σ under35 / Σ over55"
+              },
+              "indicatorTarget": "analisi-eta"
+            }
+          ],
+          "insight": {
+            "type": "danger",
+            "text": "Il 31% del personale andrà in pensione entro 3 anni. Serve un piano di successione urgente."
+          },
+          "cta": {
+            "label": "Analisi sostenibilità",
+            "pillar": "D6"
+          }
+        }
+      ]
+    },
+    {
+      "id": "benchmark",
+      "question": "Posizionamento rispetto al cluster di riferimento: aree di miglioramento prioritarie",
+      "subtitle": "Gap maggiore su D3 (−13 punti)",
+      "valueProposition": "Confrontare le performance dell'Amministrazione con enti di dimensione e tipologia comparabili",
+      "icon": "BarChart3",
+      "category": "attention",
+      "steps": [
+        {
+          "title": "Posizionamento rispetto al cluster",
+          "description": "Confrontando le performance sui 6 pillar con enti di dimensioni e tipologia comparabili, emergono gap significativi soprattutto nel recruiting e nella sostenibilità organizzativa.",
+          "indicators": [
+            {
+              "id": "D1",
+              "label": "D1 Classificazione",
+              "value": 0.72,
+              "description": "Cluster: 68% · Sopra di +4pp",
+              "status": "green",
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.65
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.67
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.69
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.71
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.72
+                }
+              ],
+              "benchmark": 0.68,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Score composito del pillar D1 basato su adesione e implementazione del sistema di classificazione professionale.",
+              "pillar": "D1"
+            },
+            {
+              "id": "D2",
+              "label": "D2 Programmazione",
+              "value": 0.61,
+              "description": "Cluster: 65% · Sotto di −4pp",
+              "status": "yellow",
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.58
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.59
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.6
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.6
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.61
+                }
+              ],
+              "benchmark": 0.65,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Score composito del pillar D2 basato su governo del fabbisogno e programmazione triennale.",
+              "pillar": "D2"
+            },
+            {
+              "id": "D3",
+              "label": "D3 Recruiting",
+              "value": 0.42,
+              "description": "Cluster: 55% · Sotto di −13pp",
+              "status": "red",
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.5
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.48
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.46
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.44
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.42
+                }
+              ],
+              "benchmark": 0.55,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Score composito del pillar D3 basato su attrattività, tempi, copertura e efficacia del reclutamento.",
+              "pillar": "D3"
+            },
+            {
+              "id": "D4",
+              "label": "D4 Sviluppo",
+              "value": 0.65,
+              "description": "Cluster: 61% · Sopra di +4pp",
+              "status": "green",
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.58
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.6
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.62
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.64
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.65
+                }
+              ],
+              "benchmark": 0.61,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Score composito del pillar D4 basato su formazione, competenze digitali e crescita professionale.",
+              "pillar": "D4"
+            },
+            {
+              "id": "D5",
+              "label": "D5 Rewarding",
+              "value": 0.44,
+              "description": "Cluster: 50% · Sotto di −6pp",
+              "status": "yellow",
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.4
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.41
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.42
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.43
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.44
+                }
+              ],
+              "benchmark": 0.5,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Score composito del pillar D5 basato su progressioni, equità retributiva e flessibilità lavorativa.",
+              "pillar": "D5"
+            },
+            {
+              "id": "D6",
+              "label": "D6 Capacity",
+              "value": 0.52,
+              "description": "Cluster: 58% · Sotto di −6pp",
+              "status": "red",
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.56
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.55
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.54
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.53
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.52
+                }
+              ],
+              "benchmark": 0.58,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Score composito del pillar D6 basato su sostenibilità organizzativa, turnover e rischio pensionamento.",
+              "pillar": "D6"
+            }
+          ],
+          "insight": {
+            "type": "warning",
+            "text": "Il gap più critico è su D3 Recruiting (−13 punti dal cluster). D1 e D4 sono punti di forza."
+          },
+          "cta": {
+            "label": "Vista Executive completa"
+          }
+        }
+      ]
+    },
+    {
+      "id": "composizione",
+      "question": "Analisi della composizione demografica del personale",
+      "subtitle": "Età, genere, anzianità, titoli di studio e distribuzione",
+      "valueProposition": "Analizzare la struttura demografica del personale per età, genere e titolo di studio",
+      "icon": "Users",
+      "category": "explore",
+      "steps": [
+        {
+          "title": "Fotografia demografica",
+          "description": "L'organizzazione ha un'età media di 51,2 anni, in aumento. La quota di personale over-55 è al 48%, superiore alla media del cluster. Il ricambio generazionale è una sfida.",
+          "indicators": [
+            {
+              "id": "eta_media",
+              "label": "Età media",
+              "value": 0.51,
+              "description": "51,2 anni · Cluster: 50,4 anni",
+              "status": "yellow",
+              "numerator": 51.2,
+              "denominator": 1,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.49
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.49
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.5
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.5
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.51
+                }
+              ],
+              "benchmark": 0.5,
+              "benchmarkLabel": "Media cluster (50,4)",
+              "methodology": "Età media anagrafica del personale in servizio al 31/12. Calcolata come media ponderata.",
+              "pillar": "D6",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "ca_eta_media",
+                "formula": "media WHERE anno=2023"
+              },
+              "indicatorTarget": "analisi-eta"
+            },
+            {
+              "id": "over55",
+              "label": "Quota over 55",
+              "value": 0.48,
+              "description": "48% del personale · Cluster: 44%",
+              "status": "red",
+              "numerator": 6167,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.4
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.42
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.44
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.46
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.48
+                }
+              ],
+              "benchmark": 0.44,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Personale con età ≥55 anni / totale personale in servizio.",
+              "pillar": "D6",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_eta",
+                "formula": "Σ(E55+E60+E65+E68) / totale"
+              },
+              "indicatorTarget": "analisi-eta"
+            },
+            {
+              "id": "under35",
+              "label": "Quota under 35",
+              "value": 0.07,
+              "description": "Solo 7% del personale · Cluster: 10%",
+              "status": "red",
+              "numerator": 900,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.1
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.09
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.08
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.08
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.07
+                }
+              ],
+              "benchmark": 0.1,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Personale con età <35 anni / totale personale in servizio.",
+              "pillar": "D6",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_eta",
+                "formula": "Σ(E0+E20+E25+E30) / totale"
+              },
+              "indicatorTarget": "analisi-eta"
+            },
+            {
+              "id": "genere",
+              "label": "Equilibrio di genere",
+              "value": 0.55,
+              "description": "55% donne, 45% uomini",
+              "status": "green",
+              "numerator": 7066,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.53
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.54
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.54
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.55
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.55
+                }
+              ],
+              "benchmark": 0.52,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Quota di genere prevalente sul totale. Equilibrio ottimale intorno al 50%.",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_occupazione",
+                "formula": "Σ donne / Σ totale personale"
+              },
+              "indicatorTarget": "analisi-genere"
+            }
+          ],
+          "insight": {
+            "type": "warning",
+            "text": "L'organizzazione invecchia più velocemente del cluster: +0,8 anni di età media vs anno precedente."
+          },
+          "cta": {
+            "label": "Dettaglio demografico",
+            "source": "conto-annuale"
+          }
+        },
+        {
+          "title": "Titoli di studio e qualifiche",
+          "description": "La composizione per titolo di studio mostra una buona quota di laureati, ma la coerenza tra titolo posseduto e qualifica ricoperta è da migliorare.",
+          "indicators": [
+            {
+              "id": "CQT",
+              "label": "Coerenza titoli-qualifica",
+              "value": 0.48,
+              "description": "48% del personale con titolo coerente",
+              "status": "yellow",
+              "numerator": 6167,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.45
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.46
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.47
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.47
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.48
+                }
+              ],
+              "benchmark": 0.55,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Personale con titolo di studio coerente con la qualifica ricoperta / totale.",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "ca_titolo_studio · ca_occupazione",
+                "formula": "Personale titolo coerente / totale"
+              },
+              "indicatorTarget": "analisi-personale"
+            },
+            {
+              "id": "laureati",
+              "label": "Quota laureati",
+              "value": 0.62,
+              "description": "62% del personale in servizio",
+              "status": "green",
+              "numerator": 7965,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.55
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.57
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.59
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.61
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.62
+                }
+              ],
+              "benchmark": 0.58,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Personale con laurea o titolo superiore / totale personale.",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "ca_titolo_studio",
+                "formula": "Σ laureati / totale personale"
+              },
+              "indicatorTarget": "analisi-personale"
+            }
+          ],
+          "insight": {
+            "type": "warning",
+            "text": "Il 52% del personale ha un titolo non coerente con la qualifica. Serve una revisione delle assegnazioni."
+          },
+          "cta": {
+            "label": "Analisi titoli di studio",
+            "source": "conto-annuale"
+          }
+        }
+      ]
+    },
+    {
+      "id": "reclutamento",
+      "question": "Valutazione dell'efficacia delle procedure di reclutamento",
+      "subtitle": "Bandi, candidature, tempi e tassi di successo",
+      "valueProposition": "Valutare l'efficacia delle procedure di selezione, dall'attrattività alla copertura dei posti",
+      "icon": "UserPlus",
+      "category": "explore",
+      "steps": [
+        {
+          "title": "Attrattività e candidature",
+          "description": "Il sistema di reclutamento attrae una media di 15 candidature per posizione. L'attrattività territoriale resta moderata con il 45% di candidature extra-regione.",
+          "indicators": [
+            {
+              "id": "IAP",
+              "label": "Attrattività posizioni",
+              "value": 0.7,
+              "description": "15 candidature medie per posizione",
+              "status": "green",
+              "numerator": 18750,
+              "denominator": 1250,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.62
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.64
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.66
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.68
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.7
+                }
+              ],
+              "benchmark": 0.65,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Candidature totali / posizioni aperte.",
+              "pillar": "D3",
+              "source": "inpa",
+              "dataSource": {
+                "table": "dw_inpa_bandi",
+                "formula": "SUM(num_candidature_submitted) / SUM(num_posti)"
+              },
+              "indicatorTarget": "inpa-attrattivita"
+            },
+            {
+              "id": "IAR",
+              "label": "Attivazione reclutamento",
+              "value": 0.68,
+              "description": "1.250 posti banditi vs 1.838 over-63",
+              "status": "green",
+              "numerator": 1250,
+              "denominator": 1838,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.6
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.62
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.64
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.66
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.68
+                }
+              ],
+              "benchmark": 0.7,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Posti banditi / personale over-63. Misura la proattività nel reclutamento.",
+              "pillar": "D3",
+              "source": "inpa",
+              "dataSource": {
+                "table": "dw_inpa_bandi · dw_eta",
+                "formula": "SUM(num_posti) / COUNT(over63)"
+              },
+              "indicatorTarget": "inpa-bandi"
+            },
+            {
+              "id": "IAT",
+              "label": "Attrazione territoriale",
+              "value": 0.45,
+              "description": "45% candidature extra-regione",
+              "status": "yellow",
+              "numerator": 8438,
+              "denominator": 18750,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.38
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.4
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.42
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.44
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.45
+                }
+              ],
+              "benchmark": 0.5,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Candidature da fuori regione / candidature totali.",
+              "pillar": "D3",
+              "source": "inpa",
+              "dataSource": {
+                "table": "dw_inpa_bandi",
+                "formula": "Candidature extra-regione / totali"
+              },
+              "indicatorTarget": "inpa-attrattivita"
+            },
+            {
+              "id": "ISC",
+              "label": "Sovra-qualificazione",
+              "value": 0.55,
+              "description": "55% candidati con titolo superiore",
+              "status": "yellow",
+              "numerator": 10313,
+              "denominator": 18750,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.5
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.51
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.52
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.54
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.55
+                }
+              ],
+              "benchmark": 0.48,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Candidati con titolo superiore al richiesto / candidati totali.",
+              "pillar": "D3",
+              "source": "inpa",
+              "dataSource": {
+                "table": "dw_inpa_bandi",
+                "formula": "Candidati titolo superiore / totali"
+              },
+              "indicatorTarget": "inpa-candidature"
+            }
+          ],
+          "insight": {
+            "type": "success",
+            "text": "Buona attrattività generale con 15 candidature/posto. Da migliorare l'attrazione territoriale."
+          },
+          "cta": {
+            "label": "Dati InPA",
+            "source": "inpa"
+          }
+        },
+        {
+          "title": "Tempi e copertura",
+          "description": "Le procedure concorsuali impiegano mediamente 156 giorni, con il 55% completate nei termini normativi. La copertura effettiva dei posti è al 58%.",
+          "indicators": [
+            {
+              "id": "TCP",
+              "label": "Tempo procedure",
+              "value": 0.48,
+              "description": "Media 156 giorni su 300 normativi",
+              "status": "yellow",
+              "numerator": 156,
+              "denominator": 300,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.55
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.52
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.5
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.49
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.48
+                }
+              ],
+              "benchmark": 0.55,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "1 − (giorni medi effettivi / giorni normativi). Più basso = procedure più lente.",
+              "pillar": "D3",
+              "source": "inpa",
+              "dataSource": {
+                "table": "dw_lp_graduatorie",
+                "formula": "1 − AVG(tcp_giorni) / 300"
+              },
+              "indicatorTarget": "inpa-tempi-dettaglio"
+            },
+            {
+              "id": "TCPB",
+              "label": "Copertura posti",
+              "value": 0.58,
+              "description": "725 coperti su 1.250 banditi",
+              "status": "yellow",
+              "numerator": 725,
+              "denominator": 1250,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.65
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.62
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.6
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.59
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.58
+                }
+              ],
+              "benchmark": 0.68,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Posti coperti / posti banditi.",
+              "pillar": "D3",
+              "source": "inpa",
+              "dataSource": {
+                "table": "dw_lp_graduatorie",
+                "formula": "SUM(num_vincitori_assunti) / SUM(num_posti_banditi)"
+              },
+              "indicatorTarget": "inpa-graduatorie"
+            },
+            {
+              "id": "TSC",
+              "label": "Selettività concorsi",
+              "value": 0.62,
+              "description": "4.340 idonei su 7.000 candidati",
+              "status": "green",
+              "numerator": 4340,
+              "denominator": 7000,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.58
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.59
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.6
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.61
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.62
+                }
+              ],
+              "benchmark": 0.6,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Candidati idonei / candidati partecipanti.",
+              "pillar": "D3",
+              "source": "inpa",
+              "dataSource": {
+                "table": "dw_lp_graduatorie",
+                "formula": "SUM(num_idonei) / SUM(num_posti_banditi)"
+              },
+              "indicatorTarget": "inpa-graduatorie"
+            }
+          ],
+          "insight": {
+            "type": "warning",
+            "text": "42% dei posti banditi resta scoperto. I tempi procedurali sono migliorabili."
+          },
+          "cta": {
+            "label": "Tempi e procedure InPA",
+            "source": "inpa"
+          }
+        }
+      ]
+    },
+    {
+      "id": "crescita",
+      "question": "Stato della crescita professionale e dell'investimento formativo",
+      "subtitle": "Formazione, competenze digitali, assessment e gap analysis",
+      "valueProposition": "Misurare l'investimento formativo e il livello di competenze digitali del personale",
+      "icon": "GraduationCap",
+      "category": "explore",
+      "steps": [
+        {
+          "title": "Investimento formativo",
+          "description": "Quanti dipendenti hanno partecipato ad attività formative e quante giornate in media? La formazione è la leva principale per lo sviluppo delle competenze.",
+          "indicators": [
+            {
+              "id": "TCF",
+              "label": "Formati sul personale totale",
+              "value": 0.62,
+              "description": "% personale che ha partecipato a formazione",
+              "status": "green",
+              "numerator": 7965,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.52
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.55
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.57
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.6
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.62
+                }
+              ],
+              "benchmark": 0.58,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Personale che ha partecipato ad almeno un'attività formativa / totale.",
+              "pillar": "D4",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "ca_formazione",
+                "formula": "Σ formati / organico"
+              },
+              "indicatorTarget": "formati-personale"
+            },
+            {
+              "id": "IFM_Norm",
+              "label": "Giornate formazione medie",
+              "value": 0.55,
+              "description": "Media giornate formative pro-capite",
+              "status": "yellow",
+              "numerator": 5.5,
+              "denominator": 10,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.48
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.42
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.5
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.52
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.55
+                }
+              ],
+              "benchmark": 0.6,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Giornate formative medie / target 10 giornate. Normalizzato 0-1.",
+              "pillar": "D4",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "ca_formazione",
+                "formula": "AVG(giornate_medie) / 10"
+              },
+              "indicatorTarget": "formati-personale"
+            }
+          ],
+          "insight": {
+            "type": "success",
+            "text": "Buona copertura formativa del personale."
+          },
+          "cta": {
+            "label": "Dettaglio formazione",
+            "source": "conto-annuale"
+          }
+        },
+        {
+          "title": "Competenze digitali (Syllabus)",
+          "description": "Quanto è attivo il personale sulla piattaforma Syllabus? Gli assessment e i badge misurano la maturità digitale dell'organizzazione.",
+          "indicators": [
+            {
+              "id": "ISY",
+              "label": "Utenti attivi Syllabus",
+              "value": 0.58,
+              "description": "% dipendenti registrati e attivi su Syllabus",
+              "status": "yellow",
+              "numerator": 7451,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2021",
+                  "valore": 0.3
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.45
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.58
+                }
+              ],
+              "benchmark": 0.65,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Dipendenti attivi su Syllabus / totale personale.",
+              "pillar": "D4",
+              "source": "syllabus",
+              "dataSource": {
+                "table": "Syllabus (dato esterno)",
+                "formula": "Utenti attivi / organico"
+              },
+              "indicatorTarget": "syllabus-utenti"
+            },
+            {
+              "id": "ICB",
+              "label": "Corsi completati / badge",
+              "value": 0.65,
+              "description": "Tasso completamento percorsi formativi",
+              "status": "green",
+              "numerator": 4843,
+              "denominator": 7451,
+              "trend": [
+                {
+                  "anno": "2021",
+                  "valore": 0.4
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.55
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.65
+                }
+              ],
+              "benchmark": 0.6,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Corsi completati con badge / corsi avviati dagli utenti attivi.",
+              "pillar": "D4",
+              "source": "syllabus",
+              "dataSource": {
+                "table": "Syllabus (dato esterno)",
+                "formula": "Corsi completati / avviati"
+              },
+              "indicatorTarget": "syllabus-corsi"
+            },
+            {
+              "id": "IAS",
+              "label": "Assessment completati",
+              "value": 0.71,
+              "description": "% dipendenti con assessment competenze digitali",
+              "status": "green",
+              "numerator": 5290,
+              "denominator": 7451,
+              "trend": [
+                {
+                  "anno": "2021",
+                  "valore": 0.35
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.55
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.71
+                }
+              ],
+              "benchmark": 0.62,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Assessment completati / utenti attivi su Syllabus.",
+              "pillar": "D4",
+              "source": "syllabus",
+              "dataSource": {
+                "table": "Syllabus (dato esterno)",
+                "formula": "Assessment / utenti attivi"
+              },
+              "indicatorTarget": "syllabus-assessment"
+            },
+            {
+              "id": "IGA",
+              "label": "Gap formazione vs assessment",
+              "value": 0.55,
+              "description": "Differenza tra competenze testate e formate",
+              "status": "yellow",
+              "trend": [
+                {
+                  "anno": "2021",
+                  "valore": 0.4
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.48
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.55
+                }
+              ],
+              "benchmark": 0.5,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Copertura dei gap tra competenze rilevate nell'assessment e formazione erogata.",
+              "pillar": "D4",
+              "source": "syllabus",
+              "dataSource": {
+                "table": "Syllabus (dato esterno)",
+                "formula": "Gap formazione-assessment"
+              },
+              "indicatorTarget": "syllabus-gap-formazione"
+            }
+          ],
+          "insight": {
+            "type": "warning",
+            "text": "Bassa adozione Syllabus: incentivare l'iscrizione."
+          },
+          "cta": {
+            "label": "Dashboard Syllabus",
+            "source": "syllabus"
+          }
+        }
+      ]
+    },
+    {
+      "id": "carriere",
+      "question": "Dinamiche di carriera ed equità di genere nell'Amministrazione",
+      "subtitle": "Progressioni, divario retributivo, lavoro agile",
+      "valueProposition": "Esaminare le dinamiche di progressione, equità retributiva e flessibilità lavorativa",
+      "icon": "TrendingUp",
+      "category": "explore",
+      "steps": [
+        {
+          "title": "Dinamicità delle carriere",
+          "description": "Le progressioni verticali misurano la mobilità interna. Un tasso basso può indicare blocchi strutturali o mancanza di percorsi di crescita.",
+          "indicators": [
+            {
+              "id": "IPR",
+              "label": "Progressioni verticali",
+              "value": 0.48,
+              "description": "Tasso di progressioni di carriera effettuate",
+              "status": "yellow",
+              "numerator": 617,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.35
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.38
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.42
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.45
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.48
+                }
+              ],
+              "benchmark": 0.52,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Progressioni verticali effettuate / personale totale.",
+              "pillar": "D5",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_kpi_rilevazione",
+                "formula": "q6_14_progressioni_vert / q6_tep_personale"
+              },
+              "indicatorTarget": "progressioni"
+            },
+            {
+              "id": "IDG",
+              "label": "Divario retributivo di genere",
+              "value": 0.42,
+              "description": "Indice inversamente proporzionale al gap",
+              "status": "red",
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.38
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.39
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.4
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.41
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.42
+                }
+              ],
+              "benchmark": 0.55,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "1 − (gap retributivo M/F). Più basso = divario maggiore.",
+              "pillar": "D5",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_occupazione",
+                "formula": "1 − gap retributivo M/F"
+              },
+              "indicatorTarget": "analisi-genere"
+            },
+            {
+              "id": "ILA",
+              "label": "Lavoro agile attivo",
+              "value": 0.41,
+              "description": "% personale in modalità lavoro agile",
+              "status": "red",
+              "numerator": 5267,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.05
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.35
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.42
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.4
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.41
+                }
+              ],
+              "benchmark": 0.5,
+              "benchmarkLabel": "Target PIAO",
+              "methodology": "Personale in lavoro agile / totale.",
+              "pillar": "D5",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_modalita_lavoro",
+                "formula": "Σ(lavoro_agile_d + lavoro_agile_u) / organico"
+              },
+              "indicatorTarget": "lavoro-agile"
+            }
+          ],
+          "insight": {
+            "type": "danger",
+            "text": "Divario retributivo di genere significativo: richiede intervento."
+          },
+          "cta": {
+            "label": "Analisi carriere e genere",
+            "source": "conto-annuale"
+          }
+        },
+        {
+          "title": "Lavoro agile e flessibilità",
+          "description": "Le modalità di lavoro flessibile sono un fattore di attrazione e retention del personale. Il lavoro agile è sotto il target del 50%, il telelavoro è marginale.",
+          "indicators": [
+            {
+              "id": "ILA",
+              "label": "Lavoro agile",
+              "value": 0.41,
+              "description": "41% personale in smart working",
+              "status": "red",
+              "numerator": 5267,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.05
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.35
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.42
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.4
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.41
+                }
+              ],
+              "benchmark": 0.5,
+              "benchmarkLabel": "Target PIAO",
+              "methodology": "Personale in lavoro agile / totale personale.",
+              "pillar": "D5",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_modalita_lavoro",
+                "formula": "Σ(lavoro_agile_d + lavoro_agile_u) / organico"
+              },
+              "indicatorTarget": "lavoro-agile"
+            },
+            {
+              "id": "ITL",
+              "label": "Telelavoro",
+              "value": 0.08,
+              "description": "Solo l'8% in telelavoro strutturato",
+              "status": "red",
+              "numerator": 1028,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.03
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.05
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.06
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.07
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.08
+                }
+              ],
+              "benchmark": 0.12,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Personale in telelavoro strutturato / totale.",
+              "pillar": "D5",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_modalita_lavoro",
+                "formula": "Σ(telelavoro_d + telelavoro_u) / organico"
+              },
+              "indicatorTarget": "lavoro-flessibile"
+            },
+            {
+              "id": "ITU",
+              "label": "Turnazione",
+              "value": 0.22,
+              "description": "22% in regimi di turnazione",
+              "status": "yellow",
+              "numerator": 2826,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.2
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.2
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.21
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.21
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.22
+                }
+              ],
+              "benchmark": 0.25,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Personale in turnazione / totale.",
+              "pillar": "D5",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_modalita_lavoro",
+                "formula": "Σ(turnazione_d + turnazione_u) / organico"
+              },
+              "indicatorTarget": "lavoro-flessibile"
+            }
+          ],
+          "insight": {
+            "type": "danger",
+            "text": "Il lavoro agile al 41% è sotto il target. Il telelavoro è quasi assente: opportunità di sviluppo."
+          },
+          "cta": {
+            "label": "Analisi modalità di lavoro",
+            "source": "conto-annuale"
+          }
+        }
+      ]
+    },
+    {
+      "id": "competenze",
+      "question": "Mappatura delle competenze e profili professionali del personale",
+      "subtitle": "Profili professionali, catalogo competenze, gap qualifiche",
+      "valueProposition": "Verificare lo stato di adozione del modello di competenze e i gap da colmare",
+      "icon": "Brain",
+      "category": "explore",
+      "steps": [
+        {
+          "title": "Sistema professionale Minerva",
+          "description": "Il sistema di classificazione professionale misura quanto l'organizzazione conosce e mappa le competenze del proprio personale attraverso profili e ruoli.",
+          "indicators": [
+            {
+              "id": "IAC",
+              "label": "Adesione al modello",
+              "value": 0.8,
+              "description": "Amministrazioni con profili attivati",
+              "status": "green",
+              "numerator": 17,
+              "denominator": 20,
+              "trend": [
+                {
+                  "anno": "2021",
+                  "valore": 0.6
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.72
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.8
+                }
+              ],
+              "benchmark": 0.75,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Amministrazioni che hanno attivato profili Minerva / totale aderenti.",
+              "pillar": "D1",
+              "source": "minerva",
+              "dataSource": {
+                "table": "dw_kpi_rilevazione",
+                "formula": "COUNT(q1_5>0) / COUNT(q1_1=attivo)"
+              },
+              "indicatorTarget": "minerva-catalogo"
+            },
+            {
+              "id": "IIMP/R",
+              "label": "Implementazione modello",
+              "value": 0.58,
+              "description": "Profili adottati su catalogo DFP",
+              "status": "yellow",
+              "numerator": 145,
+              "denominator": 250,
+              "trend": [
+                {
+                  "anno": "2021",
+                  "valore": 0.35
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.48
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.58
+                }
+              ],
+              "benchmark": 0.62,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Profili di ruolo adottati dall'ente / profili disponibili nel catalogo DFP.",
+              "pillar": "D1",
+              "source": "minerva",
+              "dataSource": {
+                "table": "dw_bridge_profilo_competenza",
+                "formula": "Profili adottati / catalogo DFP"
+              },
+              "indicatorTarget": "minerva-catalogo"
+            },
+            {
+              "id": "ICPR",
+              "label": "Copertura professionale",
+              "value": 0.64,
+              "description": "Personale con profilo assegnato",
+              "status": "green",
+              "numerator": 8222,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2021",
+                  "valore": 0.4
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.55
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.64
+                }
+              ],
+              "benchmark": 0.6,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Personale con almeno un profilo professionale assegnato / totale.",
+              "pillar": "D1",
+              "source": "minerva",
+              "dataSource": {
+                "table": "dw_bridge_profilo_competenza",
+                "formula": "Personale con profilo / totale"
+              },
+              "indicatorTarget": "minerva-competenze"
+            },
+            {
+              "id": "IACU",
+              "label": "Adeguatezza capitale umano",
+              "value": 0.55,
+              "description": "Copertura competenze vs gap",
+              "status": "yellow",
+              "trend": [
+                {
+                  "anno": "2021",
+                  "valore": 0.42
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.5
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.55
+                }
+              ],
+              "benchmark": 0.58,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Indice composito di copertura delle competenze richieste vs disponibili.",
+              "pillar": "D1",
+              "source": "minerva",
+              "dataSource": {
+                "table": "dw_bridge_profilo_competenza",
+                "formula": "AVG(valutato) / AVG(target)"
+              },
+              "indicatorTarget": "minerva-gap-analysis"
+            },
+            {
+              "id": "ICVC",
+              "label": "Valutazioni competenze",
+              "value": 0.35,
+              "description": "Personale valutato su totale",
+              "status": "red",
+              "numerator": 4496,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2021",
+                  "valore": 0.15
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.25
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.35
+                }
+              ],
+              "benchmark": 0.45,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Personale con valutazione competenze completata / totale.",
+              "pillar": "D1",
+              "source": "minerva",
+              "dataSource": {
+                "table": "dw_bridge_profilo_competenza",
+                "formula": "Σ valutati / Σ totali_profilo"
+              },
+              "indicatorTarget": "minerva-competenze"
+            }
+          ],
+          "insight": {
+            "type": "warning",
+            "text": "Solo il 35% del personale ha una valutazione delle competenze. Azione prioritaria."
+          },
+          "cta": {
+            "label": "Dashboard Minerva",
+            "source": "minerva"
+          }
+        }
+      ]
+    },
+    {
+      "id": "processi",
+      "question": "Efficienza e digitalizzazione dei processi dell'Amministrazione",
+      "subtitle": "SIPrO: mappatura processi, tempi, digitalizzazione, criticità",
+      "valueProposition": "Valutare l'efficienza operativa, il livello di digitalizzazione e le criticità dei processi",
+      "icon": "ClipboardList",
+      "category": "explore",
+      "steps": [
+        {
+          "title": "Mappatura dei processi (SIPrO)",
+          "description": "Il sistema di mappatura dei processi organizzativi consente di valutare l'efficienza operativa, il livello di digitalizzazione e le criticità strutturali delle unità organizzative.",
+          "indicators": [
+            {
+              "id": "PROC",
+              "label": "Processi mappati",
+              "value": 0.72,
+              "description": "72% dei processi dell'ente censiti",
+              "status": "green",
+              "numerator": 86,
+              "denominator": 120,
+              "trend": [
+                {
+                  "anno": "2020",
+                  "valore": 0.45
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.55
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.65
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.72
+                }
+              ],
+              "benchmark": 0.68,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Processi censiti e validati / processi totali stimati.",
+              "source": "sipro",
+              "dataSource": {
+                "table": "SIPrO (dato esterno)",
+                "formula": "Processi mappati / totali"
+              },
+              "indicatorTarget": "sipro-mappatura-processi"
+            },
+            {
+              "id": "DIG",
+              "label": "Digitalizzazione fasi",
+              "value": 0.45,
+              "description": "45% delle fasi dei processi digitalizzate",
+              "status": "yellow",
+              "numerator": 310,
+              "denominator": 689,
+              "trend": [
+                {
+                  "anno": "2020",
+                  "valore": 0.3
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.35
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.4
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.45
+                }
+              ],
+              "benchmark": 0.52,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Fasi con livello digitalizzazione 'alto' o 'completo' / fasi totali.",
+              "source": "sipro",
+              "dataSource": {
+                "table": "SIPrO (dato esterno)",
+                "formula": "Fasi digitalizzate / totali"
+              },
+              "indicatorTarget": "sipro-digitalizzazione"
+            },
+            {
+              "id": "OUTs",
+              "label": "Outsourcing",
+              "value": 0.18,
+              "description": "18% delle fasi esternalizzate",
+              "status": "green",
+              "numerator": 124,
+              "denominator": 689,
+              "trend": [
+                {
+                  "anno": "2020",
+                  "valore": 0.15
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.16
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.17
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.18
+                }
+              ],
+              "benchmark": 0.2,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Fasi in outsourcing / fasi totali.",
+              "source": "sipro",
+              "dataSource": {
+                "table": "SIPrO (dato esterno)",
+                "formula": "Fasi outsourcing / totali"
+              },
+              "indicatorTarget": "sipro-outsourcing"
+            },
+            {
+              "id": "AGILE",
+              "label": "Fasi lavorabili in agile",
+              "value": 0.38,
+              "description": "38% delle fasi compatibili con lavoro agile",
+              "status": "yellow",
+              "numerator": 262,
+              "denominator": 689,
+              "trend": [
+                {
+                  "anno": "2020",
+                  "valore": 0.25
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.3
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.34
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.38
+                }
+              ],
+              "benchmark": 0.42,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Fasi compatibili con lavoro agile / fasi totali.",
+              "source": "sipro",
+              "dataSource": {
+                "table": "SIPrO (dato esterno)",
+                "formula": "Fasi agile / totali"
+              },
+              "indicatorTarget": "sipro-lavoro-agile"
+            }
+          ],
+          "insight": {
+            "type": "warning",
+            "text": "La digitalizzazione dei processi è al 45%: sotto la media del cluster (52%). Priorità per l'efficienza."
+          },
+          "cta": {
+            "label": "Analisi processi SIPrO",
+            "source": "sipro"
+          }
+        },
+        {
+          "title": "Tempi e criticità",
+          "description": "L'analisi dei tempi medi effettivi rispetto ai giorni pianificati evidenzia i colli di bottiglia. Le criticità prevalenti riguardano la carenza di personale e i vincoli normativi.",
+          "indicators": [
+            {
+              "id": "TEMP",
+              "label": "Scostamento tempi",
+              "value": 0.35,
+              "description": "35% dei processi fuori target temporale",
+              "status": "red",
+              "numerator": 30,
+              "denominator": 86,
+              "trend": [
+                {
+                  "anno": "2020",
+                  "valore": 0.28
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.3
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.32
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.35
+                }
+              ],
+              "benchmark": 0.22,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Processi con tempo effettivo > 120% del pianificato / processi totali.",
+              "source": "sipro",
+              "dataSource": {
+                "table": "SIPrO (dato esterno)",
+                "formula": "Processi fuori target / totali"
+              },
+              "indicatorTarget": "sipro-tempi-picchi"
+            },
+            {
+              "id": "CRIT",
+              "label": "Criticità prevalente",
+              "value": 0.62,
+              "description": "Carenza personale in 62% delle UO",
+              "status": "red",
+              "numerator": 31,
+              "denominator": 50,
+              "trend": [
+                {
+                  "anno": "2020",
+                  "valore": 0.5
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.55
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.58
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.62
+                }
+              ],
+              "benchmark": 0.45,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "UO che segnalano carenza di personale come criticità primaria / UO totali.",
+              "source": "sipro",
+              "dataSource": {
+                "table": "SIPrO (dato esterno)",
+                "formula": "UO con carenza / UO totali"
+              },
+              "indicatorTarget": "sipro-criticita-processi"
+            },
+            {
+              "id": "PICCHI",
+              "label": "Picchi stagionali",
+              "value": 0.28,
+              "description": "28% dei processi con picchi significativi",
+              "status": "yellow",
+              "numerator": 24,
+              "denominator": 86,
+              "trend": [
+                {
+                  "anno": "2020",
+                  "valore": 0.25
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.26
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.27
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.28
+                }
+              ],
+              "benchmark": 0.3,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Processi con picchi stagionali significativi / processi mappati.",
+              "source": "sipro",
+              "dataSource": {
+                "table": "SIPrO (dato esterno)",
+                "formula": "Processi con picchi / mappati"
+              },
+              "indicatorTarget": "sipro-tempi-picchi"
+            }
+          ],
+          "insight": {
+            "type": "danger",
+            "text": "Il 35% dei processi sfora i tempi pianificati. La carenza di personale è la criticità n.1 in 62% delle UO."
+          },
+          "cta": {
+            "label": "Dettaglio criticità SIPrO",
+            "source": "sipro"
+          }
+        }
+      ]
+    },
+    {
+      "id": "assenze",
+      "question": "Analisi delle assenze del personale e benessere organizzativo",
+      "subtitle": "Tasso di assenza, causali, confronto con cluster",
+      "valueProposition": "Analizzare i pattern di assenza per valutare il benessere organizzativo e l'impatto sulla produttività",
+      "icon": "Users",
+      "category": "explore",
+      "steps": [
+        {
+          "title": "Tasso di assenza e causali",
+          "description": "L'analisi delle assenze permette di valutare il benessere organizzativo e individuare pattern che possono influire sulla produttività. Le causali principali sono malattia, ferie e permessi.",
+          "indicators": [
+            {
+              "id": "TAS",
+              "label": "Tasso assenza medio",
+              "value": 0.12,
+              "description": "12 giorni medi pro capite · Cluster: 10,8",
+              "status": "yellow",
+              "numerator": 12,
+              "denominator": 1,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.1
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.14
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.11
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.11
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.12
+                }
+              ],
+              "benchmark": 0.108,
+              "benchmarkLabel": "Media cluster (10,8 gg)",
+              "methodology": "Giorni medi di assenza pro capite. Calcolato su giorni lavorativi.",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "ca_assenze",
+                "formula": "Σ giorni assenza / organico"
+              },
+              "indicatorTarget": "analisi-personale"
+            },
+            {
+              "id": "MAL",
+              "label": "Assenze per malattia",
+              "value": 0.45,
+              "description": "45% delle assenze totali",
+              "status": "yellow",
+              "numerator": 69372,
+              "denominator": 154160,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.42
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.48
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.44
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.44
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.45
+                }
+              ],
+              "benchmark": 0.4,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Giorni di assenza per malattia / giorni totali di assenza.",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "ca_assenze",
+                "formula": "Giorni malattia / giorni totali"
+              },
+              "indicatorTarget": "analisi-personale"
+            },
+            {
+              "id": "PERM",
+              "label": "Permessi legge 104",
+              "value": 0.18,
+              "description": "18% delle assenze · In crescita",
+              "status": "yellow",
+              "numerator": 27749,
+              "denominator": 154160,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.14
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.15
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.16
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.17
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.18
+                }
+              ],
+              "benchmark": 0.15,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Giorni di permesso L. 104 / giorni totali di assenza.",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "ca_assenze",
+                "formula": "Giorni L.104 / giorni totali"
+              },
+              "indicatorTarget": "analisi-personale"
+            }
+          ],
+          "insight": {
+            "type": "warning",
+            "text": "Il tasso di assenza supera il cluster di 1,2 giorni pro capite. I permessi L. 104 sono in crescita costante."
+          },
+          "cta": {
+            "label": "Dettaglio assenze",
+            "source": "conto-annuale"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sostenibilita",
+      "question": "Sostenibilità organizzativa: proiezioni e scenari di medio periodo",
+      "subtitle": "Rischio pensionamento, processi, digitalizzazione, performance",
+      "valueProposition": "Stimare l'evoluzione dell'organico e del fabbisogno per il triennio 2024-2027",
+      "icon": "Shield",
+      "category": "plan",
+      "steps": [
+        {
+          "title": "Rischio pensionamento",
+          "description": "Il Tasso di Esposizione al Pensionamento misura la quota di personale che raggiungerà i requisiti pensionistici entro 36 mesi. Un valore superiore al 20% è critico.",
+          "indicators": [
+            {
+              "id": "TEP",
+              "label": "Esposizione pensionamento",
+              "value": 0.31,
+              "description": "31% in uscita entro 36 mesi · Soglia: 20%",
+              "status": "red",
+              "numerator": 3983,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.24
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.25
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.27
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.29
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.31
+                }
+              ],
+              "benchmark": 0.2,
+              "benchmarkLabel": "Soglia critica",
+              "methodology": "Personale che matura requisiti pensionistici entro 36 mesi / totale.",
+              "pillar": "D6",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_eta",
+                "formula": "Σ(E60+E65+E68) / totale personale"
+              },
+              "indicatorTarget": "previsione-cessazioni"
+            },
+            {
+              "id": "ISG",
+              "label": "Squilibrio generazionale",
+              "value": 0.35,
+              "description": "Rapporto under/over squilibrato",
+              "status": "red",
+              "numerator": 900,
+              "denominator": 6167,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.42
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.4
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.38
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.36
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.35
+                }
+              ],
+              "benchmark": 0.5,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Under-35 / over-55. Valori <0.50 = squilibrio.",
+              "pillar": "D6",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_eta",
+                "formula": "Σ under35 / Σ over55"
+              },
+              "indicatorTarget": "analisi-eta"
+            },
+            {
+              "id": "TVO",
+              "label": "Tasso di turnover",
+              "value": 0.45,
+              "description": "Dinamica entrate/uscite",
+              "status": "yellow",
+              "numerator": 580,
+              "denominator": 12847,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.38
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.4
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.42
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.44
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.45
+                }
+              ],
+              "benchmark": 0.52,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "(Entrate + uscite) / organico medio.",
+              "pillar": "D6",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_assunti · dw_cessati",
+                "formula": "(Σ assunti + Σ cessati) / organico"
+              },
+              "indicatorTarget": "tasso-turnover"
+            }
+          ],
+          "insight": {
+            "type": "danger",
+            "text": "Il 31% del personale in uscita entro 3 anni: 11 punti sopra la soglia di attenzione."
+          },
+          "cta": {
+            "label": "Analisi sostenibilità",
+            "pillar": "D6"
+          },
+          "projection": {
+            "label": "Proiezione TEP (2019–2027)",
+            "unit": "%",
+            "threshold": 20,
+            "thresholdLabel": "Soglia critica 20%",
+            "data": [
+              {
+                "anno": "2019",
+                "valore": 24
+              },
+              {
+                "anno": "2020",
+                "valore": 25
+              },
+              {
+                "anno": "2021",
+                "valore": 27
+              },
+              {
+                "anno": "2022",
+                "valore": 28.6
+              },
+              {
+                "anno": "2023",
+                "valore": 31
+              },
+              {
+                "anno": "2024",
+                "valore": 33,
+                "projected": true
+              },
+              {
+                "anno": "2025",
+                "valore": 35.5,
+                "projected": true
+              },
+              {
+                "anno": "2026",
+                "valore": 37,
+                "projected": true
+              },
+              {
+                "anno": "2027",
+                "valore": 38.2,
+                "projected": true
+              }
+            ]
+          }
+        },
+        {
+          "title": "Proiezione personale in servizio",
+          "description": "Se il tasso di sostituzione resta a 0,50 — ovvero un'assunzione ogni due uscite — il personale si ridurrà significativamente nei prossimi anni. Servono politiche attive.",
+          "indicators": [
+            {
+              "id": "PIS",
+              "label": "Personale attuale",
+              "value": 0.65,
+              "description": "12.847 unità in servizio al 31/12/2023",
+              "status": "yellow",
+              "numerator": 12847,
+              "denominator": 19800,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.7
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.68
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.67
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.66
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.65
+                }
+              ],
+              "benchmark": 0.72,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Personale in servizio / dotazione organica prevista.",
+              "pillar": "D2",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_occupazione",
+                "formula": "Σ personale / dotazione organica"
+              },
+              "indicatorTarget": "analisi-personale"
+            },
+            {
+              "id": "TSO",
+              "label": "Tasso sostituzione",
+              "value": 0.5,
+              "description": "0,50 — un'assunzione ogni 2 cessazioni",
+              "status": "red",
+              "numerator": 500,
+              "denominator": 1000,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.6
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.55
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.52
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.51
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.5
+                }
+              ],
+              "benchmark": 0.75,
+              "benchmarkLabel": "Target ottimale",
+              "methodology": "Assunzioni anno / cessazioni anno. <1 = organico in contrazione.",
+              "pillar": "D2",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_assunti · dw_cessati",
+                "formula": "Σ assunti / Σ cessati"
+              },
+              "indicatorTarget": "tasso-sostituzione"
+            }
+          ],
+          "insight": {
+            "type": "danger",
+            "text": "Con l'attuale tasso di sostituzione, il personale si ridurrebbe di circa 990 unità nei prossimi 3 anni."
+          },
+          "cta": {
+            "label": "Programmazione fabbisogno",
+            "pillar": "D2"
+          },
+          "projection": {
+            "label": "Proiezione personale in servizio (2019–2027)",
+            "unit": "unità",
+            "data": [
+              {
+                "anno": "2019",
+                "valore": 13800
+              },
+              {
+                "anno": "2020",
+                "valore": 13500
+              },
+              {
+                "anno": "2021",
+                "valore": 13280
+              },
+              {
+                "anno": "2022",
+                "valore": 13100
+              },
+              {
+                "anno": "2023",
+                "valore": 12847
+              },
+              {
+                "anno": "2024",
+                "valore": 12500,
+                "projected": true
+              },
+              {
+                "anno": "2025",
+                "valore": 12150,
+                "projected": true
+              },
+              {
+                "anno": "2026",
+                "valore": 11850,
+                "projected": true
+              },
+              {
+                "anno": "2027",
+                "valore": 11600,
+                "projected": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "fabbisogno",
+      "question": "Programmazione del fabbisogno di personale: analisi e simulazione",
+      "subtitle": "Programmazione triennale, tasso sostituzione, turnover",
+      "valueProposition": "Simulare scenari alternativi di reclutamento e cessazione per la programmazione strategica",
+      "icon": "ClipboardList",
+      "category": "plan",
+      "steps": [
+        {
+          "title": "Governo strategico del fabbisogno",
+          "description": "L'indice IGF misura quanto la programmazione del fabbisogno è allineata ai bisogni reali dell'organizzazione. Integra replica strutturale, direzione del reclutamento e ricambio generazionale.",
+          "indicators": [
+            {
+              "id": "IGF",
+              "label": "Governo fabbisogno",
+              "value": 0.61,
+              "description": "Media ponderata dei sotto-indicatori",
+              "status": "yellow",
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.55
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.57
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.58
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.6
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.61
+                }
+              ],
+              "benchmark": 0.65,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Indice composito ponderato di replica strutturale, direzione reclutamento e ricambio generazionale.",
+              "pillar": "D2",
+              "dataSource": {
+                "table": "dw_kpi_rilevazione · dw_occupazione",
+                "formula": "Media(IRS, IRG, PTI)"
+              },
+              "indicatorTarget": "analisi-personale"
+            },
+            {
+              "id": "IRS",
+              "label": "Replica strutturale",
+              "value": 0.68,
+              "description": "Personale in servizio vs dotazione organica",
+              "status": "green",
+              "numerator": 12847,
+              "denominator": 18900,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.73
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.71
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.7
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.69
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.68
+                }
+              ],
+              "benchmark": 0.72,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Personale in servizio / dotazione organica.",
+              "pillar": "D2",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_occupazione",
+                "formula": "Σ personale / dotazione organica"
+              },
+              "indicatorTarget": "analisi-personale"
+            },
+            {
+              "id": "PTI",
+              "label": "Peso tempo indeterminato",
+              "value": 0.72,
+              "description": "72% assunzioni a tempo indeterminato",
+              "status": "green",
+              "numerator": 360,
+              "denominator": 500,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.65
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.67
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.69
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.71
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.72
+                }
+              ],
+              "benchmark": 0.7,
+              "benchmarkLabel": "Media cluster",
+              "methodology": "Assunzioni a tempo indeterminato / assunzioni totali.",
+              "pillar": "D2",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_assunti",
+                "formula": "Assunti TI / assunti totali"
+              },
+              "indicatorTarget": "assunti-causale"
+            },
+            {
+              "id": "IRG_Norm",
+              "label": "Ricambio generazionale",
+              "value": 0.42,
+              "description": "420 under-35 per 980 over-60 in uscita",
+              "status": "red",
+              "numerator": 420,
+              "denominator": 980,
+              "trend": [
+                {
+                  "anno": "2019",
+                  "valore": 0.58
+                },
+                {
+                  "anno": "2020",
+                  "valore": 0.55
+                },
+                {
+                  "anno": "2021",
+                  "valore": 0.5
+                },
+                {
+                  "anno": "2022",
+                  "valore": 0.46
+                },
+                {
+                  "anno": "2023",
+                  "valore": 0.42
+                }
+              ],
+              "benchmark": 1,
+              "benchmarkLabel": "Equilibrio (1:1)",
+              "methodology": "Under-35 assunti / over-60 in uscita. Target: 1:1 per equilibrio generazionale.",
+              "pillar": "D2",
+              "source": "conto-annuale",
+              "dataSource": {
+                "table": "dw_assunti · dw_eta",
+                "formula": "Under-35 assunti / over-60 uscita"
+              },
+              "indicatorTarget": "analisi-eta"
+            }
+          ],
+          "insight": {
+            "type": "warning",
+            "text": "Il ricambio generazionale (IRG=0,42) è il punto debole della programmazione. Serve rafforzare il reclutamento under-35."
+          },
+          "cta": {
+            "label": "Analisi fabbisogno",
+            "pillar": "D2"
+          },
+          "projection": {
+            "label": "Proiezione ricambio generazionale (2019–2027)",
+            "unit": "ratio",
+            "threshold": 1,
+            "thresholdLabel": "Equilibrio (1:1)",
+            "data": [
+              {
+                "anno": "2019",
+                "valore": 0.58
+              },
+              {
+                "anno": "2020",
+                "valore": 0.55
+              },
+              {
+                "anno": "2021",
+                "valore": 0.5
+              },
+              {
+                "anno": "2022",
+                "valore": 0.46
+              },
+              {
+                "anno": "2023",
+                "valore": 0.42
+              },
+              {
+                "anno": "2024",
+                "valore": 0.39,
+                "projected": true
+              },
+              {
+                "anno": "2025",
+                "valore": 0.36,
+                "projected": true
+              },
+              {
+                "anno": "2026",
+                "valore": 0.34,
+                "projected": true
+              },
+              {
+                "anno": "2027",
+                "valore": 0.32,
+                "projected": true
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "categoryLabels": {
+    "attention": {
+      "label": "RICHIEDE ATTENZIONE",
+      "color": "hsl(var(--destructive))"
+    },
+    "explore": {
+      "label": "ESPLORA I DATI",
+      "color": "hsl(var(--primary))"
+    },
+    "plan": {
+      "label": "PIANIFICA",
+      "color": "hsl(142 71% 35%)"
+    }
+  }
+}

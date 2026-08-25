@@ -1,0 +1,454 @@
+{
+  "indicatorCatalog": [
+    {
+      "id": "IAC",
+      "label": "Adesione catalogo professionale",
+      "pillar": "D1",
+      "source": "Minerva",
+      "description": "Amministrazioni con profili attivati / accreditate",
+      "value": 0.75,
+      "status": "green"
+    },
+    {
+      "id": "IIMP/R",
+      "label": "Implementazione modello professionale",
+      "pillar": "D1",
+      "source": "Minerva",
+      "description": "Profili professionali / Organico",
+      "value": 0.03,
+      "status": "red"
+    },
+    {
+      "id": "ICPR",
+      "label": "Copertura sistema professionale",
+      "pillar": "D1",
+      "source": "Minerva",
+      "description": "Personale con profilo / Totale",
+      "value": 0.61,
+      "status": "green"
+    },
+    {
+      "id": "ICSP/R",
+      "label": "Sviluppo professionale continuo",
+      "pillar": "D1",
+      "source": "Minerva",
+      "description": "Personale con valutazione competenze",
+      "value": 0.45,
+      "status": "yellow"
+    },
+    {
+      "id": "IACU",
+      "label": "Adesione catalogo unitario",
+      "pillar": "D1",
+      "source": "Minerva",
+      "description": "Enti che utilizzano il catalogo unitario",
+      "value": 0.68,
+      "status": "green"
+    },
+    {
+      "id": "ICCOMP",
+      "label": "Copertura competenze",
+      "pillar": "D1",
+      "source": "Minerva",
+      "description": "Competenze mappate / Competenze attese",
+      "value": 0.52,
+      "status": "yellow"
+    },
+    {
+      "id": "IGF",
+      "label": "Governo fabbisogno",
+      "pillar": "D2",
+      "source": "Conto Annuale",
+      "description": "Indice composito programmazione fabbisogni",
+      "value": 0.46,
+      "status": "yellow"
+    },
+    {
+      "id": "IRS",
+      "label": "Replica strutturale",
+      "pillar": "D2",
+      "source": "Conto Annuale",
+      "description": "Personale servizio / Dotazione organica",
+      "value": 0.72,
+      "status": "green"
+    },
+    {
+      "id": "IDP_Norm",
+      "label": "Direzione progressività",
+      "pillar": "D2",
+      "source": "Conto Annuale",
+      "description": "Dinamica assunzioni vs cessazioni",
+      "value": 0.38,
+      "status": "red"
+    },
+    {
+      "id": "PTI",
+      "label": "Stabilità contrattuale",
+      "pillar": "D2",
+      "source": "Conto Annuale",
+      "description": "Assunzioni TI / Totale assunzioni",
+      "value": 0.65,
+      "status": "green"
+    },
+    {
+      "id": "IRG_Norm",
+      "label": "Ricambio generazionale",
+      "pillar": "D2",
+      "source": "Conto Annuale",
+      "description": "Under-35 / Over-60",
+      "value": 0.28,
+      "status": "red"
+    },
+    {
+      "id": "IAR",
+      "label": "Attivazione reclutamento",
+      "pillar": "D3",
+      "source": "InPA",
+      "description": "Posti banditi / Fabbisogno generazionale",
+      "value": 0.14,
+      "status": "red"
+    },
+    {
+      "id": "DDP",
+      "label": "Distribuzione domanda",
+      "pillar": "D3",
+      "source": "InPA",
+      "description": "Rapporto domanda/offerta per area",
+      "value": 0.52,
+      "status": "yellow"
+    },
+    {
+      "id": "IAP",
+      "label": "Attrattività posizioni",
+      "pillar": "D3",
+      "source": "InPA",
+      "description": "Candidature per posizione aperta",
+      "value": 0.7,
+      "status": "green"
+    },
+    {
+      "id": "IAT",
+      "label": "Attrazione territoriale",
+      "pillar": "D3",
+      "source": "InPA",
+      "description": "Candidature extra-regione / Totali",
+      "value": 0.45,
+      "status": "yellow"
+    },
+    {
+      "id": "TSC",
+      "label": "Tasso successo concorsuale",
+      "pillar": "D3",
+      "source": "InPA",
+      "description": "Idonei / Candidati",
+      "value": 0.38,
+      "status": "red"
+    },
+    {
+      "id": "TCP",
+      "label": "Tempo completamento procedure",
+      "pillar": "D3",
+      "source": "InPA",
+      "description": "Giorni medi procedura concorsuale",
+      "value": 0.48,
+      "status": "yellow"
+    },
+    {
+      "id": "TCPB",
+      "label": "Copertura posti banditi",
+      "pillar": "D3",
+      "source": "InPA",
+      "description": "Posti coperti / Posti banditi",
+      "value": 0.58,
+      "status": "yellow"
+    },
+    {
+      "id": "ISC",
+      "label": "Sovra-qualificazione candidati",
+      "pillar": "D3",
+      "source": "InPA",
+      "description": "Candidati con titolo superiore al richiesto",
+      "value": 0.55,
+      "status": "yellow"
+    },
+    {
+      "id": "IQP",
+      "label": "Qualificazione personale",
+      "pillar": "D4",
+      "source": "Syllabus",
+      "description": "Personale qualificato / Totale",
+      "value": 0.62,
+      "status": "green"
+    },
+    {
+      "id": "CGC",
+      "label": "Gap competenze",
+      "pillar": "D4",
+      "source": "Syllabus",
+      "description": "Gap medio competenze digitali",
+      "value": 0.55,
+      "status": "yellow"
+    },
+    {
+      "id": "TCF",
+      "label": "Tasso copertura formativa",
+      "pillar": "D4",
+      "source": "Syllabus",
+      "description": "Personale formato / Totale",
+      "value": 0.58,
+      "status": "yellow"
+    },
+    {
+      "id": "IFM_Norm",
+      "label": "Formazione media",
+      "pillar": "D4",
+      "source": "Conto Annuale",
+      "description": "Giornate formazione per dipendente",
+      "value": 0.42,
+      "status": "yellow"
+    },
+    {
+      "id": "ICQ",
+      "label": "Coerenza qualifiche",
+      "pillar": "D4",
+      "source": "Conto Annuale",
+      "description": "Coerenza titolo-qualifica",
+      "value": 0.48,
+      "status": "yellow"
+    },
+    {
+      "id": "ICRP",
+      "label": "Copertura ruoli professionali",
+      "pillar": "D4",
+      "source": "Minerva",
+      "description": "Ruoli con competenze mappate",
+      "value": 0.45,
+      "status": "yellow"
+    },
+    {
+      "id": "ICVC",
+      "label": "Competenze validate certificate",
+      "pillar": "D4",
+      "source": "Syllabus",
+      "description": "Assessment completati / Target",
+      "value": 0.4,
+      "status": "yellow"
+    },
+    {
+      "id": "VQF",
+      "label": "Valore qualitativo formazione",
+      "pillar": "D4",
+      "source": "Syllabus",
+      "description": "Efficacia percorsi formativi",
+      "value": 0.52,
+      "status": "yellow"
+    },
+    {
+      "id": "IDC",
+      "label": "Dinamicità carriera",
+      "pillar": "D5",
+      "source": "Conto Annuale",
+      "description": "Progressioni verticali / Personale",
+      "value": 0.35,
+      "status": "red"
+    },
+    {
+      "id": "ISCP",
+      "label": "Sviluppo carriera percepito",
+      "pillar": "D5",
+      "source": "KPI Rilevazione",
+      "description": "Soddisfazione percorsi carriera",
+      "value": 0.42,
+      "status": "yellow"
+    },
+    {
+      "id": "IEQ",
+      "label": "Equità di genere",
+      "pillar": "D5",
+      "source": "Conto Annuale",
+      "description": "Rapporto retribuzione F/M",
+      "value": 0.88,
+      "status": "green"
+    },
+    {
+      "id": "IDLA",
+      "label": "Diffusione lavoro agile",
+      "pillar": "D5",
+      "source": "Conto Annuale",
+      "description": "Personale in lavoro agile / Totale",
+      "value": 0.35,
+      "status": "red"
+    },
+    {
+      "id": "DPI_Norm_D5",
+      "label": "Progressioni interne",
+      "pillar": "D5",
+      "source": "Conto Annuale",
+      "description": "Tasso progressioni orizzontali e verticali",
+      "value": 0.3,
+      "status": "red"
+    },
+    {
+      "id": "IRG_genere",
+      "label": "Ricambio generazionale genere",
+      "pillar": "D5",
+      "source": "Conto Annuale",
+      "description": "Equilibrio under-35 per genere",
+      "value": 0.52,
+      "status": "yellow"
+    },
+    {
+      "id": "ICCR",
+      "label": "Crescita retributiva",
+      "pillar": "D5",
+      "source": "Conto Annuale",
+      "description": "Progressione economica media",
+      "value": 0.45,
+      "status": "yellow"
+    },
+    {
+      "id": "ICEC",
+      "label": "Equità contrattuale",
+      "pillar": "D5",
+      "source": "Conto Annuale",
+      "description": "TI vs TD per genere",
+      "value": 0.72,
+      "status": "green"
+    },
+    {
+      "id": "TVO",
+      "label": "Tasso turnover",
+      "pillar": "D6",
+      "source": "Conto Annuale",
+      "description": "Ricambio del personale",
+      "value": 0.45,
+      "status": "yellow"
+    },
+    {
+      "id": "TEP",
+      "label": "Esposizione pensionamento",
+      "pillar": "D6",
+      "source": "Conto Annuale",
+      "description": "Personale in uscita entro 36 mesi",
+      "value": 0.31,
+      "status": "red"
+    },
+    {
+      "id": "ISG",
+      "label": "Squilibrio generazionale",
+      "pillar": "D6",
+      "source": "Conto Annuale",
+      "description": "Under-35 / Over-55",
+      "value": 0.35,
+      "status": "red"
+    },
+    {
+      "id": "IEF_Norm",
+      "label": "Efficienza organizzativa",
+      "pillar": "D6",
+      "source": "Conto Annuale",
+      "description": "Output / FTE",
+      "value": 0.58,
+      "status": "yellow"
+    },
+    {
+      "id": "TEPD",
+      "label": "Esposizione pensionamento dirigenti",
+      "pillar": "D6",
+      "source": "Conto Annuale",
+      "description": "Dirigenti in uscita entro 36 mesi",
+      "value": 0.28,
+      "status": "red"
+    },
+    {
+      "id": "ICS_Norm",
+      "label": "Capacità sostitutiva",
+      "pillar": "D6",
+      "source": "Conto Annuale",
+      "description": "Assunzioni / Cessazioni",
+      "value": 0.42,
+      "status": "yellow"
+    },
+    {
+      "id": "ISTP_Norm",
+      "label": "Sostenibilità temporale",
+      "pillar": "D6",
+      "source": "Conto Annuale",
+      "description": "Proiezione sostenibilità a 5 anni",
+      "value": 0.48,
+      "status": "yellow"
+    },
+    {
+      "id": "IDFP",
+      "label": "Dotazione funzionale",
+      "pillar": "D6",
+      "source": "Conto Annuale",
+      "description": "Copertura dotazione per funzione",
+      "value": 0.55,
+      "status": "yellow"
+    },
+    {
+      "id": "IFL",
+      "label": "Flessibilità lavorativa",
+      "pillar": "D6",
+      "source": "Conto Annuale",
+      "description": "Personale con forme flessibili",
+      "value": 0.38,
+      "status": "red"
+    },
+    {
+      "id": "DPI_Norm",
+      "label": "Dinamicità progressioni",
+      "pillar": "D6",
+      "source": "Conto Annuale",
+      "description": "Tasso dinamicità interna",
+      "value": 0.32,
+      "status": "red"
+    },
+    {
+      "id": "IPD",
+      "label": "Produttività dirigenziale",
+      "pillar": "D6",
+      "source": "Conto Annuale",
+      "description": "Output per dirigente",
+      "value": 0.55,
+      "status": "yellow"
+    },
+    {
+      "id": "TDLA",
+      "label": "Trend lavoro agile",
+      "pillar": "D6",
+      "source": "Conto Annuale",
+      "description": "Evoluzione lavoro agile",
+      "value": 0.4,
+      "status": "yellow"
+    },
+    {
+      "id": "TFL",
+      "label": "Trend flessibilità",
+      "pillar": "D6",
+      "source": "Conto Annuale",
+      "description": "Evoluzione forme flessibili",
+      "value": 0.35,
+      "status": "red"
+    },
+    {
+      "id": "IESF",
+      "label": "Efficacia sistema formativo",
+      "pillar": "D6",
+      "source": "Syllabus",
+      "description": "Impatto formazione sulla performance",
+      "value": 0.5,
+      "status": "yellow"
+    },
+    {
+      "id": "CQT",
+      "label": "Coerenza qualifica-titolo",
+      "pillar": "D6",
+      "source": "Conto Annuale",
+      "description": "Allineamento titolo-ruolo",
+      "value": 0.48,
+      "status": "yellow"
+    }
+  ]
+}

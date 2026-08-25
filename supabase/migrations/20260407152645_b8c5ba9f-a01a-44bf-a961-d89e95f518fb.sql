@@ -1,0 +1,25 @@
+
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q2_5_assessment TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q2_1_assunti_under35 TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q2_2_assunti_ti TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q2_3_assunzioni_prog TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q1_5_n_profili_definiti TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q1_6_n_profili_competenze TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_3_dirigente TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_3_non_dirigente TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_4_ti_dir_donne TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_4_ti_dir_uomini TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_4_ti_nondir_uomini TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_4_ti_nondir_donne TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_7_eq_ep TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_8_eq_ep_under45 TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_5_td_dir_donne TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_5_td_dir_uomini TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_6_under35 TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_tep_personale TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_14_progressioni_oriz TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_14_progressioni_vert TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_16_uomini_agile TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_16_donne_agile TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_17_gg_agile_donne TYPE TEXT;
+ALTER TABLE public.dw_kpi_rilevazione ALTER COLUMN q6_18_gg_totali TYPE TEXT;

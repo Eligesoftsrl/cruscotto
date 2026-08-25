@@ -1,0 +1,313 @@
+{
+  "journeyTemplates": [
+    {
+      "id": "tpl-rischio-demografico",
+      "title": "Rischio demografico organizzativo",
+      "question": "Quanto è vulnerabile la mia organizzazione al turnover generazionale?",
+      "subtitle": "Analisi completa del rischio pensionamento e capacità di sostituzione",
+      "category": "attention",
+      "icon": "🔴",
+      "description": "Percorso che analizza l'invecchiamento dell'organico, le proiezioni di cessazione e la capacità dell'ente di sostenere il ricambio generazionale nei prossimi 5 anni.",
+      "difficulty": "intermedio",
+      "tags": [
+        "demografica",
+        "cessazioni",
+        "turnover"
+      ],
+      "steps": [
+        {
+          "title": "Struttura anagrafica attuale",
+          "description": "Analisi della distribuzione per età e anzianità di servizio",
+          "indicatorIds": [
+            "IRG_Norm",
+            "IRS"
+          ],
+          "insightText": "Un indice di ricambio generazionale sotto 0.30 indica forte squilibrio demografico",
+          "insightType": "warning"
+        },
+        {
+          "title": "Proiezione cessazioni",
+          "description": "Stima del personale in uscita nei prossimi 3-5 anni per pensionamento",
+          "indicatorIds": [
+            "IGF",
+            "IDP_Norm"
+          ],
+          "insightText": "Verificare se il PTFP prevede copertura adeguata delle cessazioni attese",
+          "insightType": "info"
+        },
+        {
+          "title": "Capacità di sostituzione",
+          "description": "Valutazione dell'efficacia del reclutamento rispetto alle uscite",
+          "indicatorIds": [
+            "IAR",
+            "PTI"
+          ],
+          "insightText": "Un tasso di attivazione reclutamento sotto il 20% è critico",
+          "insightType": "danger"
+        }
+      ]
+    },
+    {
+      "id": "tpl-efficacia-recruiting",
+      "title": "Efficacia del processo di recruiting",
+      "question": "I nostri concorsi attraggono e selezionano le persone giuste?",
+      "subtitle": "Dal bando all'inserimento: analisi end-to-end del reclutamento",
+      "category": "explore",
+      "icon": "🔵",
+      "description": "Percorso che esamina l'intero ciclo del reclutamento: dalla pubblicazione dei bandi InPA all'attrattività, ai tempi di selezione, fino al tasso di successo delle assunzioni.",
+      "difficulty": "intermedio",
+      "tags": [
+        "reclutamento",
+        "InPA",
+        "concorsi"
+      ],
+      "steps": [
+        {
+          "title": "Attrattività dei bandi",
+          "description": "Quante candidature riceviamo per posto e qual è il profilo dei candidati",
+          "indicatorIds": [
+            "DDP",
+            "IAR"
+          ],
+          "insightText": "Un rapporto candidature/posti sotto 5:1 segnala bassa attrattività",
+          "insightType": "warning"
+        },
+        {
+          "title": "Tempi di selezione",
+          "description": "Dalla pubblicazione del bando alla chiusura della graduatoria",
+          "indicatorIds": [
+            "IER",
+            "IES"
+          ],
+          "insightText": "Il benchmark nazionale per i tempi medi è di 180 giorni",
+          "insightType": "info"
+        },
+        {
+          "title": "Esito delle assunzioni",
+          "description": "Quante posizioni bandite sono state effettivamente coperte",
+          "indicatorIds": [
+            "PTI",
+            "IDP_Norm"
+          ],
+          "insightText": "Confrontare con il tasso di copertura medio del comparto",
+          "insightType": "success"
+        }
+      ]
+    },
+    {
+      "id": "tpl-competenze-digitali",
+      "title": "Gap competenze digitali",
+      "question": "Il personale ha le competenze digitali necessarie per la transizione?",
+      "subtitle": "Assessment, formazione e copertura delle competenze chiave",
+      "category": "explore",
+      "icon": "🔵",
+      "description": "Analizza il livello di competenze digitali del personale attraverso i dati Syllabus e Minerva: assessment completati, gap formativi e copertura dei percorsi di aggiornamento.",
+      "difficulty": "base",
+      "tags": [
+        "competenze",
+        "Syllabus",
+        "formazione"
+      ],
+      "steps": [
+        {
+          "title": "Copertura assessment",
+          "description": "Quanti dipendenti hanno completato l'assessment delle competenze",
+          "indicatorIds": [
+            "ICSP/R",
+            "ICCOMP"
+          ],
+          "insightText": "L'obiettivo ministeriale è raggiungere il 70% di copertura assessment",
+          "insightType": "info"
+        },
+        {
+          "title": "Gap formativo",
+          "description": "Distanza tra competenze rilevate e competenze target",
+          "indicatorIds": [
+            "S_GAP",
+            "S_CORSI"
+          ],
+          "insightText": "Prioritizzare le aree con gap superiore a 1.5 livelli",
+          "insightType": "warning"
+        },
+        {
+          "title": "Investimento formativo",
+          "description": "Ore di formazione erogate e tasso di partecipazione",
+          "indicatorIds": [
+            "S_FORM",
+            "S_BADGE"
+          ],
+          "insightText": "Verificare la correlazione tra formazione erogata e riduzione del gap",
+          "insightType": "success"
+        }
+      ]
+    },
+    {
+      "id": "tpl-gender-equity",
+      "title": "Equità di genere e inclusione",
+      "question": "L'organizzazione garantisce pari opportunità di carriera?",
+      "subtitle": "Gender gap, accesso al lavoro agile e progressioni per genere",
+      "category": "explore",
+      "icon": "🟣",
+      "description": "Percorso dedicato all'analisi delle differenze di genere nelle progressioni di carriera, nell'accesso al lavoro agile e nella distribuzione delle posizioni apicali.",
+      "difficulty": "base",
+      "tags": [
+        "genere",
+        "inclusione",
+        "carriera"
+      ],
+      "steps": [
+        {
+          "title": "Composizione di genere",
+          "description": "Distribuzione uomini/donne per categoria e qualifica",
+          "indicatorIds": [
+            "IRS",
+            "IRG_Norm"
+          ],
+          "insightText": "Analizzare la rappresentanza femminile nelle posizioni dirigenziali",
+          "insightType": "info"
+        },
+        {
+          "title": "Lavoro agile e flessibilità",
+          "description": "Accesso al lavoro agile disaggregato per genere",
+          "indicatorIds": [
+            "ILA",
+            "IGF"
+          ],
+          "insightText": "Verificare se il lavoro agile è equamente distribuito tra generi",
+          "insightType": "warning"
+        },
+        {
+          "title": "Progressioni di carriera",
+          "description": "Confronto progressioni verticali e orizzontali per genere",
+          "indicatorIds": [
+            "IPO",
+            "IPV"
+          ],
+          "insightText": "Un divario superiore al 10% nelle progressioni indica criticità",
+          "insightType": "danger"
+        }
+      ]
+    },
+    {
+      "id": "tpl-programmazione-strategica",
+      "title": "Programmazione strategica del personale",
+      "question": "Il PTFP è allineato ai fabbisogni reali dell'organizzazione?",
+      "subtitle": "Dalla dotazione organica alla pianificazione triennale",
+      "category": "plan",
+      "icon": "🟢",
+      "description": "Percorso strategico per verificare la coerenza tra dotazione organica, fabbisogni espressi nel PTFP, cessazioni attese e piani di assunzione programmati.",
+      "difficulty": "avanzato",
+      "tags": [
+        "strategia",
+        "PTFP",
+        "fabbisogni"
+      ],
+      "steps": [
+        {
+          "title": "Stato dell'organico",
+          "description": "Rapporto tra personale in servizio e dotazione organica prevista",
+          "indicatorIds": [
+            "IRS",
+            "IGF"
+          ],
+          "insightText": "Un gap superiore al 15% tra organico e dotazione richiede attenzione immediata",
+          "insightType": "warning"
+        },
+        {
+          "title": "Dinamiche di flusso",
+          "description": "Bilancio tra assunzioni e cessazioni negli ultimi 3 anni",
+          "indicatorIds": [
+            "IDP_Norm",
+            "PTI",
+            "IRG_Norm"
+          ],
+          "insightText": "Il saldo netto positivo è prerequisito per la sostenibilità organizzativa",
+          "insightType": "info"
+        },
+        {
+          "title": "Profili e competenze necessarie",
+          "description": "Allineamento tra profili professionali e bisogni organizzativi",
+          "indicatorIds": [
+            "IAC",
+            "ICPR",
+            "ICCOMP"
+          ],
+          "insightText": "I profili non mappati rappresentano un rischio di obsolescenza",
+          "insightType": "danger"
+        },
+        {
+          "title": "Piano di azione",
+          "description": "Scenari di reclutamento e sviluppo per il triennio",
+          "indicatorIds": [
+            "IAR",
+            "DDP",
+            "IER"
+          ],
+          "insightText": "Simulare almeno 2 scenari: base e ottimistico",
+          "insightType": "success"
+        }
+      ]
+    },
+    {
+      "id": "tpl-performance-ente",
+      "title": "Check-up prestazionale dell'Ente",
+      "question": "Come si posiziona il mio Ente rispetto al benchmark di comparto?",
+      "subtitle": "Posizionamento complessivo sui 6 Pillar della Riforma",
+      "category": "explore",
+      "icon": "🔵",
+      "description": "Percorso rapido per ottenere una fotografia sintetica delle performance dell'Ente su ciascun Pillar della Riforma, con confronto rispetto alla mediana di comparto.",
+      "difficulty": "base",
+      "tags": [
+        "benchmark",
+        "performance",
+        "sintesi"
+      ],
+      "steps": [
+        {
+          "title": "Classificazione e profili (D1)",
+          "description": "Adozione del modello professionale e copertura catalogo",
+          "indicatorIds": [
+            "IAC",
+            "IIMP/R",
+            "ICPR"
+          ],
+          "insightText": "D1 misura la maturità del sistema di classificazione professionale",
+          "insightType": "info"
+        },
+        {
+          "title": "Fabbisogno e organico (D2)",
+          "description": "Sostenibilità demografica e programmazione",
+          "indicatorIds": [
+            "IGF",
+            "IRS",
+            "IRG_Norm"
+          ],
+          "insightText": "D2 valuta la capacità di anticipare i fabbisogni futuri",
+          "insightType": "info"
+        },
+        {
+          "title": "Reclutamento e selezione (D3)",
+          "description": "Attrattività e tempestività dei concorsi",
+          "indicatorIds": [
+            "IAR",
+            "DDP",
+            "IER"
+          ],
+          "insightText": "D3 è il Pillar con maggiori criticità a livello nazionale",
+          "insightType": "warning"
+        },
+        {
+          "title": "Sviluppo competenze (D4-D5)",
+          "description": "Formazione, assessment e progressioni",
+          "indicatorIds": [
+            "S_FORM",
+            "ICSP/R",
+            "IPO"
+          ],
+          "insightText": "L'investimento in sviluppo correla con la retention del personale",
+          "insightType": "success"
+        }
+      ]
+    }
+  ]
+}

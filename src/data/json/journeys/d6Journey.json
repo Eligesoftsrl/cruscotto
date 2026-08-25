@@ -1,0 +1,222 @@
+{
+  "d6Journey": {
+    "id": "d6-sostenibilita",
+    "pillar": "D6",
+    "title": "Sostenibilità ed evoluzione",
+    "subtitle": "Dall'organico all'equilibrio di genere: un percorso in 8 tappe",
+    "colorVar": "--chart-red",
+    "steps": [
+      {
+        "id": "d6-overview",
+        "title": "Panoramica Sostenibilità",
+        "question": "L'organico è sostenibile nel medio-lungo periodo?",
+        "description": "Il Pillar D6 raccoglie 10 indicatori strategici che monitorano la tenuta dell'organico, l'equilibrio generazionale, la qualificazione, l'equità di genere e le nuove modalità di lavoro. Insieme definiscono la capacità dell'ente di affrontare le sfide future.",
+        "kpiIds": [
+          "TVO",
+          "ISG",
+          "TEP",
+          "IQP",
+          "VQF",
+          "IDLA"
+        ],
+        "impacts": [],
+        "insights": {
+          "TVO": "L'organico si è ridotto dello 0,4%: sostanziale stabilità con lieve contrazione (−766 unità).",
+          "ISG": "Rapporto over 55/under 40 pari a 1,51:1 — forte squilibrio generazionale.",
+          "TEP": "Il 27% del personale è prossimo al pensionamento: esposizione elevata.",
+          "IQP": "Il 65% del personale è laureato: buon livello di qualificazione.",
+          "VQF": "Le donne rappresentano il 57,5% dell'organico.",
+          "IDLA": "Il 48,5% del personale è in lavoro agile."
+        }
+      },
+      {
+        "id": "d6-organico",
+        "title": "Variazione Organico",
+        "question": "L'organico cresce, è stabile o si riduce?",
+        "description": "TVO misura la variazione percentuale dell'organico rispetto all'anno precedente. Valori negativi indicano contrazione della forza lavoro; valori positivi espansione. La stabilità è il primo segnale di sostenibilità.",
+        "kpiIds": [
+          "TVO"
+        ],
+        "impacts": [
+          {
+            "pillar": "D2",
+            "indicatorId": "IRS",
+            "label": "Replica strutturale",
+            "reason": "La variazione dell'organico dipende dal bilanciamento assunzioni/cessazioni"
+          },
+          {
+            "pillar": "D2",
+            "indicatorId": "IDP_Norm",
+            "label": "Progressività",
+            "reason": "Il saldo assunti-cessati determina direttamente la variazione dell'organico"
+          }
+        ],
+        "insights": {
+          "TVO": "Da 192.176 (2022) a 191.410 (2023): saldo di −766 unità (−0,4%). Contrazione minima ma persistente."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D6",
+          "indicator": "TVO"
+        }
+      },
+      {
+        "id": "d6-generazionale",
+        "title": "Equilibrio Generazionale",
+        "question": "L'ente sta invecchiando troppo?",
+        "description": "ISG confronta il personale over 55 con gli under 40 (1=equilibrio). TEP indica la quota di personale prossimo al pensionamento. Insieme segnalano quanto è urgente il ricambio generazionale.",
+        "kpiIds": [
+          "ISG",
+          "TEP"
+        ],
+        "impacts": [
+          {
+            "pillar": "D2",
+            "indicatorId": "IRG_Norm",
+            "label": "Ricambio generazionale",
+            "reason": "Lo squilibrio generazionale determina l'urgenza del ricambio"
+          },
+          {
+            "pillar": "D3",
+            "indicatorId": "IAR",
+            "label": "Attivazione reclutamento",
+            "reason": "L'invecchiamento richiede l'attivazione di nuove procedure concorsuali"
+          }
+        ],
+        "insights": {
+          "ISG": "901.313 over 55 contro 624.699 under 40: rapporto 1,51:1. Forte squilibrio generazionale verso l'invecchiamento.",
+          "TEP": "Il 27% del personale (446.353) ha più di 60 anni e uscirà nei prossimi 5 anni."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D6",
+          "indicator": "ISG"
+        }
+      },
+      {
+        "id": "d6-qualificazione",
+        "title": "Qualificazione del Personale",
+        "question": "Il livello di istruzione è adeguato?",
+        "description": "IQP misura la quota di laureati sull'organico. IEQ monitora la crescita di questa quota nel tempo. Insieme indicano se l'ente sta investendo nel capitale umano qualificato.",
+        "kpiIds": [
+          "IQP",
+          "IEQ"
+        ],
+        "impacts": [
+          {
+            "pillar": "D4",
+            "indicatorId": "CQT",
+            "label": "Coerenza titoli",
+            "reason": "La qualificazione è il presupposto per la coerenza titoli-qualifiche"
+          },
+          {
+            "pillar": "D3",
+            "indicatorId": "ISC",
+            "label": "Sovra-qualificazione",
+            "reason": "Un organico già qualificato può attrarre candidati ancora più qualificati"
+          }
+        ],
+        "insights": {
+          "IQP": "124.417 laureati su 191.410 dipendenti (65%). Buon livello di qualificazione.",
+          "IEQ": "La quota di laureati è cresciuta dal 59% al 65% in 3 anni (+6 punti). Trend positivo."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D6",
+          "indicator": "IQP"
+        }
+      },
+      {
+        "id": "d6-genere",
+        "title": "Equità di Genere",
+        "question": "C'è equilibrio di genere nell'organico e nella dirigenza?",
+        "description": "VQF indica la quota femminile complessiva, IPD la parità nella dirigenza e IRG il riequilibrio nelle assunzioni. Insieme fotografano l'equità di genere a tutti i livelli dell'organizzazione.",
+        "kpiIds": [
+          "VQF",
+          "IPD",
+          "IRG_genere"
+        ],
+        "impacts": [
+          {
+            "pillar": "D5",
+            "indicatorId": "IDC",
+            "label": "Dinamicità carriera",
+            "reason": "L'equità di genere nelle progressioni è componente della dinamicità della carriera"
+          }
+        ],
+        "insights": {
+          "VQF": "Le donne sono il 57,5% dell'organico (110.085 su 191.410). Lieve sovra-rappresentazione.",
+          "IPD": "Parità dirigenziale al 55%: 34.900 donne dirigenti TI su 61.374 totali. Moderata rappresentazione.",
+          "IRG_genere": "57% donne nelle nuove assunzioni vs 57,5% nell'organico: rapporto 0,99 (neutralità quasi perfetta)."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D6",
+          "indicator": "VQF"
+        }
+      },
+      {
+        "id": "d6-flessibilita",
+        "title": "Flessibilità e Lavoro Agile",
+        "question": "L'ente adotta nuove modalità di lavoro?",
+        "description": "IFL misura i contratti flessibili, IDLA la diffusione del lavoro agile. Questi indicatori mostrano quanto l'ente sta innovando le modalità organizzative per migliorare produttività e benessere del personale.",
+        "kpiIds": [
+          "IFL",
+          "IDLA"
+        ],
+        "impacts": [
+          {
+            "pillar": "D3",
+            "indicatorId": "IAP",
+            "label": "Attrattività",
+            "reason": "La flessibilità lavorativa è un fattore di attrattività per i candidati"
+          },
+          {
+            "pillar": "D5",
+            "indicatorId": "IDC",
+            "label": "Dinamicità carriera",
+            "reason": "Il lavoro agile può facilitare percorsi di sviluppo più flessibili"
+          }
+        ],
+        "insights": {
+          "IFL": "Solo 202 lavoratori flessibili su 191.410 (0,1%): la flessibilità contrattuale è praticamente assente.",
+          "IDLA": "92.775 in lavoro agile (48,5%): ampia diffusione, forte crescita post-pandemia (+25pp in 3 anni)."
+        },
+        "drillTarget": {
+          "level": "synthetic",
+          "pillar": "D6",
+          "indicator": "IDLA"
+        }
+      },
+      {
+        "id": "d6-trend",
+        "title": "Trend e Proiezioni",
+        "question": "Come stanno evolvendo gli indicatori nel tempo?",
+        "description": "Gli indicatori di trend (TEPD, TFL, TDLA) misurano la velocità di cambiamento della parità dirigenziale, della flessibilità e del lavoro agile. Permettono di valutare se le politiche dell'ente stanno producendo effetti nel medio periodo.",
+        "kpiIds": [
+          "TEPD",
+          "TFL",
+          "TDLA"
+        ],
+        "impacts": [],
+        "insights": {
+          "TEPD": "Parità dirigenziale in miglioramento: IPD cresciuta da 0,48 a 0,55 in 3 anni (+0,07).",
+          "TFL": "Flessibilità contrattuale stabile e marginale: nessun progresso significativo.",
+          "TDLA": "Lavoro agile dal 20% al 45% in 3 anni (+25pp): forte accelerazione post-pandemia."
+        }
+      },
+      {
+        "id": "d6-atomico",
+        "title": "Dato Atomico",
+        "question": "Dove posso analizzare i dati di dettaglio?",
+        "description": "Accesso diretto alle tabelle operative del Conto Annuale (occupazione, età, genere, modalità di lavoro) e della KPI Rilevazione (dirigenza, lavoro agile). Dati filtrabili per ente, comparto, contratto e anno.",
+        "kpiIds": [],
+        "impacts": [],
+        "drillTarget": {
+          "level": "operational",
+          "source": "conto-annuale"
+        }
+      }
+    ]
+  }
+}

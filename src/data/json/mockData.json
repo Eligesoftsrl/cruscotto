@@ -1,0 +1,825 @@
+{
+  "assuntiPerCausale": [
+    {
+      "causale": "Concorso",
+      "uomini": 150,
+      "donne": 180,
+      "totale": 330
+    },
+    {
+      "causale": "Stabilizzazione",
+      "uomini": 40,
+      "donne": 55,
+      "totale": 95
+    },
+    {
+      "causale": "Mobilità in entrata",
+      "uomini": 35,
+      "donne": 40,
+      "totale": 75
+    },
+    {
+      "causale": "Contratto a termine",
+      "uomini": 50,
+      "donne": 60,
+      "totale": 110
+    },
+    {
+      "causale": "Altro",
+      "uomini": 15,
+      "donne": 20,
+      "totale": 35
+    }
+  ],
+  "benchmarkData": {
+    "etaMedia": {
+      "amministrazione": 49.8,
+      "cluster": 51.2,
+      "complesso": 50.5
+    },
+    "donnePerc": {
+      "amministrazione": 53.4,
+      "cluster": 55.1,
+      "complesso": 58.2
+    },
+    "turnover": {
+      "amministrazione": 4.2,
+      "cluster": 3.8,
+      "complesso": 3.5
+    },
+    "formazionePerc": {
+      "amministrazione": 68.5,
+      "cluster": 62,
+      "complesso": 58
+    },
+    "lavoroAgilePerc": {
+      "amministrazione": 22.1,
+      "cluster": 18.5,
+      "complesso": 15.2
+    }
+  },
+  "cessazioniPerCausale": [
+    {
+      "causale": "Pensionamento",
+      "uomini": 180,
+      "donne": 150,
+      "totale": 330
+    },
+    {
+      "causale": "Dimissioni",
+      "uomini": 45,
+      "donne": 55,
+      "totale": 100
+    },
+    {
+      "causale": "Mobilità",
+      "uomini": 30,
+      "donne": 35,
+      "totale": 65
+    },
+    {
+      "causale": "Scadenza contratto",
+      "uomini": 20,
+      "donne": 25,
+      "totale": 45
+    },
+    {
+      "causale": "Altro",
+      "uomini": 15,
+      "donne": 10,
+      "totale": 25
+    }
+  ],
+  "dimensioni": [
+    {
+      "id": "D1",
+      "label": "Rilevazione e classificazione del personale",
+      "icon": "clipboard"
+    },
+    {
+      "id": "D2",
+      "label": "Programmazione del fabbisogno del personale",
+      "icon": "target"
+    },
+    {
+      "id": "D3",
+      "label": "Recruiting",
+      "icon": "pencil"
+    },
+    {
+      "id": "D4",
+      "label": "Sviluppo professionale",
+      "icon": "book-open"
+    },
+    {
+      "id": "D5",
+      "label": "Rewarding e sviluppo di carriera",
+      "icon": "star"
+    },
+    {
+      "id": "D6",
+      "label": "Capacity building e performance",
+      "icon": "bar-chart-2"
+    }
+  ],
+  "distribuzioneAnzianita": [
+    {
+      "fascia": "<5 anni",
+      "uomini": 520,
+      "donne": 580,
+      "totale": 1100
+    },
+    {
+      "fascia": "5-14",
+      "uomini": 1250,
+      "donne": 1400,
+      "totale": 2650
+    },
+    {
+      "fascia": "15-24",
+      "uomini": 1800,
+      "donne": 2050,
+      "totale": 3850
+    },
+    {
+      "fascia": "25-34",
+      "uomini": 1550,
+      "donne": 1700,
+      "totale": 3250
+    },
+    {
+      "fascia": "35+",
+      "uomini": 680,
+      "donne": 920,
+      "totale": 1600
+    }
+  ],
+  "distribuzioneEta": [
+    {
+      "fascia": "Fino a 35 anni",
+      "uomini": 280,
+      "donne": 310,
+      "totale": 590
+    },
+    {
+      "fascia": "35 - 50",
+      "uomini": 2200,
+      "donne": 2350,
+      "totale": 4550
+    },
+    {
+      "fascia": "50 - 55",
+      "uomini": 1800,
+      "donne": 1950,
+      "totale": 3750
+    },
+    {
+      "fascia": "55-60",
+      "uomini": 1350,
+      "donne": 1280,
+      "totale": 2630
+    },
+    {
+      "fascia": "Oltre 65 anni",
+      "uomini": 170,
+      "donne": 160,
+      "totale": 330
+    }
+  ],
+  "filterOptions": {
+    "macrocategorie": [
+      "Tutte",
+      "Dirigenti",
+      "Area Funzionari",
+      "Area Assistenti",
+      "Area Operatori"
+    ],
+    "categorie": [
+      "Tutte",
+      "Categoria A",
+      "Categoria B",
+      "Categoria C",
+      "Categoria D"
+    ],
+    "comparti": [
+      "Tutti",
+      "Ministeri",
+      "Enti pubblici non economici",
+      "Agenzie fiscali",
+      "Università",
+      "SSN",
+      "Regioni ed Autonomie locali"
+    ],
+    "tipologie": [
+      "Tutte",
+      "Ministero",
+      "Agenzia",
+      "Ente pubblico",
+      "Università statale"
+    ],
+    "regioni": [
+      "Tutte",
+      "Lazio",
+      "Lombardia",
+      "Campania",
+      "Sicilia",
+      "Piemonte",
+      "Veneto",
+      "Emilia-Romagna",
+      "Toscana",
+      "Puglia"
+    ],
+    "dimensioni": [
+      "Tutte",
+      "< 100 dipendenti",
+      "100-500",
+      "500-2000",
+      "2000-10000",
+      "> 10000"
+    ]
+  },
+  "fontiDati": [
+    {
+      "id": "analisi-insieme",
+      "label": "Analisi d'insieme"
+    },
+    {
+      "id": "kpi-riforma",
+      "label": "Esplora i KPI dell'azione di riforma"
+    },
+    {
+      "id": "conto-annuale",
+      "label": "Esplora i dati del Conto annuale",
+      "subItems": [
+        {
+          "id": "analisi-eta",
+          "label": "Analisi per età"
+        },
+        {
+          "id": "analisi-anzianita",
+          "label": "Analisi per anzianità di servizio"
+        },
+        {
+          "id": "cessazioni",
+          "label": "Cessazioni dal servizio"
+        },
+        {
+          "id": "previsione-cessazioni",
+          "label": "Previsione delle cessazioni"
+        }
+      ]
+    },
+    {
+      "id": "lavoro-pubblico",
+      "label": "Esplora i dati Lavoro Pubblico"
+    },
+    {
+      "id": "sipro",
+      "label": "Esplora i dati SIPro"
+    },
+    {
+      "id": "minerva",
+      "label": "Esplora i dati Minerva"
+    },
+    {
+      "id": "inpa",
+      "label": "Esplora i dati INPA"
+    },
+    {
+      "id": "syllabus",
+      "label": "Esplora i dati Syllabus"
+    }
+  ],
+  "formazione": {
+    "formatiPerc": 68.5,
+    "formatiTotale": 8528,
+    "oreFormazione": 42500,
+    "oreProCapite": 5,
+    "serieStorica": [
+      {
+        "anno": "2018",
+        "formatiPerc": 52.1
+      },
+      {
+        "anno": "2019",
+        "formatiPerc": 58.3
+      },
+      {
+        "anno": "2020",
+        "formatiPerc": 42
+      },
+      {
+        "anno": "2021",
+        "formatiPerc": 55.8
+      },
+      {
+        "anno": "2022",
+        "formatiPerc": 63.2
+      },
+      {
+        "anno": "2023",
+        "formatiPerc": 68.5
+      }
+    ]
+  },
+  "generePerQualifica": [
+    {
+      "qualifica": "Dirigenti I",
+      "uomini": 28,
+      "donne": 17
+    },
+    {
+      "qualifica": "Dirigenti II",
+      "uomini": 155,
+      "donne": 120
+    },
+    {
+      "qualifica": "Funzionari",
+      "uomini": 1600,
+      "donne": 2200
+    },
+    {
+      "qualifica": "Assistenti",
+      "uomini": 2400,
+      "donne": 2800
+    },
+    {
+      "qualifica": "Operatori",
+      "uomini": 1617,
+      "donne": 1513
+    }
+  ],
+  "kpiOverview": {
+    "personaleTotale": 12450,
+    "personaleTotaleVar": 2.3,
+    "etaMedia": 49.8,
+    "etaMediaVar": 0.4,
+    "donnePerc": 53.4,
+    "uominiPerc": 46.6,
+    "parttimePerc": 5.3,
+    "turnoverRate": 4.2,
+    "turnoverVar": 1.1,
+    "formazionePerc": 68.5,
+    "formazioneVar": 3.2,
+    "lavoroAgilePerc": 22.1,
+    "lavoroAgileVar": 5.6,
+    "personaleDirigente": 320,
+    "personaleNonDirigente": 12130
+  },
+  "lavoroAgile": {
+    "agiliPerc": 22.1,
+    "agiliTotale": 2751,
+    "donneAgiliPerc": 70,
+    "uominiAgiliPerc": 30,
+    "serieStorica": [
+      {
+        "anno": "2019",
+        "agili": 120
+      },
+      {
+        "anno": "2020",
+        "agili": 4800
+      },
+      {
+        "anno": "2021",
+        "agili": 3500
+      },
+      {
+        "anno": "2022",
+        "agili": 3100
+      },
+      {
+        "anno": "2023",
+        "agili": 2751
+      }
+    ]
+  },
+  "lavoroFlessibile": {
+    "flessibiliPerc": 6.6,
+    "flessibiliTotale": 822,
+    "donneFlessibiliPerc": 67.6,
+    "uominiFlessibiliPerc": 32.4,
+    "serieStorica": [
+      {
+        "anno": "2018",
+        "flessibili": 450
+      },
+      {
+        "anno": "2019",
+        "flessibili": 520
+      },
+      {
+        "anno": "2020",
+        "flessibili": 610
+      },
+      {
+        "anno": "2021",
+        "flessibili": 700
+      },
+      {
+        "anno": "2022",
+        "flessibili": 780
+      },
+      {
+        "anno": "2023",
+        "flessibili": 822
+      }
+    ]
+  },
+  "personaleMacrocategoria": [
+    {
+      "categoria": "Dirigenti I fascia",
+      "value": 45
+    },
+    {
+      "categoria": "Dirigenti II fascia",
+      "value": 275
+    },
+    {
+      "categoria": "Area Funzionari",
+      "value": 3800
+    },
+    {
+      "categoria": "Area Assistenti",
+      "value": 5200
+    },
+    {
+      "categoria": "Area Operatori",
+      "value": 3130
+    }
+  ],
+  "personaleTitoloStudio": [
+    {
+      "titolo": "Laurea magistrale",
+      "value": 3590
+    },
+    {
+      "titolo": "Laurea triennale",
+      "value": 2100
+    },
+    {
+      "titolo": "Diploma",
+      "value": 5200
+    },
+    {
+      "titolo": "Licenza media",
+      "value": 1350
+    },
+    {
+      "titolo": "Altro",
+      "value": 210
+    }
+  ],
+  "progressioni": [
+    {
+      "anno": "2018",
+      "verticali": 85,
+      "orizzontali": 320
+    },
+    {
+      "anno": "2019",
+      "verticali": 92,
+      "orizzontali": 350
+    },
+    {
+      "anno": "2020",
+      "verticali": 45,
+      "orizzontali": 180
+    },
+    {
+      "anno": "2021",
+      "verticali": 110,
+      "orizzontali": 400
+    },
+    {
+      "anno": "2022",
+      "verticali": 130,
+      "orizzontali": 450
+    },
+    {
+      "anno": "2023",
+      "verticali": 145,
+      "orizzontali": 480
+    }
+  ],
+  "serieStoricaAnzianita": [
+    {
+      "anno": "2012",
+      "<5 anni": 12,
+      "5-14": 20,
+      "15-24": 28,
+      "25-34": 28,
+      "35+": 12
+    },
+    {
+      "anno": "2013",
+      "<5 anni": 11,
+      "5-14": 21,
+      "15-24": 28,
+      "25-34": 28,
+      "35+": 12
+    },
+    {
+      "anno": "2014",
+      "<5 anni": 10,
+      "5-14": 21,
+      "15-24": 29,
+      "25-34": 27,
+      "35+": 13
+    },
+    {
+      "anno": "2015",
+      "<5 anni": 9,
+      "5-14": 22,
+      "15-24": 29,
+      "25-34": 27,
+      "35+": 13
+    },
+    {
+      "anno": "2016",
+      "<5 anni": 9,
+      "5-14": 22,
+      "15-24": 30,
+      "25-34": 26,
+      "35+": 13
+    },
+    {
+      "anno": "2017",
+      "<5 anni": 8,
+      "5-14": 23,
+      "15-24": 30,
+      "25-34": 26,
+      "35+": 13
+    },
+    {
+      "anno": "2018",
+      "<5 anni": 8,
+      "5-14": 23,
+      "15-24": 31,
+      "25-34": 25,
+      "35+": 13
+    },
+    {
+      "anno": "2019",
+      "<5 anni": 9,
+      "5-14": 22,
+      "15-24": 31,
+      "25-34": 25,
+      "35+": 13
+    },
+    {
+      "anno": "2020",
+      "<5 anni": 9,
+      "5-14": 22,
+      "15-24": 31,
+      "25-34": 25,
+      "35+": 13
+    },
+    {
+      "anno": "2021",
+      "<5 anni": 10,
+      "5-14": 21,
+      "15-24": 31,
+      "25-34": 25,
+      "35+": 13
+    },
+    {
+      "anno": "2022",
+      "<5 anni": 10,
+      "5-14": 21,
+      "15-24": 31,
+      "25-34": 25,
+      "35+": 13
+    },
+    {
+      "anno": "2023",
+      "<5 anni": 9,
+      "5-14": 21,
+      "15-24": 31,
+      "25-34": 26,
+      "35+": 13
+    }
+  ],
+  "serieStoricaEta": [
+    {
+      "anno": "2012",
+      "Fino a 35 anni": 8,
+      "35 - 50": 22,
+      "50 - 55": 28,
+      "55-60": 30,
+      "Oltre 65 anni": 12
+    },
+    {
+      "anno": "2013",
+      "Fino a 35 anni": 7,
+      "35 - 50": 23,
+      "50 - 55": 27,
+      "55-60": 31,
+      "Oltre 65 anni": 12
+    },
+    {
+      "anno": "2014",
+      "Fino a 35 anni": 7,
+      "35 - 50": 24,
+      "50 - 55": 26,
+      "55-60": 31,
+      "Oltre 65 anni": 12
+    },
+    {
+      "anno": "2015",
+      "Fino a 35 anni": 6,
+      "35 - 50": 25,
+      "50 - 55": 25,
+      "55-60": 32,
+      "Oltre 65 anni": 12
+    },
+    {
+      "anno": "2016",
+      "Fino a 35 anni": 5,
+      "35 - 50": 26,
+      "50 - 55": 25,
+      "55-60": 32,
+      "Oltre 65 anni": 12
+    },
+    {
+      "anno": "2017",
+      "Fino a 35 anni": 5,
+      "35 - 50": 27,
+      "50 - 55": 24,
+      "55-60": 32,
+      "Oltre 65 anni": 12
+    },
+    {
+      "anno": "2018",
+      "Fino a 35 anni": 5,
+      "35 - 50": 28,
+      "50 - 55": 23,
+      "55-60": 33,
+      "Oltre 65 anni": 11
+    },
+    {
+      "anno": "2019",
+      "Fino a 35 anni": 6,
+      "35 - 50": 29,
+      "50 - 55": 22,
+      "55-60": 32,
+      "Oltre 65 anni": 11
+    },
+    {
+      "anno": "2020",
+      "Fino a 35 anni": 6,
+      "35 - 50": 30,
+      "50 - 55": 22,
+      "55-60": 31,
+      "Oltre 65 anni": 11
+    },
+    {
+      "anno": "2021",
+      "Fino a 35 anni": 7,
+      "35 - 50": 31,
+      "50 - 55": 21,
+      "55-60": 30,
+      "Oltre 65 anni": 11
+    },
+    {
+      "anno": "2022",
+      "Fino a 35 anni": 7,
+      "35 - 50": 32,
+      "50 - 55": 21,
+      "55-60": 29,
+      "Oltre 65 anni": 11
+    },
+    {
+      "anno": "2023",
+      "Fino a 35 anni": 8,
+      "35 - 50": 33,
+      "50 - 55": 20,
+      "55-60": 28,
+      "Oltre 65 anni": 11
+    }
+  ],
+  "serieStoricaPersonale": [
+    {
+      "anno": "2012",
+      "uomini": 88,
+      "donne": 92,
+      "totale": 180
+    },
+    {
+      "anno": "2013",
+      "uomini": 87,
+      "donne": 91,
+      "totale": 178
+    },
+    {
+      "anno": "2014",
+      "uomini": 86,
+      "donne": 90,
+      "totale": 176
+    },
+    {
+      "anno": "2015",
+      "uomini": 85,
+      "donne": 89,
+      "totale": 174
+    },
+    {
+      "anno": "2016",
+      "uomini": 84,
+      "donne": 90,
+      "totale": 174
+    },
+    {
+      "anno": "2017",
+      "uomini": 83,
+      "donne": 91,
+      "totale": 174
+    },
+    {
+      "anno": "2018",
+      "uomini": 82,
+      "donne": 92,
+      "totale": 174
+    },
+    {
+      "anno": "2019",
+      "uomini": 82,
+      "donne": 93,
+      "totale": 175
+    },
+    {
+      "anno": "2020",
+      "uomini": 83,
+      "donne": 94,
+      "totale": 177
+    },
+    {
+      "anno": "2021",
+      "uomini": 84,
+      "donne": 96,
+      "totale": 180
+    },
+    {
+      "anno": "2022",
+      "uomini": 85,
+      "donne": 98,
+      "totale": 183
+    },
+    {
+      "anno": "2023",
+      "uomini": 86,
+      "donne": 100,
+      "totale": 186
+    }
+  ],
+  "serieStoricaTurnover": [
+    {
+      "anno": "2016",
+      "assunti": 380,
+      "cessati": 420,
+      "saldo": -40
+    },
+    {
+      "anno": "2017",
+      "assunti": 400,
+      "cessati": 400,
+      "saldo": 0
+    },
+    {
+      "anno": "2018",
+      "assunti": 420,
+      "cessati": 380,
+      "saldo": 40
+    },
+    {
+      "anno": "2019",
+      "assunti": 480,
+      "cessati": 360,
+      "saldo": 120
+    },
+    {
+      "anno": "2020",
+      "assunti": 450,
+      "cessati": 350,
+      "saldo": 100
+    },
+    {
+      "anno": "2021",
+      "assunti": 520,
+      "cessati": 340,
+      "saldo": 180
+    },
+    {
+      "anno": "2022",
+      "assunti": 600,
+      "cessati": 310,
+      "saldo": 290
+    },
+    {
+      "anno": "2023",
+      "assunti": 645,
+      "cessati": 565,
+      "saldo": 80
+    }
+  ]
+}

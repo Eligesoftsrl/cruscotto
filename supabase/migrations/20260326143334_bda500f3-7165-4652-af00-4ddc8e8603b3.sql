@@ -1,0 +1,1 @@
+ALTER TABLE lk_enti ADD COLUMN IF NOT EXISTS dimensione_pa character varying DEFAULT NULL;

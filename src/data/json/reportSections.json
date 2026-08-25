@@ -1,0 +1,954 @@
+{
+  "reportAudienceProfiles": {
+    "executive": {
+      "label": "Executive Summary",
+      "subtitle": "Per il Vertice e gli Organi di Indirizzo",
+      "icon": "👔",
+      "description": "Rapporto sintetico (2-3 pagine) focalizzato su criticità, trend e azioni prioritarie. Ideale per decisori che necessitano di un quadro d'insieme rapido.",
+      "maxSections": 6,
+      "preferredRepresentation": "kpi_strip"
+    },
+    "extended": {
+      "label": "Rapporto Esteso Commentato",
+      "subtitle": "Per Dirigenti e Responsabili HR",
+      "icon": "📋",
+      "description": "Rapporto completo (6-10 pagine) con analisi approfondite, benchmark, narrazione dei fenomeni e raccomandazioni operative. Per chi gestisce le politiche del personale.",
+      "maxSections": 12,
+      "preferredRepresentation": "narrative"
+    },
+    "technical": {
+      "label": "Rapporto Tecnico",
+      "subtitle": "Per Statistici e Analisti",
+      "icon": "📊",
+      "description": "Report di dettaglio con tabelle complete, formule degli indicatori, serie storiche e confronti puntuali. Per chi analizza i dati e produce documentazione tecnica.",
+      "maxSections": 15,
+      "preferredRepresentation": "table"
+    }
+  },
+  "reportSectionsCatalog": [
+    {
+      "id": "cover",
+      "title": "Copertina e Contesto Istituzionale",
+      "category": "overview",
+      "description": "Intestazione, ente, periodo di riferimento, fonti dati e metodologia.",
+      "extendedDescription": "Sezione introduttiva che inquadra il rapporto nel contesto istituzionale. Riporta la denominazione dell'ente, il periodo di analisi (anno 2023), il comparto contrattuale, le 7 fonti informative utilizzate (Conto Annuale, InPA, Syllabus, Minerva, SIPrO, Lavoro Pubblico, Rilevazione KPI) e la metodologia di calcolo degli indicatori compositi sui 6 pillar della Riforma.",
+      "questionAnswered": "Quali sono il perimetro, le fonti e la metodologia del rapporto?",
+      "dataSources": [
+        "Anagrafica Enti",
+        "Configurazione sistema"
+      ],
+      "defaultFor": [
+        "executive",
+        "extended",
+        "technical"
+      ],
+      "representations": [
+        "narrative"
+      ],
+      "defaultRepresentation": {
+        "executive": "narrative",
+        "extended": "narrative",
+        "technical": "narrative"
+      },
+      "relevance": "normal",
+      "data": {
+        "narrative": "Il presente rapporto illustra i risultati del monitoraggio annuale degli indicatori di gestione del personale per l'anno 2023. L'analisi copre 6 dimensioni strategiche (D1–D6) e si avvale di 46 indicatori quantitativi provenienti da 7 fonti informative."
+      }
+    },
+    {
+      "id": "score_overview",
+      "title": "Score Complessivo e Posizionamento",
+      "category": "overview",
+      "pillar": "Trasversale",
+      "description": "Sintesi dei 6 pillar con score medio, confronto cluster e trend annuale.",
+      "extendedDescription": "Quadro d'insieme delle performance dell'ente su tutte e 6 le dimensioni della Riforma PA. Presenta lo score medio ponderato, il posizionamento rispetto al cluster di appartenenza (amministrazioni comparabili per comparto e dimensione) e il trend rispetto all'anno precedente. Evidenzia quanti pillar raggiungono la soglia-target del 60% e quali risultano sotto soglia, fornendo una mappa immediata delle aree di forza e delle criticità.",
+      "questionAnswered": "Come si posiziona l'ente rispetto al cluster e quali pillar sono sotto soglia?",
+      "dataSources": [
+        "Tutti i pillar (D1-D6)",
+        "Benchmark cluster"
+      ],
+      "defaultFor": [
+        "executive",
+        "extended"
+      ],
+      "representations": [
+        "kpi_strip",
+        "chart",
+        "narrative"
+      ],
+      "defaultRepresentation": {
+        "executive": "kpi_strip",
+        "extended": "chart",
+        "technical": "table"
+      },
+      "relevance": "critical",
+      "relevanceReason": "2 pillar sotto soglia (D3, D6) — performance complessiva al 57% vs 63% cluster",
+      "data": {
+        "kpis": [
+          {
+            "label": "Score medio",
+            "value": "57%",
+            "status": "yellow",
+            "cluster": "63%",
+            "delta": "−6 pp"
+          },
+          {
+            "label": "Pillar in target",
+            "value": "2 / 6",
+            "status": "red",
+            "cluster": "3 / 6"
+          },
+          {
+            "label": "Trend YoY",
+            "value": "+0,4 pp",
+            "status": "yellow",
+            "delta": "vs 2022"
+          }
+        ],
+        "narrative": "L'ente si posiziona al 57% dello score complessivo, 6 punti sotto la media del cluster (63%). Due pillar risultano critici: D3 Recruiting (42%) e D6 Capacity (52%)."
+      }
+    },
+    {
+      "id": "demographic_photo",
+      "title": "Fotografia Demografica del Personale",
+      "category": "demographic",
+      "pillar": "D2",
+      "description": "Consistenza, età media, distribuzione anagrafica, quota over 55 e under 35.",
+      "extendedDescription": "Analisi dettagliata della struttura anagrafica del personale al 31 dicembre 2023. Include la consistenza complessiva dell'organico, l'età media con scomposizione per genere, la distribuzione per fasce d'età (piramide anagrafica), le quote over 55 e under 35, e il confronto con i valori del cluster di riferimento. Permette di identificare squilibri generazionali, stimare l'invecchiamento della forza lavoro e valutare la capacità di attrazione di risorse giovani.",
+      "questionAnswered": "Qual è la composizione anagrafica del personale e come si confronta con il cluster?",
+      "dataSources": [
+        "Conto Annuale (ca_eta, ca_eta_media, ca_occupazione)"
+      ],
+      "defaultFor": [
+        "executive",
+        "extended",
+        "technical"
+      ],
+      "representations": [
+        "kpi_strip",
+        "chart",
+        "table",
+        "narrative"
+      ],
+      "defaultRepresentation": {
+        "executive": "kpi_strip",
+        "extended": "narrative",
+        "technical": "table"
+      },
+      "relevance": "critical",
+      "relevanceReason": "Età media 51,2 anni — superiore al cluster (+0,8 aa). Quota over 55 al 48%.",
+      "data": {
+        "kpis": [
+          {
+            "label": "Personale in servizio",
+            "value": "12.847",
+            "status": "yellow",
+            "cluster": "12.104",
+            "delta": "↓ −2,3%"
+          },
+          {
+            "label": "Età media",
+            "value": "51,2 aa",
+            "status": "red",
+            "cluster": "50,4 aa",
+            "delta": "↑ +0,8 aa"
+          },
+          {
+            "label": "Quota over 55",
+            "value": "48%",
+            "status": "red",
+            "cluster": "44%",
+            "delta": "↑ +2,1 pp"
+          },
+          {
+            "label": "Quota under 35",
+            "value": "7%",
+            "status": "red",
+            "cluster": "10%",
+            "delta": "↓ −0,6 pp"
+          }
+        ],
+        "narrative": "Al 31 dicembre 2023 il personale ammonta a 12.847 unità, con una riduzione del 2,3%. L'età media è di 51,2 anni, superiore al cluster (50,4).",
+        "insight": "Il confronto con il cluster rivela un disallineamento strutturale nella composizione anagrafica."
+      }
+    },
+    {
+      "id": "tep_risk",
+      "title": "Rischio Pensionamento (TEP)",
+      "category": "demographic",
+      "pillar": "D6",
+      "description": "Tasso di esposizione al pensionamento a 36 mesi, trend quinquennale, proiezioni.",
+      "extendedDescription": "Misurazione del rischio di perdita di personale per pensionamento nei prossimi 36 mesi. Il TEP (Tasso di Esposizione al Pensionamento) è calcolato come rapporto tra il personale con requisiti pensionistici maturabili entro 3 anni e il totale dell'organico. Include la serie storica quinquennale per evidenziare l'accelerazione del fenomeno, la stima numerica delle uscite attese, la scomposizione per qualifica/settore e il confronto con la soglia critica (20%) e il valore cluster.",
+      "questionAnswered": "Quante persone usciranno per pensionamento nei prossimi 3 anni e il trend è in peggioramento?",
+      "dataSources": [
+        "Rilevazione KPI (dw_kpi_rilevazione)",
+        "Conto Annuale (ca_eta)"
+      ],
+      "defaultFor": [
+        "executive",
+        "extended",
+        "technical"
+      ],
+      "representations": [
+        "kpi_strip",
+        "chart",
+        "table",
+        "narrative"
+      ],
+      "defaultRepresentation": {
+        "executive": "kpi_strip",
+        "extended": "chart",
+        "technical": "table"
+      },
+      "relevance": "critical",
+      "relevanceReason": "TEP al 31% — 11 punti oltre la soglia critica del 20%",
+      "data": {
+        "kpis": [
+          {
+            "label": "TEP 2023",
+            "value": "31%",
+            "status": "red",
+            "cluster": "22%",
+            "delta": "+2,4 pp"
+          },
+          {
+            "label": "Soglia critica",
+            "value": "20%",
+            "status": "yellow"
+          },
+          {
+            "label": "Uscite stimate 36m",
+            "value": "1.980",
+            "status": "red"
+          }
+        ],
+        "tableRows": [
+          {
+            "label": "2019",
+            "value": "24%",
+            "target": "20%",
+            "status": "yellow"
+          },
+          {
+            "label": "2020",
+            "value": "25%",
+            "target": "20%",
+            "status": "yellow"
+          },
+          {
+            "label": "2021",
+            "value": "27%",
+            "target": "20%",
+            "status": "red"
+          },
+          {
+            "label": "2022",
+            "value": "28,6%",
+            "target": "20%",
+            "status": "red"
+          },
+          {
+            "label": "2023",
+            "value": "31%",
+            "target": "20%",
+            "status": "red"
+          }
+        ],
+        "narrative": "Il TEP è in peggioramento costante dal 2019. L'accelerazione 2022–2023 (+2,4 pp) indica che il fenomeno non si è stabilizzato."
+      }
+    },
+    {
+      "id": "turnover_rate",
+      "title": "Tasso di Sostituzione e Turnover",
+      "category": "demographic",
+      "pillar": "D2",
+      "description": "Rapporto assunti/cessati, tasso di turnover, capacità di ricambio generazionale.",
+      "extendedDescription": "Analisi della dinamica occupazionale: rapporto tra assunzioni e cessazioni nell'anno, tasso di turnover complessivo e capacità effettiva di ricambio generazionale. Il tasso di sostituzione (assunti/cessati) indica se l'ente riesce a compensare le uscite. Valori inferiori a 1,0 segnalano una riduzione strutturale dell'organico. Include la proiezione triennale delle perdite nette e il confronto con il fabbisogno programmato nel PTFP.",
+      "questionAnswered": "L'ente riesce a sostituire il personale in uscita? A che ritmo si riduce l'organico?",
+      "dataSources": [
+        "Conto Annuale (ca_assunti, ca_cessati)",
+        "Lavoro Pubblico (dw_assunti, dw_cessati)"
+      ],
+      "defaultFor": [
+        "extended",
+        "technical"
+      ],
+      "representations": [
+        "kpi_strip",
+        "chart",
+        "table",
+        "narrative"
+      ],
+      "defaultRepresentation": {
+        "executive": "kpi_strip",
+        "extended": "narrative",
+        "technical": "table"
+      },
+      "relevance": "critical",
+      "relevanceReason": "Tasso sostituzione a 0,50 — non sufficiente a garantire capacità operative",
+      "data": {
+        "kpis": [
+          {
+            "label": "Tasso sostituzione",
+            "value": "0,50",
+            "status": "red",
+            "delta": "Critico"
+          },
+          {
+            "label": "Assunzioni 2023",
+            "value": "312",
+            "status": "yellow"
+          },
+          {
+            "label": "Cessazioni 2023",
+            "value": "624",
+            "status": "red"
+          }
+        ],
+        "narrative": "Il tasso di sostituzione a 0,50 indica che per ogni 2 cessazioni viene effettuata solo 1 assunzione. Con le attuali dinamiche il personale si ridurrebbe di ulteriori 990 unità nei prossimi 36 mesi."
+      }
+    },
+    {
+      "id": "gender_analysis",
+      "title": "Analisi di Genere",
+      "category": "demographic",
+      "pillar": "D2",
+      "description": "Distribuzione per genere, gap retributivo, accesso a posizioni apicali.",
+      "extendedDescription": "Esame della composizione di genere del personale con focus sugli indicatori di equità: distribuzione uomini/donne per qualifica e categoria, percentuale di donne in posizioni dirigenziali e di responsabilità, gap retributivo medio tra generi, e trend di accesso alle progressioni verticali. Utile per documentare lo stato di attuazione delle politiche di pari opportunità e identificare eventuali segregazioni verticali o orizzontali.",
+      "questionAnswered": "Esiste un equilibrio di genere nell'ente, incluse le posizioni apicali e le retribuzioni?",
+      "dataSources": [
+        "Conto Annuale (ca_occupazione, ca_assunti, ca_cessati)",
+        "Rilevazione KPI"
+      ],
+      "defaultFor": [
+        "extended",
+        "technical"
+      ],
+      "representations": [
+        "kpi_strip",
+        "chart",
+        "table",
+        "narrative"
+      ],
+      "defaultRepresentation": {
+        "executive": "kpi_strip",
+        "extended": "chart",
+        "technical": "table"
+      },
+      "relevance": "notable",
+      "relevanceReason": "Gap di genere nelle posizioni dirigenziali al 62/38",
+      "data": {
+        "kpis": [
+          {
+            "label": "% Donne",
+            "value": "54%",
+            "status": "green",
+            "cluster": "52%"
+          },
+          {
+            "label": "Donne dirigenti",
+            "value": "38%",
+            "status": "yellow",
+            "cluster": "41%"
+          },
+          {
+            "label": "Gap retributivo",
+            "value": "−4,2%",
+            "status": "yellow"
+          }
+        ],
+        "narrative": "Il personale femminile rappresenta il 54% della forza lavoro ma solo il 38% delle posizioni dirigenziali. Il gap retributivo si attesta al -4,2%."
+      }
+    },
+    {
+      "id": "recruiting_overview",
+      "title": "Reclutamento e Selezione (D3)",
+      "category": "recruiting",
+      "pillar": "D3",
+      "description": "Score del pillar, attrattività delle posizioni, tempi delle procedure, selettività.",
+      "extendedDescription": "Valutazione complessiva della capacità di reclutamento dell'ente attraverso i 6 indicatori del pillar D3: IAR (attivazione reclutamento), DDP (allineamento domanda/offerta), IAT (attrazione territoriale), TSC (selettività concorsuale), IAP (attrattività posizioni) e TCP (tempo completamento procedure). Per ciascun indicatore viene fornito il valore corrente, il target normativo, il confronto cluster e il trend. La sezione permette di individuare i colli di bottiglia nel processo di selezione.",
+      "questionAnswered": "L'ente riesce a reclutare efficacemente? Dove si concentrano le inefficienze?",
+      "dataSources": [
+        "InPA (dw_inpa_bandi)",
+        "Lavoro Pubblico (dw_lp_graduatorie)",
+        "Rilevazione KPI"
+      ],
+      "defaultFor": [
+        "executive",
+        "extended",
+        "technical"
+      ],
+      "representations": [
+        "kpi_strip",
+        "chart",
+        "table",
+        "narrative"
+      ],
+      "defaultRepresentation": {
+        "executive": "kpi_strip",
+        "extended": "narrative",
+        "technical": "table"
+      },
+      "relevance": "critical",
+      "relevanceReason": "Pillar più critico: 42% vs 55% cluster. IAP al 38%, TCP a 218 giorni.",
+      "data": {
+        "kpis": [
+          {
+            "label": "Score D3",
+            "value": "42%",
+            "status": "red",
+            "cluster": "55%",
+            "delta": "−13 pp"
+          },
+          {
+            "label": "IAP Attrattività",
+            "value": "38%",
+            "status": "red",
+            "cluster": "52%",
+            "delta": "−4,3 pp"
+          },
+          {
+            "label": "TCP Tempi procedure",
+            "value": "218 gg",
+            "status": "red",
+            "cluster": "185 gg",
+            "delta": "+12 gg"
+          },
+          {
+            "label": "IAR Attivazione",
+            "value": "72%",
+            "status": "green",
+            "cluster": "68%",
+            "delta": "+5,0 pp"
+          }
+        ],
+        "tableRows": [
+          {
+            "label": "IAR — Attivazione reclutamento",
+            "value": "72%",
+            "target": "70%",
+            "status": "green"
+          },
+          {
+            "label": "DDP — Allineamento domanda",
+            "value": "58%",
+            "target": "70%",
+            "status": "yellow"
+          },
+          {
+            "label": "IAT — Attrazione territoriale",
+            "value": "45%",
+            "target": "55%",
+            "status": "yellow"
+          },
+          {
+            "label": "TSC — Selettività procedure",
+            "value": "12,4x",
+            "target": "8-15x",
+            "status": "green"
+          },
+          {
+            "label": "IAP — Attrattività posizioni",
+            "value": "38%",
+            "target": "60%",
+            "status": "red"
+          },
+          {
+            "label": "TCP — Tempo procedure",
+            "value": "218 gg",
+            "target": "180 gg",
+            "status": "red"
+          }
+        ],
+        "narrative": "Il valore IAP (38% vs target 60%) indica che su 100 posti a concorso, solo 38 ricevono candidature adeguate. Il TCP a 218 giorni supera di 38 giorni il target."
+      }
+    },
+    {
+      "id": "inpa_funnel",
+      "title": "Funnel di Reclutamento InPA",
+      "category": "recruiting",
+      "pillar": "D3",
+      "description": "Analisi del percorso Bandi → Candidature → Idonei → Assunti dal portale InPA.",
+      "extendedDescription": "Ricostruzione del funnel di conversione delle procedure concorsuali pubblicate sul portale InPA. Analizza ogni fase del processo: numero di bandi pubblicati, volume di candidature ricevute, candidati dichiarati idonei e numero di assunti effettivi. Per ciascun passaggio calcola il tasso di conversione e il confronto con i benchmark nazionali. Permette di identificare dove si perdono candidati e quali tipologie di bando risultano più efficaci.",
+      "questionAnswered": "Qual è l'efficienza del processo di reclutamento dal bando all'assunzione?",
+      "dataSources": [
+        "InPA (dw_inpa_bandi)",
+        "Lavoro Pubblico (dw_lp_graduatorie)"
+      ],
+      "defaultFor": [
+        "extended",
+        "technical"
+      ],
+      "representations": [
+        "chart",
+        "table",
+        "narrative"
+      ],
+      "defaultRepresentation": {
+        "executive": "chart",
+        "extended": "chart",
+        "technical": "table"
+      },
+      "relevance": "notable",
+      "data": {
+        "kpis": [
+          {
+            "label": "Bandi pubblicati",
+            "value": "48",
+            "status": "green"
+          },
+          {
+            "label": "Candidature totali",
+            "value": "5.842",
+            "status": "green"
+          },
+          {
+            "label": "Idonei",
+            "value": "1.247",
+            "status": "yellow"
+          },
+          {
+            "label": "Assunti",
+            "value": "312",
+            "status": "yellow"
+          }
+        ],
+        "narrative": "Il tasso di conversione complessivo Bandi→Assunti è del 5,3%. La fase più selettiva è il passaggio Candidature→Idonei (21,3%), coerente con le procedure concorsuali."
+      }
+    },
+    {
+      "id": "classification_d1",
+      "title": "Classificazione e Competenze (D1)",
+      "category": "development",
+      "pillar": "D1",
+      "description": "Adeguatezza dei profili, copertura del catalogo competenze, mappatura Minerva.",
+      "extendedDescription": "Stato della mappatura delle competenze e dell'adeguatezza dei profili professionali dell'ente. Analizza la copertura del catalogo Minerva (percentuale di personale con profilo aggiornato), l'indice IACU di adeguatezza classificatoria, il numero di profili di ruolo definiti e la completezza della mappatura competenze-profilo. Fornisce una fotografia della maturità organizzativa nella gestione delle competenze, prerequisito per la pianificazione formativa e il reclutamento mirato.",
+      "questionAnswered": "I profili professionali sono adeguatamente mappati e le competenze sono classificate?",
+      "dataSources": [
+        "Minerva (dw_bridge_profilo_competenza, dw_competenza)",
+        "Rilevazione KPI"
+      ],
+      "defaultFor": [
+        "extended",
+        "technical"
+      ],
+      "representations": [
+        "kpi_strip",
+        "chart",
+        "table",
+        "narrative"
+      ],
+      "defaultRepresentation": {
+        "executive": "kpi_strip",
+        "extended": "narrative",
+        "technical": "table"
+      },
+      "relevance": "normal",
+      "data": {
+        "kpis": [
+          {
+            "label": "Score D1",
+            "value": "72%",
+            "status": "green",
+            "cluster": "68%",
+            "delta": "+4 pp"
+          },
+          {
+            "label": "IACU Adeguatezza",
+            "value": "82%",
+            "status": "green",
+            "cluster": "78%"
+          },
+          {
+            "label": "Profili mappati",
+            "value": "94%",
+            "status": "green"
+          }
+        ],
+        "narrative": "Il pillar D1 è il più performante dell'ente (72% vs 68% cluster). L'82% del personale ha un profilo di adeguatezza aggiornato nel sistema Minerva."
+      }
+    },
+    {
+      "id": "training_d4",
+      "title": "Sviluppo e Formazione (D4)",
+      "category": "development",
+      "pillar": "D4",
+      "description": "Efficacia formativa, copertura, ore pro capite, completamento percorsi Syllabus.",
+      "extendedDescription": "Valutazione dell'investimento formativo dell'ente sotto quattro dimensioni: efficacia (IESF — impatto verificabile dei percorsi completati), copertura (TCF — percentuale di personale che ha fruito di formazione), intensità (IFM — ore medie pro capite) e completamento dei percorsi digitali Syllabus. Include il confronto con i target normativi (16h/anno pro capite) e con la media del cluster. Consente di valutare se la formazione è sufficiente, mirata e produce risultati misurabili.",
+      "questionAnswered": "La formazione è efficace, raggiunge abbastanza personale e rispetta gli standard?",
+      "dataSources": [
+        "Conto Annuale (ca_formazione)",
+        "Syllabus",
+        "Rilevazione KPI"
+      ],
+      "defaultFor": [
+        "executive",
+        "extended",
+        "technical"
+      ],
+      "representations": [
+        "kpi_strip",
+        "chart",
+        "table",
+        "narrative"
+      ],
+      "defaultRepresentation": {
+        "executive": "kpi_strip",
+        "extended": "narrative",
+        "technical": "table"
+      },
+      "relevance": "normal",
+      "data": {
+        "kpis": [
+          {
+            "label": "Score D4",
+            "value": "65%",
+            "status": "green",
+            "cluster": "61%",
+            "delta": "+4 pp"
+          },
+          {
+            "label": "IESF Efficacia",
+            "value": "74%",
+            "status": "green",
+            "cluster": "69%",
+            "delta": "+6,1 pp"
+          },
+          {
+            "label": "TCF Copertura",
+            "value": "58%",
+            "status": "yellow",
+            "cluster": "62%",
+            "delta": "Target 75%"
+          },
+          {
+            "label": "IFM Ore/capite",
+            "value": "12,4h",
+            "status": "yellow",
+            "cluster": "13,8h",
+            "delta": "Target 16h"
+          }
+        ],
+        "narrative": "L'efficacia formativa è superiore alla media del cluster: il 74% dei percorsi completati ha generato miglioramenti verificabili."
+      }
+    },
+    {
+      "id": "rewarding_d5",
+      "title": "Dinamicità di Carriera (D5)",
+      "category": "organization",
+      "pillar": "D5",
+      "description": "Progressioni orizzontali e verticali, riconoscimento del merito.",
+      "extendedDescription": "Analisi della mobilità professionale interna: progressioni economiche orizzontali (avanzamenti di fascia), progressioni verticali (passaggi di area/categoria) e meccanismi di valorizzazione del merito. Confronta i tassi di progressione dell'ente con il cluster e con le previsioni del CCNL. Un basso tasso di progressione può indicare blocchi nel sistema premiale o insufficiente utilizzo degli strumenti contrattuali disponibili, con impatto sulla motivazione e sulla retention del personale.",
+      "questionAnswered": "Le carriere sono dinamiche? Il personale ha opportunità di crescita professionale?",
+      "dataSources": [
+        "Rilevazione KPI (progressioni)",
+        "Conto Annuale"
+      ],
+      "defaultFor": [
+        "extended",
+        "technical"
+      ],
+      "representations": [
+        "kpi_strip",
+        "chart",
+        "table",
+        "narrative"
+      ],
+      "defaultRepresentation": {
+        "executive": "kpi_strip",
+        "extended": "narrative",
+        "technical": "table"
+      },
+      "relevance": "notable",
+      "relevanceReason": "Score D5 al 44% — sotto il cluster di 6 punti",
+      "data": {
+        "kpis": [
+          {
+            "label": "Score D5",
+            "value": "44%",
+            "status": "yellow",
+            "cluster": "50%",
+            "delta": "−6 pp"
+          },
+          {
+            "label": "Progressioni verticali",
+            "value": "3,2%",
+            "status": "yellow"
+          },
+          {
+            "label": "Progressioni orizzontali",
+            "value": "12%",
+            "status": "yellow",
+            "cluster": "15%"
+          }
+        ],
+        "narrative": "Il pillar D5 registra performance sotto la media. Le progressioni verticali sono al 3,2% con un gap di 6 punti rispetto al cluster."
+      }
+    },
+    {
+      "id": "capacity_d6",
+      "title": "Sostenibilità Organizzativa (D6)",
+      "category": "organization",
+      "pillar": "D6",
+      "description": "Capacità operativa, FTE, processi SIPrO, lavoro agile, digitalizzazione.",
+      "extendedDescription": "Valutazione della sostenibilità operativa dell'ente: capacità di erogare servizi con le risorse disponibili. Integra indicatori di dotazione organica (FTE effettivi vs previsti), adozione del lavoro agile, livello di digitalizzazione dei processi (SIPrO) e pressione demografica (TEP). Lo score D6 sintetizza la capacità dell'organizzazione di funzionare oggi e di adattarsi nel medio periodo. Valori sotto soglia segnalano rischio di sovraccarico operativo o di perdita di know-how.",
+      "questionAnswered": "L'ente è in grado di sostenere la propria operatività nel medio periodo?",
+      "dataSources": [
+        "SIPrO",
+        "Rilevazione KPI",
+        "Conto Annuale (ca_modalita_lavoro)"
+      ],
+      "defaultFor": [
+        "executive",
+        "extended",
+        "technical"
+      ],
+      "representations": [
+        "kpi_strip",
+        "chart",
+        "table",
+        "narrative"
+      ],
+      "defaultRepresentation": {
+        "executive": "kpi_strip",
+        "extended": "narrative",
+        "technical": "table"
+      },
+      "relevance": "critical",
+      "relevanceReason": "Score D6 al 52% — sostenibilità a rischio con TEP al 31%",
+      "data": {
+        "kpis": [
+          {
+            "label": "Score D6",
+            "value": "52%",
+            "status": "red",
+            "cluster": "58%",
+            "delta": "−6 pp"
+          },
+          {
+            "label": "Lavoro agile",
+            "value": "32%",
+            "status": "yellow",
+            "cluster": "38%"
+          },
+          {
+            "label": "Digitalizzazione processi",
+            "value": "61%",
+            "status": "yellow"
+          }
+        ],
+        "narrative": "La sostenibilità organizzativa è sotto pressione: lo score D6 è al 52% (6 punti sotto il cluster). Il 32% del personale utilizza modalità di lavoro agile."
+      }
+    },
+    {
+      "id": "smart_working",
+      "title": "Lavoro Agile e Flessibilità",
+      "category": "organization",
+      "pillar": "D6",
+      "description": "Adozione lavoro agile, telelavoro, turnazione, distribuzione per qualifica.",
+      "extendedDescription": "Dettaglio sulle modalità di lavoro flessibile adottate: percentuale di personale in lavoro agile, telelavoro e turnazione, con scomposizione per genere e qualifica. Analizza la penetrazione dello smart working rispetto alla media del cluster e al potenziale teorico (posizioni telelavorabili). Utile per valutare l'evoluzione delle politiche di conciliazione vita-lavoro e il contributo alla riduzione dell'impronta ambientale dell'ente.",
+      "questionAnswered": "Quanto è diffuso il lavoro agile e come si distribuisce tra categorie e generi?",
+      "dataSources": [
+        "Conto Annuale (ca_modalita_lavoro)",
+        "Rilevazione KPI"
+      ],
+      "defaultFor": [
+        "extended",
+        "technical"
+      ],
+      "representations": [
+        "kpi_strip",
+        "chart",
+        "table"
+      ],
+      "defaultRepresentation": {
+        "executive": "kpi_strip",
+        "extended": "chart",
+        "technical": "table"
+      },
+      "relevance": "normal",
+      "data": {
+        "kpis": [
+          {
+            "label": "Lavoro agile",
+            "value": "32%",
+            "status": "yellow"
+          },
+          {
+            "label": "Telelavoro",
+            "value": "5%",
+            "status": "yellow"
+          },
+          {
+            "label": "Turnazione",
+            "value": "18%",
+            "status": "green"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pillar_comparison",
+      "title": "Confronto Sinottico 6 Pillar",
+      "category": "strategic",
+      "pillar": "Trasversale",
+      "description": "Radar dei 6 pillar con score ente vs cluster, stato e trend.",
+      "extendedDescription": "Visualizzazione radar comparativa che sovrappone i 6 score dell'ente con quelli del cluster di riferimento. Per ciascun pillar indica lo stato (in target / attenzione / critico), il delta rispetto al cluster e il trend anno su anno. Questa vista integrata permette di cogliere a colpo d'occhio il profilo prestazionale complessivo dell'ente, identificando le aree di eccellenza da valorizzare e quelle che richiedono interventi prioritari.",
+      "questionAnswered": "Qual è il profilo prestazionale complessivo dell'ente sui 6 assi della Riforma?",
+      "dataSources": [
+        "Tutti i pillar (D1-D6)",
+        "Benchmark cluster"
+      ],
+      "defaultFor": [
+        "executive",
+        "extended"
+      ],
+      "representations": [
+        "chart",
+        "kpi_strip",
+        "narrative"
+      ],
+      "defaultRepresentation": {
+        "executive": "chart",
+        "extended": "chart",
+        "technical": "table"
+      },
+      "relevance": "notable",
+      "data": {
+        "narrative": "La lettura integrata evidenzia un'organizzazione con performance differenziate: solida in classificazione (D1, 72%) e sviluppo (D4, 65%), in difficoltà nel reclutamento (D3, 42%) e nella sostenibilità (D6, 52%)."
+      }
+    },
+    {
+      "id": "priorities",
+      "title": "Priorità e Raccomandazioni Operative",
+      "category": "strategic",
+      "description": "Le 3 priorità d'azione identificate dall'analisi dei dati 2023.",
+      "extendedDescription": "Sezione conclusiva che traduce l'analisi quantitativa in azioni concrete. Identifica le 3 priorità operative in ordine di urgenza, ciascuna corredata da: l'indicatore critico di riferimento, il target da raggiungere, l'orizzonte temporale suggerito e le leve disponibili (normative, organizzative, gestionali). Pensata per essere direttamente utilizzabile nella programmazione degli interventi e nella comunicazione agli organi di indirizzo politico.",
+      "questionAnswered": "Quali sono le azioni prioritarie da intraprendere sulla base dei dati analizzati?",
+      "dataSources": [
+        "Analisi trasversale tutti gli indicatori"
+      ],
+      "defaultFor": [
+        "executive",
+        "extended"
+      ],
+      "representations": [
+        "narrative",
+        "kpi_strip"
+      ],
+      "defaultRepresentation": {
+        "executive": "narrative",
+        "extended": "narrative",
+        "technical": "narrative"
+      },
+      "relevance": "critical",
+      "relevanceReason": "Sezione decisionale: traduce i dati in azioni concrete",
+      "data": {
+        "narrative": "Priorità 1 (Urgente): Piano straordinario reclutamento — obiettivo TCP ≤ 180 gg, IAP ≥ 45%. Priorità 2 (Strutturale): Piano successione ruoli critici — aggiornare PTFP con sezione ricambio generazionale. Priorità 3 (Strategica): Valorizzazione competenze D1/D4 per employer branding.",
+        "kpis": [
+          {
+            "label": "Priorità 1",
+            "value": "D3 · 42%",
+            "status": "red"
+          },
+          {
+            "label": "Priorità 2",
+            "value": "TEP · 31%",
+            "status": "red"
+          },
+          {
+            "label": "Priorità 3",
+            "value": "D1/D4 · 72/65%",
+            "status": "green"
+          }
+        ]
+      }
+    }
+  ],
+  "reportThemes": [
+    {
+      "id": "criticita",
+      "label": "Focus Criticità",
+      "icon": "🚨",
+      "description": "Capitoli incentrati sulle aree con performance sotto soglia: reclutamento, rischio pensionamento e sostenibilità. Ideale per segnalare urgenze al vertice.",
+      "audience": "executive",
+      "sectionIds": [
+        "cover",
+        "score_overview",
+        "tep_risk",
+        "recruiting_overview",
+        "capacity_d6",
+        "priorities"
+      ]
+    },
+    {
+      "id": "demografico",
+      "label": "Dossier Demografico",
+      "icon": "👥",
+      "description": "Analisi completa della composizione del personale: età, genere, turnover, cessazioni e proiezioni. Per documentare lo stato dell'organico e pianificare il fabbisogno.",
+      "audience": "extended",
+      "sectionIds": [
+        "cover",
+        "demographic_photo",
+        "tep_risk",
+        "turnover_rate",
+        "gender_analysis",
+        "priorities"
+      ]
+    },
+    {
+      "id": "reclutamento",
+      "label": "Audit Reclutamento",
+      "icon": "📢",
+      "description": "Valutazione end-to-end delle procedure di selezione: attrattività, tempi, funnel InPA e selettività. Per identificare colli di bottiglia e migliorare l'efficacia.",
+      "audience": "extended",
+      "sectionIds": [
+        "cover",
+        "recruiting_overview",
+        "inpa_funnel",
+        "turnover_rate",
+        "pillar_comparison",
+        "priorities"
+      ]
+    },
+    {
+      "id": "competenze",
+      "label": "Report Competenze e Sviluppo",
+      "icon": "🎓",
+      "description": "Mappatura delle competenze, efficacia formativa, gap analysis e percorsi Syllabus. Per dirigenti che supervisionano la crescita professionale.",
+      "audience": "extended",
+      "sectionIds": [
+        "cover",
+        "classification_d1",
+        "training_d4",
+        "rewarding_d5",
+        "pillar_comparison",
+        "priorities"
+      ]
+    },
+    {
+      "id": "completo",
+      "label": "Rapporto Annuale Completo",
+      "icon": "📘",
+      "description": "Tutti i capitoli in ordine logico per la relazione annuale sulla gestione del personale. Include ogni dimensione strategica, benchmark e raccomandazioni.",
+      "audience": "extended",
+      "sectionIds": [
+        "cover",
+        "score_overview",
+        "demographic_photo",
+        "tep_risk",
+        "turnover_rate",
+        "gender_analysis",
+        "recruiting_overview",
+        "inpa_funnel",
+        "classification_d1",
+        "training_d4",
+        "rewarding_d5",
+        "capacity_d6",
+        "smart_working",
+        "pillar_comparison",
+        "priorities"
+      ]
+    }
+  ]
+}
