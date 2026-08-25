@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { sipoFrom } from "@/services/dw/siproService";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList,
   PieChart, Pie, Legend, ResponsiveContainer,
@@ -47,8 +47,7 @@ export const UoDistributionChart = () => {
     const load = async () => {
       setLoading(true);
 
-      let query = supabase
-        .from("ft_sipo_uo")
+      let query = sipoFrom("ft_sipo_uo")
         .select("livello_gerarchico, livello_resp_id, ente_id, lk_sipo_livelli_resp_uo(descrizione)")
         .is("data_fine_validita", null);
 
@@ -58,7 +57,7 @@ export const UoDistributionChart = () => {
 
       const [uoRes, entiRes] = await Promise.all([
         query,
-        supabase.from("lk_enti").select("ente_id, denominazione"),
+        sipoFrom("lk_enti").select("ente_id, denominazione"),
       ]);
 
       if (uoRes.data) {

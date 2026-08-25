@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { sipoFrom } from "@/services/dw/siproService";
 import { Loader2 } from "lucide-react";
 import { SiproFilters, type SiproFilterValues, effectiveEnteIds } from "./SiproFilters";
 import { useAuth } from "@/contexts/AuthContext";
@@ -35,7 +35,7 @@ export const ProfiliRuoloProcessoChart = () => {
       setLoading(true);
       const ids = effectiveEnteIds(filters);
 
-      let procQ = supabase.from("ft_sipo_processi")
+      let procQ = sipoFrom("ft_sipo_processi")
         .select("processo_id, denominazione, ente_id")
         .is("data_fine", null);
       if (ids.length === 1) procQ = procQ.eq("ente_id", ids[0]);
@@ -43,11 +43,11 @@ export const ProfiliRuoloProcessoChart = () => {
 
       const [procRes, fasiRes, profFasiRes, profRuoloRes, ambitoRes, areaRes] = await Promise.all([
         procQ,
-        supabase.from("ft_sipo_fasi").select("fase_id, processo_id"),
-        supabase.from("ft_sipo_profili_di_ruolo_fasi").select("profilo_fase_id, fase_id, sipo_profilo_di_ruolo_id, fte_programmati, fte_assegnati"),
-        supabase.from("lk_sipo_profili_di_ruolo").select("profilo_ruolo_id, profilo_ruolo, id_ambito_ruolo, id_area_contrattuale, ente_id").is("data_eliminazione", null),
-        supabase.from("lk_minerva_ambito_ruolo").select("id, descrizione"),
-        supabase.from("lk_minerva_area_contrattuale").select("id, descrizione"),
+        sipoFrom("ft_sipo_fasi").select("fase_id, processo_id"),
+        sipoFrom("ft_sipo_profili_di_ruolo_fasi").select("profilo_fase_id, fase_id, sipo_profilo_di_ruolo_id, fte_programmati, fte_assegnati"),
+        sipoFrom("lk_sipo_profili_di_ruolo").select("profilo_ruolo_id, profilo_ruolo, id_ambito_ruolo, id_area_contrattuale, ente_id").is("data_eliminazione", null),
+        sipoFrom("lk_minerva_ambito_ruolo").select("id, descrizione"),
+        sipoFrom("lk_minerva_area_contrattuale").select("id, descrizione"),
       ]);
 
       if (!procRes.data) { setLoading(false); return; }

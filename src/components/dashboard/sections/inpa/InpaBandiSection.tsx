@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useFilteredEnteIds, applyEnteFilter } from "@/hooks/useFilteredEnteIds";
+import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
+import { fetchInpaBandiOrderedByPublication } from "@/services/dw/inpaService";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell, LineChart, Line } from "recharts";
 import { InpaLocalFilters, DEFAULT_INPA_FILTERS, applyInpaLocalFilters, type InpaFilters } from "./InpaLocalFilters";
@@ -14,9 +14,7 @@ export const InpaBandiSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      let q = supabase.from("dw_inpa_bandi").select("*");
-      q = applyEnteFilter(q, enteIds);
-      const { data } = await q.order("data_pubblicazione", { ascending: false });
+      const data = await fetchInpaBandiOrderedByPublication(enteIds);
       setAllBandi(data ?? []);
     };
     load();

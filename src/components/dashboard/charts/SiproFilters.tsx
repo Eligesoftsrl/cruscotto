@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { sipoFrom } from "@/services/dw/siproService";
 import { ChevronDown, X, Check } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -39,8 +39,7 @@ export const SiproFilters = ({ value, onChange }: Props) => {
 
   useEffect(() => {
     if (isEnteHr) return;
-    supabase
-      .from("lk_enti")
+    sipoFrom("lk_enti")
       .select("ente_id, denominazione")
       .order("denominazione")
       .then(({ data }) => { if (data) setEnti(data as Ente[]); });

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { fetchSyllabusPartecipazioni, fetchSyllabusCatalogo } from "@/services/dw/syllabusService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 export const SyllabusGapFormazioneSection = () => {
@@ -7,9 +7,9 @@ export const SyllabusGapFormazioneSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      const [{ data: partecipazioni }, { data: catalogo }] = await Promise.all([
-        supabase.from("dw_syllabus_partecipazioni").select("id_corso, esito_finale, id_competenza, livello_da, livello_a"),
-        supabase.from("dw_syllabus_catalogo").select("id_corso, competenza, livello"),
+      const [partecipazioni, catalogo] = await Promise.all([
+        fetchSyllabusPartecipazioni("id_corso, esito_finale, id_competenza, livello_da, livello_a"),
+        fetchSyllabusCatalogo("id_corso, competenza, livello"),
       ]);
       if (!partecipazioni || !catalogo) return;
 

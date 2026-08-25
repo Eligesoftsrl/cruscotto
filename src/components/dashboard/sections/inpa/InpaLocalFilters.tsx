@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { fetchInpaBandiFilterFields } from "@/services/dw/inpaService";
 
 interface InpaLocalFiltersProps {
   filters: InpaFilters;
@@ -44,7 +44,7 @@ export const InpaLocalFilters = ({ filters, onChange }: InpaLocalFiltersProps) =
 
   useEffect(() => {
     const load = async () => {
-      const { data: bandi } = await supabase.from("dw_inpa_bandi").select("anno, regione, tipo_procedura, settore_pubblicazione, stato_bando");
+      const bandi = await fetchInpaBandiFilterFields();
       if (!bandi) return;
       const anni = new Set<string>();
       const regioni = new Set<string>();

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { fetchSyllabusPartecipazioni } from "@/services/dw/syllabusService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 export const SyllabusAssessmentSection = () => {
@@ -9,7 +9,7 @@ export const SyllabusAssessmentSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      const { data: partecipazioni } = await supabase.from("dw_syllabus_partecipazioni").select("id, esito_finale, id_competenza, livello_da, livello_a");
+      const partecipazioni = await fetchSyllabusPartecipazioni("id, esito_finale, id_competenza, livello_da, livello_a");
       if (!partecipazioni) return;
 
       const byEsito: Record<string, number> = {};

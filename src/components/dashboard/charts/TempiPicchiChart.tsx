@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { sipoFrom } from "@/services/dw/siproService";
 import { Loader2 } from "lucide-react";
 import { SiproFilters, type SiproFilterValues, effectiveEnteIds } from "./SiproFilters";
 import { useAuth } from "@/contexts/AuthContext";
@@ -32,8 +32,7 @@ export const TempiPicchiChart = () => {
       setLoading(true);
       const ids = effectiveEnteIds(filters);
 
-      let q = supabase
-        .from("ft_sipo_processi")
+      let q = sipoFrom("ft_sipo_processi")
         .select("denominazione, giorni_previsti, tempo_medio_effettivo, picchi_stagionali, presidio_continuativo, picchi_frequenza_id, picchi_intensita_id")
         .is("data_fine", null);
 
@@ -42,8 +41,8 @@ export const TempiPicchiChart = () => {
 
       const [procRes, freqRes, intRes] = await Promise.all([
         q,
-        supabase.from("lk_picchi_frequenza_annuale_processi").select("*"),
-        supabase.from("lk_picchi_intensita_processi").select("*"),
+        sipoFrom("lk_picchi_frequenza_annuale_processi").select("*"),
+        sipoFrom("lk_picchi_intensita_processi").select("*"),
       ]);
 
       if (!procRes.data) { setLoading(false); return; }

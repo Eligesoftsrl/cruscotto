@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useFilteredEnteIds, applyEnteFilter } from "@/hooks/useFilteredEnteIds";
+import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
+import { fetchLpDotazione } from "@/services/dw/lavoroPubblicoService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 
@@ -11,8 +11,7 @@ export const LpDotazioneSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      let q = supabase.from("dw_ptfp_dotazione").select("*");
-      const { data } = await q;
+      const data = await fetchLpDotazione();
       if (!data) return;
 
       const byEnte: Record<string, { dotazione: number; spesa: number }> = {};

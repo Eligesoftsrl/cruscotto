@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useFilteredEnteIds, applyEnteFilter } from "@/hooks/useFilteredEnteIds";
+import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
+import { fetchInpaBandi, fetchEnteTotalCount } from "@/services/dw/inpaService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, LineChart, Line } from "recharts";
 import { InpaLocalFilters, DEFAULT_INPA_FILTERS, applyInpaLocalFilters, type InpaFilters } from "./InpaLocalFilters";
 
@@ -14,12 +14,10 @@ export const InpaAmministrazioniSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      const { count: totCount } = await supabase.from("dw_ente").select("*", { count: "exact", head: true });
-      setTotPa(totCount ?? 0);
+      const totCount = await fetchEnteTotalCount();
+      setTotPa(totCount);
 
-      let q = supabase.from("dw_inpa_bandi").select("*");
-      q = applyEnteFilter(q, enteIds);
-      const { data: bandi } = await q;
+      const bandi = await fetchInpaBandi(enteIds);
       setAllBandi(bandi ?? []);
     };
     load();

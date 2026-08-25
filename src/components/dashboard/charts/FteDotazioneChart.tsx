@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { sipoFrom } from "@/services/dw/siproService";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   ResponsiveContainer,
@@ -48,8 +48,7 @@ export const FteDotazioneChart = () => {
       const ids = effectiveEnteIds(filters);
 
       // Always fetch with ente info for benchmark
-      let query = supabase
-        .from("ft_sipo_uo")
+      let query = sipoFrom("ft_sipo_uo")
         .select("denominazione, risorse_dotazione, risorse_servizio_tempo_ind, ente_id")
         .is("data_fine_validita", null)
         .order("denominazione");
@@ -59,7 +58,7 @@ export const FteDotazioneChart = () => {
 
       const [uoRes, entiRes] = await Promise.all([
         query,
-        supabase.from("lk_enti").select("ente_id, denominazione"),
+        sipoFrom("lk_enti").select("ente_id, denominazione"),
       ]);
 
       if (uoRes.data) {

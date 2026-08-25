@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useFilteredEnteIds, applyEnteFilter } from "@/hooks/useFilteredEnteIds";
+import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
+import { fetchInpaBandi } from "@/services/dw/inpaService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine, Cell } from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 
@@ -14,9 +14,7 @@ export const InpaEfficaciaSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      let q = supabase.from("dw_inpa_bandi").select("*");
-      q = applyEnteFilter(q, enteIds);
-      const { data: bandi } = await q;
+      const bandi = await fetchInpaBandi(enteIds);
       if (!bandi) return;
 
       const mapped = bandi

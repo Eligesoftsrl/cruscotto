@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { fetchSyllabusPa, fetchSyllabusPartecipazioni } from "@/services/dw/syllabusService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 
@@ -14,9 +14,9 @@ export const SyllabusAmministrazioniSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      const [{ data: pa }, { data: part }] = await Promise.all([
-        supabase.from("dw_syllabus_pa").select("*"),
-        supabase.from("dw_syllabus_partecipazioni").select("id, id_pa"),
+      const [pa, part] = await Promise.all([
+        fetchSyllabusPa(),
+        fetchSyllabusPartecipazioni("id, id_pa"),
       ]);
       if (!pa) return;
 

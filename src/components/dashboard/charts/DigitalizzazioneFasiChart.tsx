@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { sipoFrom } from "@/services/dw/siproService";
 import { Loader2 } from "lucide-react";
 import { SiproFilters, type SiproFilterValues, effectiveEnteIds } from "./SiproFilters";
 import { useAuth } from "@/contexts/AuthContext";
@@ -36,16 +36,16 @@ export const DigitalizzazioneFasiChart = () => {
       setLoading(true);
       const ids = effectiveEnteIds(filters);
 
-      let procQ = supabase.from("ft_sipo_processi").select("processo_id, denominazione, ente_id").is("data_fine", null);
+      let procQ = sipoFrom("ft_sipo_processi").select("processo_id, denominazione, ente_id").is("data_fine", null);
       if (ids.length === 1) procQ = procQ.eq("ente_id", ids[0]);
       else if (ids.length > 1) procQ = procQ.in("ente_id", ids);
 
       const [procRes, fasiRes, digLkRes, outsLkRes, agileLkRes] = await Promise.all([
         procQ,
-        supabase.from("ft_sipo_fasi").select("fase_id, processo_id, livello_digitalizzazione_id, outsourcing_id, lavoro_agile_id, in_outsourcing, lavoro_agile"),
-        supabase.from("lk_sipo_livello_digitalizzazione_fasi").select("*"),
-        supabase.from("lk_sipo_outsourcing_fasi").select("*"),
-        supabase.from("lk_sipo_lavoro_agile_fasi").select("*"),
+        sipoFrom("ft_sipo_fasi").select("fase_id, processo_id, livello_digitalizzazione_id, outsourcing_id, lavoro_agile_id, in_outsourcing, lavoro_agile"),
+        sipoFrom("lk_sipo_livello_digitalizzazione_fasi").select("*"),
+        sipoFrom("lk_sipo_outsourcing_fasi").select("*"),
+        sipoFrom("lk_sipo_lavoro_agile_fasi").select("*"),
       ]);
 
       if (!procRes.data) { setLoading(false); return; }

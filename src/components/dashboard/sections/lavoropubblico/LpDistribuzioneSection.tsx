@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useFilteredEnteIds, applyEnteFilter } from "@/hooks/useFilteredEnteIds";
+import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
+import { fetchLpOccupazione } from "@/services/dw/lavoroPubblicoService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell } from "recharts";
 
 const COLORS = ["hsl(210,80%,45%)", "hsl(30,85%,55%)", "hsl(150,60%,40%)", "hsl(340,70%,55%)", "hsl(260,50%,55%)"];
@@ -12,9 +12,7 @@ export const LpDistribuzioneSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      let q = supabase.from("dw_occupazione").select("*");
-      q = applyEnteFilter(q, enteIds, "istituzione");
-      const { data } = await q;
+      const data = await fetchLpOccupazione(enteIds);
       if (!data) return;
 
       const qual: Record<string, number> = {};

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { fetchSyllabusCatalogo } from "@/services/dw/syllabusService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 
@@ -13,7 +13,7 @@ export const SyllabusCorsiSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      const { data } = await supabase.from("dw_syllabus_catalogo").select("*");
+      const data = await fetchSyllabusCatalogo();
       if (!data) return;
 
       setTotals({ corsi: data.length, competenze: new Set(data.map(c => c.competenza)).size });

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { sipoFrom } from "@/services/dw/siproService";
 import { Loader2 } from "lucide-react";
 import { SiproFilters, type SiproFilterValues, effectiveEnteIds } from "./SiproFilters";
 import { useAuth } from "@/contexts/AuthContext";
@@ -38,8 +38,7 @@ export const ProcessiDettaglioTable = () => {
       setLoading(true);
       const ids = effectiveEnteIds(filters);
 
-      let procQuery = supabase
-        .from("ft_sipo_processi")
+      let procQuery = sipoFrom("ft_sipo_processi")
         .select("processo_id, denominazione, tipologia_id, obiettivo_strategico_id, grado_rilevanza_id, coinvolgimento_amministrazioni, presidio_continuativo, picchi_stagionali, processo_semplificazione_id, ente_id")
         .is("data_fine", null);
 
@@ -48,12 +47,12 @@ export const ProcessiDettaglioTable = () => {
 
       const [procRes, tipRes, objRes, rilRes, semplRes, critProcRes, critLkRes] = await Promise.all([
         procQuery,
-        supabase.from("lk_sipo_tipologia_funzione").select("*"),
-        supabase.from("lk_sipo_obiettivi_strategici_processi").select("*"),
-        supabase.from("lk_sipo_grado_rilevanza_processi").select("*"),
-        supabase.from("lk_sipo_semplificazione_processi").select("*"),
-        supabase.from("ft_sipo_criticita_processi").select("*"),
-        supabase.from("lk_sipo_criticita_processi").select("*"),
+        sipoFrom("lk_sipo_tipologia_funzione").select("*"),
+        sipoFrom("lk_sipo_obiettivi_strategici_processi").select("*"),
+        sipoFrom("lk_sipo_grado_rilevanza_processi").select("*"),
+        sipoFrom("lk_sipo_semplificazione_processi").select("*"),
+        sipoFrom("ft_sipo_criticita_processi").select("*"),
+        sipoFrom("lk_sipo_criticita_processi").select("*"),
       ]);
 
       if (!procRes.data) { setLoading(false); return; }

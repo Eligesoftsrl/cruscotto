@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useFilteredEnteIds, applyEnteFilter } from "@/hooks/useFilteredEnteIds";
+import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
+import { fetchFamiglieProfessionali, fetchProfiliDiRuolo, fetchCompetenze } from "@/services/dw/minervaService";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 
@@ -22,10 +22,10 @@ export const MinervaCatalogoSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      const [{ data: fam }, { data: profili }, { data: comp }] = await Promise.all([
-        supabase.from("dw_famiglia_professionale").select("*"),
-        supabase.from("dw_profilo_di_ruolo").select("*"),
-        supabase.from("dw_competenza").select("*"),
+      const [fam, profili, comp] = await Promise.all([
+        fetchFamiglieProfessionali(),
+        fetchProfiliDiRuolo(),
+        fetchCompetenze(),
       ]);
       setFamiglie(fam ?? []);
       setTotComp((comp ?? []).length);

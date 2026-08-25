@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useFilteredEnteIds, applyEnteFilter } from "@/hooks/useFilteredEnteIds";
+import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
+import { fetchBridgeProfiloCompetenza, fetchProfiliDiRuolo, fetchCompetenze } from "@/services/dw/minervaService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 import { Progress } from "@/components/ui/progress";
@@ -13,13 +13,11 @@ export const MinervaAssegnazioniSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      let q = supabase.from("dw_bridge_profilo_competenza").select("*");
-      q = applyEnteFilter(q, enteIds);
-      const { data: bridge } = await q;
+      const bridge = await fetchBridgeProfiloCompetenza(enteIds);
       if (!bridge) return;
 
-      const { data: profili } = await supabase.from("dw_profilo_di_ruolo").select("*");
-      const { data: competenze } = await supabase.from("dw_competenza").select("*");
+      const profili = await fetchProfiliDiRuolo();
+      const competenze = await fetchCompetenze();
       const profMap = Object.fromEntries((profili ?? []).map((p: any) => [p.codice, p]));
       const compMap = Object.fromEntries((competenze ?? []).map((c: any) => [c.codice, c]));
 

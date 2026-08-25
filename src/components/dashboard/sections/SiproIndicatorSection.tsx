@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { sipoFrom } from "@/services/dw/siproService";
 import { Building2, FileText, Users, Layers, Shield, BarChart3, Loader2, AlertCircle } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList,
@@ -27,9 +27,9 @@ const StatoOrgView = () => {
     const load = async () => {
       setLoading(true);
       const [orgRes, statusRes, entiRes] = await Promise.all([
-        supabase.from("ft_sipo_organizzazione").select("*"),
-        supabase.from("lk_sipo_stato_organizzazione").select("*"),
-        supabase.from("lk_enti").select("ente_id, denominazione"),
+        sipoFrom("ft_sipo_organizzazione").select("*"),
+        sipoFrom("lk_sipo_stato_organizzazione").select("*"),
+        sipoFrom("lk_enti").select("ente_id, denominazione"),
       ]);
       const sMap: Record<number, string> = {};
       (statusRes.data ?? []).forEach((s: any) => { sMap[s.stato_organizzazione_id] = s.descrizione; });
@@ -110,9 +110,9 @@ const ProvvedimentiView = () => {
     const load = async () => {
       setLoading(true);
       const [provRes, orgRes, entiRes] = await Promise.all([
-        supabase.from("ft_sipo_provvedimenti_organizzazione").select("*"),
-        supabase.from("ft_sipo_organizzazione").select("organizzazione_id, ente_id"),
-        supabase.from("lk_enti").select("ente_id, denominazione"),
+        sipoFrom("ft_sipo_provvedimenti_organizzazione").select("*"),
+        sipoFrom("ft_sipo_organizzazione").select("organizzazione_id, ente_id"),
+        sipoFrom("lk_enti").select("ente_id, denominazione"),
       ]);
       const orgMap = new Map((orgRes.data ?? []).map((o: any) => [o.organizzazione_id, o.ente_id]));
       const eMap = new Map((entiRes.data ?? []).map((e: any) => [e.ente_id, e.denominazione]));
@@ -186,7 +186,7 @@ const CoperturaView = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.from("lk_sipo_copertura_profili_di_ruolo").select("*").then(({ data: d }) => {
+    sipoFrom("lk_sipo_copertura_profili_di_ruolo").select("*").then(({ data: d }) => {
       setData(d ?? []);
       setLoading(false);
     });
@@ -229,8 +229,8 @@ const CatalogoView = () => {
     const load = async () => {
       setLoading(true);
       const [profRes, entiRes] = await Promise.all([
-        supabase.from("lk_sipo_profili_di_ruolo").select("*"),
-        supabase.from("lk_enti").select("ente_id, denominazione"),
+        sipoFrom("lk_sipo_profili_di_ruolo").select("*"),
+        sipoFrom("lk_enti").select("ente_id, denominazione"),
       ]);
       const eMap = new Map((entiRes.data ?? []).map((e: any) => [e.ente_id, e.denominazione]));
       const ids = effectiveEnteIds(filters);
@@ -301,7 +301,7 @@ const MinervaTableView = ({ tableName, title, labelField }: { tableName: string;
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.from(tableName as any).select("*").then(({ data: d }) => {
+    sipoFrom(tableName as any).select("*").then(({ data: d }) => {
       setData(d ?? []);
       setLoading(false);
     });
@@ -331,7 +331,7 @@ const EvoluzioneView = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.from("lk_sipo_profili_di_ruolo").select("*").then(({ data: d }) => {
+    sipoFrom("lk_sipo_profili_di_ruolo").select("*").then(({ data: d }) => {
       setData(d ?? []);
       setLoading(false);
     });

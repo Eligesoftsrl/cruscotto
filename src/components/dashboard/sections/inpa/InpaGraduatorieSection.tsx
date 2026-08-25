@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useFilteredEnteIds, applyEnteFilter } from "@/hooks/useFilteredEnteIds";
+import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
+import { fetchInpaGraduatorie, fetchInpaBandi } from "@/services/dw/inpaService";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
@@ -13,14 +13,10 @@ export const InpaGraduatorieSection = () => {
   useEffect(() => {
     const load = async () => {
       // Load graduatorie
-      let qGrad = supabase.from("dw_lp_graduatorie").select("*");
-      qGrad = applyEnteFilter(qGrad, enteIds);
-      const { data: grads } = await qGrad;
+      const grads = await fetchInpaGraduatorie(enteIds);
 
       // Load bandi for completion rate
-      let qBandi = supabase.from("dw_inpa_bandi").select("id");
-      qBandi = applyEnteFilter(qBandi, enteIds);
-      const { data: bandi } = await qBandi;
+      const bandi = await fetchInpaBandi(enteIds, "id");
 
       const numGrad = grads?.length ?? 0;
       const numBandi = bandi?.length ?? 0;

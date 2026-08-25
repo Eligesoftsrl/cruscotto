@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { sipoFrom } from "@/services/dw/siproService";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList,
   ResponsiveContainer, Legend,
@@ -53,10 +53,10 @@ export const CriticitaUoChart = () => {
       setPage(0);
 
       const [critRes, uoRes, lkRes, entiRes] = await Promise.all([
-        supabase.from("ft_sipo_criticita_uo").select("criticita_id, uo_id"),
-        supabase.from("ft_sipo_uo").select("uo_id, denominazione, ente_id").is("data_fine_validita", null),
-        supabase.from("lk_sipo_criticita_uo").select("criticita_id, descrizione, categoria"),
-        supabase.from("lk_enti").select("ente_id, denominazione"),
+        sipoFrom("ft_sipo_criticita_uo").select("criticita_id, uo_id"),
+        sipoFrom("ft_sipo_uo").select("uo_id, denominazione, ente_id").is("data_fine_validita", null),
+        sipoFrom("lk_sipo_criticita_uo").select("criticita_id, descrizione, categoria"),
+        sipoFrom("lk_enti").select("ente_id, denominazione"),
       ]);
 
       if (critRes.data && uoRes.data && lkRes.data) {

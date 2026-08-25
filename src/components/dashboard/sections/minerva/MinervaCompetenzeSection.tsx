@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useFilteredEnteIds, applyEnteFilter } from "@/hooks/useFilteredEnteIds";
+import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
+import { fetchBridgeProfiloCompetenza, fetchCompetenze } from "@/services/dw/minervaService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 import { Badge } from "@/components/ui/badge";
@@ -21,16 +21,10 @@ export const MinervaCompetenzeSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      const [{ data: comp }, bridgeRes] = await Promise.all([
-        supabase.from("dw_competenza").select("*"),
-        (() => {
-          let q = supabase.from("dw_bridge_profilo_competenza").select("*");
-          q = applyEnteFilter(q, enteIds);
-          return q;
-        })(),
+      const [competenze, bridge] = await Promise.all([
+        fetchCompetenze(),
+        fetchBridgeProfiloCompetenza(enteIds),
       ]);
-      const bridge = bridgeRes.data ?? [];
-      const competenze = comp ?? [];
 
       // By type (CTP/CTS/CC)
       const typeCount: Record<string, number> = {};

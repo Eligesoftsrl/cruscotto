@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useFilteredEnteIds, applyEnteFilter } from "@/hooks/useFilteredEnteIds";
+import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
+import { fetchMinervaAssessment, fetchEntiDenominazioni } from "@/services/dw/minervaService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, LineChart, Line, PieChart, Pie, Cell, ReferenceLine } from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 import { Badge } from "@/components/ui/badge";
@@ -17,13 +17,11 @@ export const MinervaAssessmentSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      let q = supabase.from("dw_minerva_assessment").select("*");
-      q = applyEnteFilter(q, enteIds, "id_ente");
-      const { data: assess } = await q;
+      const assess = await fetchMinervaAssessment(enteIds);
       if (!assess) return;
 
       // Get ente names
-      const { data: enti } = await supabase.from("dw_ente").select("id_ente,denominazione");
+      const enti = await fetchEntiDenominazioni();
       const enteMap = Object.fromEntries((enti ?? []).map((e: any) => [e.id_ente, e.denominazione]));
 
       const completati = assess.filter((a: any) => a.stato === "completato");

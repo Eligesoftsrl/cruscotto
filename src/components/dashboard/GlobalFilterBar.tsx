@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Filter, RotateCcw } from "lucide-react";
 import { useFilters } from "@/contexts/FilterContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
+import { fetchEnteFilterOptions } from "@/services/dw/enteService";
 
 export const GlobalFilterBar = () => {
   const { filters, setFilter, resetFilters, activeCount } = useFilters();
@@ -14,14 +14,10 @@ export const GlobalFilterBar = () => {
   const [dimensioni, setDimensioni] = useState<string[]>([]);
 
   useEffect(() => {
-    Promise.all([
-      supabase.from("dw_ente").select("comparto").not("comparto", "is", null),
-      supabase.from("dw_ente").select("regione").not("regione", "is", null),
-      supabase.from("dw_ente").select("categoria_cruscotto").not("categoria_cruscotto", "is", null),
-    ]).then(([cRes, rRes, dRes]) => {
-      if (cRes.data) setComparti([...new Set(cRes.data.map(r => r.comparto).filter(Boolean) as string[])].sort());
-      if (rRes.data) setRegioni([...new Set(rRes.data.map(r => r.regione).filter(Boolean) as string[])].sort());
-      if (dRes.data) setDimensioni([...new Set(dRes.data.map(r => r.categoria_cruscotto).filter(Boolean) as string[])].sort());
+    fetchEnteFilterOptions().then(({ comparti, regioni, dimensioni }) => {
+      setComparti(comparti);
+      setRegioni(regioni);
+      setDimensioni(dimensioni);
     });
   }, []);
 

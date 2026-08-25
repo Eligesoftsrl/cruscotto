@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { sipoFrom } from "@/services/dw/siproService";
 import { Loader2 } from "lucide-react";
 import { SiproFilters, type SiproFilterValues, effectiveEnteIds } from "./SiproFilters";
 import { useAuth } from "@/contexts/AuthContext";
@@ -37,7 +37,7 @@ export const ProfiliRuoloCatalogoChart = () => {
       setLoading(true);
       const ids = effectiveEnteIds(filters);
 
-      let profQ = supabase.from("lk_sipo_profili_di_ruolo")
+      let profQ = sipoFrom("lk_sipo_profili_di_ruolo")
         .select("profilo_ruolo_id, profilo_ruolo, ente_id, id_minerva_profilo_professionale, id_famiglia_professionale, id_ambito_ruolo, id_area_contrattuale")
         .is("data_eliminazione", null);
       if (ids.length === 1) profQ = profQ.eq("ente_id", ids[0]);
@@ -45,10 +45,10 @@ export const ProfiliRuoloCatalogoChart = () => {
 
       const [profRes, famRes, ambitoRes, areaRes, fteRes] = await Promise.all([
         profQ,
-        supabase.from("lk_minerva_famiglia_professionale").select("id, descrizione"),
-        supabase.from("lk_minerva_ambito_ruolo").select("id, descrizione"),
-        supabase.from("lk_minerva_area_contrattuale").select("id, descrizione"),
-        supabase.from("ft_sipo_profili_di_ruolo_fasi").select("sipo_profilo_di_ruolo_id, fte_programmati, fte_assegnati"),
+        sipoFrom("lk_minerva_famiglia_professionale").select("id, descrizione"),
+        sipoFrom("lk_minerva_ambito_ruolo").select("id, descrizione"),
+        sipoFrom("lk_minerva_area_contrattuale").select("id, descrizione"),
+        sipoFrom("ft_sipo_profili_di_ruolo_fasi").select("sipo_profilo_di_ruolo_id, fte_programmati, fte_assegnati"),
       ]);
 
       if (!profRes.data) { setLoading(false); return; }

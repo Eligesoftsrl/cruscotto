@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { fetchSyllabusPartecipazioni } from "@/services/dw/syllabusService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 
 const COLORS = ["hsl(210,80%,45%)", "hsl(150,60%,40%)", "hsl(30,85%,55%)", "hsl(0,70%,50%)", "hsl(270,60%,55%)"];
@@ -13,7 +13,7 @@ export const SyllabusDiscentiSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      const { data } = await supabase.from("dw_syllabus_partecipazioni").select("id, genere, fascia_eta, qualifica, tipo_contratto, durata_ore");
+      const data = await fetchSyllabusPartecipazioni("id, genere, fascia_eta, qualifica, tipo_contratto, durata_ore");
       if (!data) return;
 
       const gen: Record<string, number> = {};

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { sipoFrom } from "@/services/dw/siproService";
 import { Loader2 } from "lucide-react";
 import { SiproFilters, type SiproFilterValues, effectiveEnteIds } from "./SiproFilters";
 import { useAuth } from "@/contexts/AuthContext";
@@ -29,8 +29,7 @@ export const CoinvolgimentoUoChart = () => {
       setLoading(true);
       const ids = effectiveEnteIds(filters);
 
-      let procQ = supabase
-        .from("ft_sipo_processi")
+      let procQ = sipoFrom("ft_sipo_processi")
         .select("processo_id, denominazione, coinvolgimento_amministrazioni, ente_id")
         .is("data_fine", null);
 
@@ -39,8 +38,8 @@ export const CoinvolgimentoUoChart = () => {
 
       const [procRes, fasiRes, uoPartRes] = await Promise.all([
         procQ,
-        supabase.from("ft_sipo_fasi").select("fase_id, processo_id"),
-        supabase.from("ft_sipo_fasi_uo_partecipanti").select("fase_id, uo_partecipante_id"),
+        sipoFrom("ft_sipo_fasi").select("fase_id, processo_id"),
+        sipoFrom("ft_sipo_fasi_uo_partecipanti").select("fase_id, uo_partecipante_id"),
       ]);
 
       if (!procRes.data) { setLoading(false); return; }

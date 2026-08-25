@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useFilteredEnteIds, applyEnteFilter } from "@/hooks/useFilteredEnteIds";
+import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
+import { fetchKpiRilevazione } from "@/services/dw/kpiRilevazioneService";
 import { extractAllKpis } from "@/hooks/useKpiCalculations";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ScatterChart, Scatter, ZAxis, Cell, ReferenceLine } from "recharts";
 
@@ -12,9 +12,7 @@ export const KpiBenchmarkSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      let q = supabase.from("dw_kpi_rilevazione").select("*");
-      q = applyEnteFilter(q, enteIds);
-      const { data: kpis } = await q;
+      const kpis = await fetchKpiRilevazione(enteIds);
       if (!kpis) return;
 
       const byEnte: Record<number, any> = {};

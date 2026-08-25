@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { sipoFrom } from "@/services/dw/siproService";
 import { Loader2 } from "lucide-react";
 import { SiproFilters, type SiproFilterValues, effectiveEnteIds } from "./SiproFilters";
 import { useAuth } from "@/contexts/AuthContext";
@@ -31,7 +31,7 @@ export const CriticitaProcessiChart = () => {
       setLoading(true);
       const ids = effectiveEnteIds(filters);
 
-      let procQ = supabase.from("ft_sipo_processi")
+      let procQ = sipoFrom("ft_sipo_processi")
         .select("processo_id, denominazione, processo_semplificazione_id, ente_id")
         .is("data_fine", null);
       if (ids.length === 1) procQ = procQ.eq("ente_id", ids[0]);
@@ -39,10 +39,10 @@ export const CriticitaProcessiChart = () => {
 
       const [procRes, fasiRes, critProcRes, critLkRes, semplRes] = await Promise.all([
         procQ,
-        supabase.from("ft_sipo_fasi").select("fase_id, processo_id"),
-        supabase.from("ft_sipo_criticita_processi").select("*"),
-        supabase.from("lk_sipo_criticita_processi").select("*"),
-        supabase.from("lk_sipo_semplificazione_processi").select("*"),
+        sipoFrom("ft_sipo_fasi").select("fase_id, processo_id"),
+        sipoFrom("ft_sipo_criticita_processi").select("*"),
+        sipoFrom("lk_sipo_criticita_processi").select("*"),
+        sipoFrom("lk_sipo_semplificazione_processi").select("*"),
       ]);
 
       if (!procRes.data) { setLoading(false); return; }

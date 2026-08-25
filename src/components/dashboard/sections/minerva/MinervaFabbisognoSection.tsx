@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useFilteredEnteIds, applyEnteFilter } from "@/hooks/useFilteredEnteIds";
+import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
+import { fetchPtfpReclutamento } from "@/services/dw/minervaService";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
@@ -10,7 +10,7 @@ export const MinervaFabbisognoSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      const { data: reclutamento } = await supabase.from("dw_ptfp_reclutamento").select("*");
+      const reclutamento = await fetchPtfpReclutamento();
       if (!reclutamento) return;
 
       setData(reclutamento.map((r: any) => ({

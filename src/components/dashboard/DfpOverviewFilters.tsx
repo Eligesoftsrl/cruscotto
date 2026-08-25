@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { fetchLkEntiDistinct } from "@/services/dw/enteService";
 import { ChevronDown } from "lucide-react";
 
 export interface DfpOverviewFilterValues {
@@ -24,31 +24,10 @@ export const DfpOverviewFilters = ({ value, onChange }: Props) => {
   const [aree, setAree] = useState<string[]>([]);
 
   useEffect(() => {
-    // Fetch distinct comparto values
-    supabase
-      .from("lk_enti")
-      .select("comparto")
-      .not("comparto", "is", null)
-      .order("comparto")
-      .then(({ data }) => {
-        if (data) {
-          const unique = [...new Set(data.map((r) => r.comparto).filter(Boolean))] as string[];
-          setComparti(unique);
-        }
-      });
-
-    // Fetch distinct regione values as "Area Geografica"
-    supabase
-      .from("lk_enti")
-      .select("regione")
-      .not("regione", "is", null)
-      .order("regione")
-      .then(({ data }) => {
-        if (data) {
-          const unique = [...new Set(data.map((r) => r.regione).filter(Boolean))] as string[];
-          setAree(unique);
-        }
-      });
+    // Valori distinti comparto
+    fetchLkEntiDistinct("comparto").then(setComparti);
+    // Valori distinti regione (usati come "Area Geografica")
+    fetchLkEntiDistinct("regione").then(setAree);
   }, []);
 
   const dimensioni = ["< 100 dipendenti", "100–500", "500–2.000", "2.000–10.000", "> 10.000"];

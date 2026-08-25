@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useFilteredEnteIds, applyEnteFilter } from "@/hooks/useFilteredEnteIds";
+import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
+import { fetchKpiRilevazione } from "@/services/dw/kpiRilevazioneService";
 import { extractAllKpis, computeCompositeIndices, type KpiRow, type CompositeIndex } from "@/hooks/useKpiCalculations";
 
 const DIM_META: Record<string, { label: string; color: string }> = {
@@ -27,9 +27,7 @@ export const KpiAbilitantiSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      let q = supabase.from("dw_kpi_rilevazione").select("*");
-      q = applyEnteFilter(q, enteIds);
-      const { data } = await q;
+      const data = await fetchKpiRilevazione(enteIds);
       if (!data) return;
 
       const byEnte: Record<number, any> = {};

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useFilteredEnteIds, applyEnteFilter } from "@/hooks/useFilteredEnteIds";
+import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
+import { fetchInpaBandiWithScadenza } from "@/services/dw/inpaService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 
 export const InpaDurataSection = () => {
@@ -10,10 +10,7 @@ export const InpaDurataSection = () => {
 
   useEffect(() => {
     const load = async () => {
-      let q = supabase.from("dw_inpa_bandi").select("*");
-      q = applyEnteFilter(q, enteIds);
-      q = q.not("data_scadenza", "is", null);
-      const { data: bandi } = await q;
+      const bandi = await fetchInpaBandiWithScadenza(enteIds);
       if (!bandi) return;
 
       const mapped = bandi.filter((b: any) => b.data_pubblicazione && b.data_scadenza).map((b: any) => {
