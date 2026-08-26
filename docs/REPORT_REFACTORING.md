@@ -137,11 +137,15 @@ Pubblica / Responsabile HR di ente).
 
 ![Login](screenshots/01_login.jpeg)
 
+*Figura 1 — Pagina di accesso: selezione del profilo (DFP / Responsabile HR di ente) in stile AGID.*
+
 ### 6.2 Home di benvenuto
 Punto di ingresso con scelta tra **Navigazione Guidata** (percorsi narrativi) e
 **Vista Tecnica** (cruscotto per analisti).
 
 ![Home](screenshots/02_home.jpeg)
+
+*Figura 2 — Home di benvenuto: scelta tra Navigazione Guidata e Vista Tecnica.*
 
 ### 6.3 Vista Executive (indicatori reali)
 Cruscotto sintetico con i 29 indicatori su 6 pillar (D1–D6), alimentati dai **dati reali**
@@ -149,11 +153,15 @@ del data warehouse.
 
 ![Vista Executive](screenshots/03_executive.jpeg)
 
+*Figura 3 — Vista Executive: i 29 indicatori su 6 pillar (D1–D6) alimentati dai dati reali del data warehouse.*
+
 ### 6.4 Conto Annuale — Analisi per genere (grafici su dati reali)
 Esempio di sezione operativa collegata alle tabelle `dw_*` reali: distribuzione di genere
 per qualifica, Gender Gap Index e grafici Recharts.
 
 ![Conto Annuale — Genere](screenshots/04_conto_annuale_genere.jpeg)
+
+*Figura 4 — Conto Annuale, "Analisi per genere": distribuzione per qualifica, Gender Gap Index e grafici Recharts su dati reali `dw_*`.*
 
 ---
 

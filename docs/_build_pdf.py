@@ -39,6 +39,8 @@ ul, ol { margin: 8px 0; padding-left: 22px; }
 li { margin: 3px 0; }
 blockquote { border-left: 4px solid #93c5fd; background: #eff6ff; margin: 10px 0; padding: 6px 14px; color: #1e3a5f; }
 h2, h3, table, pre, img, blockquote { break-inside: avoid; }
+.caption { text-align: center; color: #6b7280; font-size: 10px; margin-top: -4px; margin-bottom: 16px; }
+.caption em { font-style: italic; }
 """
 
 # diff highlighting inside code blocks: colora righe + e -
@@ -57,6 +59,9 @@ def highlight_diff(match):
     return "<pre><code>" + "\n".join(out) + "</code></pre>"
 
 body_html = re.sub(r"<pre><code[^>]*>(.*?)</code></pre>", highlight_diff, body_html, flags=re.S)
+
+# didascalie: paragrafi che iniziano con "<em>Figura" -> classe .caption centrata
+body_html = re.sub(r"<p><em>(Figura.*?)</em></p>", r'<p class="caption"><em>\1</em></p>', body_html, flags=re.S)
 
 html = f"""<!DOCTYPE html>
 <html lang="it"><head><meta charset="utf-8"><style>{css}</style></head>
