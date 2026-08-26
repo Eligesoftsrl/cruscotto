@@ -21,6 +21,25 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "@typescript-eslint/no-unused-vars": "off",
+      // Declassato a warning: rimozione progressiva degli 'any' pianificata (Fase 3 tipizzazione).
+      "@typescript-eslint/no-explicit-any": "warn",
+      // Blinda l'architettura: il client Supabase si usa solo nei service.
+      "no-restricted-imports": ["error", {
+        patterns: [{
+          group: ["@/integrations/supabase/client", "**/integrations/supabase/client"],
+          message: "Non importare il client Supabase direttamente: usa un service in src/services.",
+        }],
+      }],
     },
+  },
+  {
+    // Eccezioni consentite: service layer, integrazione Supabase e auth (in attesa di SSO).
+    files: [
+      "src/services/**/*.{ts,tsx}",
+      "src/integrations/**/*.{ts,tsx}",
+      "src/contexts/AuthContext.tsx",
+      "src/pages/Login.tsx",
+    ],
+    rules: { "no-restricted-imports": "off" },
   },
 );
