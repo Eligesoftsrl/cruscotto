@@ -1,4 +1,5 @@
-import { distribuzioneAnzianita, serieStoricaAnzianita } from "@/data/mockData";
+import { distribuzioneAnzianita, serieStoricaAnzianita } from "@/fixtures";
+import { DemoDataBadge } from "@/components/dashboard/DemoDataBadge";
 import { useFilters } from "@/contexts/FilterContext";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
@@ -41,6 +42,7 @@ export const AnzianitaSection = () => {
 
   return (
     <div className="space-y-4">
+      <DemoDataBadge note="Dati dimostrativi: l'anzianità di servizio non è ancora presente nelle tabelle dw_* (prevista in ca_anzianita)." />
       {/* KPI row */}
       <div className="grid grid-cols-12 gap-3">
         {[

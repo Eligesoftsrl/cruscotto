@@ -1,4 +1,5 @@
-import { personaleMacrocategoria, personaleTitoloStudio, serieStoricaPersonale, kpiOverview } from "@/data/mockData";
+import { personaleMacrocategoria, personaleTitoloStudio, serieStoricaPersonale, kpiOverview } from "@/fixtures";
+import { DemoDataBadge } from "@/components/dashboard/DemoDataBadge";
 import { Users, Building2, GraduationCap, TrendingUp } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
@@ -25,6 +26,7 @@ export const AnalisiPersonaleSection = () => {
 
   return (
     <div className="space-y-4">
+      <DemoDataBadge note="Dati dimostrativi: titolo di studio, macrocategoria e serie storica del personale non sono ancora disponibili nelle tabelle dw_* (previste in ca_*)." />
       {/* KPI */}
       <div className="grid grid-cols-12 gap-3">
         {[

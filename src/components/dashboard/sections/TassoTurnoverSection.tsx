@@ -1,4 +1,5 @@
-import { serieStoricaTurnover, kpiOverview, cessazioniPerCausale, assuntiPerCausale } from "@/data/mockData";
+import { useCessatiData } from "@/hooks/useCessatiData";
+import { useAssuntiData } from "@/hooks/useAssuntiData";
 import { TrendingUp, TrendingDown, ArrowRightLeft, Activity } from "lucide-react";
 import {
   ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
@@ -13,21 +14,40 @@ const tooltipStyle = {
 };
 
 export const TassoTurnoverSection = () => {
+  const { serieStoricaCessati, kpiOverview, isLoading, error } = useCessatiData(2023);
+  const { serieStoricaTurnover: serieAssunti } = useAssuntiData(2023);
+
+  if (isLoading) return <div className="p-6 text-sm text-muted-foreground">Caricamento dati…</div>;
+  if (error) return <div className="p-6 text-sm text-destructive">Errore nel caricamento dei dati.</div>;
+
+  const anni = Array.from(new Set([
+    ...serieStoricaCessati.map((r) => r.anno),
+    ...serieAssunti.map((r) => r.anno),
+  ])).sort((a, b) => a - b);
+  const serieStoricaTurnover = anni.map((anno) => {
+    const cessati = serieStoricaCessati.find((r) => r.anno === anno)?.cessati ?? 0;
+    const assunti = serieAssunti.find((r) => r.anno === anno)?.assunti ?? 0;
+    return { anno, assunti, cessati, saldo: assunti - cessati };
+  });
+
+  if (!serieStoricaTurnover.length) {
+    return <div className="p-6 text-sm text-muted-foreground">Nessun dato disponibile.</div>;
+  }
+
+  const personale = kpiOverview.personaleTotale || 1;
   const ultimo = serieStoricaTurnover[serieStoricaTurnover.length - 1];
-  const penultimo = serieStoricaTurnover[serieStoricaTurnover.length - 2];
-  const turnoverRate = ((ultimo.cessati / kpiOverview.personaleTotale) * 100).toFixed(1);
-  const turnoverRatePrev = ((penultimo.cessati / kpiOverview.personaleTotale) * 100).toFixed(1);
+  const penultimo = serieStoricaTurnover[serieStoricaTurnover.length - 2] ?? ultimo;
+  const turnoverRate = ((ultimo.cessati / personale) * 100).toFixed(1);
+  const turnoverRatePrev = ((penultimo.cessati / personale) * 100).toFixed(1);
   const deltaRate = (parseFloat(turnoverRate) - parseFloat(turnoverRatePrev)).toFixed(1);
 
-  // Calcola tasso turnover annuale
   const serieConTasso = serieStoricaTurnover.map((r) => ({
     ...r,
-    tassoTurnover: parseFloat(((r.cessati / kpiOverview.personaleTotale) * 100).toFixed(1)),
-    tassoIngresso: parseFloat(((r.assunti / kpiOverview.personaleTotale) * 100).toFixed(1)),
+    tassoTurnover: parseFloat(((r.cessati / personale) * 100).toFixed(1)),
+    tassoIngresso: parseFloat(((r.assunti / personale) * 100).toFixed(1)),
   }));
 
-  // Waterfall saldo cumulato
-  const saldoCumulato = serieStoricaTurnover.reduce<{ anno: string; saldo: number; cumulato: number }[]>((acc, r) => {
+  const saldoCumulato = serieStoricaTurnover.reduce<{ anno: number; saldo: number; cumulato: number }[]>((acc, r) => {
     const prev = acc.length > 0 ? acc[acc.length - 1].cumulato : 0;
     acc.push({ anno: r.anno, saldo: r.saldo, cumulato: prev + r.saldo });
     return acc;
@@ -35,10 +55,9 @@ export const TassoTurnoverSection = () => {
 
   return (
     <div className="space-y-4">
-      {/* KPI */}
       <div className="grid grid-cols-12 gap-3">
         {[
-          { label: "Tasso Turnover 2023", value: `${turnoverRate}%`, icon: Activity, color: "hsl(var(--chart-orange))", sub: `${parseFloat(deltaRate) >= 0 ? "+" : ""}${deltaRate} pp vs 2022` },
+          { label: "Tasso Turnover 2023", value: `${turnoverRate}%`, icon: Activity, color: "hsl(var(--chart-orange))", sub: `${parseFloat(deltaRate) >= 0 ? "+" : ""}${deltaRate} pp vs anno prec.` },
           { label: "Cessati 2023", value: ultimo.cessati.toLocaleString("it-IT"), icon: TrendingDown, color: "hsl(var(--chart-red))" },
           { label: "Assunti 2023", value: ultimo.assunti.toLocaleString("it-IT"), icon: TrendingUp, color: "hsl(var(--chart-teal))" },
           { label: "Saldo netto 2023", value: (ultimo.saldo >= 0 ? "+" : "") + ultimo.saldo.toLocaleString("it-IT"), icon: ArrowRightLeft, color: ultimo.saldo >= 0 ? "hsl(var(--chart-teal))" : "hsl(var(--chart-red))" },
@@ -54,10 +73,9 @@ export const TassoTurnoverSection = () => {
         ))}
       </div>
 
-      {/* Main chart: Assunti vs Cessati bars + Tasso line (Tableau combo) */}
       <div className="grid grid-cols-12 gap-3">
         <div className="col-span-8 bg-card border rounded-lg p-4">
-          <h3 className="text-xs font-semibold text-foreground mb-3">Assunti vs Cessati e Tasso di Turnover (2016–2023)</h3>
+          <h3 className="text-xs font-semibold text-foreground mb-3">Assunti vs Cessati e Tasso di Turnover</h3>
           <ResponsiveContainer width="100%" height={300}>
             <ComposedChart data={serieConTasso}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
@@ -73,7 +91,6 @@ export const TassoTurnoverSection = () => {
           </ResponsiveContainer>
         </div>
 
-        {/* Saldo netto cumulato */}
         <div className="col-span-4 bg-card border rounded-lg p-4">
           <h3 className="text-xs font-semibold text-foreground mb-3">Saldo Netto Cumulato</h3>
           <ResponsiveContainer width="100%" height={300}>
@@ -83,17 +100,12 @@ export const TassoTurnoverSection = () => {
               <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
               <Tooltip contentStyle={tooltipStyle} />
               <ReferenceLine y={0} stroke="hsl(var(--muted-foreground))" strokeDasharray="3 3" />
-              <Bar dataKey="cumulato" name="Cumulato" barSize={24} radius={[3, 3, 0, 0]}>
-                {saldoCumulato.map((entry, i) => (
-                  <rect key={i} fill={entry.cumulato >= 0 ? "hsl(var(--chart-teal))" : "hsl(var(--chart-red))"} />
-                ))}
-              </Bar>
+              <Bar dataKey="cumulato" name="Cumulato" barSize={24} radius={[3, 3, 0, 0]} fill="hsl(var(--chart-teal))" />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
 
-      {/* Table */}
       <div className="bg-card border rounded-lg p-4">
         <h3 className="text-xs font-semibold text-foreground mb-3">Serie Storica Turnover</h3>
         <div className="overflow-x-auto">

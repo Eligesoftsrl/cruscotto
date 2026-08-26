@@ -1,4 +1,5 @@
-import { distribuzioneEta, kpiOverview } from "@/data/mockData";
+import { distribuzioneEta, kpiOverview } from "@/fixtures";
+import { DemoDataBadge } from "@/components/dashboard/DemoDataBadge";
 import { AlertTriangle, CalendarClock, Users, TrendingDown } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
@@ -41,6 +42,7 @@ export const PrevisioneCessazioniSection = () => {
 
   return (
     <div className="space-y-4">
+      <DemoDataBadge note="Proiezione dimostrativa: le previsioni di cessazione sono uno scenario simulato, non dati di tabella." />
       {/* KPI */}
       <div className="grid grid-cols-12 gap-3">
         {[

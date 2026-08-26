@@ -1,8 +1,8 @@
-import { formazione, kpiOverview } from "@/data/mockData";
+import { useFormazioneData } from "@/hooks/useFormazioneData";
 import { GraduationCap, Clock, Users, TrendingUp } from "lucide-react";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
-  AreaChart, Area, ComposedChart, Line,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  ComposedChart, Line, Area,
 } from "recharts";
 
 const tooltipStyle = {
@@ -12,7 +12,7 @@ const tooltipStyle = {
   fontSize: 11,
 };
 
-// Mock dettaglio per area
+// Dettaglio illustrativo per area/tipologia (non presente nelle tabelle dw_*)
 const formazionePerArea = [
   { area: "Dirigenti I", formati: 38, totale: 45, perc: 84.4 },
   { area: "Dirigenti II", formati: 220, totale: 275, perc: 80.0 },
@@ -30,17 +30,26 @@ const formazioneTipologia = [
 ];
 
 export const FormatiPersonaleSection = () => {
-  const { formatiPerc, formatiTotale, oreFormazione, oreProCapite, serieStorica } = formazione;
+  const { formazione, isLoading, error } = useFormazioneData(2023);
+
+  if (isLoading) return <div className="p-6 text-sm text-muted-foreground">Caricamento dati…</div>;
+  if (error) return <div className="p-6 text-sm text-destructive">Errore nel caricamento dei dati.</div>;
+
+  const { formatiPerc, formatiTotale, oreFormazione, oreProCapite, serieStorica, _personaleTotale } = formazione;
+  const personale = _personaleTotale || 1;
+  const formazioneVar = serieStorica.length >= 2
+    ? (serieStorica[serieStorica.length - 1].formatiPerc - serieStorica[serieStorica.length - 2].formatiPerc).toFixed(1)
+    : "0.0";
 
   return (
     <div className="space-y-4">
       {/* KPI */}
       <div className="grid grid-cols-12 gap-3">
         {[
-          { label: "Personale formato", value: `${formatiPerc}%`, icon: GraduationCap, color: "hsl(var(--chart-blue))", sub: `${formatiTotale.toLocaleString("it-IT")} su ${kpiOverview.personaleTotale.toLocaleString("it-IT")}` },
+          { label: "Personale formato", value: `${formatiPerc}%`, icon: GraduationCap, color: "hsl(var(--chart-blue))", sub: `${formatiTotale.toLocaleString("it-IT")} su ${personale.toLocaleString("it-IT")}` },
           { label: "Ore di formazione", value: oreFormazione.toLocaleString("it-IT"), icon: Clock, color: "hsl(var(--chart-teal))" },
           { label: "Ore pro capite", value: oreProCapite.toFixed(1), icon: Users, color: "hsl(var(--chart-orange))" },
-          { label: "Variazione vs anno prec.", value: `+${kpiOverview.formazioneVar}%`, icon: TrendingUp, color: "hsl(var(--chart-teal))" },
+          { label: "Variazione vs anno prec.", value: `${parseFloat(formazioneVar) >= 0 ? "+" : ""}${formazioneVar} pp`, icon: TrendingUp, color: parseFloat(formazioneVar) >= 0 ? "hsl(var(--chart-teal))" : "hsl(var(--chart-red))" },
         ].map((k, i) => (
           <div key={i} className="col-span-3 bg-card border rounded-lg p-4">
             <div className="flex items-center justify-between">
@@ -55,7 +64,6 @@ export const FormatiPersonaleSection = () => {
 
       {/* Charts */}
       <div className="grid grid-cols-12 gap-3">
-        {/* % formati per area — bullet-style horizontal bars */}
         <div className="col-span-5 bg-card border rounded-lg p-4">
           <h3 className="text-xs font-semibold text-foreground mb-3">% Personale Formato per Area</h3>
           <div className="space-y-3 mt-4">
@@ -66,15 +74,8 @@ export const FormatiPersonaleSection = () => {
                   <span className="text-muted-foreground">{r.perc}%</span>
                 </div>
                 <div className="h-5 bg-muted rounded-full overflow-hidden relative">
-                  <div
-                    className="h-full rounded-full transition-all"
-                    style={{ width: `${r.perc}%`, background: "hsl(var(--chart-blue))" }}
-                  />
-                  {/* Benchmark line at 68.5% */}
-                  <div
-                    className="absolute top-0 h-full w-0.5"
-                    style={{ left: `${formatiPerc}%`, background: "hsl(var(--chart-orange))" }}
-                  />
+                  <div className="h-full rounded-full transition-all" style={{ width: `${r.perc}%`, background: "hsl(var(--chart-blue))" }} />
+                  <div className="absolute top-0 h-full w-0.5" style={{ left: `${formatiPerc}%`, background: "hsl(var(--chart-orange))" }} />
                 </div>
               </div>
             ))}
@@ -85,9 +86,8 @@ export const FormatiPersonaleSection = () => {
           </div>
         </div>
 
-        {/* Serie storica */}
         <div className="col-span-7 bg-card border rounded-lg p-4">
-          <h3 className="text-xs font-semibold text-foreground mb-3">Trend % Personale Formato (2018–2023)</h3>
+          <h3 className="text-xs font-semibold text-foreground mb-3">Trend % Personale Formato</h3>
           <ResponsiveContainer width="100%" height={280}>
             <ComposedChart data={serieStorica}>
               <defs>
@@ -107,7 +107,7 @@ export const FormatiPersonaleSection = () => {
         </div>
       </div>
 
-      {/* Tipologia formazione */}
+      {/* Tipologia formazione (dettaglio illustrativo) */}
       <div className="bg-card border rounded-lg p-4">
         <h3 className="text-xs font-semibold text-foreground mb-3">Ore di Formazione per Tipologia</h3>
         <ResponsiveContainer width="100%" height={240}>
