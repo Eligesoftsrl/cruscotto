@@ -1,4 +1,4 @@
-import { lavoroAgile } from "@/data/mockData";
+import { useModalitaLavoro } from "@/hooks/useModalitaLavoro";
 import { Laptop, Users, TrendingDown, AlertTriangle } from "lucide-react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -16,7 +16,17 @@ const tooltipStyle = {
 const COLORS = ["hsl(var(--chart-red))", "hsl(var(--chart-blue))"];
 
 export const LavoroAgileSection = () => {
+  const { lavoroAgile, isLoading, error } = useModalitaLavoro(2023);
+
+  if (isLoading) return <div className="p-6 text-sm text-muted-foreground">Caricamento dati…</div>;
+  if (error) return <div className="p-6 text-sm text-destructive">Errore nel caricamento dei dati.</div>;
+
   const { agiliPerc, agiliTotale, donneAgiliPerc, uominiAgiliPerc, serieStorica } = lavoroAgile;
+
+  if (!serieStorica.length) {
+    return <div className="p-6 text-sm text-muted-foreground">Nessun dato disponibile.</div>;
+  }
+
   const picco = serieStorica.reduce((a, b) => (b.agili > a.agili ? b : a));
   const genereData = [
     { name: "Donne", value: donneAgiliPerc },
@@ -37,7 +47,7 @@ export const LavoroAgileSection = () => {
           { label: "Lavoro agile 2023", value: `${agiliPerc}%`, icon: Laptop, color: "hsl(var(--chart-teal))", sub: `${agiliTotale.toLocaleString("it-IT")} unità` },
           { label: "% Donne in smart working", value: `${donneAgiliPerc}%`, icon: Users, color: "hsl(var(--chart-red))" },
           { label: "Picco (anno COVID)", value: `${picco.agili.toLocaleString("it-IT")}`, icon: AlertTriangle, color: "hsl(var(--chart-orange))", sub: picco.anno },
-          { label: "Trend post-COVID", value: `${(((agiliTotale - picco.agili) / picco.agili) * 100).toFixed(0)}%`, icon: TrendingDown, color: "hsl(var(--chart-red))" },
+          { label: "Trend post-COVID", value: `${picco.agili > 0 ? (((agiliTotale - picco.agili) / picco.agili) * 100).toFixed(0) : 0}%`, icon: TrendingDown, color: "hsl(var(--chart-red))" },
         ].map((k, i) => (
           <div key={i} className="col-span-3 bg-card border rounded-lg p-4">
             <div className="flex items-center justify-between">
@@ -53,7 +63,7 @@ export const LavoroAgileSection = () => {
       <div className="grid grid-cols-12 gap-3">
         {/* Area trend */}
         <div className="col-span-5 bg-card border rounded-lg p-4">
-          <h3 className="text-xs font-semibold text-foreground mb-3">Evoluzione Lavoro Agile (2019–2023)</h3>
+          <h3 className="text-xs font-semibold text-foreground mb-3">Evoluzione Lavoro Agile</h3>
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={serieStorica}>
               <defs>

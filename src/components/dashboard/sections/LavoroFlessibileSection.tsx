@@ -1,5 +1,5 @@
-import { lavoroFlessibile, kpiOverview } from "@/data/mockData";
-import { Clock, Users, TrendingUp, PieChart as PieIcon } from "lucide-react";
+import { useModalitaLavoro } from "@/hooks/useModalitaLavoro";
+import { Clock, Users, TrendingUp } from "lucide-react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell,
@@ -15,7 +15,18 @@ const tooltipStyle = {
 const COLORS = ["hsl(var(--chart-blue))", "hsl(var(--chart-red))"];
 
 export const LavoroFlessibileSection = () => {
+  const { lavoroFlessibile, isLoading, error } = useModalitaLavoro(2023);
+
+  if (isLoading) return <div className="p-6 text-sm text-muted-foreground">Caricamento dati…</div>;
+  if (error) return <div className="p-6 text-sm text-destructive">Errore nel caricamento dei dati.</div>;
+
   const { flessibiliPerc, flessibiliTotale, donneFlessibiliPerc, uominiFlessibiliPerc, serieStorica } = lavoroFlessibile;
+
+  if (!serieStorica.length) {
+    return <div className="p-6 text-sm text-muted-foreground">Nessun dato disponibile.</div>;
+  }
+
+  const base = serieStorica[0].flessibili;
   const genereData = [
     { name: "Donne", value: donneFlessibiliPerc },
     { name: "Uomini", value: uominiFlessibiliPerc },
@@ -29,7 +40,7 @@ export const LavoroFlessibileSection = () => {
           { label: "Personale flessibile", value: `${flessibiliPerc}%`, icon: Clock, color: "hsl(var(--chart-blue))", sub: `${flessibiliTotale.toLocaleString("it-IT")} unità` },
           { label: "% Donne", value: `${donneFlessibiliPerc}%`, icon: Users, color: "hsl(var(--chart-red))" },
           { label: "% Uomini", value: `${uominiFlessibiliPerc}%`, icon: Users, color: "hsl(var(--chart-blue))" },
-          { label: "Crescita vs 2018", value: `+${(((flessibiliTotale - serieStorica[0].flessibili) / serieStorica[0].flessibili) * 100).toFixed(0)}%`, icon: TrendingUp, color: "hsl(var(--chart-teal))" },
+          { label: "Crescita vs primo anno", value: `${base > 0 ? "+" + (((flessibiliTotale - base) / base) * 100).toFixed(0) : 0}%`, icon: TrendingUp, color: "hsl(var(--chart-teal))" },
         ].map((k, i) => (
           <div key={i} className="col-span-3 bg-card border rounded-lg p-4">
             <div className="flex items-center justify-between">
@@ -45,7 +56,7 @@ export const LavoroFlessibileSection = () => {
       <div className="grid grid-cols-12 gap-3">
         {/* Area trend */}
         <div className="col-span-8 bg-card border rounded-lg p-4">
-          <h3 className="text-xs font-semibold text-foreground mb-3">Evoluzione Lavoro Flessibile (2018–2023)</h3>
+          <h3 className="text-xs font-semibold text-foreground mb-3">Evoluzione Lavoro Flessibile</h3>
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={serieStorica}>
               <defs>

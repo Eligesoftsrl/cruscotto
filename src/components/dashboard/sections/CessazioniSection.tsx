@@ -1,6 +1,7 @@
-import { cessazioniPerCausale, assuntiPerCausale, serieStoricaTurnover, kpiOverview } from "@/data/mockData";
+import { useCessatiData } from "@/hooks/useCessatiData";
+import { useAssuntiData } from "@/hooks/useAssuntiData";
 import { useFilters } from "@/contexts/FilterContext";
-import { TrendingUp, TrendingDown, LogOut, UserPlus, ArrowRightLeft } from "lucide-react";
+import { TrendingUp, LogOut, UserPlus, ArrowRightLeft } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
   LineChart, Line, ReferenceLine,
@@ -17,6 +18,12 @@ export const CessazioniSection = () => {
   const { filters } = useFilters();
   const genere = filters.genere;
 
+  const { cessazioniPerCausale, serieStoricaCessati, kpiOverview, isLoading, error } = useCessatiData(2023);
+  const { assuntiPerCausale, serieStoricaTurnover: serieAssunti } = useAssuntiData(2023);
+
+  if (isLoading) return <div className="p-6 text-sm text-muted-foreground">Caricamento dati…</div>;
+  if (error) return <div className="p-6 text-sm text-destructive">Errore nel caricamento dei dati.</div>;
+
   const filterRow = (r: { uomini: number; donne: number; totale: number }) => ({
     ...r,
     uomini: genere === "Donne" ? 0 : r.uomini,
@@ -32,6 +39,21 @@ export const CessazioniSection = () => {
   const saldo = totaleAssunti - totaleCessati;
   const showBoth = genere === "Tutti";
 
+  // Serie storica combinata assunti vs cessati (merge per anno)
+  const anni = Array.from(new Set([
+    ...serieStoricaCessati.map((r) => r.anno),
+    ...serieAssunti.map((r) => r.anno),
+  ])).sort((a, b) => a - b);
+  const serieStoricaTurnover = anni.map((anno) => {
+    const cessati = serieStoricaCessati.find((r) => r.anno === anno)?.cessati ?? 0;
+    const assunti = serieAssunti.find((r) => r.anno === anno)?.assunti ?? 0;
+    return { anno, assunti, cessati, saldo: assunti - cessati };
+  });
+
+  const turnoverRate = kpiOverview.personaleTotale > 0
+    ? ((totaleCessati / kpiOverview.personaleTotale) * 100).toFixed(1)
+    : "0.0";
+
   return (
     <div className="space-y-4">
       {/* KPI */}
@@ -40,7 +62,7 @@ export const CessazioniSection = () => {
           { label: "Cessati 2023", value: totaleCessati.toLocaleString("it-IT"), icon: LogOut, color: "hsl(var(--chart-red))" },
           { label: "Assunti 2023", value: totaleAssunti.toLocaleString("it-IT"), icon: UserPlus, color: "hsl(var(--chart-teal))" },
           { label: "Saldo netto", value: (saldo >= 0 ? "+" : "") + saldo.toLocaleString("it-IT"), icon: ArrowRightLeft, color: saldo >= 0 ? "hsl(var(--chart-teal))" : "hsl(var(--chart-red))" },
-          { label: "Tasso Turnover", value: `${kpiOverview.turnoverRate}%`, icon: TrendingUp, color: "hsl(var(--chart-orange))" },
+          { label: "Tasso Turnover", value: `${turnoverRate}%`, icon: TrendingUp, color: "hsl(var(--chart-orange))" },
         ].map((k, i) => (
           <div key={i} className="col-span-3 bg-card border rounded-lg p-4">
             <div className="flex items-center justify-between">
@@ -87,7 +109,7 @@ export const CessazioniSection = () => {
 
       {/* Serie storica */}
       <div className="bg-card border rounded-lg p-4">
-        <h3 className="text-xs font-semibold text-foreground mb-3">Serie Storica Assunti vs Cessati (2016–2023)</h3>
+        <h3 className="text-xs font-semibold text-foreground mb-3">Serie Storica Assunti vs Cessati</h3>
         <ResponsiveContainer width="100%" height={280}>
           <LineChart data={serieStoricaTurnover}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />

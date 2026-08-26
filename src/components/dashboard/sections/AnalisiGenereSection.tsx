@@ -1,5 +1,6 @@
-import { generePerQualifica, kpiOverview, distribuzioneEta } from "@/data/mockData";
-import { Users, TrendingUp, BarChart3, Scale } from "lucide-react";
+import { useGenereData } from "@/hooks/useGenereData";
+import { useEtaData } from "@/hooks/useEtaData";
+import { Users, BarChart3, Scale } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine,
 } from "recharts";
@@ -11,28 +12,39 @@ const tooltipStyle = {
   fontSize: 11,
 };
 
-// Gender gap per qualifica
-const gapData = generePerQualifica.map((r) => ({
-  qualifica: r.qualifica,
-  uomini: r.uomini,
-  donne: r.donne,
-  totale: r.uomini + r.donne,
-  percDonne: parseFloat(((r.donne / (r.uomini + r.donne)) * 100).toFixed(1)),
-  gap: parseFloat((((r.donne - r.uomini) / (r.uomini + r.donne)) * 100).toFixed(1)),
-}));
-
-// Distribuzione età per genere (diverging)
-const divergingEta = distribuzioneEta.map((r) => ({
-  fascia: r.fascia,
-  uomini: -r.uomini,
-  donne: r.donne,
-}));
-
 export const AnalisiGenereSection = () => {
+  const { generePerQualifica, isLoading: l1, error: e1 } = useGenereData(2023);
+  const { distribuzioneEta, isLoading: l2, error: e2 } = useEtaData(2023);
+
+  if (l1 || l2) return <div className="p-6 text-sm text-muted-foreground">Caricamento dati…</div>;
+  if (e1 || e2) return <div className="p-6 text-sm text-destructive">Errore nel caricamento dei dati.</div>;
+
+  if (!generePerQualifica.length) {
+    return <div className="p-6 text-sm text-muted-foreground">Nessun dato disponibile.</div>;
+  }
+
+  // Gender gap per qualifica
+  const gapData = generePerQualifica.map((r) => ({
+    qualifica: r.qualifica,
+    uomini: r.uomini,
+    donne: r.donne,
+    totale: r.uomini + r.donne,
+    percDonne: r.uomini + r.donne > 0 ? parseFloat(((r.donne / (r.uomini + r.donne)) * 100).toFixed(1)) : 0,
+    gap: r.uomini + r.donne > 0 ? parseFloat((((r.donne - r.uomini) / (r.uomini + r.donne)) * 100).toFixed(1)) : 0,
+  }));
+
+  // Distribuzione età per genere (diverging)
+  const divergingEta = distribuzioneEta.map((r) => ({
+    fascia: r.fascia,
+    uomini: -r.uomini,
+    donne: r.donne,
+  }));
+
   const totDonne = generePerQualifica.reduce((s, r) => s + r.donne, 0);
   const totUomini = generePerQualifica.reduce((s, r) => s + r.uomini, 0);
-  const percDonne = ((totDonne / (totDonne + totUomini)) * 100).toFixed(1);
-  const genderGap = (((totDonne - totUomini) / (totDonne + totUomini)) * 100).toFixed(1);
+  const tot = totDonne + totUomini || 1;
+  const percDonne = ((totDonne / tot) * 100).toFixed(1);
+  const genderGap = (((totDonne - totUomini) / tot) * 100).toFixed(1);
 
   return (
     <div className="space-y-4">

@@ -1,5 +1,5 @@
 import { FilterBar } from "../FilterBar";
-import { progressioni } from "@/data/mockData";
+import { useProgressioniData } from "@/hooks/useProgressioniData";
 import { ArrowUpRight } from "lucide-react";
 import { KpiCard } from "../KpiCard";
 import {
@@ -8,6 +8,20 @@ import {
 } from "recharts";
 
 export const ProgressioniSection = () => {
+  const { progressioni, isLoading, error } = useProgressioniData();
+
+  if (isLoading) return <div className="p-6 text-sm text-muted-foreground">Caricamento dati…</div>;
+  if (error) return <div className="p-6 text-sm text-destructive">Errore nel caricamento dei dati.</div>;
+
+  if (!progressioni.length) {
+    return (
+      <div className="space-y-6">
+        <FilterBar showMacrocategoria />
+        <div className="p-6 text-sm text-muted-foreground">Nessun dato disponibile.</div>
+      </div>
+    );
+  }
+
   const latest = progressioni[progressioni.length - 1];
 
   return (
