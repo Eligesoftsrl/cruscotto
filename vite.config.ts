@@ -27,6 +27,20 @@ export default defineConfig(() => {
       ...(isManagedEnv ? { allowedHosts: true as const } : {}),
     },
     plugins: [react()],
+    build: {
+      chunkSizeWarningLimit: 900,
+      rollupOptions: {
+        output: {
+          // Separa le librerie pesanti in chunk dedicati (cache migliore, bundle iniziale piu leggero).
+          manualChunks: {
+            "vendor-react": ["react", "react-dom", "react-router-dom"],
+            "vendor-recharts": ["recharts"],
+            "vendor-supabase": ["@supabase/supabase-js"],
+            "vendor-query": ["@tanstack/react-query"],
+          },
+        },
+      },
+    },
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
