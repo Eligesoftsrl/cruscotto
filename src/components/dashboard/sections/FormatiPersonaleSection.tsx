@@ -1,3 +1,5 @@
+import { SectionError, SectionLoading } from "../SectionStates";
+import { tooltipStyle } from "../chartTheme";
 import { useFormazioneData } from "@/hooks/useFormazioneData";
 import { GraduationCap, Clock, Users, TrendingUp } from "lucide-react";
 import {
@@ -5,12 +7,6 @@ import {
   ComposedChart, Line, Area,
 } from "recharts";
 
-const tooltipStyle = {
-  background: "hsl(var(--card))",
-  border: "1px solid hsl(var(--border))",
-  borderRadius: 8,
-  fontSize: 11,
-};
 
 // Dettaglio illustrativo per area/tipologia (non presente nelle tabelle dw_*)
 const formazionePerArea = [
@@ -32,8 +28,8 @@ const formazioneTipologia = [
 export const FormatiPersonaleSection = () => {
   const { formazione, isLoading, error } = useFormazioneData(2023);
 
-  if (isLoading) return <div className="p-6 text-sm text-muted-foreground">Caricamento dati…</div>;
-  if (error) return <div className="p-6 text-sm text-destructive">Errore nel caricamento dei dati.</div>;
+  if (isLoading) return <SectionLoading />;
+  if (error) return <SectionError />;
 
   const { formatiPerc, formatiTotale, oreFormazione, oreProCapite, serieStorica, _personaleTotale } = formazione;
   const personale = _personaleTotale || 1;

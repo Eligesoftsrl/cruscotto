@@ -1,3 +1,5 @@
+import { SectionError, SectionLoading } from "../SectionStates";
+import { tooltipStyle } from "../chartTheme";
 import { useCessatiData } from "@/hooks/useCessatiData";
 import { useAssuntiData } from "@/hooks/useAssuntiData";
 import { useFilters } from "@/contexts/FilterContext";
@@ -7,12 +9,6 @@ import {
   LineChart, Line, ReferenceLine,
 } from "recharts";
 
-const tooltipStyle = {
-  background: "hsl(var(--card))",
-  border: "1px solid hsl(var(--border))",
-  borderRadius: 8,
-  fontSize: 11,
-};
 
 export const CessazioniSection = () => {
   const { filters } = useFilters();
@@ -21,8 +17,8 @@ export const CessazioniSection = () => {
   const { cessazioniPerCausale, serieStoricaCessati, kpiOverview, isLoading, error } = useCessatiData(2023);
   const { assuntiPerCausale, serieStoricaTurnover: serieAssunti } = useAssuntiData(2023);
 
-  if (isLoading) return <div className="p-6 text-sm text-muted-foreground">Caricamento dati…</div>;
-  if (error) return <div className="p-6 text-sm text-destructive">Errore nel caricamento dei dati.</div>;
+  if (isLoading) return <SectionLoading />;
+  if (error) return <SectionError />;
 
   const filterRow = (r: { uomini: number; donne: number; totale: number }) => ({
     ...r,

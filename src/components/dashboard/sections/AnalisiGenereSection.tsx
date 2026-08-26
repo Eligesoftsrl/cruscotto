@@ -1,3 +1,5 @@
+import { SectionEmpty, SectionError, SectionLoading } from "../SectionStates";
+import { tooltipStyle } from "../chartTheme";
 import { useGenereData } from "@/hooks/useGenereData";
 import { useEtaData } from "@/hooks/useEtaData";
 import { Users, BarChart3, Scale } from "lucide-react";
@@ -5,22 +7,16 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine,
 } from "recharts";
 
-const tooltipStyle = {
-  background: "hsl(var(--card))",
-  border: "1px solid hsl(var(--border))",
-  borderRadius: 8,
-  fontSize: 11,
-};
 
 export const AnalisiGenereSection = () => {
   const { generePerQualifica, isLoading: l1, error: e1 } = useGenereData(2023);
   const { distribuzioneEta, isLoading: l2, error: e2 } = useEtaData(2023);
 
-  if (l1 || l2) return <div className="p-6 text-sm text-muted-foreground">Caricamento dati…</div>;
-  if (e1 || e2) return <div className="p-6 text-sm text-destructive">Errore nel caricamento dei dati.</div>;
+  if (l1 || l2) return <SectionLoading />;
+  if (e1 || e2) return <SectionError />;
 
   if (!generePerQualifica.length) {
-    return <div className="p-6 text-sm text-muted-foreground">Nessun dato disponibile.</div>;
+    return <SectionEmpty />;
   }
 
   // Gender gap per qualifica

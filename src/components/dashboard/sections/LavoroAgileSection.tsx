@@ -1,3 +1,5 @@
+import { SectionEmpty, SectionError, SectionLoading } from "../SectionStates";
+import { tooltipStyle } from "../chartTheme";
 import { useModalitaLavoro } from "@/hooks/useModalitaLavoro";
 import { Laptop, Users, TrendingDown, AlertTriangle } from "lucide-react";
 import {
@@ -6,25 +8,19 @@ import {
   PieChart, Pie,
 } from "recharts";
 
-const tooltipStyle = {
-  background: "hsl(var(--card))",
-  border: "1px solid hsl(var(--border))",
-  borderRadius: 8,
-  fontSize: 11,
-};
 
 const COLORS = ["hsl(var(--chart-red))", "hsl(var(--chart-blue))"];
 
 export const LavoroAgileSection = () => {
   const { lavoroAgile, isLoading, error } = useModalitaLavoro(2023);
 
-  if (isLoading) return <div className="p-6 text-sm text-muted-foreground">Caricamento dati…</div>;
-  if (error) return <div className="p-6 text-sm text-destructive">Errore nel caricamento dei dati.</div>;
+  if (isLoading) return <SectionLoading />;
+  if (error) return <SectionError />;
 
   const { agiliPerc, agiliTotale, donneAgiliPerc, uominiAgiliPerc, serieStorica } = lavoroAgile;
 
   if (!serieStorica.length) {
-    return <div className="p-6 text-sm text-muted-foreground">Nessun dato disponibile.</div>;
+    return <SectionEmpty />;
   }
 
   const picco = serieStorica.reduce((a, b) => (b.agili > a.agili ? b : a));

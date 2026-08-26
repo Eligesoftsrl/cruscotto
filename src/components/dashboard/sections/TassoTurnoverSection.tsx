@@ -1,3 +1,5 @@
+import { SectionEmpty, SectionError, SectionLoading } from "../SectionStates";
+import { tooltipStyle } from "../chartTheme";
 import { useCessatiData } from "@/hooks/useCessatiData";
 import { useAssuntiData } from "@/hooks/useAssuntiData";
 import { TrendingUp, TrendingDown, ArrowRightLeft, Activity } from "lucide-react";
@@ -6,19 +8,13 @@ import {
   ReferenceLine, BarChart,
 } from "recharts";
 
-const tooltipStyle = {
-  background: "hsl(var(--card))",
-  border: "1px solid hsl(var(--border))",
-  borderRadius: 8,
-  fontSize: 11,
-};
 
 export const TassoTurnoverSection = () => {
   const { serieStoricaCessati, kpiOverview, isLoading, error } = useCessatiData(2023);
   const { serieStoricaTurnover: serieAssunti } = useAssuntiData(2023);
 
-  if (isLoading) return <div className="p-6 text-sm text-muted-foreground">Caricamento dati…</div>;
-  if (error) return <div className="p-6 text-sm text-destructive">Errore nel caricamento dei dati.</div>;
+  if (isLoading) return <SectionLoading />;
+  if (error) return <SectionError />;
 
   const anni = Array.from(new Set([
     ...serieStoricaCessati.map((r) => r.anno),
@@ -31,7 +27,7 @@ export const TassoTurnoverSection = () => {
   });
 
   if (!serieStoricaTurnover.length) {
-    return <div className="p-6 text-sm text-muted-foreground">Nessun dato disponibile.</div>;
+    return <SectionEmpty />;
   }
 
   const personale = kpiOverview.personaleTotale || 1;
