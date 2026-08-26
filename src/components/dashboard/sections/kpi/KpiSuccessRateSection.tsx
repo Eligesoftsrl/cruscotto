@@ -64,19 +64,25 @@ export const KpiSuccessRateSection = () => {
       <div className="tableau-card">
         <div className="tableau-card-header">KPI Success Rate per Dimensione (Metodologia Ufficiale)</div>
         <div className="p-4" style={{ height: 400 }}>
-          <ResponsiveContainer>
-            <RadarChart data={radarData} cx="50%" cy="50%" outerRadius="75%">
-              <PolarGrid stroke="hsl(var(--tableau-grid))" />
-              <PolarAngleAxis dataKey="dimensione" tick={{ fontSize: 11 }} />
-              <PolarRadiusAxis domain={[0, 100]} tick={{ fontSize: 9 }} />
-              <Radar name="Target" dataKey="target" stroke="hsl(210,15%,60%)" fill="hsl(210,15%,60%)" fillOpacity={0.05} strokeDasharray="5 5" />
-              <Radar name="SR Totale" dataKey="SR Totale" stroke="hsl(210,80%,45%)" fill="hsl(210,80%,45%)" fillOpacity={0.25} />
-              <Radar name="SR Abilitanti" dataKey="SR Abilitanti" stroke="hsl(150,60%,40%)" fill="hsl(150,60%,40%)" fillOpacity={0.15} />
-              <Radar name="SR Successo" dataKey="SR Successo" stroke="hsl(30,85%,55%)" fill="hsl(30,85%,55%)" fillOpacity={0.15} />
-              <Tooltip />
-              <Legend />
-            </RadarChart>
-          </ResponsiveContainer>
+          {radarData.length > 0 ? (
+            <ResponsiveContainer>
+              <RadarChart data={radarData} cx="50%" cy="50%" outerRadius="75%">
+                <PolarGrid stroke="hsl(var(--tableau-grid))" />
+                <PolarAngleAxis dataKey="dimensione" tick={{ fontSize: 11 }} />
+                <PolarRadiusAxis domain={[0, 100]} tick={{ fontSize: 9 }} />
+                <Radar name="Target" dataKey="target" stroke="hsl(210,15%,60%)" fill="hsl(210,15%,60%)" fillOpacity={0.05} strokeDasharray="5 5" />
+                <Radar name="SR Totale" dataKey="SR Totale" stroke="hsl(210,80%,45%)" fill="hsl(210,80%,45%)" fillOpacity={0.25} />
+                <Radar name="SR Abilitanti" dataKey="SR Abilitanti" stroke="hsl(150,60%,40%)" fill="hsl(150,60%,40%)" fillOpacity={0.15} />
+                <Radar name="SR Successo" dataKey="SR Successo" stroke="hsl(30,85%,55%)" fill="hsl(30,85%,55%)" fillOpacity={0.15} />
+                <Tooltip />
+                <Legend />
+              </RadarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+              Nessun dato disponibile
+            </div>
+          )}
         </div>
       </div>
       <div className="tableau-card">
