@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { filterOptions, benchmarkData, distribuzioneEta } from "@/data/mockData";
+import { filterOptions } from "@/fixtures";
+import { useEtaData } from "@/hooks/useEtaData";
+import { DemoDataBadge } from "@/components/dashboard/DemoDataBadge";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts";
@@ -7,7 +9,7 @@ import {
 const VIEWS = ["cluster", "complesso"] as const;
 type ViewMode = typeof VIEWS[number];
 
-// Mock benchmark distribution data per fascia di età
+// Distribuzione benchmark per fascia di età (valori dimostrativi: nessuna tabella dw_* dedicata)
 const getBenchmarkEtaData = (mode: ViewMode) => {
   const clusterData = [
     { fascia: "Fino a 35 anni", valore: 4.2 },
@@ -26,23 +28,6 @@ const getBenchmarkEtaData = (mode: ViewMode) => {
   return mode === "cluster" ? clusterData : complessoData;
 };
 
-const totalPersonale = distribuzioneEta.reduce((s, r) => s + r.totale, 0);
-const totalUomini = distribuzioneEta.reduce((s, r) => s + r.uomini, 0);
-const totalDonne = distribuzioneEta.reduce((s, r) => s + r.donne, 0);
-
-const adminTotale = distribuzioneEta.map(r => ({
-  fascia: r.fascia,
-  valore: Number(((r.totale / totalPersonale) * 100).toFixed(1)),
-}));
-const adminUomini = distribuzioneEta.map(r => ({
-  fascia: r.fascia,
-  valore: Number(((r.uomini / totalUomini) * 100).toFixed(1)),
-}));
-const adminDonne = distribuzioneEta.map(r => ({
-  fascia: r.fascia,
-  valore: Number(((r.donne / totalDonne) * 100).toFixed(1)),
-}));
-
 export const BenchmarkSection = () => {
   const [viewMode, setViewMode] = useState<ViewMode>("cluster");
   const [comparto, setComparto] = useState("Tutti");
@@ -50,24 +35,28 @@ export const BenchmarkSection = () => {
   const [regione, setRegione] = useState("Tutte");
   const [dimensione, setDimensione] = useState("Tutte");
 
+  const { distribuzioneEta } = useEtaData(2023);
+
+  const totalPersonale = distribuzioneEta.reduce((s, r) => s + r.totale, 0) || 1;
+  const totalUomini = distribuzioneEta.reduce((s, r) => s + r.uomini, 0) || 1;
+  const totalDonne = distribuzioneEta.reduce((s, r) => s + r.donne, 0) || 1;
+
+  const adminTotale = distribuzioneEta.map(r => ({ fascia: r.fascia, valore: Number(((r.totale / totalPersonale) * 100).toFixed(1)) }));
+  const adminUomini = distribuzioneEta.map(r => ({ fascia: r.fascia, valore: Number(((r.uomini / totalUomini) * 100).toFixed(1)) }));
+  const adminDonne = distribuzioneEta.map(r => ({ fascia: r.fascia, valore: Number(((r.donne / totalDonne) * 100).toFixed(1)) }));
+
   const benchEta = getBenchmarkEtaData(viewMode);
 
-  // Merge admin + benchmark data for comparison charts
-  const mergedTotale = adminTotale.map((r, i) => ({
-    fascia: r.fascia,
-    amministrazione: r.valore,
-    benchmark: benchEta[i].valore,
-  }));
-  const mergedUomini = adminUomini.map((r, i) => ({
-    fascia: r.fascia,
-    amministrazione: r.valore,
-    benchmark: Number((benchEta[i].valore * 0.95).toFixed(1)),
-  }));
-  const mergedDonne = adminDonne.map((r, i) => ({
-    fascia: r.fascia,
-    amministrazione: r.valore,
-    benchmark: Number((benchEta[i].valore * 1.05).toFixed(1)),
-  }));
+  const mergeWith = (admin: { fascia: string; valore: number }[], factor = 1) =>
+    admin.map((r, i) => ({
+      fascia: r.fascia,
+      amministrazione: r.valore,
+      benchmark: Number(((benchEta[i]?.valore ?? 0) * factor).toFixed(1)),
+    }));
+
+  const mergedTotale = mergeWith(adminTotale, 1);
+  const mergedUomini = mergeWith(adminUomini, 0.95);
+  const mergedDonne = mergeWith(adminDonne, 1.05);
 
   const renderComparisonChart = (
     title: string,
@@ -96,36 +85,23 @@ export const BenchmarkSection = () => {
 
   return (
     <div className="space-y-4">
+      <DemoDataBadge note="Confronto di benchmark (cluster / complesso PA): valori dimostrativi. La colonna 'Tua amministrazione' usa i dati reali di distribuzione per età." />
       <p className="text-sm text-muted-foreground">
         I dati di benchmarking sono preimpostati di default rispetto al <strong className="text-foreground">cluster di riferimento</strong> della tua amministrazione.
         Puoi visualizzare i dati per il complesso delle PA o filtrare per Comparto, Tipologia, Dimensione e Regione.
       </p>
 
-      {/* Toggle cluster / complesso */}
       <div className="flex items-center gap-6">
         <label className="flex items-center gap-1.5 cursor-pointer">
-          <input
-            type="radio"
-            name="benchView"
-            checked={viewMode === "complesso"}
-            onChange={() => setViewMode("complesso")}
-            className="rounded border-border"
-          />
+          <input type="radio" name="benchView" checked={viewMode === "complesso"} onChange={() => setViewMode("complesso")} className="rounded border-border" />
           <span className="text-xs text-foreground">Dati nel complesso</span>
         </label>
         <label className="flex items-center gap-1.5 cursor-pointer">
-          <input
-            type="radio"
-            name="benchView"
-            checked={viewMode === "cluster"}
-            onChange={() => setViewMode("cluster")}
-            className="rounded border-border"
-          />
+          <input type="radio" name="benchView" checked={viewMode === "cluster"} onChange={() => setViewMode("cluster")} className="rounded border-border" />
           <span className="text-xs text-foreground">Cluster di appartenenza</span>
         </label>
       </div>
 
-      {/* Filters */}
       <div className="flex flex-wrap gap-4">
         {[
           { label: "Per Comparto", value: comparto, setter: setComparto, options: filterOptions.comparti },
@@ -135,18 +111,14 @@ export const BenchmarkSection = () => {
         ].map((f) => (
           <div key={f.label} className="flex items-center gap-2">
             <label className="text-xs font-medium text-foreground whitespace-nowrap">{f.label}:</label>
-            <select
-              value={f.value}
-              onChange={(e) => f.setter(e.target.value)}
-              className="rounded border bg-background px-2.5 py-1.5 text-xs outline-none focus:ring-1 focus:ring-ring min-w-[200px]"
-            >
-              {f.options.map(o => <option key={o}>{o}</option>)}
+            <select value={f.value} onChange={(e) => f.setter(e.target.value)}
+              className="rounded border bg-background px-2.5 py-1.5 text-xs outline-none focus:ring-1 focus:ring-ring min-w-[200px]">
+              {f.options.map((o: string) => <option key={o}>{o}</option>)}
             </select>
           </div>
         ))}
       </div>
 
-      {/* Legend */}
       <div className="flex gap-4 text-[11px] text-muted-foreground">
         <span className="flex items-center gap-1.5">
           <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: "hsl(280,45%,55%)" }} />
@@ -158,7 +130,6 @@ export const BenchmarkSection = () => {
         </span>
       </div>
 
-      {/* Three comparison bar charts */}
       <div className="flex gap-4 flex-wrap">
         {renderComparisonChart("Totale", mergedTotale, "49,8", viewMode === "cluster" ? "51,2" : "50,5")}
         {renderComparisonChart("Uomini", mergedUomini, "50,2", viewMode === "cluster" ? "52,0" : "51,1")}
