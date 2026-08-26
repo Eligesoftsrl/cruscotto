@@ -1,3 +1,4 @@
+import { KpiStat, KpiGrid } from "../KpiStat";
 import { SectionError, SectionLoading } from "../SectionStates";
 import { tooltipStyle } from "../chartTheme";
 import { useCessatiData } from "@/hooks/useCessatiData";
@@ -53,22 +54,16 @@ export const CessazioniSection = () => {
   return (
     <div className="space-y-4">
       {/* KPI */}
-      <div className="grid grid-cols-12 gap-3">
+      <KpiGrid>
         {[
           { label: "Cessati 2023", value: totaleCessati.toLocaleString("it-IT"), icon: LogOut, color: "hsl(var(--chart-red))" },
           { label: "Assunti 2023", value: totaleAssunti.toLocaleString("it-IT"), icon: UserPlus, color: "hsl(var(--chart-teal))" },
           { label: "Saldo netto", value: (saldo >= 0 ? "+" : "") + saldo.toLocaleString("it-IT"), icon: ArrowRightLeft, color: saldo >= 0 ? "hsl(var(--chart-teal))" : "hsl(var(--chart-red))" },
           { label: "Tasso Turnover", value: `${turnoverRate}%`, icon: TrendingUp, color: "hsl(var(--chart-orange))" },
         ].map((k, i) => (
-          <div key={i} className="col-span-3 bg-card border rounded-lg p-4">
-            <div className="flex items-center justify-between">
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">{k.label}</div>
-              <k.icon className="h-4 w-4" style={{ color: k.color }} />
-            </div>
-            <div className="text-xl font-bold text-foreground mt-1">{k.value}</div>
-          </div>
+          <KpiStat key={i} label={k.label} value={k.value} icon={k.icon} color={k.color} />
         ))}
-      </div>
+      </KpiGrid>
 
       {/* Charts row */}
       <div className="grid grid-cols-12 gap-3">

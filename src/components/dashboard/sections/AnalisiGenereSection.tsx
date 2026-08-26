@@ -1,3 +1,4 @@
+import { KpiStat, KpiGrid } from "../KpiStat";
 import { SectionEmpty, SectionError, SectionLoading } from "../SectionStates";
 import { tooltipStyle } from "../chartTheme";
 import { useGenereData } from "@/hooks/useGenereData";
@@ -45,22 +46,16 @@ export const AnalisiGenereSection = () => {
   return (
     <div className="space-y-4">
       {/* KPI */}
-      <div className="grid grid-cols-12 gap-3">
+      <KpiGrid>
         {[
           { label: "% Donne", value: `${percDonne}%`, icon: Users, color: "hsl(var(--chart-red))" },
           { label: "% Uomini", value: `${(100 - parseFloat(percDonne)).toFixed(1)}%`, icon: Users, color: "hsl(var(--chart-blue))" },
           { label: "Gender gap index", value: `${parseFloat(genderGap) >= 0 ? "+" : ""}${genderGap}%`, icon: Scale, color: "hsl(var(--chart-purple))" },
           { label: "Qualifica più bilanciata", value: gapData.reduce((a, b) => Math.abs(b.gap) < Math.abs(a.gap) ? b : a).qualifica, icon: BarChart3, color: "hsl(var(--chart-teal))" },
         ].map((k, i) => (
-          <div key={i} className="col-span-3 bg-card border rounded-lg p-4">
-            <div className="flex items-center justify-between">
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">{k.label}</div>
-              <k.icon className="h-4 w-4" style={{ color: k.color }} />
-            </div>
-            <div className="text-xl font-bold text-foreground mt-1">{k.value}</div>
-          </div>
+          <KpiStat key={i} label={k.label} value={k.value} icon={k.icon} color={k.color} />
         ))}
-      </div>
+      </KpiGrid>
 
       <div className="grid grid-cols-12 gap-3">
         {/* Stacked bar per qualifica */}

@@ -1,3 +1,4 @@
+import { KpiStat, KpiGrid } from "../KpiStat";
 import { SectionEmpty, SectionError, SectionLoading } from "../SectionStates";
 import { tooltipStyle } from "../chartTheme";
 import { useModalitaLavoro } from "@/hooks/useModalitaLavoro";
@@ -38,23 +39,16 @@ export const LavoroAgileSection = () => {
   return (
     <div className="space-y-4">
       {/* KPI */}
-      <div className="grid grid-cols-12 gap-3">
+      <KpiGrid>
         {[
           { label: "Lavoro agile 2023", value: `${agiliPerc}%`, icon: Laptop, color: "hsl(var(--chart-teal))", sub: `${agiliTotale.toLocaleString("it-IT")} unità` },
           { label: "% Donne in smart working", value: `${donneAgiliPerc}%`, icon: Users, color: "hsl(var(--chart-red))" },
           { label: "Picco (anno COVID)", value: `${picco.agili.toLocaleString("it-IT")}`, icon: AlertTriangle, color: "hsl(var(--chart-orange))", sub: picco.anno },
           { label: "Trend post-COVID", value: `${picco.agili > 0 ? (((agiliTotale - picco.agili) / picco.agili) * 100).toFixed(0) : 0}%`, icon: TrendingDown, color: "hsl(var(--chart-red))" },
         ].map((k, i) => (
-          <div key={i} className="col-span-3 bg-card border rounded-lg p-4">
-            <div className="flex items-center justify-between">
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">{k.label}</div>
-              <k.icon className="h-4 w-4" style={{ color: k.color }} />
-            </div>
-            <div className="text-xl font-bold text-foreground mt-1">{k.value}</div>
-            {k.sub && <div className="text-[10px] text-muted-foreground mt-0.5">{k.sub}</div>}
-          </div>
+          <KpiStat key={i} label={k.label} value={k.value} icon={k.icon} color={k.color} sub={k.sub} />
         ))}
-      </div>
+      </KpiGrid>
 
       <div className="grid grid-cols-12 gap-3">
         {/* Area trend */}
