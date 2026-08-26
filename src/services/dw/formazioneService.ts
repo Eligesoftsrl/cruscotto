@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
 export interface FormazioneData {
   formatiTotale: number;
@@ -18,7 +19,10 @@ export const EMPTY_FORMAZIONE_DATA: FormazioneData = {
   _personaleTotale: 1,
 };
 
-export function transformFormazioneData(form: any[], occ: any[], anno: number): FormazioneData {
+type FormRow = Partial<Database["public"]["Tables"]["dw_formazione"]["Row"]>;
+type OccRow = Partial<Database["public"]["Tables"]["dw_occupazione"]["Row"]>;
+
+export function transformFormazioneData(form: FormRow[], occ: OccRow[], anno: number): FormazioneData {
   const perAnno = new Map<number, { f: number; ore: number }>();
   for (const r of form) {
     const a = Number(r.anno);

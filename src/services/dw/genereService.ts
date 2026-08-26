@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
 export interface GenerePerQualificaRow {
   qualifica: string;
@@ -24,7 +25,9 @@ export const EMPTY_GENERE_DATA: GenereData = {
 };
 
 /** Trasformazione pura: aggrega occupazione per qualifica e calcola i KPI di genere. */
-export function transformGenereData(rows: any[]): GenereData {
+type OccRow = Partial<Database["public"]["Tables"]["dw_occupazione"]["Row"]>;
+
+export function transformGenereData(rows: OccRow[]): GenereData {
   const agg = new Map<string, { uomini: number; donne: number }>();
   for (const r of rows) {
     const key = String(r.qualifica ?? "\u2014");

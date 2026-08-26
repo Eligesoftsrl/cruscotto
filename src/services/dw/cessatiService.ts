@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
 export interface CessazionePerCausale {
   causale: string;
@@ -25,11 +26,15 @@ export const EMPTY_CESSATI_DATA: CessatiData = {
 };
 
 /** Aggrega le cessazioni per causale, la serie storica e il totale personale. */
+type CessatiRow = Partial<Database["public"]["Tables"]["dw_cessati"]["Row"]>;
+type CausaliRow = Partial<Database["public"]["Tables"]["dw_causali"]["Row"]>;
+type OccRow = Partial<Database["public"]["Tables"]["dw_occupazione"]["Row"]>;
+
 export function transformCessatiData(
-  cessati: any[],
-  serie: any[],
-  causali: any[],
-  occ: any[],
+  cessati: CessatiRow[],
+  serie: CessatiRow[],
+  causali: CausaliRow[],
+  occ: OccRow[],
 ): CessatiData {
   const label = new Map<string, string>();
   for (const c of causali) label.set(String(c.cod_alfa), String(c.descrizione ?? c.cod_alfa));

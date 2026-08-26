@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
 export interface DistribuzioneEtaRow {
   fascia: string;
@@ -15,9 +16,12 @@ export interface EtaData {
 export const EMPTY_ETA_DATA: EtaData = { distribuzioneEta: [], totalePersonale: 0 };
 
 /** Trasformazione pura: aggrega le righe eta per fascia rispettando l'ordine anagrafico. */
-export function transformEtaData(rows: any[], fasce: any[]): EtaData {
+type EtaRow = Partial<Database["public"]["Tables"]["dw_eta"]["Row"]>;
+type FasciaEtaRow = Partial<Database["public"]["Tables"]["dw_fascia_eta"]["Row"]>;
+
+export function transformEtaData(rows: EtaRow[], fasce: FasciaEtaRow[]): EtaData {
   const order = new Map<string, { label: string; i: number }>();
-  fasce.forEach((f: any, i: number) => {
+  fasce.forEach((f, i) => {
     order.set(String(f.codice), { label: String(f.classe ?? f.codice), i });
   });
 

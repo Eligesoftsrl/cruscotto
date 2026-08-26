@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
 export interface ProgressioneRow {
   anno: number;
@@ -6,7 +7,9 @@ export interface ProgressioneRow {
   orizzontali: number;
 }
 
-export function transformProgressioniData(rows: any[]): ProgressioneRow[] {
+type PassaggiRow = Partial<Database["public"]["Tables"]["dw_passaggi_qualifica"]["Row"]>;
+
+export function transformProgressioniData(rows: PassaggiRow[]): ProgressioneRow[] {
   const perAnno = new Map<number, { verticali: number; orizzontali: number }>();
   for (const r of rows) {
     const a = Number(r.anno);

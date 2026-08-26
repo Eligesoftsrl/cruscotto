@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
 interface ModalitaBlock {
   serieStorica: { anno: number; [key: string]: number }[];
@@ -28,8 +29,11 @@ export const EMPTY_MODALITA_LAVORO_DATA: ModalitaLavoroData = {
   lavoroFlessibile: { flessibiliTotale: 0, flessibiliPerc: 0, donneFlessibiliPerc: 0, uominiFlessibiliPerc: 0, serieStorica: [] },
 };
 
-export function transformModalitaLavoro(ml: any[], occ: any[], anno: number): ModalitaLavoroData {
-  const n = (x: any) => Number(x) || 0;
+type MlRow = Partial<Database["public"]["Tables"]["dw_modalita_lavoro"]["Row"]>;
+type OccRow = Partial<Database["public"]["Tables"]["dw_occupazione"]["Row"]>;
+
+export function transformModalitaLavoro(ml: MlRow[], occ: OccRow[], anno: number): ModalitaLavoroData {
+  const n = (x: number | null | undefined) => Number(x) || 0;
   const agile = new Map<number, { u: number; d: number }>();
   const fless = new Map<number, { u: number; d: number }>();
   for (const r of ml) {

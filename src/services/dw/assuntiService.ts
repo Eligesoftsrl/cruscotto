@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
 export interface AssuntoPerCausale {
   causale: string;
@@ -25,11 +26,15 @@ export const EMPTY_ASSUNTI_DATA: AssuntiData = {
 };
 
 /** Aggrega gli assunti per causale, la serie storica del turnover e il totale personale. */
+type AssuntiRow = Partial<Database["public"]["Tables"]["dw_assunti"]["Row"]>;
+type CausaliRow = Partial<Database["public"]["Tables"]["dw_causali"]["Row"]>;
+type OccRow = Partial<Database["public"]["Tables"]["dw_occupazione"]["Row"]>;
+
 export function transformAssuntiData(
-  assunti: any[],
-  serie: any[],
-  causali: any[],
-  occ: any[],
+  assunti: AssuntiRow[],
+  serie: AssuntiRow[],
+  causali: CausaliRow[],
+  occ: OccRow[],
 ): AssuntiData {
   const label = new Map<string, string>();
   for (const c of causali) label.set(String(c.cod_alfa), String(c.descrizione ?? c.cod_alfa));
