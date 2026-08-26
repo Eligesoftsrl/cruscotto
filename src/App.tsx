@@ -2,8 +2,9 @@ import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, QueryCache } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { toast } from "sonner";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Login from "./pages/Login";
 
@@ -16,6 +17,13 @@ const NarrativeDemo = lazy(() => import("./pages/NarrativeDemo"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
+  // Gestione errori globale: un toast per ogni query fallita (una sola volta).
+  queryCache: new QueryCache({
+    onError: (error) => {
+      const message = error instanceof Error ? error.message : "Errore nel caricamento dei dati";
+      toast.error("Errore di caricamento", { description: message });
+    },
+  }),
   defaultOptions: {
     queries: {
       staleTime: 60_000,
