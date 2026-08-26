@@ -34,8 +34,23 @@ export const KpiAbilitantiSection = () => {
       data.forEach((k: any) => { byEnte[k.id_ente] = k; });
       const latestRows = Object.values(byEnte);
 
-      // Extract all KPIs
-      const allKpis = latestRows.flatMap(r => extractAllKpis(r));
+      // Extract all KPIs and aggregate by code (media tra gli enti selezionati)
+      // per evitare codici duplicati quando sono selezionati piu enti.
+      const allKpisRaw = latestRows.flatMap(r => extractAllKpis(r));
+      const byCode = new Map<string, { sum: number; count: number; sample: KpiRow }>();
+      allKpisRaw.forEach((k) => {
+        const cur = byCode.get(k.codice);
+        if (cur) {
+          cur.sum += k.valore;
+          cur.count += 1;
+        } else {
+          byCode.set(k.codice, { sum: k.valore, count: 1, sample: k });
+        }
+      });
+      const allKpis: KpiRow[] = Array.from(byCode.values()).map(({ sum, count, sample }) => ({
+        ...sample,
+        valore: Math.round(sum / count),
+      }));
 
       // Group by dimension
       const byDim: Record<string, KpiRow[]> = {};
