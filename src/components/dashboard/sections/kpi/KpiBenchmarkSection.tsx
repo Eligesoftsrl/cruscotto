@@ -26,8 +26,8 @@ export const KpiBenchmarkSection = () => {
         const ente = row.denominazione?.replace("Comune di ", "").replace("Università degli Studi di ", "Uni. ")?.substring(0, 18) ?? "N/D";
 
         const byDim: Record<string, number[]> = {};
-        let ablVals: number[] = [];
-        let succVals: number[] = [];
+        const ablVals: number[] = [];
+        const succVals: number[] = [];
 
         allKpis.filter(k => k.categoria !== "strutturale").forEach(k => {
           if (!byDim[k.dimensione]) byDim[k.dimensione] = [];
