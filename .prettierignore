@@ -1,0 +1,18 @@
+# Build & dipendenze
+node_modules
+dist
+build
+coverage
+
+# Tipi generati automaticamente da Supabase (da non riformattare)
+src/integrations/supabase/types.ts
+
+# Dati statici JSON di grandi dimensioni
+src/data/json
+
+# Documentazione generata / artefatti (report da preservare)
+docs/
+
+# Lockfile
+yarn.lock
+package-lock.json

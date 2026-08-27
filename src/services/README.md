@@ -17,7 +17,9 @@ funzioni pure e testabili.
 
 ```ts
 // services/dw/etaService.ts
-export async function fetchEtaData(anno?: number): Promise<EtaData> { /* query + transform */ }
+export async function fetchEtaData(anno?: number): Promise<EtaData> {
+  /* query + transform */
+}
 
 // hooks/useEtaData.ts
 export function useEtaData(anno?: number) {

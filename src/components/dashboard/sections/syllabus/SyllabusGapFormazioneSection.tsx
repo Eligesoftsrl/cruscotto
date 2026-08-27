@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
 import { fetchSyllabusPartecipazioni, fetchSyllabusCatalogo } from "@/services/dw/syllabusService";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 
 export const SyllabusGapFormazioneSection = () => {
   const [gapData, setGapData] = useState<any[]>([]);
@@ -13,21 +22,24 @@ export const SyllabusGapFormazioneSection = () => {
       ]);
       if (!partecipazioni || !catalogo) return;
 
-      const byComp: Record<string, { corsi: number; partecipanti: number; completati: number }> = {};
+      const byComp: Record<string, { corsi: number; partecipanti: number; completati: number }> =
+        {};
       const corsiByComp: Record<string, Set<number>> = {};
-      
-      catalogo.forEach(c => {
+
+      catalogo.forEach((c) => {
         const comp = c.competenza ?? "N/D";
         if (!corsiByComp[comp]) corsiByComp[comp] = new Set();
         corsiByComp[comp].add(c.id_corso);
       });
 
       Object.entries(corsiByComp).forEach(([comp, corsiSet]) => {
-        const parts = partecipazioni.filter(p => corsiSet.has(p.id_corso));
+        const parts = partecipazioni.filter((p) => corsiSet.has(p.id_corso));
         byComp[comp] = {
           corsi: corsiSet.size,
           partecipanti: parts.length,
-          completati: parts.filter(p => p.esito_finale === "Superato" || p.esito_finale === "Completato").length,
+          completati: parts.filter(
+            (p) => p.esito_finale === "Superato" || p.esito_finale === "Completato",
+          ).length,
         };
       });
 
@@ -49,9 +61,12 @@ export const SyllabusGapFormazioneSection = () => {
       <div className="grid grid-cols-3 gap-3">
         {[
           { label: "Competenze Attive", value: gapData.length },
-          { label: "Partecipazioni Totali", value: gapData.reduce((s, d) => s + d.partecipanti, 0) },
+          {
+            label: "Partecipazioni Totali",
+            value: gapData.reduce((s, d) => s + d.partecipanti, 0),
+          },
           { label: "Completamenti", value: gapData.reduce((s, d) => s + d.completati, 0) },
-        ].map(kpi => (
+        ].map((kpi) => (
           <div key={kpi.label} className="tableau-card">
             <div className="p-4 text-center">
               <div className="text-2xl font-bold text-foreground">{kpi.value}</div>

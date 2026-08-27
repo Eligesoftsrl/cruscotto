@@ -48,7 +48,12 @@ export function transformAssuntiData(
     agg.set(key, cur);
   }
   const assuntiPerCausale = Array.from(agg.entries())
-    .map(([cod, v]) => ({ causale: label.get(cod) ?? cod, uomini: v.uomini, donne: v.donne, totale: v.uomini + v.donne }))
+    .map(([cod, v]) => ({
+      causale: label.get(cod) ?? cod,
+      uomini: v.uomini,
+      donne: v.donne,
+      totale: v.uomini + v.donne,
+    }))
     .sort((a, b) => b.totale - a.totale);
 
   const perAnno = new Map<number, number>();
@@ -60,7 +65,10 @@ export function transformAssuntiData(
     .map(([anno, assunti]) => ({ anno, assunti }))
     .sort((a, b) => a.anno - b.anno);
 
-  const personaleTotale = occ.reduce((s, r) => s + (Number(r.tp_uomini) || 0) + (Number(r.tp_donne) || 0), 0);
+  const personaleTotale = occ.reduce(
+    (s, r) => s + (Number(r.tp_uomini) || 0) + (Number(r.tp_donne) || 0),
+    0,
+  );
 
   return { assuntiPerCausale, serieStoricaTurnover, kpiOverview: { personaleTotale } };
 }

@@ -1,7 +1,18 @@
 import { useEffect, useState } from "react";
 import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
 import { fetchInpaBandi } from "@/services/dw/inpaService";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine, Cell } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  ReferenceLine,
+  Cell,
+} from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 
 export const InpaDomandaOffertaSection = () => {
@@ -20,7 +31,7 @@ export const InpaDomandaOffertaSection = () => {
           const posti = b.num_posti ?? 0;
           // Formula documento: (Posti - Candidature) / Posti * 100
           // Positivo = scarsa attrattività (pochi candidati), Negativo = saturazione (troppi candidati)
-          const diffPct = posti > 0 ? +( ((posti - cands) / posti) * 100 ).toFixed(1) : 0;
+          const diffPct = posti > 0 ? +(((posti - cands) / posti) * 100).toFixed(1) : 0;
           return {
             titolo: (b.figura_ricercata ?? b.codice ?? "N/D").substring(0, 25),
             regione: b.regione ?? "-",
@@ -36,13 +47,15 @@ export const InpaDomandaOffertaSection = () => {
     load();
   }, [enteIds]);
 
-  const avgDiff = data.length ? +(data.reduce((s, d) => s + d.diffPct, 0) / data.length).toFixed(1) : 0;
-  const saturati = data.filter(d => d.diffPct < -100).length;
-  const scarsaAttr = data.filter(d => d.diffPct > 50).length;
-  const equilibrio = data.filter(d => d.diffPct >= -100 && d.diffPct <= 50).length;
+  const avgDiff = data.length
+    ? +(data.reduce((s, d) => s + d.diffPct, 0) / data.length).toFixed(1)
+    : 0;
+  const saturati = data.filter((d) => d.diffPct < -100).length;
+  const scarsaAttr = data.filter((d) => d.diffPct > 50).length;
+  const equilibrio = data.filter((d) => d.diffPct >= -100 && d.diffPct <= 50).length;
 
   const byTipo: Record<string, { posti: number; cands: number }> = {};
-  data.forEach(d => {
+  data.forEach((d) => {
     if (!byTipo[d.tipo]) byTipo[d.tipo] = { posti: 0, cands: 0 };
     byTipo[d.tipo].posti += d.posti;
     byTipo[d.tipo].cands += d.candidature;
@@ -58,7 +71,11 @@ export const InpaDomandaOffertaSection = () => {
     <div className="p-4 space-y-4">
       <div className="grid grid-cols-4 gap-3">
         {[
-          { label: "Differenza % Media", value: `${avgDiff}%`, sub: avgDiff > 0 ? "Scarsa attrattività" : "Saturazione" },
+          {
+            label: "Differenza % Media",
+            value: `${avgDiff}%`,
+            sub: avgDiff > 0 ? "Scarsa attrattività" : "Saturazione",
+          },
           { label: "Bandi Saturi (<-100%)", value: saturati, sub: "Troppi candidati" },
           { label: "Scarsa Attrattività (>50%)", value: scarsaAttr, sub: "Pochi candidati" },
           { label: "In Equilibrio", value: equilibrio, sub: "Tra -100% e +50%" },
@@ -90,7 +107,16 @@ export const InpaDomandaOffertaSection = () => {
               <ReferenceLine x={0} stroke="hsl(var(--foreground))" strokeWidth={1.5} />
               <Bar dataKey="diffPct" name="Diff % D/O">
                 {data.slice(0, 20).map((entry, i) => (
-                  <Cell key={i} fill={entry.diffPct > 50 ? "hsl(30,85%,55%)" : entry.diffPct < -100 ? "hsl(0,70%,55%)" : "hsl(210,80%,45%)"} />
+                  <Cell
+                    key={i}
+                    fill={
+                      entry.diffPct > 50
+                        ? "hsl(30,85%,55%)"
+                        : entry.diffPct < -100
+                          ? "hsl(0,70%,55%)"
+                          : "hsl(210,80%,45%)"
+                    }
+                  />
                 ))}
               </Bar>
             </BarChart>
@@ -126,11 +152,18 @@ export const InpaDomandaOffertaSection = () => {
               { key: "tipo", header: "Tipo" },
               { key: "posti", header: "Posti", align: "right" },
               { key: "candidature", header: "Candidature", align: "right" },
-              { key: "diffPct", header: "Diff %", align: "right", render: (r: any) => (
-                <span className={`font-semibold ${r.diffPct > 50 ? "text-amber-600" : r.diffPct < -100 ? "text-red-600" : "text-green-600"}`}>
-                  {r.diffPct}%
-                </span>
-              )},
+              {
+                key: "diffPct",
+                header: "Diff %",
+                align: "right",
+                render: (r: any) => (
+                  <span
+                    className={`font-semibold ${r.diffPct > 50 ? "text-amber-600" : r.diffPct < -100 ? "text-red-600" : "text-green-600"}`}
+                  >
+                    {r.diffPct}%
+                  </span>
+                ),
+              },
             ]}
           />
         </div>

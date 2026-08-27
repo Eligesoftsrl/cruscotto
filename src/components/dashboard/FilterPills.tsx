@@ -12,10 +12,20 @@ interface FilterDef {
 }
 
 const FILTER_DEFS: FilterDef[] = [
-  { key: "macrocategoria", label: "Macrocategoria", options: filterOptions.macrocategorie, group: "structural" },
+  {
+    key: "macrocategoria",
+    label: "Macrocategoria",
+    options: filterOptions.macrocategorie,
+    group: "structural",
+  },
   { key: "categoria", label: "Categoria", options: filterOptions.categorie, group: "structural" },
   { key: "genere", label: "Genere", options: ["Tutti", "Uomini", "Donne"], group: "structural" },
-  { key: "anno", label: "Anno", options: ["2023", "2022", "2021", "2020", "2019", "2018"], group: "structural" },
+  {
+    key: "anno",
+    label: "Anno",
+    options: ["2023", "2022", "2021", "2020", "2019", "2018"],
+    group: "structural",
+  },
   { key: "comparto", label: "Comparto", options: filterOptions.comparti, group: "benchmark" },
   { key: "regione", label: "Regione", options: filterOptions.regioni, group: "benchmark" },
 ];
@@ -54,7 +64,9 @@ const DropdownPill = ({ def }: { def: FilterDef }) => {
             : "text-muted-foreground hover:border-primary hover:text-primary"
         }`}
       >
-        <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-primary" : "bg-muted-foreground/40"}`} />
+        <span
+          className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-primary" : "bg-muted-foreground/40"}`}
+        />
         {isActive ? `${def.label}: ${value}` : def.label}
         {isActive ? (
           <X

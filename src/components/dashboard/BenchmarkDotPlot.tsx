@@ -43,7 +43,10 @@ export const BenchmarkDotPlot = () => {
         {/* Legend */}
         <div className="flex gap-3 mb-2">
           <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-            <span className="w-2.5 h-2.5 rounded-full" style={{ background: "hsl(var(--chart-blue))" }} />
+            <span
+              className="w-2.5 h-2.5 rounded-full"
+              style={{ background: "hsl(var(--chart-blue))" }}
+            />
             Valore comparto
           </div>
           <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">

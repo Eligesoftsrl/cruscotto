@@ -1,8 +1,16 @@
 import { useModalitaLavoro } from "@/hooks/useModalitaLavoro";
 import { Clock, Users, TrendingUp } from "lucide-react";
 import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
 import { SectionLoading, SectionError, SectionEmpty } from "../SectionStates";
 import { KpiStat, KpiGrid } from "../KpiStat";
@@ -19,7 +27,13 @@ export const LavoroFlessibileSection = () => {
   if (isLoading) return <SectionLoading />;
   if (error) return <SectionError />;
 
-  const { flessibiliPerc, flessibiliTotale, donneFlessibiliPerc, uominiFlessibiliPerc, serieStorica } = lavoroFlessibile;
+  const {
+    flessibiliPerc,
+    flessibiliTotale,
+    donneFlessibiliPerc,
+    uominiFlessibiliPerc,
+    serieStorica,
+  } = lavoroFlessibile;
   if (!serieStorica.length) return <SectionEmpty />;
 
   const base = serieStorica[0].flessibili;
@@ -32,10 +46,31 @@ export const LavoroFlessibileSection = () => {
   return (
     <div className="space-y-4">
       <KpiGrid>
-        <KpiStat label="Personale flessibile" value={formatPct(flessibiliPerc)} icon={Clock} color="hsl(var(--chart-blue))" sub={`${formatIT(flessibiliTotale)} unità`} />
-        <KpiStat label="% Donne" value={formatPct(donneFlessibiliPerc)} icon={Users} color="hsl(var(--chart-red))" />
-        <KpiStat label="% Uomini" value={formatPct(uominiFlessibiliPerc)} icon={Users} color="hsl(var(--chart-blue))" />
-        <KpiStat label="Crescita vs primo anno" value={crescita} icon={TrendingUp} color="hsl(var(--chart-teal))" />
+        <KpiStat
+          label="Personale flessibile"
+          value={formatPct(flessibiliPerc)}
+          icon={Clock}
+          color="hsl(var(--chart-blue))"
+          sub={`${formatIT(flessibiliTotale)} unità`}
+        />
+        <KpiStat
+          label="% Donne"
+          value={formatPct(donneFlessibiliPerc)}
+          icon={Users}
+          color="hsl(var(--chart-red))"
+        />
+        <KpiStat
+          label="% Uomini"
+          value={formatPct(uominiFlessibiliPerc)}
+          icon={Users}
+          color="hsl(var(--chart-blue))"
+        />
+        <KpiStat
+          label="Crescita vs primo anno"
+          value={crescita}
+          icon={TrendingUp}
+          color="hsl(var(--chart-teal))"
+        />
       </KpiGrid>
 
       <div className="grid grid-cols-12 gap-3">
@@ -52,7 +87,20 @@ export const LavoroFlessibileSection = () => {
               <XAxis dataKey="anno" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
               <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
               <Tooltip contentStyle={tooltipStyle} />
-              <Area type="monotone" dataKey="flessibili" name="Flessibili" stroke="hsl(var(--chart-blue))" strokeWidth={2.5} fill="url(#gradFlex)" dot={{ r: 4, fill: "hsl(var(--chart-blue))", stroke: "hsl(var(--card))", strokeWidth: 2 }} />
+              <Area
+                type="monotone"
+                dataKey="flessibili"
+                name="Flessibili"
+                stroke="hsl(var(--chart-blue))"
+                strokeWidth={2.5}
+                fill="url(#gradFlex)"
+                dot={{
+                  r: 4,
+                  fill: "hsl(var(--chart-blue))",
+                  stroke: "hsl(var(--card))",
+                  strokeWidth: 2,
+                }}
+              />
             </AreaChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -60,11 +108,25 @@ export const LavoroFlessibileSection = () => {
         <ChartCard title="Distribuzione per Genere" className="col-span-4">
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
-              <Pie data={genereData} cx="50%" cy="50%" innerRadius={60} outerRadius={95} paddingAngle={3} dataKey="value"
-                label={({ name, value }) => `${name} ${value}%`} style={{ fontSize: 11 }}>
-                {genereData.map((_, i) => <Cell key={i} fill={COLORS[i]} />)}
+              <Pie
+                data={genereData}
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={95}
+                paddingAngle={3}
+                dataKey="value"
+                label={({ name, value }) => `${name} ${value}%`}
+                style={{ fontSize: 11 }}
+              >
+                {genereData.map((_, i) => (
+                  <Cell key={i} fill={COLORS[i]} />
+                ))}
               </Pie>
-              <Tooltip contentStyle={tooltipStyle} formatter={(val: number) => [`${val}%`, undefined]} />
+              <Tooltip
+                contentStyle={tooltipStyle}
+                formatter={(val: number) => [`${val}%`, undefined]}
+              />
             </PieChart>
           </ResponsiveContainer>
         </ChartCard>

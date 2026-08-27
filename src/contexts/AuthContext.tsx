@@ -36,7 +36,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (stored) {
       try {
         setProfile(JSON.parse(stored));
-      } catch {}
+      } catch {
+        // sessione malformata: ignoro e resto non autenticato
+      }
     }
     setLoading(false);
   }, []);

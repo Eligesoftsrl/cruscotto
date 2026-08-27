@@ -1,5 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchModalitaLavoro, EMPTY_MODALITA_LAVORO_DATA } from "@/services/dw/modalitaLavoroService";
+import {
+  fetchModalitaLavoro,
+  EMPTY_MODALITA_LAVORO_DATA,
+} from "@/services/dw/modalitaLavoroService";
 
 export type { LavoroAgile, LavoroFlessibile } from "@/services/dw/modalitaLavoroService";
 

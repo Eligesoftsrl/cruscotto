@@ -1,9 +1,27 @@
 import { useEffect, useState } from "react";
 import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
 import { fetchLpOccupazione } from "@/services/dw/lavoroPubblicoService";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
 
-const COLORS = ["hsl(210,80%,45%)", "hsl(30,85%,55%)", "hsl(150,60%,40%)", "hsl(340,70%,55%)", "hsl(260,50%,55%)"];
+const COLORS = [
+  "hsl(210,80%,45%)",
+  "hsl(30,85%,55%)",
+  "hsl(150,60%,40%)",
+  "hsl(340,70%,55%)",
+  "hsl(260,50%,55%)",
+];
 
 export const LpDistribuzioneSection = () => {
   const { data: enteIds } = useFilteredEnteIds();
@@ -25,8 +43,16 @@ export const LpDistribuzioneSection = () => {
         anno[r.anno].donne += r.tp_donne ?? 0;
       });
 
-      setByQualifica(Object.entries(qual).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value));
-      setByAnno(Object.entries(anno).sort().map(([a, v]) => ({ anno: a, ...v })));
+      setByQualifica(
+        Object.entries(qual)
+          .map(([name, value]) => ({ name, value }))
+          .sort((a, b) => b.value - a.value),
+      );
+      setByAnno(
+        Object.entries(anno)
+          .sort()
+          .map(([a, v]) => ({ anno: a, ...v })),
+      );
     };
     load();
   }, [enteIds]);
@@ -40,8 +66,18 @@ export const LpDistribuzioneSection = () => {
             <div className="p-4" style={{ height: 320 }}>
               <ResponsiveContainer>
                 <PieChart>
-                  <Pie data={byQualifica.slice(0, 8)} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label={({ name, value }) => `${name}: ${value}`}>
-                    {byQualifica.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                  <Pie
+                    data={byQualifica.slice(0, 8)}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    label={({ name, value }) => `${name}: ${value}`}
+                  >
+                    {byQualifica.map((_, i) => (
+                      <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                    ))}
                   </Pie>
                   <Tooltip />
                 </PieChart>

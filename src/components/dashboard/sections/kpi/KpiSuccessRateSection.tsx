@@ -1,8 +1,21 @@
 import { useEffect, useState } from "react";
 import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
 import { fetchKpiRilevazione } from "@/services/dw/kpiRilevazioneService";
-import { computeDimensionScores, extractAllKpis, type DimensionScore } from "@/hooks/useKpiCalculations";
-import { RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip, Legend } from "recharts";
+import {
+  computeDimensionScores,
+  extractAllKpis,
+  type DimensionScore,
+} from "@/hooks/useKpiCalculations";
+import {
+  RadarChart,
+  Radar,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 
 export const KpiSuccessRateSection = () => {
@@ -17,40 +30,52 @@ export const KpiSuccessRateSection = () => {
 
       // Latest per ente
       const byEnte: Record<number, any> = {};
-      data.forEach((k: any) => { byEnte[k.id_ente] = k; });
+      data.forEach((k: any) => {
+        byEnte[k.id_ente] = k;
+      });
       const latestRows = Object.values(byEnte);
 
       // Dimension scores
       const dimScores = computeDimensionScores(latestRows);
 
       // Radar: SR Totale, SR Abilitanti, SR Successo per dimensione
-      setRadarData(dimScores.map(d => ({
-        dimensione: d.dim,
-        "SR Totale": d.srTotale,
-        "SR Abilitanti": d.srAbilitanti,
-        "SR Successo": d.srSuccesso,
-        target: 75,
-      })));
+      setRadarData(
+        dimScores.map((d) => ({
+          dimensione: d.dim,
+          "SR Totale": d.srTotale,
+          "SR Abilitanti": d.srAbilitanti,
+          "SR Successo": d.srSuccesso,
+          target: 75,
+        })),
+      );
 
       // Table per ente
       const table = latestRows.map((row: any) => {
         const kpis = extractAllKpis(row);
         const byDim: Record<string, number[]> = {};
-        kpis.filter(k => k.categoria !== "strutturale").forEach(k => {
-          if (!byDim[k.dimensione]) byDim[k.dimensione] = [];
-          byDim[k.dimensione].push(k.valore);
-        });
+        kpis
+          .filter((k) => k.categoria !== "strutturale")
+          .forEach((k) => {
+            if (!byDim[k.dimensione]) byDim[k.dimensione] = [];
+            byDim[k.dimensione].push(k.valore);
+          });
         const dimAvg = (dim: string) => {
           const vals = byDim[dim] || [];
           return vals.length ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : 0;
         };
         const allVals = Object.values(byDim).flat();
-        const media = allVals.length ? Math.round(allVals.reduce((a, b) => a + b, 0) / allVals.length) : 0;
+        const media = allVals.length
+          ? Math.round(allVals.reduce((a, b) => a + b, 0) / allVals.length)
+          : 0;
         return {
           ente: row.denominazione ?? "-",
           semestre: row.semestre ?? "-",
-          D1: dimAvg("D1"), D2: dimAvg("D2"), D3: dimAvg("D3"),
-          D4: dimAvg("D4"), D5: dimAvg("D5"), D6: dimAvg("D6"),
+          D1: dimAvg("D1"),
+          D2: dimAvg("D2"),
+          D3: dimAvg("D3"),
+          D4: dimAvg("D4"),
+          D5: dimAvg("D5"),
+          D6: dimAvg("D6"),
           media,
         };
       });
@@ -62,7 +87,9 @@ export const KpiSuccessRateSection = () => {
   return (
     <div className="p-4 space-y-4">
       <div className="tableau-card">
-        <div className="tableau-card-header">KPI Success Rate per Dimensione (Metodologia Ufficiale)</div>
+        <div className="tableau-card-header">
+          KPI Success Rate per Dimensione (Metodologia Ufficiale)
+        </div>
         <div className="p-4" style={{ height: 400 }}>
           {radarData.length > 0 ? (
             <ResponsiveContainer>
@@ -70,10 +97,35 @@ export const KpiSuccessRateSection = () => {
                 <PolarGrid stroke="hsl(var(--tableau-grid))" />
                 <PolarAngleAxis dataKey="dimensione" tick={{ fontSize: 11 }} />
                 <PolarRadiusAxis domain={[0, 100]} tick={{ fontSize: 9 }} />
-                <Radar name="Target" dataKey="target" stroke="hsl(210,15%,60%)" fill="hsl(210,15%,60%)" fillOpacity={0.05} strokeDasharray="5 5" />
-                <Radar name="SR Totale" dataKey="SR Totale" stroke="hsl(210,80%,45%)" fill="hsl(210,80%,45%)" fillOpacity={0.25} />
-                <Radar name="SR Abilitanti" dataKey="SR Abilitanti" stroke="hsl(150,60%,40%)" fill="hsl(150,60%,40%)" fillOpacity={0.15} />
-                <Radar name="SR Successo" dataKey="SR Successo" stroke="hsl(30,85%,55%)" fill="hsl(30,85%,55%)" fillOpacity={0.15} />
+                <Radar
+                  name="Target"
+                  dataKey="target"
+                  stroke="hsl(210,15%,60%)"
+                  fill="hsl(210,15%,60%)"
+                  fillOpacity={0.05}
+                  strokeDasharray="5 5"
+                />
+                <Radar
+                  name="SR Totale"
+                  dataKey="SR Totale"
+                  stroke="hsl(210,80%,45%)"
+                  fill="hsl(210,80%,45%)"
+                  fillOpacity={0.25}
+                />
+                <Radar
+                  name="SR Abilitanti"
+                  dataKey="SR Abilitanti"
+                  stroke="hsl(150,60%,40%)"
+                  fill="hsl(150,60%,40%)"
+                  fillOpacity={0.15}
+                />
+                <Radar
+                  name="SR Successo"
+                  dataKey="SR Successo"
+                  stroke="hsl(30,85%,55%)"
+                  fill="hsl(30,85%,55%)"
+                  fillOpacity={0.15}
+                />
                 <Tooltip />
                 <Legend />
               </RadarChart>
@@ -99,9 +151,18 @@ export const KpiSuccessRateSection = () => {
               { key: "D4", header: "D4", align: "right" },
               { key: "D5", header: "D5", align: "right" },
               { key: "D6", header: "D6", align: "right" },
-              { key: "media", header: "Media", align: "right", render: (r: any) => (
-                <span className={`font-semibold ${r.media >= 60 ? "text-green-600" : r.media >= 40 ? "text-amber-600" : "text-red-600"}`}>{r.media}%</span>
-              )},
+              {
+                key: "media",
+                header: "Media",
+                align: "right",
+                render: (r: any) => (
+                  <span
+                    className={`font-semibold ${r.media >= 60 ? "text-green-600" : r.media >= 40 ? "text-amber-600" : "text-red-600"}`}
+                  >
+                    {r.media}%
+                  </span>
+                ),
+              },
             ]}
           />
         </div>

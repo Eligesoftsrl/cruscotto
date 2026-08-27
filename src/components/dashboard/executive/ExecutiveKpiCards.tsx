@@ -7,7 +7,15 @@ import { PILLAR_COLORS } from "./executiveInterconnessioni";
 import type { DrilldownData } from "@/hooks/useD1Calculations";
 
 /* ── Gauge Arc ── */
-export const GaugeArc = ({ value, color, size = 80 }: { value: number; color: string; size?: number }) => {
+export const GaugeArc = ({
+  value,
+  color,
+  size = 80,
+}: {
+  value: number;
+  color: string;
+  size?: number;
+}) => {
   const r = size * 0.38;
   const circumference = Math.PI * r;
   const dashLen = value * circumference;
@@ -15,14 +23,26 @@ export const GaugeArc = ({ value, color, size = 80 }: { value: number; color: st
     <svg width={size} height={size * 0.65} viewBox={`0 0 ${size} ${size * 0.65}`}>
       <path
         d={`M ${size * 0.1} ${size * 0.55} A ${r} ${r} 0 1 1 ${size * 0.9} ${size * 0.55}`}
-        fill="none" stroke="hsl(var(--muted))" strokeWidth={size * 0.08} strokeLinecap="round"
+        fill="none"
+        stroke="hsl(var(--muted))"
+        strokeWidth={size * 0.08}
+        strokeLinecap="round"
       />
       <path
         d={`M ${size * 0.1} ${size * 0.55} A ${r} ${r} 0 1 1 ${size * 0.9} ${size * 0.55}`}
-        fill="none" stroke={color} strokeWidth={size * 0.08} strokeLinecap="round"
+        fill="none"
+        stroke={color}
+        strokeWidth={size * 0.08}
+        strokeLinecap="round"
         strokeDasharray={`${dashLen} ${circumference}`}
       />
-      <text x={size / 2} y={size * 0.48} textAnchor="middle" className="font-bold" style={{ fontSize: size * 0.2, fill: "hsl(var(--foreground))" }}>
+      <text
+        x={size / 2}
+        y={size * 0.48}
+        textAnchor="middle"
+        className="font-bold"
+        style={{ fontSize: size * 0.2, fill: "hsl(var(--foreground))" }}
+      >
         {value.toFixed(2).replace(".", ",")}
       </text>
     </svg>
@@ -30,15 +50,30 @@ export const GaugeArc = ({ value, color, size = 80 }: { value: number; color: st
 };
 
 /* ── Sub-indicator bar ── */
-export const SubIndicatorBar = ({ label, value, color }: { label: string; value: number; color: string }) => {
+export const SubIndicatorBar = ({
+  label,
+  value,
+  color,
+}: {
+  label: string;
+  value: number;
+  color: string;
+}) => {
   const isLow = value < 0.5;
   return (
     <div className="flex items-center gap-2 py-0.5">
-      <span className="text-sm font-medium text-muted-foreground w-24 text-right shrink-0">{label}</span>
+      <span className="text-sm font-medium text-muted-foreground w-24 text-right shrink-0">
+        {label}
+      </span>
       <div className="flex-1 h-2.5 bg-muted rounded-full overflow-hidden">
-        <div className="h-full rounded-full transition-all" style={{ width: `${value * 100}%`, background: color }} />
+        <div
+          className="h-full rounded-full transition-all"
+          style={{ width: `${value * 100}%`, background: color }}
+        />
       </div>
-      <span className={`text-sm font-bold w-10 text-right ${isLow ? "text-[hsl(var(--chart-orange))]" : "text-foreground"}`}>
+      <span
+        className={`text-sm font-bold w-10 text-right ${isLow ? "text-[hsl(var(--chart-orange))]" : "text-foreground"}`}
+      >
         {value.toFixed(2).replace(".", ",")}
       </span>
     </div>
@@ -46,7 +81,15 @@ export const SubIndicatorBar = ({ label, value, color }: { label: string; value:
 };
 
 /* ── Bullet Bar (target vs actual) ── */
-export const BulletBar = ({ actual, target, max = 100 }: { actual: number; target: number; max?: number }) => {
+export const BulletBar = ({
+  actual,
+  target,
+  max = 100,
+}: {
+  actual: number;
+  target: number;
+  max?: number;
+}) => {
   const aPct = (actual / max) * 100;
   const tPct = (target / max) * 100;
   const isGood = actual >= target * 0.9;
@@ -57,8 +100,17 @@ export const BulletBar = ({ actual, target, max = 100 }: { actual: number; targe
         <div className="h-full" style={{ width: "34%", background: "hsl(var(--muted) / 0.6)" }} />
         <div className="h-full" style={{ width: "33%", background: "hsl(var(--muted) / 0.3)" }} />
       </div>
-      <div className="absolute top-1 bottom-1 left-0 rounded-sm" style={{ width: `${aPct}%`, background: isGood ? "hsl(var(--chart-blue))" : "hsl(var(--chart-orange))" }} />
-      <div className="absolute top-0 bottom-0 w-0.5" style={{ left: `${tPct}%`, background: "hsl(var(--foreground))" }} />
+      <div
+        className="absolute top-1 bottom-1 left-0 rounded-sm"
+        style={{
+          width: `${aPct}%`,
+          background: isGood ? "hsl(var(--chart-blue))" : "hsl(var(--chart-orange))",
+        }}
+      />
+      <div
+        className="absolute top-0 bottom-0 w-0.5"
+        style={{ left: `${tPct}%`, background: "hsl(var(--foreground))" }}
+      />
     </div>
   );
 };
@@ -79,10 +131,13 @@ export interface FormulaBreakdown {
 const DrilldownTable = ({ data }: { data: DrilldownData }) => {
   const [search, setSearch] = useState("");
   const filtered = search
-    ? data.rows.filter(r => 
-        r.label.toLowerCase().includes(search.toLowerCase()) ||
-        String(r.id).includes(search) ||
-        Object.values(r.extra ?? {}).some(v => String(v).toLowerCase().includes(search.toLowerCase()))
+    ? data.rows.filter(
+        (r) =>
+          r.label.toLowerCase().includes(search.toLowerCase()) ||
+          String(r.id).includes(search) ||
+          Object.values(r.extra ?? {}).some((v) =>
+            String(v).toLowerCase().includes(search.toLowerCase()),
+          ),
       )
     : data.rows;
 
@@ -108,8 +163,11 @@ const DrilldownTable = ({ data }: { data: DrilldownData }) => {
         <table className="w-full text-xs">
           <thead className="bg-muted/60 sticky top-0">
             <tr>
-              {data.columns.map(col => (
-                <th key={col.key} className="px-3 py-2 text-left font-semibold text-muted-foreground whitespace-nowrap">
+              {data.columns.map((col) => (
+                <th
+                  key={col.key}
+                  className="px-3 py-2 text-left font-semibold text-muted-foreground whitespace-nowrap"
+                >
                   {col.label}
                 </th>
               ))}
@@ -118,7 +176,7 @@ const DrilldownTable = ({ data }: { data: DrilldownData }) => {
           <tbody className="divide-y divide-border/50">
             {filtered.map((row, i) => (
               <tr key={row.id ?? i} className="hover:bg-muted/30 transition-colors">
-                {data.columns.map(col => {
+                {data.columns.map((col) => {
                   let val: string | number = "";
                   if (col.key === "id") val = row.id;
                   else if (col.key === "label") val = row.label;
@@ -133,7 +191,14 @@ const DrilldownTable = ({ data }: { data: DrilldownData }) => {
               </tr>
             ))}
             {filtered.length === 0 && (
-              <tr><td colSpan={data.columns.length} className="px-3 py-4 text-center text-muted-foreground">Nessun risultato</td></tr>
+              <tr>
+                <td
+                  colSpan={data.columns.length}
+                  className="px-3 py-4 text-center text-muted-foreground"
+                >
+                  Nessun risultato
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
@@ -182,16 +247,20 @@ export interface ExecutiveIndex {
 
 /* ── Methodology Tab Names ── */
 const TABS = ["Definizione", "Calcolo", "Lettura", "Note"] as const;
-type TabKey = typeof TABS[number];
+type TabKey = (typeof TABS)[number];
 const TAB_FIELD_MAP: Record<TabKey, keyof NonNullable<ExecutiveIndex["metodologia"]>> = {
-  "Definizione": "definizione",
-  "Calcolo": "calcolo",
-  "Lettura": "interpretazione",
-  "Note": "note",
+  Definizione: "definizione",
+  Calcolo: "calcolo",
+  Lettura: "interpretazione",
+  Note: "note",
 };
 
 /* ── Methodology Panel ── */
-const MetodologiaPanel = ({ metodologia }: { metodologia: NonNullable<ExecutiveIndex["metodologia"]> }) => {
+const MetodologiaPanel = ({
+  metodologia,
+}: {
+  metodologia: NonNullable<ExecutiveIndex["metodologia"]>;
+}) => {
   const [tab, setTab] = useState<TabKey>("Definizione");
   const availableTabs = TABS.filter((t) => {
     const field = TAB_FIELD_MAP[t];
@@ -222,8 +291,19 @@ const MetodologiaPanel = ({ metodologia }: { metodologia: NonNullable<ExecutiveI
 };
 
 /* ── Executive KPI Card ── */
-export const ExecutiveKpiCard = ({ idx, onDrillDown, variant = "executive", ...rest }: { idx: ExecutiveIndex; onDrillDown?: (pillar: string, indicatorId?: string) => void; variant?: "executive" | "synthetic" } & React.HTMLAttributes<HTMLDivElement>) => {
+export const ExecutiveKpiCard = ({
+  idx,
+  onDrillDown,
+  variant = "executive",
+  ...rest
+}: {
+  idx: ExecutiveIndex;
+  onDrillDown?: (pillar: string, indicatorId?: string) => void;
+  variant?: "executive" | "synthetic";
+} & React.HTMLAttributes<HTMLDivElement>) => {
   const [open, setOpen] = useState(false);
+  const [drillNum, setDrillNum] = useState(false);
+  const [drillDen, setDrillDen] = useState(false);
   const isCompact = variant === "executive";
 
   /* ════════════════════════════════════════════════════
@@ -239,7 +319,16 @@ export const ExecutiveKpiCard = ({ idx, onDrillDown, variant = "executive", ...r
         onClick={() => onDrillDown?.(idx.pillar, idx.id)}
         role={isClickable ? "button" : undefined}
         tabIndex={isClickable ? 0 : undefined}
-        onKeyDown={isClickable ? (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onDrillDown?.(idx.pillar, idx.id); } } : undefined}
+        onKeyDown={
+          isClickable
+            ? (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onDrillDown?.(idx.pillar, idx.id);
+                }
+              }
+            : undefined
+        }
         {...rest}
       >
         <div className="p-4 pb-2">
@@ -247,7 +336,10 @@ export const ExecutiveKpiCard = ({ idx, onDrillDown, variant = "executive", ...r
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-lg font-bold text-foreground">{idx.id}</span>
-                <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded" style={{ background: `${idx.color}20`, color: idx.color }}>
+                <span
+                  className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded"
+                  style={{ background: `${idx.color}20`, color: idx.color }}
+                >
                   {idx.pillar}
                 </span>
                 {idx.isPlaceholder && (
@@ -260,7 +352,9 @@ export const ExecutiveKpiCard = ({ idx, onDrillDown, variant = "executive", ...r
             </div>
             <div className="flex items-center gap-2 shrink-0 ml-3">
               <div className="text-right">
-                <span className="text-3xl font-bold text-foreground">{idx.value.toFixed(2).replace(".", ",")}</span>
+                <span className="text-3xl font-bold text-foreground">
+                  {idx.value.toFixed(2).replace(".", ",")}
+                </span>
                 <div className="text-xs text-muted-foreground">Score [0-1]</div>
               </div>
               <GaugeArc value={idx.value} color={idx.color} size={64} />
@@ -270,10 +364,15 @@ export const ExecutiveKpiCard = ({ idx, onDrillDown, variant = "executive", ...r
 
         {/* Assessment badge inline */}
         <div className="mx-4 mb-2 flex items-center gap-2">
-          <span className="shrink-0 px-2.5 py-1 rounded text-xs font-bold text-primary-foreground" style={{ background: idx.assessment.color }}>
+          <span
+            className="shrink-0 px-2.5 py-1 rounded text-xs font-bold text-primary-foreground"
+            style={{ background: idx.assessment.color }}
+          >
             {idx.assessment.level}
           </span>
-          <p className="text-xs text-muted-foreground leading-snug line-clamp-2">{idx.assessment.text}</p>
+          <p className="text-xs text-muted-foreground leading-snug line-clamp-2">
+            {idx.assessment.text}
+          </p>
         </div>
 
         {/* Interconnessioni (compatte) */}
@@ -284,7 +383,7 @@ export const ExecutiveKpiCard = ({ idx, onDrillDown, variant = "executive", ...r
                 {idx.interconnections.connections.map((c) => (
                   <Tooltip key={c.pillar}>
                     <TooltipTrigger asChild>
-                    <span
+                      <span
                         className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded text-xs font-bold border border-border/40 bg-card cursor-help"
                         style={{ borderLeftWidth: 2, borderLeftColor: PILLAR_COLORS[c.pillar] }}
                       >
@@ -316,13 +415,20 @@ export const ExecutiveKpiCard = ({ idx, onDrillDown, variant = "executive", ...r
    * Formula, breakdown, contesto, sub-indicators, metodologia, interconnessioni
    * ════════════════════════════════════════════════════ */
   return (
-    <div className={`tableau-card border-t-2 flex flex-col ${idx.isPlaceholder ? "opacity-60 border-dashed" : ""}`} style={{ borderTopColor: idx.color }} {...rest}>
+    <div
+      className={`tableau-card border-t-2 flex flex-col ${idx.isPlaceholder ? "opacity-60 border-dashed" : ""}`}
+      style={{ borderTopColor: idx.color }}
+      {...rest}
+    >
       <div className="p-4 pb-3">
         <div className="flex justify-between items-start">
           <div className="flex-1 min-w-0">
-             <div className="flex items-center gap-2 mb-1">
+            <div className="flex items-center gap-2 mb-1">
               <span className="text-lg font-bold text-foreground">{idx.id}</span>
-              <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded" style={{ background: `${idx.color}20`, color: idx.color }}>
+              <span
+                className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded"
+                style={{ background: `${idx.color}20`, color: idx.color }}
+              >
                 {idx.pillar}
               </span>
               {idx.isPlaceholder && (
@@ -331,12 +437,16 @@ export const ExecutiveKpiCard = ({ idx, onDrillDown, variant = "executive", ...r
                 </span>
               )}
             </div>
-            <p className="text-sm text-muted-foreground leading-tight whitespace-pre-line">{idx.label}</p>
+            <p className="text-sm text-muted-foreground leading-tight whitespace-pre-line">
+              {idx.label}
+            </p>
             <p className="text-xs text-muted-foreground/70 mt-1">{idx.fonte}</p>
           </div>
           <div className="flex items-center gap-3 shrink-0 ml-3">
             <div className="text-right">
-              <span className="text-4xl font-bold text-foreground">{idx.value.toFixed(2).replace(".", ",")}</span>
+              <span className="text-4xl font-bold text-foreground">
+                {idx.value.toFixed(2).replace(".", ",")}
+              </span>
               <div className="text-xs text-muted-foreground">Score [0-1]</div>
             </div>
             <GaugeArc value={idx.value} color={idx.color} size={80} />
@@ -350,77 +460,112 @@ export const ExecutiveKpiCard = ({ idx, onDrillDown, variant = "executive", ...r
       </div>
 
       {/* Scomposizione formula — clickable drill-down */}
-      {idx.formulaBreakdown && (() => {
-        const fb = idx.formulaBreakdown;
-        const [drillNum, setDrillNum] = React.useState(false);
-        const [drillDen, setDrillDen] = React.useState(false);
-        const fmtVal = (v: number) => v >= 1000 ? v.toLocaleString("it-IT") : v;
-        const hasNumDrill = !!fb.numeratorDrilldown;
-        const hasDenDrill = !!fb.denominatorDrilldown;
+      {idx.formulaBreakdown &&
+        (() => {
+          const fb = idx.formulaBreakdown;
+          const fmtVal = (v: number) => (v >= 1000 ? v.toLocaleString("it-IT") : v);
+          const hasNumDrill = !!fb.numeratorDrilldown;
+          const hasDenDrill = !!fb.denominatorDrilldown;
 
-        return (
-          <div className="mx-4 mb-3 px-3 py-3 rounded border border-primary/20 bg-primary/5 space-y-2">
-            <div className="text-xs font-semibold text-primary uppercase tracking-wider mb-1">Scomposizione formula</div>
-            
-            {/* Numerator row */}
-            <button
-              onClick={hasNumDrill ? () => { setDrillNum(!drillNum); setDrillDen(false); } : undefined}
-              disabled={!hasNumDrill}
-              className={`flex items-center justify-between w-full text-left rounded px-2 py-1.5 -mx-2 transition-colors ${
-                hasNumDrill ? "hover:bg-primary/10 cursor-pointer group" : ""
-              } ${drillNum ? "bg-primary/10" : ""}`}
-            >
-              <span className="text-sm text-muted-foreground flex items-center gap-1.5">
-                {fb.numeratorLabel}
-                {hasNumDrill && <Search className="h-3 w-3 text-primary/50 group-hover:text-primary transition-colors" />}
-              </span>
-              <span className={`text-sm font-bold ${hasNumDrill ? "text-primary underline decoration-dotted underline-offset-2" : "text-foreground"}`}>
-                {fmtVal(fb.numeratorValue)}
-                {hasNumDrill && (drillNum ? <ChevronUp className="inline h-3 w-3 ml-1" /> : <ChevronDown className="inline h-3 w-3 ml-1" />)}
-              </span>
-            </button>
-            {drillNum && fb.numeratorDrilldown && (
-              <div className="ml-1 mr-1 mb-1">
-                <DrilldownTable data={fb.numeratorDrilldown} />
+          return (
+            <div className="mx-4 mb-3 px-3 py-3 rounded border border-primary/20 bg-primary/5 space-y-2">
+              <div className="text-xs font-semibold text-primary uppercase tracking-wider mb-1">
+                Scomposizione formula
               </div>
-            )}
 
-            {/* Denominator row */}
-            <button
-              onClick={hasDenDrill ? () => { setDrillDen(!drillDen); setDrillNum(false); } : undefined}
-              disabled={!hasDenDrill}
-              className={`flex items-center justify-between w-full text-left rounded px-2 py-1.5 -mx-2 transition-colors ${
-                hasDenDrill ? "hover:bg-primary/10 cursor-pointer group" : ""
-              } ${drillDen ? "bg-primary/10" : ""}`}
-            >
-              <span className="text-sm text-muted-foreground flex items-center gap-1.5">
-                {fb.denominatorLabel}
-                {hasDenDrill && <Search className="h-3 w-3 text-primary/50 group-hover:text-primary transition-colors" />}
-              </span>
-              <span className={`text-sm font-bold ${hasDenDrill ? "text-primary underline decoration-dotted underline-offset-2" : "text-foreground"}`}>
-                {fmtVal(fb.denominatorValue)}
-                {hasDenDrill && (drillDen ? <ChevronUp className="inline h-3 w-3 ml-1" /> : <ChevronDown className="inline h-3 w-3 ml-1" />)}
-              </span>
-            </button>
-            {drillDen && fb.denominatorDrilldown && (
-              <div className="ml-1 mr-1 mb-1">
-                <DrilldownTable data={fb.denominatorDrilldown} />
+              {/* Numerator row */}
+              <button
+                onClick={
+                  hasNumDrill
+                    ? () => {
+                        setDrillNum(!drillNum);
+                        setDrillDen(false);
+                      }
+                    : undefined
+                }
+                disabled={!hasNumDrill}
+                className={`flex items-center justify-between w-full text-left rounded px-2 py-1.5 -mx-2 transition-colors ${
+                  hasNumDrill ? "hover:bg-primary/10 cursor-pointer group" : ""
+                } ${drillNum ? "bg-primary/10" : ""}`}
+              >
+                <span className="text-sm text-muted-foreground flex items-center gap-1.5">
+                  {fb.numeratorLabel}
+                  {hasNumDrill && (
+                    <Search className="h-3 w-3 text-primary/50 group-hover:text-primary transition-colors" />
+                  )}
+                </span>
+                <span
+                  className={`text-sm font-bold ${hasNumDrill ? "text-primary underline decoration-dotted underline-offset-2" : "text-foreground"}`}
+                >
+                  {fmtVal(fb.numeratorValue)}
+                  {hasNumDrill &&
+                    (drillNum ? (
+                      <ChevronUp className="inline h-3 w-3 ml-1" />
+                    ) : (
+                      <ChevronDown className="inline h-3 w-3 ml-1" />
+                    ))}
+                </span>
+              </button>
+              {drillNum && fb.numeratorDrilldown && (
+                <div className="ml-1 mr-1 mb-1">
+                  <DrilldownTable data={fb.numeratorDrilldown} />
+                </div>
+              )}
+
+              {/* Denominator row */}
+              <button
+                onClick={
+                  hasDenDrill
+                    ? () => {
+                        setDrillDen(!drillDen);
+                        setDrillNum(false);
+                      }
+                    : undefined
+                }
+                disabled={!hasDenDrill}
+                className={`flex items-center justify-between w-full text-left rounded px-2 py-1.5 -mx-2 transition-colors ${
+                  hasDenDrill ? "hover:bg-primary/10 cursor-pointer group" : ""
+                } ${drillDen ? "bg-primary/10" : ""}`}
+              >
+                <span className="text-sm text-muted-foreground flex items-center gap-1.5">
+                  {fb.denominatorLabel}
+                  {hasDenDrill && (
+                    <Search className="h-3 w-3 text-primary/50 group-hover:text-primary transition-colors" />
+                  )}
+                </span>
+                <span
+                  className={`text-sm font-bold ${hasDenDrill ? "text-primary underline decoration-dotted underline-offset-2" : "text-foreground"}`}
+                >
+                  {fmtVal(fb.denominatorValue)}
+                  {hasDenDrill &&
+                    (drillDen ? (
+                      <ChevronUp className="inline h-3 w-3 ml-1" />
+                    ) : (
+                      <ChevronDown className="inline h-3 w-3 ml-1" />
+                    ))}
+                </span>
+              </button>
+              {drillDen && fb.denominatorDrilldown && (
+                <div className="ml-1 mr-1 mb-1">
+                  <DrilldownTable data={fb.denominatorDrilldown} />
+                </div>
+              )}
+
+              {/* Result */}
+              <div className="border-t border-primary/20 pt-2 flex items-center justify-between">
+                <span className="text-sm font-semibold text-primary">{fb.resultLabel}</span>
+                <span className="text-sm font-bold text-primary">{fb.resultText}</span>
               </div>
-            )}
-
-            {/* Result */}
-            <div className="border-t border-primary/20 pt-2 flex items-center justify-between">
-              <span className="text-sm font-semibold text-primary">{fb.resultLabel}</span>
-              <span className="text-sm font-bold text-primary">{fb.resultText}</span>
             </div>
-          </div>
-        );
-      })()}
+          );
+        })()}
 
       {/* Contesto */}
       {idx.context && (
         <div className="mx-4 mb-3 px-3 py-2.5 rounded border border-border/30 bg-muted/20">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-0.5">Contesto</div>
+          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-0.5">
+            Contesto
+          </div>
           <p className="text-sm text-muted-foreground">{idx.context.text}</p>
         </div>
       )}
@@ -437,7 +582,10 @@ export const ExecutiveKpiCard = ({ idx, onDrillDown, variant = "executive", ...r
       {/* Assessment */}
       <div className="mx-4 mb-3 p-3 rounded bg-muted/40 border border-border/30">
         <div className="flex items-start gap-2">
-          <span className="shrink-0 px-2.5 py-1 rounded text-xs font-bold text-primary-foreground" style={{ background: idx.assessment.color }}>
+          <span
+            className="shrink-0 px-2.5 py-1 rounded text-xs font-bold text-primary-foreground"
+            style={{ background: idx.assessment.color }}
+          >
             {idx.assessment.level}
           </span>
           <p className="text-sm text-muted-foreground leading-snug">{idx.assessment.text}</p>
@@ -450,7 +598,9 @@ export const ExecutiveKpiCard = ({ idx, onDrillDown, variant = "executive", ...r
           <CollapsibleTrigger className="flex items-center gap-1.5 w-full px-3 py-2 rounded border border-border/40 bg-muted/20 hover:bg-muted/40 transition-colors text-left">
             <Info className="h-4 w-4 text-primary shrink-0" />
             <span className="text-sm font-semibold text-primary flex-1">Scheda metodologica</span>
-            <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
+            <ChevronDown
+              className={`h-4 w-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
+            />
           </CollapsibleTrigger>
           <CollapsibleContent className="mt-2 px-3 py-2.5 rounded border border-border/30 bg-muted/20">
             <MetodologiaPanel metodologia={idx.metodologia} />
@@ -463,7 +613,9 @@ export const ExecutiveKpiCard = ({ idx, onDrillDown, variant = "executive", ...r
         <div className="mx-4 mb-3">
           <div className="flex items-center gap-1.5 mb-2">
             <Link2 className="h-3.5 w-3.5 text-muted-foreground" />
-            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Interconnessioni</span>
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              Interconnessioni
+            </span>
           </div>
           <TooltipProvider delayDuration={200}>
             <div className="flex flex-wrap gap-1.5">
@@ -474,14 +626,29 @@ export const ExecutiveKpiCard = ({ idx, onDrillDown, variant = "executive", ...r
                       className="inline-flex items-center gap-1 px-2 py-1 rounded-md border border-border/40 bg-card hover:bg-muted/50 transition-colors cursor-help"
                       style={{ borderLeftWidth: 3, borderLeftColor: PILLAR_COLORS[c.pillar] }}
                     >
-                      <span className="text-xs font-bold" style={{ color: PILLAR_COLORS[c.pillar] }}>{c.pillar}</span>
-                      <span className="text-xs text-muted-foreground truncate max-w-[120px]">{c.label}</span>
+                      <span
+                        className="text-xs font-bold"
+                        style={{ color: PILLAR_COLORS[c.pillar] }}
+                      >
+                        {c.pillar}
+                      </span>
+                      <span className="text-xs text-muted-foreground truncate max-w-[120px]">
+                        {c.label}
+                      </span>
                     </button>
                   </TooltipTrigger>
                   <TooltipContent side="top" className="max-w-[300px] p-3">
                     <div className="space-y-1">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold px-1.5 py-0.5 rounded" style={{ background: `${PILLAR_COLORS[c.pillar]}20`, color: PILLAR_COLORS[c.pillar] }}>{c.pillar}</span>
+                        <span
+                          className="text-xs font-bold px-1.5 py-0.5 rounded"
+                          style={{
+                            background: `${PILLAR_COLORS[c.pillar]}20`,
+                            color: PILLAR_COLORS[c.pillar],
+                          }}
+                        >
+                          {c.pillar}
+                        </span>
                         <span className="text-sm font-semibold text-foreground">{c.label}</span>
                       </div>
                       <p className="text-xs text-muted-foreground leading-relaxed">{c.reason}</p>
@@ -492,7 +659,9 @@ export const ExecutiveKpiCard = ({ idx, onDrillDown, variant = "executive", ...r
             </div>
           </TooltipProvider>
           {idx.interconnections.bridgeNote && (
-            <p className="mt-1.5 text-xs text-primary/80 italic leading-snug">🔗 {idx.interconnections.bridgeNote}</p>
+            <p className="mt-1.5 text-xs text-primary/80 italic leading-snug">
+              🔗 {idx.interconnections.bridgeNote}
+            </p>
           )}
         </div>
       )}

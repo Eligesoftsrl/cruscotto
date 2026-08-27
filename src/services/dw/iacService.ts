@@ -63,9 +63,14 @@ export async function fetchIAC(): Promise<IACResult> {
   const unique = Array.from(byEnte.values());
 
   const totaleEnti = unique.length;
-  const accreditate = unique.filter((e) => e.q1_1_adozione_modello && e.q1_1_adozione_modello !== "No").length;
+  const accreditate = unique.filter(
+    (e) => e.q1_1_adozione_modello && e.q1_1_adozione_modello !== "No",
+  ).length;
   const conProfiliAttivati = unique.filter(
-    (e) => e.q1_1_adozione_modello && e.q1_1_adozione_modello !== "No" && toNum(e.q1_5_n_profili_definiti) > 0,
+    (e) =>
+      e.q1_1_adozione_modello &&
+      e.q1_1_adozione_modello !== "No" &&
+      toNum(e.q1_5_n_profili_definiti) > 0,
   ).length;
 
   const value = accreditate > 0 ? conProfiliAttivati / accreditate : 0;

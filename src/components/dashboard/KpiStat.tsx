@@ -13,7 +13,9 @@ interface KpiStatProps {
 export const KpiStat = ({ label, value, icon: Icon, color, sub }: KpiStatProps) => (
   <div className="bg-card border rounded-lg p-4">
     <div className="flex items-center justify-between">
-      <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">{label}</div>
+      <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+        {label}
+      </div>
       <Icon className="h-4 w-4" style={color ? { color } : undefined} />
     </div>
     <div className="text-xl font-bold text-foreground mt-1">{value}</div>

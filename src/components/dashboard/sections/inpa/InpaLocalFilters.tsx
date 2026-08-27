@@ -24,7 +24,11 @@ export const DEFAULT_INPA_FILTERS: InpaFilters = {
 
 export const applyInpaLocalFilters = (bandi: any[], filters: InpaFilters): any[] => {
   return bandi.filter((b) => {
-    if (filters.anno && String(b.anno ?? new Date(b.data_pubblicazione).getFullYear()) !== filters.anno) return false;
+    if (
+      filters.anno &&
+      String(b.anno ?? new Date(b.data_pubblicazione).getFullYear()) !== filters.anno
+    )
+      return false;
     if (filters.regione && (b.regione ?? "") !== filters.regione) return false;
     if (filters.tipo_procedura && (b.tipo_procedura ?? "") !== filters.tipo_procedura) return false;
     if (filters.settore && (b.settore_pubblicazione ?? "") !== filters.settore) return false;
@@ -79,34 +83,76 @@ export const InpaLocalFilters = ({ filters, onChange }: InpaLocalFiltersProps) =
 
   return (
     <div className="flex items-center gap-2 flex-wrap px-4 py-2 border-b border-border/40 bg-muted/20">
-      <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider mr-1">Filtri InPA</span>
+      <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider mr-1">
+        Filtri InPA
+      </span>
 
-      <select className={sel} value={filters.anno} onChange={(e) => handleChange("anno", e.target.value)}>
+      <select
+        className={sel}
+        value={filters.anno}
+        onChange={(e) => handleChange("anno", e.target.value)}
+      >
         <option value="">Tutti gli anni</option>
-        {options.anni.map((a) => <option key={a} value={a}>{a}</option>)}
+        {options.anni.map((a) => (
+          <option key={a} value={a}>
+            {a}
+          </option>
+        ))}
       </select>
 
-      <select className={sel} value={filters.regione} onChange={(e) => handleChange("regione", e.target.value)}>
+      <select
+        className={sel}
+        value={filters.regione}
+        onChange={(e) => handleChange("regione", e.target.value)}
+      >
         <option value="">Tutte le regioni</option>
-        {options.regioni.map((r) => <option key={r} value={r}>{r}</option>)}
+        {options.regioni.map((r) => (
+          <option key={r} value={r}>
+            {r}
+          </option>
+        ))}
       </select>
 
-      <select className={sel} value={filters.tipo_procedura} onChange={(e) => handleChange("tipo_procedura", e.target.value)}>
+      <select
+        className={sel}
+        value={filters.tipo_procedura}
+        onChange={(e) => handleChange("tipo_procedura", e.target.value)}
+      >
         <option value="">Tutti i tipi</option>
-        {options.tipi.map((t) => <option key={t} value={t}>{t}</option>)}
+        {options.tipi.map((t) => (
+          <option key={t} value={t}>
+            {t}
+          </option>
+        ))}
       </select>
 
       {options.settori.length > 0 && (
-        <select className={sel} value={filters.settore} onChange={(e) => handleChange("settore", e.target.value)}>
+        <select
+          className={sel}
+          value={filters.settore}
+          onChange={(e) => handleChange("settore", e.target.value)}
+        >
           <option value="">Tutti i settori</option>
-          {options.settori.map((s) => <option key={s} value={s}>{s}</option>)}
+          {options.settori.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
         </select>
       )}
 
       {options.stati.length > 0 && (
-        <select className={sel} value={filters.stato} onChange={(e) => handleChange("stato", e.target.value)}>
+        <select
+          className={sel}
+          value={filters.stato}
+          onChange={(e) => handleChange("stato", e.target.value)}
+        >
           <option value="">Tutti gli stati</option>
-          {options.stati.map((s) => <option key={s} value={s}>{s}</option>)}
+          {options.stati.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
         </select>
       )}
 

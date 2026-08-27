@@ -13,7 +13,12 @@ interface BottomUpNavProps {
  * Floating Action Button for bottom-up navigation.
  * Shows in bottom-right when below Executive level.
  */
-export const BottomUpNav = ({ currentLevel, pillar, onGoExecutive, onGoSynthetic }: BottomUpNavProps) => {
+export const BottomUpNav = ({
+  currentLevel,
+  pillar,
+  onGoExecutive,
+  onGoSynthetic,
+}: BottomUpNavProps) => {
   const [open, setOpen] = useState(false);
 
   const hasOptions = onGoExecutive || (currentLevel === "operational" && onGoSynthetic && pillar);
@@ -26,7 +31,10 @@ export const BottomUpNav = ({ currentLevel, pillar, onGoExecutive, onGoSynthetic
         <div className="bg-card border border-border rounded-xl shadow-lg p-2 space-y-1 animate-in fade-in-0 slide-in-from-bottom-2 duration-200 min-w-[200px]">
           {currentLevel === "operational" && onGoSynthetic && pillar && (
             <button
-              onClick={() => { onGoSynthetic(pillar); setOpen(false); }}
+              onClick={() => {
+                onGoSynthetic(pillar);
+                setOpen(false);
+              }}
               className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-lg text-sm font-semibold text-foreground hover:bg-muted transition-colors"
             >
               <Layers className="h-4 w-4 text-primary" />
@@ -35,7 +43,10 @@ export const BottomUpNav = ({ currentLevel, pillar, onGoExecutive, onGoSynthetic
           )}
           {onGoExecutive && (
             <button
-              onClick={() => { onGoExecutive(); setOpen(false); }}
+              onClick={() => {
+                onGoExecutive();
+                setOpen(false);
+              }}
               className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-lg text-sm font-semibold text-foreground hover:bg-muted transition-colors"
             >
               <Gauge className="h-4 w-4 text-primary" />

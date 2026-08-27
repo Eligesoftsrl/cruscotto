@@ -10,7 +10,8 @@ export interface ReportSectionDef {
   id: string;
   title: string;
   pillar?: string;
-  category: "overview" | "demographic" | "recruiting" | "development" | "organization" | "strategic";
+  category:
+    "overview" | "demographic" | "recruiting" | "development" | "organization" | "strategic";
   description: string;
   /** Descrizione estesa: cosa contiene, a quale domanda risponde, quali fonti usa */
   extendedDescription: string;
@@ -32,10 +33,21 @@ export interface ReportSectionDef {
 }
 
 export interface ReportSectionData {
-  kpis?: { label: string; value: string; status: "green" | "yellow" | "red"; cluster?: string; delta?: string }[];
+  kpis?: {
+    label: string;
+    value: string;
+    status: "green" | "yellow" | "red";
+    cluster?: string;
+    delta?: string;
+  }[];
   narrative?: string;
   insight?: string;
-  tableRows?: { label: string; value: string; target?: string; status: "green" | "yellow" | "red" }[];
+  tableRows?: {
+    label: string;
+    value: string;
+    target?: string;
+    status: "green" | "yellow" | "red";
+  }[];
 }
 
 /* ═══ Preset report themes ═══ */
@@ -51,12 +63,16 @@ export interface ReportTheme {
 import data from "./json/reportSections.json";
 
 export const reportThemes: ReportTheme[] = data.reportThemes as ReportTheme[];
-export const reportAudienceProfiles: Record<ReportAudience, {
-  label: string;
-  subtitle: string;
-  icon: string;
-  description: string;
-  maxSections: number;
-  preferredRepresentation: RepresentationMode;
-}> = data.reportAudienceProfiles as any;
-export const reportSectionsCatalog: ReportSectionDef[] = data.reportSectionsCatalog as ReportSectionDef[];
+export const reportAudienceProfiles: Record<
+  ReportAudience,
+  {
+    label: string;
+    subtitle: string;
+    icon: string;
+    description: string;
+    maxSections: number;
+    preferredRepresentation: RepresentationMode;
+  }
+> = data.reportAudienceProfiles as any;
+export const reportSectionsCatalog: ReportSectionDef[] =
+  data.reportSectionsCatalog as ReportSectionDef[];

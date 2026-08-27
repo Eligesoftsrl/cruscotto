@@ -22,18 +22,25 @@ export const EMPTY_FORMAZIONE_DATA: FormazioneData = {
 type FormRow = Partial<Database["public"]["Tables"]["dw_formazione"]["Row"]>;
 type OccRow = Partial<Database["public"]["Tables"]["dw_occupazione"]["Row"]>;
 
-export function transformFormazioneData(form: FormRow[], occ: OccRow[], anno: number): FormazioneData {
+export function transformFormazioneData(
+  form: FormRow[],
+  occ: OccRow[],
+  anno: number,
+): FormazioneData {
   const perAnno = new Map<number, { f: number; ore: number }>();
   for (const r of form) {
     const a = Number(r.anno);
     const f = (Number(r.form_uomini) || 0) + (Number(r.form_donne) || 0);
-    const ore = (Number(r.form_uomini) || 0) * (Number(r.ore_media_u) || 0) + (Number(r.form_donne) || 0) * (Number(r.ore_media_d) || 0);
+    const ore =
+      (Number(r.form_uomini) || 0) * (Number(r.ore_media_u) || 0) +
+      (Number(r.form_donne) || 0) * (Number(r.ore_media_d) || 0);
     const cur = perAnno.get(a) ?? { f: 0, ore: 0 };
     cur.f += f;
     cur.ore += ore;
     perAnno.set(a, cur);
   }
-  const personale = occ.reduce((s, r) => s + (Number(r.tp_uomini) || 0) + (Number(r.tp_donne) || 0), 0) || 1;
+  const personale =
+    occ.reduce((s, r) => s + (Number(r.tp_uomini) || 0) + (Number(r.tp_donne) || 0), 0) || 1;
   const cur = perAnno.get(anno) ?? { f: 0, ore: 0 };
   const serieStorica = Array.from(perAnno.entries())
     .sort((a, b) => a[0] - b[0])
@@ -50,7 +57,9 @@ export function transformFormazioneData(form: FormRow[], occ: OccRow[], anno: nu
 
 export async function fetchFormazioneData(anno = 2023): Promise<FormazioneData> {
   const [formRes, occRes] = await Promise.all([
-    supabase.from("dw_formazione").select("anno, form_uomini, form_donne, ore_media_u, ore_media_d"),
+    supabase
+      .from("dw_formazione")
+      .select("anno, form_uomini, form_donne, ore_media_u, ore_media_d"),
     supabase.from("dw_occupazione").select("tp_uomini, tp_donne, anno").eq("anno", anno),
   ]);
   if (formRes.error) throw formRes.error;

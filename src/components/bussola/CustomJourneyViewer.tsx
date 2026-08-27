@@ -1,5 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, ChevronRight, ChevronDown, X, CheckCircle, AlertTriangle, Lightbulb, Info, ExternalLink, Database } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ChevronRight,
+  ChevronDown,
+  X,
+  CheckCircle,
+  AlertTriangle,
+  Lightbulb,
+  Info,
+  ExternalLink,
+  Database,
+} from "lucide-react";
 import { indicatorCatalog, type CatalogIndicator } from "@/data/indicatorCatalog";
 import { Badge } from "@/components/ui/badge";
 import type { NavState } from "@/components/dashboard/AppSidebar";
@@ -46,8 +58,16 @@ const insightColors = {
 };
 
 const statusConfig = {
-  green: { bar: "bg-[hsl(142,71%,35%)]", text: "text-[hsl(142,71%,35%)]", icon: "hsl(142,71%,35%)" },
-  yellow: { bar: "bg-[hsl(45,100%,42%)]", text: "text-[hsl(45,80%,30%)]", icon: "hsl(45,100%,42%)" },
+  green: {
+    bar: "bg-[hsl(142,71%,35%)]",
+    text: "text-[hsl(142,71%,35%)]",
+    icon: "hsl(142,71%,35%)",
+  },
+  yellow: {
+    bar: "bg-[hsl(45,100%,42%)]",
+    text: "text-[hsl(45,80%,30%)]",
+    icon: "hsl(45,100%,42%)",
+  },
   red: { bar: "bg-destructive", text: "text-destructive", icon: "hsl(var(--destructive))" },
 };
 
@@ -148,13 +168,16 @@ export function CustomJourneyViewer({
     .filter(Boolean) as CatalogIndicator[];
 
   const InsightIcon = insightIcons[step.insight_type as keyof typeof insightIcons] || Info;
-  const insightColor = insightColors[step.insight_type as keyof typeof insightColors] || insightColors.info;
+  const insightColor =
+    insightColors[step.insight_type as keyof typeof insightColors] || insightColors.info;
 
   return (
     <div className="flex flex-col h-full">
       <div className="bg-[hsl(213,50%,20%)] px-5 py-4 flex items-center justify-between flex-shrink-0">
         <div>
-          <p className="text-[10px] uppercase tracking-wider text-white/50 mb-0.5">Percorso community · {journey.author}</p>
+          <p className="text-[10px] uppercase tracking-wider text-white/50 mb-0.5">
+            Percorso community · {journey.author}
+          </p>
           <h2 className="text-sm font-bold text-white leading-tight">{journey.title}</h2>
         </div>
         <button onClick={onBack} className="p-1.5 rounded-full hover:bg-white/10 transition">
@@ -171,17 +194,23 @@ export function CustomJourneyViewer({
               className={`h-2 rounded-full transition-all ${i === currentStep ? "w-8 bg-primary" : "w-2 bg-primary/30"}`}
             />
           ))}
-          <span className="text-xs text-muted-foreground ml-2">{currentStep + 1} / {totalSteps}</span>
+          <span className="text-xs text-muted-foreground ml-2">
+            {currentStep + 1} / {totalSteps}
+          </span>
         </div>
       )}
 
       <div className="flex-1 overflow-y-auto px-5 py-4">
         <h3 className="text-base font-bold text-foreground mb-2">{step.title}</h3>
-        {step.description && <p className="text-sm text-muted-foreground leading-relaxed mb-5">{step.description}</p>}
+        {step.description && (
+          <p className="text-sm text-muted-foreground leading-relaxed mb-5">{step.description}</p>
+        )}
 
         {stepIndicators.length > 0 && (
           <div className="mb-5">
-            <div className="text-[10px] font-bold tracking-[.1em] uppercase text-muted-foreground mb-3">Indicatori chiave</div>
+            <div className="text-[10px] font-bold tracking-[.1em] uppercase text-muted-foreground mb-3">
+              Indicatori chiave
+            </div>
             <div className="flex flex-col gap-1.5">
               {stepIndicators.map((ind) => (
                 <IndicatorCard
@@ -206,25 +235,40 @@ export function CustomJourneyViewer({
 
       <div className="flex justify-between items-center px-5 py-4 border-t bg-card flex-shrink-0">
         {currentStep > 0 ? (
-          <button onClick={() => setCurrentStep((c) => c - 1)} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition">
+          <button
+            onClick={() => setCurrentStep((c) => c - 1)}
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
+          >
             <ArrowLeft className="h-4 w-4" /> Precedente
           </button>
         ) : (
-          <button onClick={onBack} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition">
+          <button
+            onClick={onBack}
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
+          >
             <ArrowLeft className="h-4 w-4" /> Chiudi
           </button>
         )}
 
         {currentStep < totalSteps - 1 ? (
-          <button onClick={() => setCurrentStep((c) => c + 1)} className="flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-bold hover:opacity-90 transition">
+          <button
+            onClick={() => setCurrentStep((c) => c + 1)}
+            className="flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-bold hover:opacity-90 transition"
+          >
             Prossimo <ArrowRight className="h-4 w-4" />
           </button>
         ) : onGoToDashboard ? (
-          <button onClick={() => onGoToDashboard({ level: "executive" }, currentStep)} className="flex items-center gap-2 px-4 py-2 rounded-md bg-[hsl(142,71%,35%)] text-white text-sm font-bold hover:opacity-90 transition">
+          <button
+            onClick={() => onGoToDashboard({ level: "executive" }, currentStep)}
+            className="flex items-center gap-2 px-4 py-2 rounded-md bg-[hsl(142,71%,35%)] text-white text-sm font-bold hover:opacity-90 transition"
+          >
             Vista Analitica <ChevronRight className="h-4 w-4" />
           </button>
         ) : (
-          <button onClick={onBack} className="flex items-center gap-2 px-4 py-2 rounded-md bg-[hsl(142,71%,35%)] text-white text-sm font-bold hover:opacity-90 transition">
+          <button
+            onClick={onBack}
+            className="flex items-center gap-2 px-4 py-2 rounded-md bg-[hsl(142,71%,35%)] text-white text-sm font-bold hover:opacity-90 transition"
+          >
             Fine percorso <ChevronRight className="h-4 w-4" />
           </button>
         )}
@@ -248,7 +292,12 @@ function IndicatorCard({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const c = statusConfig[indicator.status];
   const pct = Math.round(indicator.value * 100);
-  const StatusIcon = indicator.status === "green" ? CheckCircle : indicator.status === "red" ? AlertTriangle : Lightbulb;
+  const StatusIcon =
+    indicator.status === "green"
+      ? CheckCircle
+      : indicator.status === "red"
+        ? AlertTriangle
+        : Lightbulb;
   const operationalSource = sourceToOperational[indicator.source];
   const indicatorTarget = indicatorTargetMap[indicator.id];
   const hasDeepLink = !!onGoToDashboard && (indicator.pillar || operationalSource);
@@ -263,7 +312,10 @@ function IndicatorCard({
   }, [isInitiallyFocused]);
 
   return (
-    <div ref={containerRef} className={`border rounded-lg overflow-hidden ${isInitiallyFocused ? "ring-1 ring-primary/40 bg-primary/5" : ""}`}>
+    <div
+      ref={containerRef}
+      className={`border rounded-lg overflow-hidden ${isInitiallyFocused ? "ring-1 ring-primary/40 bg-primary/5" : ""}`}
+    >
       <button
         onClick={() => setExpanded((prev) => !prev)}
         className="w-full text-left px-3 py-2.5 cursor-pointer hover:bg-muted/50 transition-colors"
@@ -276,11 +328,16 @@ function IndicatorCard({
           </div>
           <div className="flex items-center gap-1.5">
             <span className={`text-xs font-bold ${c.text}`}>{pct}%</span>
-            <ChevronDown className={`h-3 w-3 text-muted-foreground transition-transform duration-200 ${expanded ? "rotate-180" : ""}`} />
+            <ChevronDown
+              className={`h-3 w-3 text-muted-foreground transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
+            />
           </div>
         </div>
         <div className="h-1 bg-muted rounded-full overflow-hidden mb-1">
-          <div className={`h-full rounded-full ${c.bar} transition-all duration-700`} style={{ width: `${pct}%` }} />
+          <div
+            className={`h-full rounded-full ${c.bar} transition-all duration-700`}
+            style={{ width: `${pct}%` }}
+          />
         </div>
         <div className="text-[10px] text-muted-foreground">{indicator.description}</div>
       </button>
@@ -288,17 +345,33 @@ function IndicatorCard({
       {expanded && (
         <div className="px-3 pb-3 pt-1 border-t bg-muted/30 animate-in slide-in-from-top-2 duration-200 space-y-3">
           <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
-            <Badge variant="secondary" className="text-[9px] px-1.5 py-0">{indicator.pillar}</Badge>
-            <span className="flex items-center gap-1"><Database className="h-3 w-3" />{indicator.source}</span>
+            <Badge variant="secondary" className="text-[9px] px-1.5 py-0">
+              {indicator.pillar}
+            </Badge>
+            <span className="flex items-center gap-1">
+              <Database className="h-3 w-3" />
+              {indicator.source}
+            </span>
           </div>
 
           <div className="bg-card rounded-md px-3 py-2 border">
-            <div className="text-[9px] font-bold tracking-wider uppercase text-muted-foreground mb-1">Posizionamento</div>
+            <div className="text-[9px] font-bold tracking-wider uppercase text-muted-foreground mb-1">
+              Posizionamento
+            </div>
             <div className="flex items-center gap-3">
               <div className="flex-1 h-3 bg-muted rounded-full relative overflow-hidden">
-                <div className="absolute top-0 h-full w-px bg-[hsl(45,100%,42%)]" style={{ left: "40%" }} />
-                <div className="absolute top-0 h-full w-px bg-[hsl(142,71%,45%)]" style={{ left: "60%" }} />
-                <div className={`h-full rounded-full ${c.bar} transition-all duration-500`} style={{ width: `${pct}%` }} />
+                <div
+                  className="absolute top-0 h-full w-px bg-[hsl(45,100%,42%)]"
+                  style={{ left: "40%" }}
+                />
+                <div
+                  className="absolute top-0 h-full w-px bg-[hsl(142,71%,45%)]"
+                  style={{ left: "60%" }}
+                />
+                <div
+                  className={`h-full rounded-full ${c.bar} transition-all duration-500`}
+                  style={{ width: `${pct}%` }}
+                />
               </div>
               <span className={`text-xs font-bold ${c.text} whitespace-nowrap`}>{pct}%</span>
             </div>
@@ -310,7 +383,11 @@ function IndicatorCard({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    onGoToDashboard?.({ level: "synthetic", pillar: indicator.pillar, indicator: indicator.id }, currentStep, indicator.id);
+                    onGoToDashboard?.(
+                      { level: "synthetic", pillar: indicator.pillar, indicator: indicator.id },
+                      currentStep,
+                      indicator.id,
+                    );
                   }}
                   className="inline-flex items-center gap-1.5 text-[10px] font-bold text-primary hover:underline"
                 >
@@ -322,7 +399,15 @@ function IndicatorCard({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    onGoToDashboard?.({ level: "operational", source: operationalSource, indicator: indicatorTarget }, currentStep, indicator.id);
+                    onGoToDashboard?.(
+                      {
+                        level: "operational",
+                        source: operationalSource,
+                        indicator: indicatorTarget,
+                      },
+                      currentStep,
+                      indicator.id,
+                    );
                   }}
                   className="inline-flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground hover:text-foreground hover:underline"
                 >

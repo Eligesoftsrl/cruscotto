@@ -1,7 +1,17 @@
 import { useEffect, useState } from "react";
 import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
 import { fetchInpaBandiWithScadenza } from "@/services/dw/inpaService";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  ReferenceLine,
+} from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 
 export const InpaTempiDettaglioSection = () => {
@@ -38,13 +48,15 @@ export const InpaTempiDettaglioSection = () => {
         });
       });
 
-      setByTipo(Object.entries(tipoAgg).map(([tipo, vals]) => ({
-        tipo,
-        media: Math.round(vals.reduce((a, b) => a + b, 0) / vals.length),
-        min: Math.min(...vals),
-        max: Math.max(...vals),
-        count: vals.length,
-      })));
+      setByTipo(
+        Object.entries(tipoAgg).map(([tipo, vals]) => ({
+          tipo,
+          media: Math.round(vals.reduce((a, b) => a + b, 0) / vals.length),
+          min: Math.min(...vals),
+          max: Math.max(...vals),
+          count: vals.length,
+        })),
+      );
       setTableData(table.sort((a, b) => b.durata - a.durata));
     };
     load();
@@ -59,10 +71,18 @@ export const InpaTempiDettaglioSection = () => {
             <BarChart data={byTipo}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--tableau-grid))" />
               <XAxis dataKey="tipo" tick={{ fontSize: 10 }} interval={0} />
-              <YAxis tick={{ fontSize: 11 }} label={{ value: "Giorni", angle: -90, position: "insideLeft", fontSize: 11 }} />
+              <YAxis
+                tick={{ fontSize: 11 }}
+                label={{ value: "Giorni", angle: -90, position: "insideLeft", fontSize: 11 }}
+              />
               <Tooltip />
               <Legend />
-              <Bar dataKey="media" name="Media (gg)" fill="hsl(210,80%,45%)" radius={[4, 4, 0, 0]} />
+              <Bar
+                dataKey="media"
+                name="Media (gg)"
+                fill="hsl(210,80%,45%)"
+                radius={[4, 4, 0, 0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -79,11 +99,18 @@ export const InpaTempiDettaglioSection = () => {
               { key: "tipo", header: "Tipo" },
               { key: "pubblicazione", header: "Pubblicazione" },
               { key: "scadenza", header: "Scadenza" },
-              { key: "durata", header: "Durata (gg)", align: "right", render: (r: any) => (
-                <span className={`font-semibold ${r.durata > 180 ? "text-red-600" : r.durata > 90 ? "text-amber-600" : "text-green-600"}`}>
-                  {r.durata}
-                </span>
-              )},
+              {
+                key: "durata",
+                header: "Durata (gg)",
+                align: "right",
+                render: (r: any) => (
+                  <span
+                    className={`font-semibold ${r.durata > 180 ? "text-red-600" : r.durata > 90 ? "text-amber-600" : "text-green-600"}`}
+                  >
+                    {r.durata}
+                  </span>
+                ),
+              },
             ]}
           />
         </div>

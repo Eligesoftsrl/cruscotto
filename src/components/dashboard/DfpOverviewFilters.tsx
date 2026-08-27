@@ -50,7 +50,9 @@ export const DfpOverviewFilters = ({ value, onChange }: Props) => {
             >
               <option value="">Tutti i comparti</option>
               {comparti.map((c) => (
-                <option key={c} value={c}>{c}</option>
+                <option key={c} value={c}>
+                  {c}
+                </option>
               ))}
             </select>
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
@@ -59,7 +61,9 @@ export const DfpOverviewFilters = ({ value, onChange }: Props) => {
 
         {/* Area Geografica */}
         <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-primary text-center block">Area Geografica</label>
+          <label className="text-xs font-semibold text-primary text-center block">
+            Area Geografica
+          </label>
           <div className="relative">
             <select
               value={value.area}
@@ -68,7 +72,9 @@ export const DfpOverviewFilters = ({ value, onChange }: Props) => {
             >
               <option value="">Tutte le aree</option>
               {aree.map((a) => (
-                <option key={a} value={a}>{a}</option>
+                <option key={a} value={a}>
+                  {a}
+                </option>
               ))}
             </select>
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
@@ -77,7 +83,9 @@ export const DfpOverviewFilters = ({ value, onChange }: Props) => {
 
         {/* Dimensione PA */}
         <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-primary text-center block">Dimensione PA</label>
+          <label className="text-xs font-semibold text-primary text-center block">
+            Dimensione PA
+          </label>
           <div className="relative">
             <select
               value={value.dimensione}
@@ -86,7 +94,9 @@ export const DfpOverviewFilters = ({ value, onChange }: Props) => {
             >
               <option value="">Tutte le dimensioni</option>
               {dimensioni.map((d) => (
-                <option key={d} value={d}>{d}</option>
+                <option key={d} value={d}>
+                  {d}
+                </option>
               ))}
             </select>
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />

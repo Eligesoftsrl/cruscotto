@@ -2,7 +2,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { applyEnteFilter } from "@/services/dw/enteService";
 
 /** Bridge profilo-competenza (dw_bridge_profilo_competenza) filtrato per ente. */
-export async function fetchBridgeProfiloCompetenza(enteIds: number[] | null | undefined): Promise<any[]> {
+export async function fetchBridgeProfiloCompetenza(
+  enteIds: number[] | null | undefined,
+): Promise<any[]> {
   const q = applyEnteFilter(supabase.from("dw_bridge_profilo_competenza").select("*"), enteIds);
   const { data } = await q;
   return data ?? [];

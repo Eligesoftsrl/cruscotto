@@ -1,6 +1,16 @@
 import {
-  Users, Calendar, Clock, LogOut, TrendingUp, GraduationCap,
-  ArrowUpRight, Briefcase, UserCheck, ChevronLeft, ChevronRight, LayoutDashboard
+  Users,
+  Calendar,
+  Clock,
+  LogOut,
+  TrendingUp,
+  GraduationCap,
+  ArrowUpRight,
+  Briefcase,
+  UserCheck,
+  ChevronLeft,
+  ChevronRight,
+  LayoutDashboard,
 } from "lucide-react";
 
 const sections = [
@@ -69,12 +79,8 @@ export const DashboardSidebar = ({
       {/* Footer */}
       {!collapsed && (
         <div className="border-t border-sidebar-border p-4">
-          <p className="text-[10px] text-sidebar-foreground/40">
-            Fonte: Conto Annuale 2023
-          </p>
-          <p className="text-[10px] text-sidebar-foreground/40">
-            Serie storica 2016–2023
-          </p>
+          <p className="text-[10px] text-sidebar-foreground/40">Fonte: Conto Annuale 2023</p>
+          <p className="text-[10px] text-sidebar-foreground/40">Serie storica 2016–2023</p>
         </div>
       )}
 

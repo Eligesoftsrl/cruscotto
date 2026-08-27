@@ -17,4 +17,4 @@ import data from "./json/indicatorCatalog.json";
 
 export const indicatorCatalog: CatalogIndicator[] = data.indicatorCatalog as CatalogIndicator[];
 export const pillars = ["D1", "D2", "D3", "D4", "D5", "D6"] as const;
-export const sources = [...new Set(indicatorCatalog.map(i => i.source))];
+export const sources = [...new Set(indicatorCatalog.map((i) => i.source))];

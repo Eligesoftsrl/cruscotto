@@ -66,7 +66,10 @@ export function useCustomJourneys(refreshKey?: number) {
           });
         }
         localStorage.setItem(migrateKey, "true");
-        toast({ title: "Percorsi ripristinati", description: `${local.length} percorsi salvati in precedenza sono stati importati.` });
+        toast({
+          title: "Percorsi ripristinati",
+          description: `${local.length} percorsi salvati in precedenza sono stati importati.`,
+        });
         load();
       })();
     } catch {
@@ -87,10 +90,20 @@ export function useCustomJourneys(refreshKey?: number) {
 
   const incrementUsage = async (id: string) => {
     await incrementJourneyUsage(id);
-    setJourneys((prev) => prev.map((j) => (j.id === id ? { ...j, usage_count: j.usage_count + 1 } : j)));
+    setJourneys((prev) =>
+      prev.map((j) => (j.id === id ? { ...j, usage_count: j.usage_count + 1 } : j)),
+    );
   };
 
   const fetchById = (id: string): Promise<CustomJourney | null> => fetchJourneyById(id);
 
-  return { journeys, loading, createJourney, deleteJourney, incrementUsage, fetchById, reload: load };
+  return {
+    journeys,
+    loading,
+    createJourney,
+    deleteJourney,
+    incrementUsage,
+    fetchById,
+    reload: load,
+  };
 }

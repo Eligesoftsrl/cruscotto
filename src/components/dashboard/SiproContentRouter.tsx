@@ -13,11 +13,16 @@ import { ProfiliRuoloCatalogoChart } from "@/components/dashboard/charts/Profili
 import { ProfiliRuoloProcessoChart } from "@/components/dashboard/charts/ProfiliRuoloProcessoChart";
 
 const siproIndicatorIds = [
-  "sipro-stato-org", "sipro-provvedimenti",
-  "sipro-fte", "sipro-copertura",
+  "sipro-stato-org",
+  "sipro-provvedimenti",
+  "sipro-fte",
+  "sipro-copertura",
   "sipro-fabbisogno",
-  "sipro-famiglie", "sipro-profili-minerva", "sipro-ambiti-ruolo",
-  "sipro-aree-contrattuali", "sipro-evoluzione-profili",
+  "sipro-famiglie",
+  "sipro-profili-minerva",
+  "sipro-ambiti-ruolo",
+  "sipro-aree-contrattuali",
+  "sipro-evoluzione-profili",
 ];
 
 const chartMap: Record<string, React.FC> = {

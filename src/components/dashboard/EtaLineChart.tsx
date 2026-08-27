@@ -1,6 +1,14 @@
 import { useState } from "react";
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, ComposedChart,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Area,
+  ComposedChart,
 } from "recharts";
 
 const data = [
@@ -27,8 +35,12 @@ export const EtaLineChart = () => {
     <div className="bg-card border rounded-lg flex flex-col col-span-7">
       <div className="px-4 py-3 border-b flex items-center justify-between">
         <div>
-          <div className="text-[13px] font-semibold text-foreground">Evoluzione età media 2012–2023</div>
-          <div className="text-[10.5px] text-muted-foreground/60 mt-0.5">Confronto con cluster e totale PA</div>
+          <div className="text-[13px] font-semibold text-foreground">
+            Evoluzione età media 2012–2023
+          </div>
+          <div className="text-[10.5px] text-muted-foreground/60 mt-0.5">
+            Confronto con cluster e totale PA
+          </div>
         </div>
         <div className="flex gap-1">
           {views.map((v) => (
@@ -54,10 +66,7 @@ export const EtaLineChart = () => {
             Questa amm.
           </div>
           <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-            <span
-              className="w-[18px] h-0.5"
-              style={{ background: "hsl(var(--chart-orange))" }}
-            />
+            <span className="w-[18px] h-0.5" style={{ background: "hsl(var(--chart-orange))" }} />
             Cluster
           </div>
           <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">

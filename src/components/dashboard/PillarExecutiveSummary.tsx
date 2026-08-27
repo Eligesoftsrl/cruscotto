@@ -1,5 +1,12 @@
 import React, { useMemo, useState, useCallback } from "react";
-import { FileText, TrendingUp, TrendingDown, BarChart3, SlidersHorizontal, RotateCcw } from "lucide-react";
+import {
+  FileText,
+  TrendingUp,
+  TrendingDown,
+  BarChart3,
+  SlidersHorizontal,
+  RotateCcw,
+} from "lucide-react";
 import { getPillarSummary, type PillarSummaryResult } from "@/data/narrativeGenerators";
 import { executiveIndicesStatic } from "./executive/executiveData";
 import type { GuidedJourneyDef } from "@/data/guidedJourneys";
@@ -7,10 +14,26 @@ import { Slider } from "@/components/ui/slider";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const levelColors: Record<string, { dot: string; text: string; bg: string }> = {
-  Buono:    { dot: "bg-[hsl(var(--chart-green))]", text: "text-[hsl(var(--chart-green))]", bg: "bg-[hsl(var(--chart-green))]/10" },
-  Moderato: { dot: "bg-[hsl(var(--chart-orange))]", text: "text-[hsl(var(--chart-orange))]", bg: "bg-[hsl(var(--chart-orange))]/10" },
-  Basso:    { dot: "bg-[hsl(var(--destructive))]", text: "text-[hsl(var(--destructive))]", bg: "bg-[hsl(var(--destructive))]/10" },
-  Critico:  { dot: "bg-[hsl(var(--destructive))]", text: "text-[hsl(var(--destructive))]", bg: "bg-[hsl(var(--destructive))]/10" },
+  Buono: {
+    dot: "bg-[hsl(var(--chart-green))]",
+    text: "text-[hsl(var(--chart-green))]",
+    bg: "bg-[hsl(var(--chart-green))]/10",
+  },
+  Moderato: {
+    dot: "bg-[hsl(var(--chart-orange))]",
+    text: "text-[hsl(var(--chart-orange))]",
+    bg: "bg-[hsl(var(--chart-orange))]/10",
+  },
+  Basso: {
+    dot: "bg-[hsl(var(--destructive))]",
+    text: "text-[hsl(var(--destructive))]",
+    bg: "bg-[hsl(var(--destructive))]/10",
+  },
+  Critico: {
+    dot: "bg-[hsl(var(--destructive))]",
+    text: "text-[hsl(var(--destructive))]",
+    bg: "bg-[hsl(var(--destructive))]/10",
+  },
 };
 
 const levelOrder = ["Buono", "Moderato", "Basso", "Critico"] as const;
@@ -58,15 +81,25 @@ export const PillarExecutiveSummary = ({ journey }: Props) => {
   const changed = hasOverrides && baseSummary && baseSummary.overallLevel !== summary.overallLevel;
 
   return (
-    <div className="rounded-xl border-2 bg-card shadow-sm overflow-hidden" style={{ borderColor: `hsl(var(${journey.colorVar}) / 0.3)` }}>
+    <div
+      className="rounded-xl border-2 bg-card shadow-sm overflow-hidden"
+      style={{ borderColor: `hsl(var(${journey.colorVar}) / 0.3)` }}
+    >
       {/* Header */}
-      <div className="px-5 py-3 flex items-center gap-2 border-b" style={{ background: `hsl(var(${journey.colorVar}) / 0.06)` }}>
+      <div
+        className="px-5 py-3 flex items-center gap-2 border-b"
+        style={{ background: `hsl(var(${journey.colorVar}) / 0.06)` }}
+      >
         <FileText className="h-4 w-4" style={{ color: `hsl(var(${journey.colorVar}))` }} />
         <span className="text-sm font-extrabold text-foreground">Executive Summary</span>
         {hasOverrides && (
-          <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-bold">SIMULAZIONE</span>
+          <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-bold">
+            SIMULAZIONE
+          </span>
         )}
-        <span className={`ml-auto inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${style.bg} ${style.text}`}>
+        <span
+          className={`ml-auto inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${style.bg} ${style.text}`}
+        >
           <span className={`h-2 w-2 rounded-full ${style.dot}`} />
           {summary.overallLevel}
         </span>
@@ -79,7 +112,8 @@ export const PillarExecutiveSummary = ({ journey }: Props) => {
           <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/5 border border-primary/20">
             <SlidersHorizontal className="h-3.5 w-3.5 text-primary" />
             <span className="text-xs text-primary font-semibold">
-              Giudizio cambiato: {baseSummary.overallLevel} → {summary.overallLevel} (media {baseSummary.avgPct}% → {summary.avgPct}%)
+              Giudizio cambiato: {baseSummary.overallLevel} → {summary.overallLevel} (media{" "}
+              {baseSummary.avgPct}% → {summary.avgPct}%)
             </span>
           </div>
         )}
@@ -114,14 +148,18 @@ export const PillarExecutiveSummary = ({ journey }: Props) => {
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[hsl(var(--chart-green))]/8 text-xs">
                 <TrendingUp className="h-3.5 w-3.5 text-[hsl(var(--chart-green))]" />
                 <span className="font-bold text-[hsl(var(--chart-green))]">Miglior risultato:</span>
-                <span className="font-semibold text-foreground">{summary.best.id} ({Math.round(summary.best.value * 100)}%)</span>
+                <span className="font-semibold text-foreground">
+                  {summary.best.id} ({Math.round(summary.best.value * 100)}%)
+                </span>
               </div>
             )}
             {summary.worst && (
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[hsl(var(--destructive))]/8 text-xs">
                 <TrendingDown className="h-3.5 w-3.5 text-[hsl(var(--destructive))]" />
                 <span className="font-bold text-[hsl(var(--destructive))]">Area critica:</span>
-                <span className="font-semibold text-foreground">{summary.worst.id} ({Math.round(summary.worst.value * 100)}%)</span>
+                <span className="font-semibold text-foreground">
+                  {summary.worst.id} ({Math.round(summary.worst.value * 100)}%)
+                </span>
               </div>
             )}
           </div>
@@ -158,10 +196,17 @@ export const PillarExecutiveSummary = ({ journey }: Props) => {
                   const pct = Math.round(currentVal * 100);
                   const isModified = overrides[kpiId] !== undefined;
                   return (
-                    <div key={kpiId} className={`p-2.5 rounded-lg border ${isModified ? "border-primary/30 bg-primary/5" : "border-border/50"}`}>
+                    <div
+                      key={kpiId}
+                      className={`p-2.5 rounded-lg border ${isModified ? "border-primary/30 bg-primary/5" : "border-border/50"}`}
+                    >
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="text-[11px] font-bold text-foreground">{kpiId}</span>
-                        <span className={`text-xs font-extrabold ${isModified ? "text-primary" : "text-foreground"}`}>{pct}%</span>
+                        <span
+                          className={`text-xs font-extrabold ${isModified ? "text-primary" : "text-foreground"}`}
+                        >
+                          {pct}%
+                        </span>
                       </div>
                       <Slider
                         value={[pct]}

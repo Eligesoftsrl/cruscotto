@@ -47,7 +47,7 @@ export const FilterProvider = ({ children }: { children: ReactNode }) => {
   const resetFilters = () => setFilters(defaultFilters);
 
   const activeCount = Object.entries(filters).filter(
-    ([key, val]) => val !== defaultFilters[key as keyof FilterState]
+    ([key, val]) => val !== defaultFilters[key as keyof FilterState],
   ).length;
 
   return (

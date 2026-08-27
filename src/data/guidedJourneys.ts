@@ -44,9 +44,9 @@ export interface JourneyStep {
   operativeCorrelations?: OperativeCorrelation[];
   /** Conditional narratives based on value ranges (e.g. IGF thresholds) */
   conditionalNarratives?: {
-    high: string;   // >= 0.7
+    high: string; // >= 0.7
     medium: string; // 0.4–0.6
-    low: string;    // <= 0.3
+    low: string; // <= 0.3
   };
 }
 
@@ -61,5 +61,8 @@ export interface GuidedJourneyDef {
 
 import data from "./json/guidedJourneys.json";
 
-export const guidedJourneys: Record<string, GuidedJourneyDef> = data.guidedJourneys as Record<string, GuidedJourneyDef>;
+export const guidedJourneys: Record<string, GuidedJourneyDef> = data.guidedJourneys as Record<
+  string,
+  GuidedJourneyDef
+>;
 export const pillarToJourney: Record<string, string> = data.pillarToJourney;

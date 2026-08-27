@@ -1,15 +1,31 @@
 import { useEffect, useState } from "react";
 import { sipoFrom } from "@/services/dw/siproService";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList,
-  PieChart, Pie, Legend, ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Cell,
+  LabelList,
+  PieChart,
+  Pie,
+  Legend,
+  ResponsiveContainer,
 } from "recharts";
 import { Loader2 } from "lucide-react";
 import { SiproFilters, type SiproFilterValues, effectiveEnteIds } from "./SiproFilters";
 import { useAuth } from "@/contexts/AuthContext";
 
-interface FunzioneData { name: string; value: number }
-interface TipologiaData { name: string; value: number }
+interface FunzioneData {
+  name: string;
+  value: number;
+}
+interface TipologiaData {
+  name: string;
+  value: number;
+}
 
 const FUNZIONE_COLORS: Record<string, string> = {
   Caratterizzanti: "hsl(175, 60%, 50%)",
@@ -83,8 +99,16 @@ export const ProcessiDistribuzioneChart = () => {
           funzCounts[funz] = (funzCounts[funz] || 0) + 1;
           tipCounts[tip.funzione] = (tipCounts[tip.funzione] || 0) + 1;
         }
-        setByFunzione(Object.entries(funzCounts).sort(([a], [b]) => a.localeCompare(b)).map(([k, v]) => ({ name: k, value: v })));
-        setByTipologia(Object.entries(tipCounts).sort(([, a], [, b]) => b - a).map(([k, v]) => ({ name: k, value: v })));
+        setByFunzione(
+          Object.entries(funzCounts)
+            .sort(([a], [b]) => a.localeCompare(b))
+            .map(([k, v]) => ({ name: k, value: v })),
+        );
+        setByTipologia(
+          Object.entries(tipCounts)
+            .sort(([, a], [, b]) => b - a)
+            .map(([k, v]) => ({ name: k, value: v })),
+        );
 
         // Benchmark
         if (ids.length > 1) {
@@ -103,7 +127,7 @@ export const ProcessiDistribuzioneChart = () => {
               caratterizzanti: perEnte[id]?.car ?? 0,
               supporto: perEnte[id]?.sup ?? 0,
               totale: (perEnte[id]?.car ?? 0) + (perEnte[id]?.sup ?? 0),
-            }))
+            })),
           );
         }
       }
@@ -137,13 +161,46 @@ export const ProcessiDistribuzioneChart = () => {
               </p>
               <ResponsiveContainer width="100%" height={320}>
                 <BarChart data={benchmarkRows} margin={{ top: 10, right: 10, left: -5, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                  <XAxis dataKey="ente" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    vertical={false}
+                    stroke="hsl(var(--border))"
+                  />
+                  <XAxis
+                    dataKey="ente"
+                    tick={{ fontSize: 10 }}
+                    stroke="hsl(var(--muted-foreground))"
+                  />
                   <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
-                  <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
-                  <Bar dataKey="caratterizzanti" name="Caratterizzanti" fill="hsl(175, 60%, 50%)" radius={[3, 3, 0, 0]} maxBarSize={40} stackId="a" />
-                  <Bar dataKey="supporto" name="Di supporto" fill="hsl(0, 0%, 45%)" radius={[3, 3, 0, 0]} maxBarSize={40} stackId="a" />
-                  <Legend iconType="square" iconSize={10} wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
+                  <Tooltip
+                    contentStyle={{
+                      background: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: 8,
+                      fontSize: 12,
+                    }}
+                  />
+                  <Bar
+                    dataKey="caratterizzanti"
+                    name="Caratterizzanti"
+                    fill="hsl(175, 60%, 50%)"
+                    radius={[3, 3, 0, 0]}
+                    maxBarSize={40}
+                    stackId="a"
+                  />
+                  <Bar
+                    dataKey="supporto"
+                    name="Di supporto"
+                    fill="hsl(0, 0%, 45%)"
+                    radius={[3, 3, 0, 0]}
+                    maxBarSize={40}
+                    stackId="a"
+                  />
+                  <Legend
+                    iconType="square"
+                    iconSize={10}
+                    wrapperStyle={{ fontSize: 11, paddingTop: 8 }}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -153,14 +210,35 @@ export const ProcessiDistribuzioneChart = () => {
               </p>
               <ResponsiveContainer width="100%" height={320}>
                 <BarChart data={benchmarkRows} margin={{ top: 10, right: 30, left: -5, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                  <XAxis dataKey="ente" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    vertical={false}
+                    stroke="hsl(var(--border))"
+                  />
+                  <XAxis
+                    dataKey="ente"
+                    tick={{ fontSize: 10 }}
+                    stroke="hsl(var(--muted-foreground))"
+                  />
                   <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
-                  <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
+                  <Tooltip
+                    contentStyle={{
+                      background: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: 8,
+                      fontSize: 12,
+                    }}
+                  />
                   <Bar dataKey="totale" name="Totale" radius={[3, 3, 0, 0]} maxBarSize={48}>
-                    {benchmarkRows.map((_, i) => (<Cell key={i} fill={ENTE_COLORS[i % ENTE_COLORS.length]} />))}
+                    {benchmarkRows.map((_, i) => (
+                      <Cell key={i} fill={ENTE_COLORS[i % ENTE_COLORS.length]} />
+                    ))}
                   </Bar>
-                  <Legend iconType="square" iconSize={10} wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
+                  <Legend
+                    iconType="square"
+                    iconSize={10}
+                    wrapperStyle={{ fontSize: 11, paddingTop: 8 }}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -174,28 +252,94 @@ export const ProcessiDistribuzioneChart = () => {
           <p className="text-xs text-muted-foreground">Distribuzione per funzione e tipologia</p>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
             <div>
-              <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Processi per funzione</p>
+              <p className="text-xs font-semibold text-muted-foreground text-center mb-3">
+                Processi per funzione
+              </p>
               <ResponsiveContainer width="100%" height={280}>
                 <PieChart>
-                  <Pie data={byFunzione} dataKey="value" nameKey="name" cx="50%" cy="60%" innerRadius={60} outerRadius={100} startAngle={180} endAngle={0} paddingAngle={2} label={({ value }) => `${value}`} labelLine={false}>
-                    {byFunzione.map((d, i) => (<Cell key={i} fill={FUNZIONE_COLORS[d.name] ?? "hsl(210,50%,50%)"} />))}
+                  <Pie
+                    data={byFunzione}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="60%"
+                    innerRadius={60}
+                    outerRadius={100}
+                    startAngle={180}
+                    endAngle={0}
+                    paddingAngle={2}
+                    label={({ value }) => `${value}`}
+                    labelLine={false}
+                  >
+                    {byFunzione.map((d, i) => (
+                      <Cell key={i} fill={FUNZIONE_COLORS[d.name] ?? "hsl(210,50%,50%)"} />
+                    ))}
                   </Pie>
-                  <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} formatter={(value: number) => [`${value} (${((value / totalFunz) * 100).toFixed(0)}%)`, ""]} />
-                  <Legend verticalAlign="bottom" iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
+                  <Tooltip
+                    contentStyle={{
+                      background: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: 8,
+                      fontSize: 12,
+                    }}
+                    formatter={(value: number) => [
+                      `${value} (${((value / totalFunz) * 100).toFixed(0)}%)`,
+                      "",
+                    ]}
+                  />
+                  <Legend
+                    verticalAlign="bottom"
+                    iconType="circle"
+                    iconSize={8}
+                    wrapperStyle={{ fontSize: 11 }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
             </div>
             <div>
-              <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Processi per tipologia (Decreto 22/07/2022)</p>
+              <p className="text-xs font-semibold text-muted-foreground text-center mb-3">
+                Processi per tipologia (Decreto 22/07/2022)
+              </p>
               <ResponsiveContainer width="100%" height={Math.max(280, byTipologia.length * 36)}>
-                <BarChart data={byTipologia} layout="vertical" margin={{ top: 5, right: 30, left: 10, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border))" />
-                  <XAxis type="number" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
-                  <YAxis dataKey="name" type="category" width={140} tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
-                  <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
+                <BarChart
+                  data={byTipologia}
+                  layout="vertical"
+                  margin={{ top: 5, right: 30, left: 10, bottom: 5 }}
+                >
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    horizontal={false}
+                    stroke="hsl(var(--border))"
+                  />
+                  <XAxis
+                    type="number"
+                    tick={{ fontSize: 11 }}
+                    stroke="hsl(var(--muted-foreground))"
+                  />
+                  <YAxis
+                    dataKey="name"
+                    type="category"
+                    width={140}
+                    tick={{ fontSize: 10 }}
+                    stroke="hsl(var(--muted-foreground))"
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      background: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: 8,
+                      fontSize: 12,
+                    }}
+                  />
                   <Bar dataKey="value" name="Numero processi" radius={[0, 4, 4, 0]} maxBarSize={28}>
-                    {byTipologia.map((_, i) => (<Cell key={i} fill={BAR_COLOR} />))}
-                    <LabelList dataKey="value" position="insideRight" style={{ fontSize: 11, fontWeight: 700, fill: "#fff" }} />
+                    {byTipologia.map((_, i) => (
+                      <Cell key={i} fill={BAR_COLOR} />
+                    ))}
+                    <LabelList
+                      dataKey="value"
+                      position="insideRight"
+                      style={{ fontSize: 11, fontWeight: 700, fill: "#fff" }}
+                    />
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>

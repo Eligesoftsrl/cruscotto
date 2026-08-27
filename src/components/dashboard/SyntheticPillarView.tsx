@@ -8,19 +8,63 @@ import type { ExecutiveIndex } from "./executive/ExecutiveKpiCards";
 import { useD1Calculations } from "@/hooks/useD1Calculations";
 import { useAuth } from "@/contexts/AuthContext";
 import { useFilters } from "@/contexts/FilterContext";
-import { TrendingUp, TrendingDown, Minus, ArrowRight, ChevronDown, ExternalLink, Info, FileText } from "lucide-react";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, Cell, LineChart, Line, Legend,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  ArrowRight,
+  ChevronDown,
+  ExternalLink,
+  Info,
+  FileText,
+} from "lucide-react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+  LineChart,
+  Line,
+  Legend,
 } from "recharts";
 
 const pillarMeta: Record<string, { label: string; description: string; color: string }> = {
-  D1: { label: "Rilevazione e classificazione", description: "Adozione catalogo, profili professionali, competenze e ruoli dell'organizzazione", color: "hsl(var(--chart-blue))" },
-  D2: { label: "Programmazione fabbisogno", description: "Governo strategico del fabbisogno, dotazione organica e pianificazione triennale", color: "hsl(var(--chart-teal))" },
-  D3: { label: "Recruiting", description: "Attrazione, selezione, tempi procedurali e copertura posti nelle procedure concorsuali", color: "hsl(var(--chart-green))" },
-  D4: { label: "Sviluppo professionale", description: "Copertura formativa, competenze digitali, efficacia Syllabus e diversificazione percorsi", color: "hsl(var(--chart-orange))" },
-  D5: { label: "Rewarding e carriera", description: "Dinamicità delle progressioni di carriera e crescita stipendiale", color: "hsl(var(--chart-purple))" },
-  D6: { label: "Capacity building e performance", description: "Efficienza organizzativa, digitalizzazione, flessibilità e qualità dei processi", color: "hsl(var(--chart-red))" },
+  D1: {
+    label: "Rilevazione e classificazione",
+    description: "Adozione catalogo, profili professionali, competenze e ruoli dell'organizzazione",
+    color: "hsl(var(--chart-blue))",
+  },
+  D2: {
+    label: "Programmazione fabbisogno",
+    description: "Governo strategico del fabbisogno, dotazione organica e pianificazione triennale",
+    color: "hsl(var(--chart-teal))",
+  },
+  D3: {
+    label: "Recruiting",
+    description:
+      "Attrazione, selezione, tempi procedurali e copertura posti nelle procedure concorsuali",
+    color: "hsl(var(--chart-green))",
+  },
+  D4: {
+    label: "Sviluppo professionale",
+    description:
+      "Copertura formativa, competenze digitali, efficacia Syllabus e diversificazione percorsi",
+    color: "hsl(var(--chart-orange))",
+  },
+  D5: {
+    label: "Rewarding e carriera",
+    description: "Dinamicità delle progressioni di carriera e crescita stipendiale",
+    color: "hsl(var(--chart-purple))",
+  },
+  D6: {
+    label: "Capacity building e performance",
+    description: "Efficienza organizzativa, digitalizzazione, flessibilità e qualità dei processi",
+    color: "hsl(var(--chart-red))",
+  },
 };
 
 function mockTrend(id: string, value: number): { anno: number; valore: number }[] {
@@ -45,20 +89,28 @@ interface SyntheticPillarViewProps {
   onGoExecutive?: () => void;
 }
 
-export const SyntheticPillarView = ({ pillar, selectedIndicator, onSelectIndicator, onGoExecutive }: SyntheticPillarViewProps) => {
+export const SyntheticPillarView = ({
+  pillar,
+  selectedIndicator,
+  onSelectIndicator,
+  onGoExecutive,
+}: SyntheticPillarViewProps) => {
   const [selectedId, setSelectedId] = useState<string | null>(selectedIndicator ?? null);
   const [showMethodology, setShowMethodology] = useState(false);
   const { profile } = useAuth();
   const { filters } = useFilters();
 
   // Dynamic D1 calculations from DB
-  const d1Filters = useMemo(() => ({
-    comparto: filters.comparto,
-    regione: filters.regione,
-    dimensione_pa: filters.dimensione_pa,
-    anno: filters.anno,
-    ente_id: profile?.role === "ente_hr" ? profile.ente_id : null,
-  }), [filters, profile]);
+  const d1Filters = useMemo(
+    () => ({
+      comparto: filters.comparto,
+      regione: filters.regione,
+      dimensione_pa: filters.dimensione_pa,
+      anno: filters.anno,
+      ente_id: profile?.role === "ente_hr" ? profile.ente_id : null,
+    }),
+    [filters, profile],
+  );
 
   const { data: d1Data } = useD1Calculations(d1Filters);
 
@@ -67,7 +119,10 @@ export const SyntheticPillarView = ({ pillar, selectedIndicator, onSelectIndicat
     if (!d1Data) return executiveIndicesStatic;
     const d1Ids = ["IAC", "IIMP/R", "ICPR", "ICVC", "IACU"] as const;
     return executiveIndicesStatic.map((idx) => {
-      if (d1Ids.includes(idx.id as typeof d1Ids[number]) && d1Data[idx.id as keyof typeof d1Data]) {
+      if (
+        d1Ids.includes(idx.id as (typeof d1Ids)[number]) &&
+        d1Data[idx.id as keyof typeof d1Data]
+      ) {
         const dyn = d1Data[idx.id as keyof typeof d1Data];
         return {
           ...idx,
@@ -85,9 +140,7 @@ export const SyntheticPillarView = ({ pillar, selectedIndicator, onSelectIndicat
 
   // Get ALL indicators for this pillar from merged data (not static)
   const syntheticFromData = useMemo(() => {
-    return allIndices.filter(
-      (idx) => idx.pillar === pillar
-    );
+    return allIndices.filter((idx) => idx.pillar === pillar);
   }, [pillar, allIndices]);
 
   // Fallback: sidebar synthetic list for indicators NOT in executiveData
@@ -97,7 +150,8 @@ export const SyntheticPillarView = ({ pillar, selectedIndicator, onSelectIndicat
   const enriched = useMemo(() => {
     return sidebarIndicators.map((ind) => {
       const fromData = syntheticFromData.find(
-        (d) => d.id === ind.id || d.id.replace("/", "-") === ind.id || ind.id.replace("-", "/") === d.id
+        (d) =>
+          d.id === ind.id || d.id.replace("/", "-") === ind.id || ind.id.replace("-", "/") === d.id,
       );
       if (fromData) {
         return {
@@ -137,13 +191,19 @@ export const SyntheticPillarView = ({ pillar, selectedIndicator, onSelectIndicat
     if (selectedIndicator && selectedIndicator !== prevExtRef.current) {
       setSelectedId(selectedIndicator);
       setTimeout(() => {
-        document.getElementById(`synth-card-${selectedIndicator}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+        document
+          .getElementById(`synth-card-${selectedIndicator}`)
+          ?.scrollIntoView({ behavior: "smooth", block: "center" });
       }, 150);
     }
     prevExtRef.current = selectedIndicator;
   }, [selectedIndicator]);
 
-  const meta = pillarMeta[pillar] || { label: pillar, description: "", color: "hsl(var(--primary))" };
+  const meta = pillarMeta[pillar] || {
+    label: pillar,
+    description: "",
+    color: "hsl(var(--primary))",
+  };
   const indicators = syntheticIndicators[pillar] || [];
 
   const barData = enriched.map((ind) => ({
@@ -187,9 +247,7 @@ export const SyntheticPillarView = ({ pillar, selectedIndicator, onSelectIndicat
       </div>
 
       {/* ── Methodology Sheet ── */}
-      {showMethodology && (
-        <QuadroSinotticoView pillar={pillar} />
-      )}
+      {showMethodology && <QuadroSinotticoView pillar={pillar} />}
 
       {/* ── Summary Bar Chart with highlight ── */}
       {barData.length > 1 && (
@@ -209,18 +267,48 @@ export const SyntheticPillarView = ({ pillar, selectedIndicator, onSelectIndicat
             <div style={{ height: Math.max(200, barData.length * 38) }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={barData} layout="vertical" margin={{ left: 10, right: 20 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--tableau-grid))" horizontal={false} />
-                  <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} tickFormatter={(v: number) => `${v}%`} />
-                  <YAxis type="category" dataKey="id" tick={{ fontSize: 13, fill: "hsl(var(--foreground))", fontWeight: 700 }} width={65} />
-                  <Tooltip
-                    contentStyle={{ fontSize: 13, background: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }}
-                    formatter={(v: number, name: string) => [`${v}%`, name === "value" ? "Attuale" : "Target"]}
-                    labelFormatter={(label: string) => barData.find((d) => d.id === label)?.label || label}
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="hsl(var(--tableau-grid))"
+                    horizontal={false}
                   />
-                  <Bar dataKey="value" name="Attuale" fill={meta.color} radius={[0, 3, 3, 0]} barSize={16}>
+                  <XAxis
+                    type="number"
+                    domain={[0, 100]}
+                    tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+                    tickFormatter={(v: number) => `${v}%`}
+                  />
+                  <YAxis
+                    type="category"
+                    dataKey="id"
+                    tick={{ fontSize: 13, fill: "hsl(var(--foreground))", fontWeight: 700 }}
+                    width={65}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      fontSize: 13,
+                      background: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                    }}
+                    formatter={(v: number, name: string) => [
+                      `${v}%`,
+                      name === "value" ? "Attuale" : "Target",
+                    ]}
+                    labelFormatter={(label: string) =>
+                      barData.find((d) => d.id === label)?.label || label
+                    }
+                  />
+                  <Bar
+                    dataKey="value"
+                    name="Attuale"
+                    fill={meta.color}
+                    radius={[0, 3, 3, 0]}
+                    barSize={16}
+                  >
                     {barData.map((d, i) => {
                       const isSelected = !selectedId || d.id === selectedId;
-                      const baseColor = d.value >= d.target * 0.9 ? meta.color : "hsl(var(--chart-orange))";
+                      const baseColor =
+                        d.value >= d.target * 0.9 ? meta.color : "hsl(var(--chart-orange))";
                       return (
                         <Cell
                           key={i}
@@ -240,65 +328,105 @@ export const SyntheticPillarView = ({ pillar, selectedIndicator, onSelectIndicat
       )}
 
       {/* ── Selected Indicator Detail Panel — uses full ExecutiveKpiCard ── */}
-      {selectedInd && (() => {
-        const fullIdx = syntheticFromData.find(
-          (d) => d.id === selectedInd.id || d.id.replace("/", "-") === selectedInd.id || selectedInd.id.replace("-", "/") === d.id
-        );
+      {selectedInd &&
+        (() => {
+          const fullIdx = syntheticFromData.find(
+            (d) =>
+              d.id === selectedInd.id ||
+              d.id.replace("/", "-") === selectedInd.id ||
+              selectedInd.id.replace("-", "/") === d.id,
+          );
 
-        return (
-          <div className="space-y-4 animate-in fade-in-0 slide-in-from-top-2 duration-200">
-            {/* Full card with variant="synthetic" for complete detail */}
-            {fullIdx ? (
-              <ExecutiveKpiCard idx={fullIdx} variant="synthetic" />
-            ) : (
-              /* Fallback for indicators not in executiveData */
-              <div className="tableau-card" style={{ borderLeft: `4px solid ${meta.color}` }}>
-                <div className="tableau-card-header flex items-center gap-2">
-                  <span className="font-bold">{selectedInd.id}</span>
-                  <span className="text-muted-foreground">·</span>
-                  <span>{selectedInd.label}</span>
+          return (
+            <div className="space-y-4 animate-in fade-in-0 slide-in-from-top-2 duration-200">
+              {/* Full card with variant="synthetic" for complete detail */}
+              {fullIdx ? (
+                <ExecutiveKpiCard idx={fullIdx} variant="synthetic" />
+              ) : (
+                /* Fallback for indicators not in executiveData */
+                <div className="tableau-card" style={{ borderLeft: `4px solid ${meta.color}` }}>
+                  <div className="tableau-card-header flex items-center gap-2">
+                    <span className="font-bold">{selectedInd.id}</span>
+                    <span className="text-muted-foreground">·</span>
+                    <span>{selectedInd.label}</span>
+                  </div>
+                  <div className="p-5">
+                    <div className="flex items-end gap-3">
+                      <span className="text-4xl font-tableau-number text-foreground">
+                        {Math.round(selectedInd.value * 100)}%
+                      </span>
+                      {(() => {
+                        const diff = selectedInd.value - selectedInd.prev;
+                        const diffColor =
+                          diff > 0
+                            ? "hsl(var(--chart-green))"
+                            : diff < 0
+                              ? "hsl(var(--destructive))"
+                              : "hsl(var(--muted-foreground))";
+                        return (
+                          <span
+                            className="inline-flex items-center gap-0.5 text-xs font-semibold pb-1"
+                            style={{ color: diffColor }}
+                          >
+                            <DeltaIcon diff={diff} />
+                            {diff > 0 ? "+" : ""}
+                            {(diff * 100).toFixed(1)}pp vs 2022
+                          </span>
+                        );
+                      })()}
+                    </div>
+                  </div>
                 </div>
-                <div className="p-5">
-                  <div className="flex items-end gap-3">
-                    <span className="text-4xl font-tableau-number text-foreground">{Math.round(selectedInd.value * 100)}%</span>
-                    {(() => {
-                      const diff = selectedInd.value - selectedInd.prev;
-                      const diffColor = diff > 0 ? "hsl(var(--chart-green))" : diff < 0 ? "hsl(var(--destructive))" : "hsl(var(--muted-foreground))";
-                      return (
-                        <span className="inline-flex items-center gap-0.5 text-xs font-semibold pb-1" style={{ color: diffColor }}>
-                          <DeltaIcon diff={diff} />
-                          {diff > 0 ? "+" : ""}{(diff * 100).toFixed(1)}pp vs 2022
-                        </span>
-                      );
-                    })()}
+              )}
+
+              {/* Trend chart below the card */}
+              <div className="tableau-card" style={{ borderLeft: `4px solid ${meta.color}` }}>
+                <div className="tableau-card-header">Trend Storico · {selectedInd.id}</div>
+                <div className="tableau-card-body">
+                  <div className="h-[200px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart
+                        data={mockTrend(selectedInd.id, selectedInd.value)}
+                        margin={{ left: 0, right: 10, top: 5, bottom: 5 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--tableau-grid))" />
+                        <XAxis
+                          dataKey="anno"
+                          tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+                        />
+                        <YAxis
+                          domain={[0, 100]}
+                          tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+                          tickFormatter={(v: number) => `${v}%`}
+                        />
+                        <Tooltip
+                          contentStyle={{
+                            fontSize: 13,
+                            background: "hsl(var(--card))",
+                            border: "1px solid hsl(var(--border))",
+                          }}
+                          formatter={(v: number) => [`${v}%`, "Valore"]}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="valore"
+                          stroke={meta.color}
+                          strokeWidth={2.5}
+                          dot={{
+                            r: 4,
+                            fill: meta.color,
+                            stroke: "hsl(var(--card))",
+                            strokeWidth: 2,
+                          }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
                   </div>
                 </div>
               </div>
-            )}
-
-            {/* Trend chart below the card */}
-            <div className="tableau-card" style={{ borderLeft: `4px solid ${meta.color}` }}>
-              <div className="tableau-card-header">Trend Storico · {selectedInd.id}</div>
-              <div className="tableau-card-body">
-                <div className="h-[200px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={mockTrend(selectedInd.id, selectedInd.value)} margin={{ left: 0, right: 10, top: 5, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--tableau-grid))" />
-                      <XAxis dataKey="anno" tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
-                      <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} tickFormatter={(v: number) => `${v}%`} />
-                      <Tooltip
-                        contentStyle={{ fontSize: 13, background: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }}
-                        formatter={(v: number) => [`${v}%`, "Valore"]}
-                      />
-                      <Line type="monotone" dataKey="valore" stroke={meta.color} strokeWidth={2.5} dot={{ r: 4, fill: meta.color, stroke: "hsl(var(--card))", strokeWidth: 2 }} />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
             </div>
-          </div>
-        );
-      })()}
+          );
+        })()}
 
       {/* ── Indicator Cards Grid ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
@@ -309,7 +437,12 @@ export const SyntheticPillarView = ({ pillar, selectedIndicator, onSelectIndicat
           const isGood = ind.value >= ind.target * 0.9;
           const isSelected = selectedId === ind.id;
           const isDimmed = selectedId !== null && !isSelected;
-          const diffColor = diff > 0 ? "hsl(var(--chart-green))" : diff < 0 ? "hsl(var(--destructive))" : "hsl(var(--muted-foreground))";
+          const diffColor =
+            diff > 0
+              ? "hsl(var(--chart-green))"
+              : diff < 0
+                ? "hsl(var(--destructive))"
+                : "hsl(var(--muted-foreground))";
 
           return (
             <button
@@ -321,8 +454,8 @@ export const SyntheticPillarView = ({ pillar, selectedIndicator, onSelectIndicat
                 isSelected
                   ? "ring-2 ring-primary shadow-md"
                   : isDimmed
-                  ? "opacity-40 hover:opacity-70"
-                  : "hover:shadow-md"
+                    ? "opacity-40 hover:opacity-70"
+                    : "hover:shadow-md"
               }`}
               style={{ borderTop: `3px solid ${isGood ? meta.color : "hsl(var(--chart-orange))"}` }}
             >
@@ -334,26 +467,41 @@ export const SyntheticPillarView = ({ pillar, selectedIndicator, onSelectIndicat
               <div className="p-4 space-y-2">
                 <div className="flex items-start justify-between">
                   <div>
-                    <span className="text-xs font-bold text-muted-foreground tracking-wider">{ind.id}</span>
-                    <h3 className="text-sm font-semibold text-foreground leading-tight mt-0.5">{ind.label}</h3>
+                    <span className="text-xs font-bold text-muted-foreground tracking-wider">
+                      {ind.id}
+                    </span>
+                    <h3 className="text-sm font-semibold text-foreground leading-tight mt-0.5">
+                      {ind.label}
+                    </h3>
                   </div>
-                  <ArrowRight className={`h-4 w-4 flex-shrink-0 mt-0.5 transition-colors ${
-                    isSelected ? "text-primary" : "text-muted-foreground/30 group-hover:text-primary"
-                  }`} />
+                  <ArrowRight
+                    className={`h-4 w-4 flex-shrink-0 mt-0.5 transition-colors ${
+                      isSelected
+                        ? "text-primary"
+                        : "text-muted-foreground/30 group-hover:text-primary"
+                    }`}
+                  />
                 </div>
 
                 <div className="flex items-end justify-between">
                   <span className="text-2xl font-tableau-number text-foreground">{pct}%</span>
-                  <span className="inline-flex items-center gap-0.5 text-xs font-semibold" style={{ color: diffColor }}>
+                  <span
+                    className="inline-flex items-center gap-0.5 text-xs font-semibold"
+                    style={{ color: diffColor }}
+                  >
                     <DeltaIcon diff={diff} />
-                    {diff > 0 ? "+" : ""}{(diff * 100).toFixed(1)}pp
+                    {diff > 0 ? "+" : ""}
+                    {(diff * 100).toFixed(1)}pp
                   </span>
                 </div>
 
                 <div className="relative h-2 bg-muted rounded-sm overflow-hidden">
                   <div
                     className="absolute inset-y-0 left-0 rounded-sm"
-                    style={{ width: `${pct}%`, background: isGood ? meta.color : "hsl(var(--chart-orange))" }}
+                    style={{
+                      width: `${pct}%`,
+                      background: isGood ? meta.color : "hsl(var(--chart-orange))",
+                    }}
                   />
                   <div
                     className="absolute top-0 bottom-0 w-0.5"
@@ -370,7 +518,9 @@ export const SyntheticPillarView = ({ pillar, selectedIndicator, onSelectIndicat
         <div className="tableau-card">
           <div className="p-10 text-center">
             <Info className="h-8 w-8 text-muted-foreground/40 mx-auto mb-3" />
-            <p className="text-sm text-muted-foreground">Nessun indicatore sintetico configurato per {pillar}</p>
+            <p className="text-sm text-muted-foreground">
+              Nessun indicatore sintetico configurato per {pillar}
+            </p>
           </div>
         </div>
       )}

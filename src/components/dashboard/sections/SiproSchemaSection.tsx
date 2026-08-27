@@ -1,6 +1,17 @@
 import { useState, useMemo } from "react";
 import { siproTables, type TableDef } from "@/data/siproSchema";
-import { Database, Table2, Key, ArrowRight, Search, ChevronDown, ChevronRight, Link2, Shield, Layers } from "lucide-react";
+import {
+  Database,
+  Table2,
+  Key,
+  ArrowRight,
+  Search,
+  ChevronDown,
+  ChevronRight,
+  Link2,
+  Shield,
+  Layers,
+} from "lucide-react";
 
 const categoryMeta: Record<string, { label: string; color: string; icon: typeof Database }> = {
   lookup: { label: "Lookup (lk_)", color: "hsl(var(--chart-blue))", icon: Layers },
@@ -10,7 +21,8 @@ const categoryMeta: Record<string, { label: string; color: string; icon: typeof 
 
 const typeColor = (t: string) => {
   if (t.startsWith("int") || t.startsWith("float")) return "hsl(var(--chart-blue))";
-  if (t.startsWith("varchar") || t === "text" || t.startsWith("bpchar")) return "hsl(var(--chart-teal))";
+  if (t.startsWith("varchar") || t === "text" || t.startsWith("bpchar"))
+    return "hsl(var(--chart-teal))";
   if (t === "timestamp") return "hsl(var(--chart-purple))";
   return "hsl(var(--muted-foreground))";
 };
@@ -18,7 +30,9 @@ const typeColor = (t: string) => {
 export const SiproSchemaSection = () => {
   const [search, setSearch] = useState("");
   const [selectedTable, setSelectedTable] = useState<string | null>(null);
-  const [expandedCats, setExpandedCats] = useState<Set<string>>(new Set(["lookup", "fact", "system"]));
+  const [expandedCats, setExpandedCats] = useState<Set<string>>(
+    new Set(["lookup", "fact", "system"]),
+  );
 
   const filtered = useMemo(() => {
     if (!search) return siproTables;
@@ -27,7 +41,7 @@ export const SiproSchemaSection = () => {
       (t) =>
         t.name.toLowerCase().includes(q) ||
         t.description.toLowerCase().includes(q) ||
-        t.columns.some((c) => c.name.toLowerCase().includes(q))
+        t.columns.some((c) => c.name.toLowerCase().includes(q)),
     );
   }, [search]);
 
@@ -42,7 +56,8 @@ export const SiproSchemaSection = () => {
   const toggleCat = (cat: string) => {
     setExpandedCats((prev) => {
       const next = new Set(prev);
-      next.has(cat) ? next.delete(cat) : next.add(cat);
+      if (next.has(cat)) next.delete(cat);
+      else next.add(cat);
       return next;
     });
   };
@@ -57,14 +72,31 @@ export const SiproSchemaSection = () => {
       {/* KPI strip */}
       <div className="grid grid-cols-12 gap-3">
         {[
-          { label: "Tabelle totali", value: totalTables, icon: Database, color: "hsl(var(--chart-blue))" },
-          { label: "Colonne totali", value: totalColumns, icon: Table2, color: "hsl(var(--chart-teal))" },
-          { label: "Foreign Keys", value: totalFKs, icon: Link2, color: "hsl(var(--chart-orange))" },
+          {
+            label: "Tabelle totali",
+            value: totalTables,
+            icon: Database,
+            color: "hsl(var(--chart-blue))",
+          },
+          {
+            label: "Colonne totali",
+            value: totalColumns,
+            icon: Table2,
+            color: "hsl(var(--chart-teal))",
+          },
+          {
+            label: "Foreign Keys",
+            value: totalFKs,
+            icon: Link2,
+            color: "hsl(var(--chart-orange))",
+          },
           { label: "Schema", value: "gru_test", icon: Shield, color: "hsl(var(--chart-purple))" },
         ].map((k, i) => (
           <div key={i} className="col-span-3 bg-card border rounded-lg p-4">
             <div className="flex items-center justify-between">
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">{k.label}</div>
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+                {k.label}
+              </div>
               <k.icon className="h-4 w-4" style={{ color: k.color }} />
             </div>
             <div className="text-xl font-bold text-foreground mt-1">{k.value}</div>
@@ -103,10 +135,16 @@ export const SiproSchemaSection = () => {
                     onClick={() => toggleCat(cat)}
                     className="flex items-center gap-2 w-full px-2 py-1.5 text-[11px] font-semibold text-muted-foreground hover:text-foreground transition-colors rounded"
                   >
-                    {isExpanded ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+                    {isExpanded ? (
+                      <ChevronDown className="h-3 w-3" />
+                    ) : (
+                      <ChevronRight className="h-3 w-3" />
+                    )}
                     <meta.icon className="h-3 w-3" style={{ color: meta.color }} />
                     <span>{meta.label}</span>
-                    <span className="ml-auto text-[10px] bg-muted px-1.5 py-0.5 rounded">{tables.length}</span>
+                    <span className="ml-auto text-[10px] bg-muted px-1.5 py-0.5 rounded">
+                      {tables.length}
+                    </span>
                   </button>
                   {isExpanded && (
                     <div className="ml-2">
@@ -122,7 +160,9 @@ export const SiproSchemaSection = () => {
                         >
                           <Table2 className="h-3 w-3 flex-shrink-0" style={{ color: meta.color }} />
                           <span className="truncate">{t.name}</span>
-                          <span className="ml-auto text-[9px] opacity-60">{t.columns.length} col</span>
+                          <span className="ml-auto text-[9px] opacity-60">
+                            {t.columns.length} col
+                          </span>
                         </button>
                       ))}
                     </div>
@@ -165,40 +205,80 @@ export const SiproSchemaSection = () => {
                   <table className="w-full text-[11px]">
                     <thead>
                       <tr className="border-b border-border">
-                        <th className="px-3 py-2 text-left text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">Nome</th>
-                        <th className="px-3 py-2 text-left text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">Tipo</th>
-                        <th className="px-3 py-2 text-center text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">PK</th>
-                        <th className="px-3 py-2 text-center text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">NULL</th>
-                        <th className="px-3 py-2 text-left text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">Default</th>
-                        <th className="px-3 py-2 text-left text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">FK →</th>
+                        <th className="px-3 py-2 text-left text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">
+                          Nome
+                        </th>
+                        <th className="px-3 py-2 text-left text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">
+                          Tipo
+                        </th>
+                        <th className="px-3 py-2 text-center text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">
+                          PK
+                        </th>
+                        <th className="px-3 py-2 text-center text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">
+                          NULL
+                        </th>
+                        <th className="px-3 py-2 text-left text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">
+                          Default
+                        </th>
+                        <th className="px-3 py-2 text-left text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">
+                          FK →
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {selected.columns.map((col) => {
                         const fk = selected.foreignKeys.find((f) => f.column === col.name);
                         return (
-                          <tr key={col.name} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
+                          <tr
+                            key={col.name}
+                            className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors"
+                          >
                             <td className="px-3 py-2 font-mono font-medium text-foreground">
                               <div className="flex items-center gap-1.5">
-                                {col.pk && <Key className="h-3 w-3 flex-shrink-0" style={{ color: "hsl(var(--chart-orange))" }} />}
-                                {fk && !col.pk && <Link2 className="h-3 w-3 flex-shrink-0" style={{ color: "hsl(var(--chart-blue))" }} />}
+                                {col.pk && (
+                                  <Key
+                                    className="h-3 w-3 flex-shrink-0"
+                                    style={{ color: "hsl(var(--chart-orange))" }}
+                                  />
+                                )}
+                                {fk && !col.pk && (
+                                  <Link2
+                                    className="h-3 w-3 flex-shrink-0"
+                                    style={{ color: "hsl(var(--chart-blue))" }}
+                                  />
+                                )}
                                 {col.name}
                               </div>
                             </td>
                             <td className="px-3 py-2">
-                              <span className="font-mono px-1.5 py-0.5 rounded text-[10px]" style={{ color: typeColor(col.type), background: "hsl(var(--muted))" }}>
+                              <span
+                                className="font-mono px-1.5 py-0.5 rounded text-[10px]"
+                                style={{
+                                  color: typeColor(col.type),
+                                  background: "hsl(var(--muted))",
+                                }}
+                              >
                                 {col.type}
                               </span>
                             </td>
                             <td className="px-3 py-2 text-center">
                               {col.pk && (
-                                <span className="inline-block w-4 h-4 leading-4 rounded text-[8px] font-bold text-white" style={{ background: "hsl(var(--chart-orange))" }}>
+                                <span
+                                  className="inline-block w-4 h-4 leading-4 rounded text-[8px] font-bold text-white"
+                                  style={{ background: "hsl(var(--chart-orange))" }}
+                                >
                                   PK
                                 </span>
                               )}
                             </td>
                             <td className="px-3 py-2 text-center">
-                              <span className={col.nullable ? "text-muted-foreground" : "font-semibold text-foreground"}>
+                              <span
+                                className={
+                                  col.nullable
+                                    ? "text-muted-foreground"
+                                    : "font-semibold text-foreground"
+                                }
+                              >
                                 {col.nullable ? "✓" : "✗"}
                               </span>
                             </td>
@@ -230,10 +310,15 @@ export const SiproSchemaSection = () => {
               {/* FK summary */}
               {selected.foreignKeys.length > 0 && (
                 <div className="px-4 pb-4">
-                  <h3 className="text-xs font-semibold text-foreground mb-2">Relazioni (Foreign Keys)</h3>
+                  <h3 className="text-xs font-semibold text-foreground mb-2">
+                    Relazioni (Foreign Keys)
+                  </h3>
                   <div className="space-y-1.5">
                     {selected.foreignKeys.map((fk, i) => (
-                      <div key={i} className="flex items-center gap-2 text-[11px] bg-muted/30 rounded px-3 py-1.5">
+                      <div
+                        key={i}
+                        className="flex items-center gap-2 text-[11px] bg-muted/30 rounded px-3 py-1.5"
+                      >
                         <span className="font-mono text-foreground">{fk.column}</span>
                         <ArrowRight className="h-3 w-3 text-muted-foreground" />
                         <button
@@ -253,7 +338,7 @@ export const SiproSchemaSection = () => {
               {/* Referenced by */}
               {(() => {
                 const refs = siproTables.filter((t) =>
-                  t.foreignKeys.some((f) => f.refTable === selected.name)
+                  t.foreignKeys.some((f) => f.refTable === selected.name),
                 );
                 if (refs.length === 0) return null;
                 return (

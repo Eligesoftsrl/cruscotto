@@ -16,7 +16,12 @@ describe("transformEtaData", () => {
     ];
     const res = transformEtaData(rows, fasce);
     expect(res.distribuzioneEta).toHaveLength(2);
-    expect(res.distribuzioneEta[0]).toMatchObject({ fascia: "20-24", uomini: 12, donne: 6, totale: 18 });
+    expect(res.distribuzioneEta[0]).toMatchObject({
+      fascia: "20-24",
+      uomini: 12,
+      donne: 6,
+      totale: 18,
+    });
     expect(res.distribuzioneEta[1]).toMatchObject({ fascia: "55-59", totale: 10 });
     expect(res.totalePersonale).toBe(28);
   });

@@ -4,10 +4,17 @@ import { tooltipStyle } from "../chartTheme";
 import { useFormazioneData } from "@/hooks/useFormazioneData";
 import { GraduationCap, Clock, Users, TrendingUp } from "lucide-react";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  ComposedChart, Line, Area,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  ComposedChart,
+  Line,
+  Area,
 } from "recharts";
-
 
 // Dettaglio illustrativo per area/tipologia (non presente nelle tabelle dw_*)
 const formazionePerArea = [
@@ -32,30 +39,72 @@ export const FormatiPersonaleSection = () => {
   if (isLoading) return <SectionLoading />;
   if (error) return <SectionError />;
 
-  const { formatiPerc, formatiTotale, oreFormazione, oreProCapite, serieStorica, _personaleTotale } = formazione;
+  const {
+    formatiPerc,
+    formatiTotale,
+    oreFormazione,
+    oreProCapite,
+    serieStorica,
+    _personaleTotale,
+  } = formazione;
   const personale = _personaleTotale || 1;
-  const formazioneVar = serieStorica.length >= 2
-    ? (serieStorica[serieStorica.length - 1].formatiPerc - serieStorica[serieStorica.length - 2].formatiPerc).toFixed(1)
-    : "0.0";
+  const formazioneVar =
+    serieStorica.length >= 2
+      ? (
+          serieStorica[serieStorica.length - 1].formatiPerc -
+          serieStorica[serieStorica.length - 2].formatiPerc
+        ).toFixed(1)
+      : "0.0";
 
   return (
     <div className="space-y-4">
       {/* KPI */}
       <KpiGrid>
         {[
-          { label: "Personale formato", value: `${formatiPerc}%`, icon: GraduationCap, color: "hsl(var(--chart-blue))", sub: `${formatiTotale.toLocaleString("it-IT")} su ${personale.toLocaleString("it-IT")}` },
-          { label: "Ore di formazione", value: oreFormazione.toLocaleString("it-IT"), icon: Clock, color: "hsl(var(--chart-teal))" },
-          { label: "Ore pro capite", value: oreProCapite.toFixed(1), icon: Users, color: "hsl(var(--chart-orange))" },
-          { label: "Variazione vs anno prec.", value: `${parseFloat(formazioneVar) >= 0 ? "+" : ""}${formazioneVar} pp`, icon: TrendingUp, color: parseFloat(formazioneVar) >= 0 ? "hsl(var(--chart-teal))" : "hsl(var(--chart-red))" },
+          {
+            label: "Personale formato",
+            value: `${formatiPerc}%`,
+            icon: GraduationCap,
+            color: "hsl(var(--chart-blue))",
+            sub: `${formatiTotale.toLocaleString("it-IT")} su ${personale.toLocaleString("it-IT")}`,
+          },
+          {
+            label: "Ore di formazione",
+            value: oreFormazione.toLocaleString("it-IT"),
+            icon: Clock,
+            color: "hsl(var(--chart-teal))",
+          },
+          {
+            label: "Ore pro capite",
+            value: oreProCapite.toFixed(1),
+            icon: Users,
+            color: "hsl(var(--chart-orange))",
+          },
+          {
+            label: "Variazione vs anno prec.",
+            value: `${parseFloat(formazioneVar) >= 0 ? "+" : ""}${formazioneVar} pp`,
+            icon: TrendingUp,
+            color:
+              parseFloat(formazioneVar) >= 0 ? "hsl(var(--chart-teal))" : "hsl(var(--chart-red))",
+          },
         ].map((k, i) => (
-          <KpiStat key={i} label={k.label} value={k.value} icon={k.icon} color={k.color} sub={k.sub} />
+          <KpiStat
+            key={i}
+            label={k.label}
+            value={k.value}
+            icon={k.icon}
+            color={k.color}
+            sub={k.sub}
+          />
         ))}
       </KpiGrid>
 
       {/* Charts */}
       <div className="grid grid-cols-12 gap-3">
         <div className="col-span-5 bg-card border rounded-lg p-4">
-          <h3 className="text-xs font-semibold text-foreground mb-3">% Personale Formato per Area</h3>
+          <h3 className="text-xs font-semibold text-foreground mb-3">
+            % Personale Formato per Area
+          </h3>
           <div className="space-y-3 mt-4">
             {formazionePerArea.map((r) => (
               <div key={r.area}>
@@ -64,13 +113,22 @@ export const FormatiPersonaleSection = () => {
                   <span className="text-muted-foreground">{r.perc}%</span>
                 </div>
                 <div className="h-5 bg-muted rounded-full overflow-hidden relative">
-                  <div className="h-full rounded-full transition-all" style={{ width: `${r.perc}%`, background: "hsl(var(--chart-blue))" }} />
-                  <div className="absolute top-0 h-full w-0.5" style={{ left: `${formatiPerc}%`, background: "hsl(var(--chart-orange))" }} />
+                  <div
+                    className="h-full rounded-full transition-all"
+                    style={{ width: `${r.perc}%`, background: "hsl(var(--chart-blue))" }}
+                  />
+                  <div
+                    className="absolute top-0 h-full w-0.5"
+                    style={{ left: `${formatiPerc}%`, background: "hsl(var(--chart-orange))" }}
+                  />
                 </div>
               </div>
             ))}
             <div className="flex items-center gap-2 text-[10px] text-muted-foreground mt-2">
-              <div className="w-3 h-0.5 rounded" style={{ background: "hsl(var(--chart-orange))" }} />
+              <div
+                className="w-3 h-0.5 rounded"
+                style={{ background: "hsl(var(--chart-orange))" }}
+              />
               Media ente ({formatiPerc}%)
             </div>
           </div>
@@ -88,10 +146,34 @@ export const FormatiPersonaleSection = () => {
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis dataKey="anno" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
-              <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} unit="%" domain={[0, 100]} />
-              <Tooltip contentStyle={tooltipStyle} formatter={(val: number) => [`${val}%`, undefined]} />
-              <Area type="monotone" dataKey="formatiPerc" fill="url(#gradFormazione)" stroke="none" />
-              <Line type="monotone" dataKey="formatiPerc" name="% Formati" stroke="hsl(var(--chart-blue))" strokeWidth={2.5} dot={{ r: 4, fill: "hsl(var(--chart-blue))", stroke: "hsl(var(--card))", strokeWidth: 2 }} />
+              <YAxis
+                tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
+                unit="%"
+                domain={[0, 100]}
+              />
+              <Tooltip
+                contentStyle={tooltipStyle}
+                formatter={(val: number) => [`${val}%`, undefined]}
+              />
+              <Area
+                type="monotone"
+                dataKey="formatiPerc"
+                fill="url(#gradFormazione)"
+                stroke="none"
+              />
+              <Line
+                type="monotone"
+                dataKey="formatiPerc"
+                name="% Formati"
+                stroke="hsl(var(--chart-blue))"
+                strokeWidth={2.5}
+                dot={{
+                  r: 4,
+                  fill: "hsl(var(--chart-blue))",
+                  stroke: "hsl(var(--card))",
+                  strokeWidth: 2,
+                }}
+              />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
@@ -99,14 +181,27 @@ export const FormatiPersonaleSection = () => {
 
       {/* Tipologia formazione (dettaglio illustrativo) */}
       <div className="bg-card border rounded-lg p-4">
-        <h3 className="text-xs font-semibold text-foreground mb-3">Ore di Formazione per Tipologia</h3>
+        <h3 className="text-xs font-semibold text-foreground mb-3">
+          Ore di Formazione per Tipologia
+        </h3>
         <ResponsiveContainer width="100%" height={240}>
           <BarChart data={formazioneTipologia} layout="vertical" margin={{ left: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" horizontal={false} />
             <XAxis type="number" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
-            <YAxis type="category" dataKey="tipo" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} width={150} />
+            <YAxis
+              type="category"
+              dataKey="tipo"
+              tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
+              width={150}
+            />
             <Tooltip contentStyle={tooltipStyle} />
-            <Bar dataKey="ore" name="Ore" fill="hsl(var(--chart-teal))" barSize={20} radius={[0, 4, 4, 0]} />
+            <Bar
+              dataKey="ore"
+              name="Ore"
+              fill="hsl(var(--chart-teal))"
+              barSize={20}
+              radius={[0, 4, 4, 0]}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>

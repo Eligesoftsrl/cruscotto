@@ -152,7 +152,10 @@ export async function deleteJourney(id: string): Promise<void> {
     await supabase
       .from("user_journey_step_indicators")
       .delete()
-      .in("step_id", steps.map((s) => s.id));
+      .in(
+        "step_id",
+        steps.map((s) => s.id),
+      );
     await supabase.from("user_journey_steps").delete().eq("journey_id", id);
   }
   await supabase.from("user_journeys").delete().eq("id", id);

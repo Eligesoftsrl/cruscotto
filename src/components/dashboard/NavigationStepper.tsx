@@ -102,18 +102,20 @@ export const NavigationStepper = ({ nav, onNavigate }: NavigationStepperProps) =
                 step.active
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : step.completed
-                  ? "bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer"
-                  : "bg-muted text-muted-foreground"
+                    ? "bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer"
+                    : "bg-muted text-muted-foreground"
               }`}
               aria-current={step.active ? "step" : undefined}
             >
-              <span className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                step.active
-                  ? "bg-primary-foreground/20"
-                  : step.completed
-                  ? "bg-primary/20"
-                  : "bg-muted-foreground/20"
-              }`}>
+              <span
+                className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
+                  step.active
+                    ? "bg-primary-foreground/20"
+                    : step.completed
+                      ? "bg-primary/20"
+                      : "bg-muted-foreground/20"
+                }`}
+              >
                 {step.icon}
               </span>
               <span className="max-w-[200px] truncate">{step.label}</span>

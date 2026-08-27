@@ -90,16 +90,16 @@ export const KpiStrip = () => {
                 kpi.changeType === "up"
                   ? "text-destructive"
                   : kpi.changeType === "down"
-                  ? "text-chart-green"
-                  : "text-muted-foreground"
+                    ? "text-chart-green"
+                    : "text-muted-foreground"
               }`}
               style={{
                 color:
                   kpi.changeType === "up"
                     ? "hsl(var(--kpi-up))"
                     : kpi.changeType === "down"
-                    ? "hsl(var(--kpi-down))"
-                    : "hsl(var(--kpi-neutral))",
+                      ? "hsl(var(--kpi-down))"
+                      : "hsl(var(--kpi-neutral))",
               }}
             >
               {kpi.change}

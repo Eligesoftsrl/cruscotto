@@ -3,9 +3,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider, QueryCache } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Login from "./pages/Login";
 
 // Route lazy-loaded: riducono il bundle iniziale (code-splitting).
@@ -46,28 +47,73 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+/** Error boundary per-route: si azzera automaticamente ad ogni cambio pagina. */
+const RoutedErrorBoundary = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+  return <ErrorBoundary resetKey={location.pathname}>{children}</ErrorBoundary>;
+};
+
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <AuthProvider>
-          <Suspense fallback={<FullscreenSpinner />}>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/" element={<ProtectedRoute><Welcome /></ProtectedRoute>} />
-              <Route path="/bussola" element={<ProtectedRoute><Bussola /></ProtectedRoute>} />
-              <Route path="/dashboard" element={<ProtectedRoute><Index /></ProtectedRoute>} />
-              <Route path="/rapporto" element={<ProtectedRoute><RapportoNarrativo /></ProtectedRoute>} />
-              <Route path="/demo-narrativi" element={<ProtectedRoute><NarrativeDemo /></ProtectedRoute>} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <AuthProvider>
+            <RoutedErrorBoundary>
+              <Suspense fallback={<FullscreenSpinner />}>
+                <Routes>
+                  <Route path="/login" element={<Login />} />
+                  <Route
+                    path="/"
+                    element={
+                      <ProtectedRoute>
+                        <Welcome />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/bussola"
+                    element={
+                      <ProtectedRoute>
+                        <Bussola />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <Index />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/rapporto"
+                    element={
+                      <ProtectedRoute>
+                        <RapportoNarrativo />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/demo-narrativi"
+                    element={
+                      <ProtectedRoute>
+                        <NarrativeDemo />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </RoutedErrorBoundary>
+          </AuthProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

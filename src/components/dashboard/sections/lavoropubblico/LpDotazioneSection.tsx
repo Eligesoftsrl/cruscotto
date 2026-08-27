@@ -1,7 +1,16 @@
 import { useEffect, useState } from "react";
 import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
 import { fetchLpDotazione } from "@/services/dw/lavoroPubblicoService";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 
 export const LpDotazioneSection = () => {
@@ -21,18 +30,23 @@ export const LpDotazioneSection = () => {
         byEnte[e].dotazione += d.n_teste_dotazione ?? 0;
         byEnte[e].spesa += Number(d.valore_economico ?? 0);
       });
-      setChartData(Object.entries(byEnte).map(([ente, v]) => ({
-        ente: ente.substring(0, 15), ...v,
-      })));
+      setChartData(
+        Object.entries(byEnte).map(([ente, v]) => ({
+          ente: ente.substring(0, 15),
+          ...v,
+        })),
+      );
 
-      setTableData(data.map((d: any) => ({
-        ente: d.cfiscale_amm ?? "-",
-        triennio: d.triennio ?? "-",
-        categoria: d.categoria_giuridica ?? "-",
-        dotazione: d.n_teste_dotazione ?? 0,
-        valore: Number(d.valore_economico ?? 0).toLocaleString("it-IT"),
-        spesaMax: Number(d.spesa_massima ?? 0).toLocaleString("it-IT"),
-      })));
+      setTableData(
+        data.map((d: any) => ({
+          ente: d.cfiscale_amm ?? "-",
+          triennio: d.triennio ?? "-",
+          categoria: d.categoria_giuridica ?? "-",
+          dotazione: d.n_teste_dotazione ?? 0,
+          valore: Number(d.valore_economico ?? 0).toLocaleString("it-IT"),
+          spesaMax: Number(d.spesa_massima ?? 0).toLocaleString("it-IT"),
+        })),
+      );
     };
     load();
   }, [enteIds]);

@@ -20,10 +20,15 @@ export function IndicatorPicker({ selected, onToggle }: IndicatorPickerProps) {
   const [pillarFilter, setPillarFilter] = useState<string | null>(null);
   const [sourceFilter, setSourceFilter] = useState<string | null>(null);
 
-  const filtered = indicatorCatalog.filter(i => {
+  const filtered = indicatorCatalog.filter((i) => {
     if (pillarFilter && i.pillar !== pillarFilter) return false;
     if (sourceFilter && i.source !== sourceFilter) return false;
-    if (search && !i.label.toLowerCase().includes(search.toLowerCase()) && !i.id.toLowerCase().includes(search.toLowerCase())) return false;
+    if (
+      search &&
+      !i.label.toLowerCase().includes(search.toLowerCase()) &&
+      !i.id.toLowerCase().includes(search.toLowerCase())
+    )
+      return false;
     return true;
   });
 
@@ -40,7 +45,7 @@ export function IndicatorPicker({ selected, onToggle }: IndicatorPickerProps) {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
           placeholder="Cerca indicatore..."
           className="pl-9 h-9 text-sm"
         />
@@ -52,24 +57,28 @@ export function IndicatorPicker({ selected, onToggle }: IndicatorPickerProps) {
           <Filter className="h-3 w-3 text-muted-foreground" />
           <span className="text-[10px] text-muted-foreground uppercase font-bold">Pillar</span>
         </div>
-        {pillars.map(p => (
+        {pillars.map((p) => (
           <button
             key={p}
-            onClick={() => setPillarFilter(prev => prev === p ? null : p)}
+            onClick={() => setPillarFilter((prev) => (prev === p ? null : p))}
             className={`px-2 py-0.5 rounded-full text-[10px] font-bold border transition ${
-              pillarFilter === p ? "bg-primary text-primary-foreground border-primary" : "bg-muted text-muted-foreground border-transparent hover:border-border"
+              pillarFilter === p
+                ? "bg-primary text-primary-foreground border-primary"
+                : "bg-muted text-muted-foreground border-transparent hover:border-border"
             }`}
           >
             {p}
           </button>
         ))}
         <div className="w-px h-4 bg-border mx-1 self-center" />
-        {sources.map(s => (
+        {sources.map((s) => (
           <button
             key={s}
-            onClick={() => setSourceFilter(prev => prev === s ? null : s)}
+            onClick={() => setSourceFilter((prev) => (prev === s ? null : s))}
             className={`px-2 py-0.5 rounded-full text-[10px] font-medium border transition ${
-              sourceFilter === s ? "bg-primary text-primary-foreground border-primary" : "bg-muted text-muted-foreground border-transparent hover:border-border"
+              sourceFilter === s
+                ? "bg-primary text-primary-foreground border-primary"
+                : "bg-muted text-muted-foreground border-transparent hover:border-border"
             }`}
           >
             {s}
@@ -90,7 +99,7 @@ export function IndicatorPicker({ selected, onToggle }: IndicatorPickerProps) {
               {pillar}
             </div>
             <div className="grid grid-cols-1 gap-1">
-              {indicators.map(ind => {
+              {indicators.map((ind) => {
                 const isSelected = selected.includes(ind.id);
                 return (
                   <button
@@ -102,23 +111,33 @@ export function IndicatorPicker({ selected, onToggle }: IndicatorPickerProps) {
                         : "border-border hover:border-primary/30 hover:bg-muted/50"
                     }`}
                   >
-                    <div className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 border ${
-                      isSelected ? "bg-primary border-primary" : "border-muted-foreground/30"
-                    }`}>
+                    <div
+                      className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 border ${
+                        isSelected ? "bg-primary border-primary" : "border-muted-foreground/30"
+                      }`}
+                    >
                       {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
                         <span className="text-[10px] font-bold text-primary">{ind.id}</span>
-                        <span className="text-xs font-medium text-foreground truncate">{ind.label}</span>
+                        <span className="text-xs font-medium text-foreground truncate">
+                          {ind.label}
+                        </span>
                       </div>
-                      <p className="text-[10px] text-muted-foreground truncate">{ind.description}</p>
+                      <p className="text-[10px] text-muted-foreground truncate">
+                        {ind.description}
+                      </p>
                     </div>
-                    <div className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${
-                      ind.status === "green" ? "bg-[hsl(142,71%,45%)]" :
-                      ind.status === "yellow" ? "bg-[hsl(45,100%,42%)]" :
-                      "bg-destructive"
-                    }`} />
+                    <div
+                      className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${
+                        ind.status === "green"
+                          ? "bg-[hsl(142,71%,45%)]"
+                          : ind.status === "yellow"
+                            ? "bg-[hsl(45,100%,42%)]"
+                            : "bg-destructive"
+                      }`}
+                    />
                     <span className="text-[10px] font-bold text-muted-foreground w-8 text-right">
                       {Math.round(ind.value * 100)}%
                     </span>

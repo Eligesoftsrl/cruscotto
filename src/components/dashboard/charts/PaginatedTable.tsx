@@ -30,7 +30,7 @@ export function PaginatedTable<T extends Record<string, any>>({
   const totalPages = Math.max(1, Math.ceil(data.length / pageSize));
   const paged = useMemo(
     () => data.slice(page * pageSize, (page + 1) * pageSize),
-    [data, page, pageSize]
+    [data, page, pageSize],
   );
 
   // Reset page when data changes
@@ -43,9 +43,14 @@ export function PaginatedTable<T extends Record<string, any>>({
 
   const handleExport = useCallback(() => {
     const bom = "\uFEFF";
-    const headers = columns.map(c => c.header);
-    const rows = data.map(row => columns.map(c => String(row[c.key] ?? "")));
-    const csv = bom + [headers.join(";"), ...rows.map(r => r.map(cell => `"${cell.replace(/"/g, '""')}"`).join(";"))].join("\n");
+    const headers = columns.map((c) => c.header);
+    const rows = data.map((row) => columns.map((c) => String(row[c.key] ?? "")));
+    const csv =
+      bom +
+      [
+        headers.join(";"),
+        ...rows.map((r) => r.map((cell) => `"${cell.replace(/"/g, '""')}"`).join(";")),
+      ].join("\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -73,18 +78,13 @@ export function PaginatedTable<T extends Record<string, any>>({
           </thead>
           <tbody>
             {paged.map((row, i) => (
-              <tr
-                key={i}
-                className="border-b border-border/50 hover:bg-muted/30 transition-colors"
-              >
+              <tr key={i} className="border-b border-border/50 hover:bg-muted/30 transition-colors">
                 {columns.map((col) => (
                   <td
                     key={col.key}
                     className={`px-3 py-2 ${alignClass(col.align)} ${col.className ?? ""}`}
                   >
-                    {col.render
-                      ? col.render(row, page * pageSize + i)
-                      : row[col.key]}
+                    {col.render ? col.render(row, page * pageSize + i) : row[col.key]}
                   </td>
                 ))}
               </tr>
@@ -95,9 +95,7 @@ export function PaginatedTable<T extends Record<string, any>>({
 
       <div className="flex items-center justify-between text-[11px] text-muted-foreground">
         <span>
-          {caption
-            ? caption
-            : `${data.length} elementi · Pagina ${page + 1} di ${totalPages}`}
+          {caption ? caption : `${data.length} elementi · Pagina ${page + 1} di ${totalPages}`}
         </span>
         <div className="flex items-center gap-2">
           {exportable && data.length > 0 && (
@@ -135,9 +133,7 @@ export function PaginatedTable<T extends Record<string, any>>({
                     key={pageNum}
                     onClick={() => setPage(pageNum)}
                     className={`min-w-[24px] h-6 rounded text-[11px] font-medium ${
-                      pageNum === page
-                        ? "bg-primary text-primary-foreground"
-                        : "hover:bg-muted"
+                      pageNum === page ? "bg-primary text-primary-foreground" : "hover:bg-muted"
                     }`}
                   >
                     {pageNum + 1}

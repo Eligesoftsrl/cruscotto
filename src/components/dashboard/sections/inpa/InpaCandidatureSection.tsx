@@ -1,9 +1,28 @@
 import { useEffect, useState } from "react";
 import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
 import { fetchInpaBandi } from "@/services/dw/inpaService";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
 
-const COLORS = ["hsl(210,80%,45%)", "hsl(30,85%,55%)", "hsl(150,60%,40%)", "hsl(340,70%,55%)", "hsl(260,50%,55%)", "hsl(180,60%,40%)"];
+const COLORS = [
+  "hsl(210,80%,45%)",
+  "hsl(30,85%,55%)",
+  "hsl(150,60%,40%)",
+  "hsl(340,70%,55%)",
+  "hsl(260,50%,55%)",
+  "hsl(180,60%,40%)",
+];
 
 const getFasciaPosti = (n: number): string => {
   if (n <= 5) return "1-5";
@@ -26,13 +45,17 @@ export const InpaCandidatureSection = () => {
       if (!bandi) return;
 
       const filtered = bandi.filter((b: any) => b.num_candidature_submitted > 0);
-      const totCandidature = filtered.reduce((s: number, b: any) => s + (b.num_candidature_submitted ?? 0), 0);
+      const totCandidature = filtered.reduce(
+        (s: number, b: any) => s + (b.num_candidature_submitted ?? 0),
+        0,
+      );
 
       const mapped = filtered.map((b: any) => ({
         titolo: (b.figura_ricercata ?? b.codice ?? "N/D").substring(0, 30),
         posti: b.num_posti ?? 0,
         candidature: b.num_candidature_submitted ?? 0,
-        rapporto: b.num_posti > 0 ? ((b.num_candidature_submitted ?? 0) / b.num_posti).toFixed(1) : "0",
+        rapporto:
+          b.num_posti > 0 ? ((b.num_candidature_submitted ?? 0) / b.num_posti).toFixed(1) : "0",
       }));
       setData(mapped);
 
@@ -49,7 +72,7 @@ export const InpaCandidatureSection = () => {
             value,
             pct: totCandidature > 0 ? +((value / totCandidature) * 100).toFixed(1) : 0,
           }))
-          .sort((a, b) => b.value - a.value)
+          .sort((a, b) => b.value - a.value),
       );
 
       // By fascia posti
@@ -67,8 +90,11 @@ export const InpaCandidatureSection = () => {
           .map((fascia) => ({
             fascia,
             ...fasciaAgg[fascia],
-            pct: totCandidature > 0 ? +((fasciaAgg[fascia].candidature / totCandidature) * 100).toFixed(1) : 0,
-          }))
+            pct:
+              totCandidature > 0
+                ? +((fasciaAgg[fascia].candidature / totCandidature) * 100).toFixed(1)
+                : 0,
+          })),
       );
     };
     load();
@@ -76,7 +102,9 @@ export const InpaCandidatureSection = () => {
 
   const totCandidature = data.reduce((s, d) => s + d.candidature, 0);
   const totPosti = data.reduce((s, d) => s + d.posti, 0);
-  const avgRapporto = data.length ? (data.reduce((s, d) => s + parseFloat(d.rapporto), 0) / data.length).toFixed(1) : "-";
+  const avgRapporto = data.length
+    ? (data.reduce((s, d) => s + parseFloat(d.rapporto), 0) / data.length).toFixed(1)
+    : "-";
 
   return (
     <div className="p-4 space-y-4">
@@ -102,8 +130,18 @@ export const InpaCandidatureSection = () => {
             <div className="p-4" style={{ height: 300 }}>
               <ResponsiveContainer>
                 <PieChart>
-                  <Pie data={byCategoria} dataKey="pct" nameKey="name" cx="50%" cy="50%" outerRadius={90} label={({ name, pct }) => `${name}: ${pct}%`}>
-                    {byCategoria.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                  <Pie
+                    data={byCategoria}
+                    dataKey="pct"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={90}
+                    label={({ name, pct }) => `${name}: ${pct}%`}
+                  >
+                    {byCategoria.map((_, i) => (
+                      <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                    ))}
                   </Pie>
                   <Tooltip formatter={(v: any) => `${v}%`} />
                 </PieChart>

@@ -1,10 +1,33 @@
 import { useEffect, useState } from "react";
 import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
 import { fetchInpaBandi, fetchEnteTotalCount } from "@/services/dw/inpaService";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, LineChart, Line } from "recharts";
-import { InpaLocalFilters, DEFAULT_INPA_FILTERS, applyInpaLocalFilters, type InpaFilters } from "./InpaLocalFilters";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  LineChart,
+  Line,
+} from "recharts";
+import {
+  InpaLocalFilters,
+  DEFAULT_INPA_FILTERS,
+  applyInpaLocalFilters,
+  type InpaFilters,
+} from "./InpaLocalFilters";
 
-const COLORS = ["hsl(210,80%,45%)", "hsl(30,85%,55%)", "hsl(150,60%,40%)", "hsl(340,70%,55%)", "hsl(260,50%,55%)", "hsl(180,60%,40%)"];
+const COLORS = [
+  "hsl(210,80%,45%)",
+  "hsl(30,85%,55%)",
+  "hsl(150,60%,40%)",
+  "hsl(340,70%,55%)",
+  "hsl(260,50%,55%)",
+  "hsl(180,60%,40%)",
+];
 
 export const InpaAmministrazioniSection = () => {
   const { data: enteIds } = useFilteredEnteIds();
@@ -84,13 +107,20 @@ export const InpaAmministrazioniSection = () => {
             { label: "PA che Pubblicano su InPA", value: paAttive, sub: `su ${totPa} totali` },
             { label: "% PA Attive", value: `${pctGlobale}%`, sub: "Indicatore di dinamismo" },
             { label: "Regioni Coperte", value: regionData.length },
-            { label: "Tipologie PA", value: tipologiaData.filter(t => t.tipologia !== "Non classificata").length || tipologiaData.length },
+            {
+              label: "Tipologie PA",
+              value:
+                tipologiaData.filter((t) => t.tipologia !== "Non classificata").length ||
+                tipologiaData.length,
+            },
           ].map((kpi) => (
             <div key={kpi.label} className="tableau-card">
               <div className="p-4 text-center">
                 <div className="text-2xl font-bold text-foreground">{kpi.value}</div>
                 <div className="text-[11px] text-muted-foreground mt-1">{kpi.label}</div>
-                {"sub" in kpi && kpi.sub && <div className="text-[9px] text-muted-foreground/60 mt-0.5">{kpi.sub}</div>}
+                {"sub" in kpi && kpi.sub && (
+                  <div className="text-[9px] text-muted-foreground/60 mt-0.5">{kpi.sub}</div>
+                )}
               </div>
             </div>
           ))}
@@ -107,7 +137,14 @@ export const InpaAmministrazioniSection = () => {
                     <XAxis dataKey="anno" tick={{ fontSize: 11 }} />
                     <YAxis tick={{ fontSize: 11 }} unit="%" />
                     <Tooltip formatter={(v: any) => `${v}%`} />
-                    <Line type="monotone" dataKey="pct" name="% PA attive" stroke="hsl(210,80%,45%)" strokeWidth={2} dot={{ r: 4 }} />
+                    <Line
+                      type="monotone"
+                      dataKey="pct"
+                      name="% PA attive"
+                      stroke="hsl(210,80%,45%)"
+                      strokeWidth={2}
+                      dot={{ r: 4 }}
+                    />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -124,7 +161,12 @@ export const InpaAmministrazioniSection = () => {
                     <YAxis type="category" dataKey="regione" tick={{ fontSize: 10 }} width={110} />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="pa_attive" name="PA Attive" fill="hsl(210,80%,45%)" radius={[0, 4, 4, 0]} />
+                    <Bar
+                      dataKey="pa_attive"
+                      name="PA Attive"
+                      fill="hsl(210,80%,45%)"
+                      radius={[0, 4, 4, 0]}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -132,23 +174,34 @@ export const InpaAmministrazioniSection = () => {
           </div>
         </div>
 
-        {tipologiaData.length > 0 && tipologiaData.some(t => t.tipologia !== "Non classificata") && (
-          <div className="tableau-card">
-            <div className="tableau-card-header">PA Attive per Tipologia Amministrazione</div>
-            <div className="p-4" style={{ height: 320 }}>
-              <ResponsiveContainer>
-                <BarChart data={tipologiaData} layout="vertical" margin={{ left: 180 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--tableau-grid))" />
-                  <XAxis type="number" tick={{ fontSize: 11 }} />
-                  <YAxis type="category" dataKey="tipologia" tick={{ fontSize: 10 }} width={170} />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="pa_attive" name="PA Attive" fill="hsl(150,60%,40%)" radius={[0, 4, 4, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+        {tipologiaData.length > 0 &&
+          tipologiaData.some((t) => t.tipologia !== "Non classificata") && (
+            <div className="tableau-card">
+              <div className="tableau-card-header">PA Attive per Tipologia Amministrazione</div>
+              <div className="p-4" style={{ height: 320 }}>
+                <ResponsiveContainer>
+                  <BarChart data={tipologiaData} layout="vertical" margin={{ left: 180 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--tableau-grid))" />
+                    <XAxis type="number" tick={{ fontSize: 11 }} />
+                    <YAxis
+                      type="category"
+                      dataKey="tipologia"
+                      tick={{ fontSize: 10 }}
+                      width={170}
+                    />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      dataKey="pa_attive"
+                      name="PA Attive"
+                      fill="hsl(150,60%,40%)"
+                      radius={[0, 4, 4, 0]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
         <div className="tableau-card">
           <div className="tableau-card-header">Dettaglio PA Attive per Regione</div>
@@ -164,7 +217,10 @@ export const InpaAmministrazioniSection = () => {
                 </thead>
                 <tbody>
                   {regionData.map((r) => (
-                    <tr key={r.regione} className="border-b border-border/30 hover:bg-muted/20 text-[11px]">
+                    <tr
+                      key={r.regione}
+                      className="border-b border-border/30 hover:bg-muted/20 text-[11px]"
+                    >
                       <td className="py-1.5 px-3">{r.regione}</td>
                       <td className="py-1.5 px-3 text-right">{r.pa_attive}</td>
                       <td className="py-1.5 px-3 text-right font-semibold">{r.pct}%</td>

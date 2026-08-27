@@ -20,7 +20,10 @@ interface Props {
   onChange: (v: SiproFilterValues) => void;
 }
 
-interface Ente { ente_id: number; denominazione: string }
+interface Ente {
+  ente_id: number;
+  denominazione: string;
+}
 
 export const SiproFilters = ({ value, onChange }: Props) => {
   const { profile } = useAuth();
@@ -42,7 +45,9 @@ export const SiproFilters = ({ value, onChange }: Props) => {
     sipoFrom("lk_enti")
       .select("ente_id, denominazione")
       .order("denominazione")
-      .then(({ data }) => { if (data) setEnti(data as Ente[]); });
+      .then(({ data }) => {
+        if (data) setEnti(data as Ente[]);
+      });
   }, [isEnteHr]);
 
   // Close dropdown on outside click
@@ -81,11 +86,12 @@ export const SiproFilters = ({ value, onChange }: Props) => {
 
   // DFP: multi-select dropdown
   const selectedEnti = enti.filter((e) => value.enteIds.includes(e.ente_id));
-  const label = selectedEnti.length === 0
-    ? "Tutti gli enti"
-    : selectedEnti.length <= 2
-      ? selectedEnti.map((e) => e.denominazione).join(", ")
-      : `${selectedEnti.length} enti selezionati`;
+  const label =
+    selectedEnti.length === 0
+      ? "Tutti gli enti"
+      : selectedEnti.length <= 2
+        ? selectedEnti.map((e) => e.denominazione).join(", ")
+        : `${selectedEnti.length} enti selezionati`;
 
   return (
     <div className="flex flex-wrap items-center gap-3 rounded-lg border bg-card px-4 py-2.5">
@@ -130,9 +136,11 @@ export const SiproFilters = ({ value, onChange }: Props) => {
                         selected ? "bg-primary/10 font-semibold text-foreground" : "text-foreground"
                       }`}
                     >
-                      <span className={`flex items-center justify-center h-4 w-4 rounded border ${
-                        selected ? "bg-primary border-primary" : "border-input"
-                      }`}>
+                      <span
+                        className={`flex items-center justify-center h-4 w-4 rounded border ${
+                          selected ? "bg-primary border-primary" : "border-input"
+                        }`}
+                      >
                         {selected && <Check className="h-3 w-3 text-primary-foreground" />}
                       </span>
                       {e.denominazione}

@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { fetchSyllabusPa, fetchSyllabusCatalogo, fetchSyllabusPartecipazioni } from "@/services/dw/syllabusService";
+import {
+  fetchSyllabusPa,
+  fetchSyllabusCatalogo,
+  fetchSyllabusPartecipazioni,
+} from "@/services/dw/syllabusService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 
@@ -22,8 +26,16 @@ export const SyllabusUtentiSection = () => {
         byEnte[name] = (byEnte[name] || 0) + 1;
       });
 
-      setEntiData(Object.entries(byEnte).map(([ente, count]) => ({ ente: ente.substring(0, 25), partecipanti: count })).sort((a, b) => b.partecipanti - a.partecipanti));
-      setTotals({ partecipanti: partecipazioni?.length ?? 0, enti: pa?.length ?? 0, corsi: catalogo?.length ?? 0 });
+      setEntiData(
+        Object.entries(byEnte)
+          .map(([ente, count]) => ({ ente: ente.substring(0, 25), partecipanti: count }))
+          .sort((a, b) => b.partecipanti - a.partecipanti),
+      );
+      setTotals({
+        partecipanti: partecipazioni?.length ?? 0,
+        enti: pa?.length ?? 0,
+        corsi: catalogo?.length ?? 0,
+      });
     };
     load();
   }, []);
@@ -31,9 +43,24 @@ export const SyllabusUtentiSection = () => {
   return (
     <div className="p-4 space-y-4">
       <div className="grid grid-cols-3 gap-3">
-        <div className="tableau-card"><div className="p-4 text-center"><div className="text-2xl font-bold">{totals.partecipanti}</div><div className="text-[11px] text-muted-foreground">Partecipazioni</div></div></div>
-        <div className="tableau-card"><div className="p-4 text-center"><div className="text-2xl font-bold">{totals.enti}</div><div className="text-[11px] text-muted-foreground">PA Aderenti</div></div></div>
-        <div className="tableau-card"><div className="p-4 text-center"><div className="text-2xl font-bold">{totals.corsi}</div><div className="text-[11px] text-muted-foreground">Corsi a Catalogo</div></div></div>
+        <div className="tableau-card">
+          <div className="p-4 text-center">
+            <div className="text-2xl font-bold">{totals.partecipanti}</div>
+            <div className="text-[11px] text-muted-foreground">Partecipazioni</div>
+          </div>
+        </div>
+        <div className="tableau-card">
+          <div className="p-4 text-center">
+            <div className="text-2xl font-bold">{totals.enti}</div>
+            <div className="text-[11px] text-muted-foreground">PA Aderenti</div>
+          </div>
+        </div>
+        <div className="tableau-card">
+          <div className="p-4 text-center">
+            <div className="text-2xl font-bold">{totals.corsi}</div>
+            <div className="text-[11px] text-muted-foreground">Corsi a Catalogo</div>
+          </div>
+        </div>
       </div>
       <div className="tableau-card">
         <div className="tableau-card-header">Partecipazioni per Ente</div>

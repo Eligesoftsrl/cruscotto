@@ -5,7 +5,15 @@ import { SiproFilters, type SiproFilterValues, effectiveEnteIds } from "./SiproF
 import { useAuth } from "@/contexts/AuthContext";
 import { PaginatedTable } from "./PaginatedTable";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  Cell,
 } from "recharts";
 
 interface CoinvRow {
@@ -42,7 +50,10 @@ export const CoinvolgimentoUoChart = () => {
         sipoFrom("ft_sipo_fasi_uo_partecipanti").select("fase_id, uo_partecipante_id"),
       ]);
 
-      if (!procRes.data) { setLoading(false); return; }
+      if (!procRes.data) {
+        setLoading(false);
+        return;
+      }
 
       const fasiByProc = new Map<number, number[]>();
       for (const f of (fasiRes.data ?? []) as any[]) {
@@ -80,7 +91,9 @@ export const CoinvolgimentoUoChart = () => {
     return (
       <div className="space-y-4">
         <SiproFilters value={filters} onChange={setFilters} />
-        <div className="flex items-center justify-center h-64"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>
+        <div className="flex items-center justify-center h-64">
+          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        </div>
       </div>
     );
   }
@@ -92,33 +105,83 @@ export const CoinvolgimentoUoChart = () => {
   }));
 
   const columns = [
-    { key: "denominazione", header: "Processo", render: (r: CoinvRow) => <span className="font-medium text-foreground">{r.denominazione}</span> },
-    { key: "numUo", header: "Numero Unità Organizzative", align: "right" as const, render: (r: CoinvRow) => <span className="text-muted-foreground">{r.numUo}</span> },
-    { key: "coinvolge", header: "Coinvolge altre amm.", align: "center" as const, render: (r: CoinvRow) => <span className="text-muted-foreground">{r.coinvolge ? "Sì" : "No"}</span> },
+    {
+      key: "denominazione",
+      header: "Processo",
+      render: (r: CoinvRow) => (
+        <span className="font-medium text-foreground">{r.denominazione}</span>
+      ),
+    },
+    {
+      key: "numUo",
+      header: "Numero Unità Organizzative",
+      align: "right" as const,
+      render: (r: CoinvRow) => <span className="text-muted-foreground">{r.numUo}</span>,
+    },
+    {
+      key: "coinvolge",
+      header: "Coinvolge altre amm.",
+      align: "center" as const,
+      render: (r: CoinvRow) => (
+        <span className="text-muted-foreground">{r.coinvolge ? "Sì" : "No"}</span>
+      ),
+    },
   ];
 
   return (
     <div className="space-y-4">
       <SiproFilters value={filters} onChange={setFilters} />
       <div className="bg-card border rounded-xl p-5 space-y-3">
-        <h3 className="text-[15px] font-bold text-foreground">Coinvolgimento Unità Organizzative e altre amministrazioni</h3>
-        <p className="text-xs text-muted-foreground">Informazioni sul coinvolgimento delle unità organizzative e altre amministrazioni.</p>
+        <h3 className="text-[15px] font-bold text-foreground">
+          Coinvolgimento Unità Organizzative e altre amministrazioni
+        </h3>
+        <p className="text-xs text-muted-foreground">
+          Informazioni sul coinvolgimento delle unità organizzative e altre amministrazioni.
+        </p>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <PaginatedTable data={rows} columns={columns} pageSize={10} />
           <div>
-            <p className="text-xs font-semibold text-muted-foreground text-center mb-2">Coinvolgimento UO e altre amministrazioni</p>
-            <ResponsiveContainer width="100%" height={Math.max(280, Math.min(rows.length, 15) * 40)}>
-              <BarChart data={chartData.slice(0, 15)} margin={{ top: 10, right: 10, left: -5, bottom: 40 }}>
+            <p className="text-xs font-semibold text-muted-foreground text-center mb-2">
+              Coinvolgimento UO e altre amministrazioni
+            </p>
+            <ResponsiveContainer
+              width="100%"
+              height={Math.max(280, Math.min(rows.length, 15) * 40)}
+            >
+              <BarChart
+                data={chartData.slice(0, 15)}
+                margin={{ top: 10, right: 10, left: -5, bottom: 40 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                <XAxis dataKey="name" tick={{ fontSize: 9 }} angle={-30} textAnchor="end" stroke="hsl(var(--muted-foreground))" />
+                <XAxis
+                  dataKey="name"
+                  tick={{ fontSize: 9 }}
+                  angle={-30}
+                  textAnchor="end"
+                  stroke="hsl(var(--muted-foreground))"
+                />
                 <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
-                <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
-                <Legend iconType="square" iconSize={10} wrapperStyle={{ fontSize: 11 }} payload={[
-                  { value: "Non coinvolge altre amm.", type: "square", color: RED },
-                  { value: "Coinvolge altre amm.", type: "square", color: BLUE },
-                ]} />
+                <Tooltip
+                  contentStyle={{
+                    background: "hsl(var(--card))",
+                    border: "1px solid hsl(var(--border))",
+                    borderRadius: 8,
+                    fontSize: 12,
+                  }}
+                />
+                <Legend
+                  iconType="square"
+                  iconSize={10}
+                  wrapperStyle={{ fontSize: 11 }}
+                  payload={[
+                    { value: "Non coinvolge altre amm.", type: "square", color: RED },
+                    { value: "Coinvolge altre amm.", type: "square", color: BLUE },
+                  ]}
+                />
                 <Bar dataKey="value" name="UO coinvolte" radius={[3, 3, 0, 0]} maxBarSize={40}>
-                  {chartData.slice(0, 15).map((d, i) => (<Cell key={i} fill={d.coinvolge ? BLUE : RED} />))}
+                  {chartData.slice(0, 15).map((d, i) => (
+                    <Cell key={i} fill={d.coinvolge ? BLUE : RED} />
+                  ))}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>

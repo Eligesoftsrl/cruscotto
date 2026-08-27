@@ -4,11 +4,20 @@ import { tooltipStyle } from "../chartTheme";
 import { useModalitaLavoro } from "@/hooks/useModalitaLavoro";
 import { Laptop, Users, TrendingDown, AlertTriangle } from "lucide-react";
 import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  BarChart, Bar, Cell, ReferenceLine,
-  PieChart, Pie,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  Cell,
+  ReferenceLine,
+  PieChart,
+  Pie,
 } from "recharts";
-
 
 const COLORS = ["hsl(var(--chart-red))", "hsl(var(--chart-blue))"];
 
@@ -41,12 +50,41 @@ export const LavoroAgileSection = () => {
       {/* KPI */}
       <KpiGrid>
         {[
-          { label: "Lavoro agile 2023", value: `${agiliPerc}%`, icon: Laptop, color: "hsl(var(--chart-teal))", sub: `${agiliTotale.toLocaleString("it-IT")} unità` },
-          { label: "% Donne in smart working", value: `${donneAgiliPerc}%`, icon: Users, color: "hsl(var(--chart-red))" },
-          { label: "Picco (anno COVID)", value: `${picco.agili.toLocaleString("it-IT")}`, icon: AlertTriangle, color: "hsl(var(--chart-orange))", sub: picco.anno },
-          { label: "Trend post-COVID", value: `${picco.agili > 0 ? (((agiliTotale - picco.agili) / picco.agili) * 100).toFixed(0) : 0}%`, icon: TrendingDown, color: "hsl(var(--chart-red))" },
+          {
+            label: "Lavoro agile 2023",
+            value: `${agiliPerc}%`,
+            icon: Laptop,
+            color: "hsl(var(--chart-teal))",
+            sub: `${agiliTotale.toLocaleString("it-IT")} unità`,
+          },
+          {
+            label: "% Donne in smart working",
+            value: `${donneAgiliPerc}%`,
+            icon: Users,
+            color: "hsl(var(--chart-red))",
+          },
+          {
+            label: "Picco (anno COVID)",
+            value: `${picco.agili.toLocaleString("it-IT")}`,
+            icon: AlertTriangle,
+            color: "hsl(var(--chart-orange))",
+            sub: picco.anno,
+          },
+          {
+            label: "Trend post-COVID",
+            value: `${picco.agili > 0 ? (((agiliTotale - picco.agili) / picco.agili) * 100).toFixed(0) : 0}%`,
+            icon: TrendingDown,
+            color: "hsl(var(--chart-red))",
+          },
         ].map((k, i) => (
-          <KpiStat key={i} label={k.label} value={k.value} icon={k.icon} color={k.color} sub={k.sub} />
+          <KpiStat
+            key={i}
+            label={k.label}
+            value={k.value}
+            icon={k.icon}
+            color={k.color}
+            sub={k.sub}
+          />
         ))}
       </KpiGrid>
 
@@ -66,7 +104,20 @@ export const LavoroAgileSection = () => {
               <XAxis dataKey="anno" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
               <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
               <Tooltip contentStyle={tooltipStyle} />
-              <Area type="monotone" dataKey="agili" name="Smart workers" stroke="hsl(var(--chart-teal))" strokeWidth={2.5} fill="url(#gradAgile)" dot={{ r: 4, fill: "hsl(var(--chart-teal))", stroke: "hsl(var(--card))", strokeWidth: 2 }} />
+              <Area
+                type="monotone"
+                dataKey="agili"
+                name="Smart workers"
+                stroke="hsl(var(--chart-teal))"
+                strokeWidth={2.5}
+                fill="url(#gradAgile)"
+                dot={{
+                  r: 4,
+                  fill: "hsl(var(--chart-teal))",
+                  stroke: "hsl(var(--card))",
+                  strokeWidth: 2,
+                }}
+              />
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -83,7 +134,10 @@ export const LavoroAgileSection = () => {
               <ReferenceLine y={0} stroke="hsl(var(--muted-foreground))" strokeDasharray="3 3" />
               <Bar dataKey="delta" name="Δ annuale" barSize={28} radius={[4, 4, 0, 0]}>
                 {serieConDelta.slice(1).map((entry, i) => (
-                  <Cell key={i} fill={entry.delta >= 0 ? "hsl(var(--chart-teal))" : "hsl(var(--chart-red))"} />
+                  <Cell
+                    key={i}
+                    fill={entry.delta >= 0 ? "hsl(var(--chart-teal))" : "hsl(var(--chart-red))"}
+                  />
                 ))}
               </Bar>
             </BarChart>
@@ -95,11 +149,25 @@ export const LavoroAgileSection = () => {
           <h3 className="text-xs font-semibold text-foreground mb-3">Per Genere</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
-              <Pie data={genereData} cx="50%" cy="50%" innerRadius={45} outerRadius={75} paddingAngle={3} dataKey="value"
-                label={({ name, value }) => `${name} ${value}%`} style={{ fontSize: 10 }}>
-                {genereData.map((_, i) => <Cell key={i} fill={COLORS[i]} />)}
+              <Pie
+                data={genereData}
+                cx="50%"
+                cy="50%"
+                innerRadius={45}
+                outerRadius={75}
+                paddingAngle={3}
+                dataKey="value"
+                label={({ name, value }) => `${name} ${value}%`}
+                style={{ fontSize: 10 }}
+              >
+                {genereData.map((_, i) => (
+                  <Cell key={i} fill={COLORS[i]} />
+                ))}
               </Pie>
-              <Tooltip contentStyle={tooltipStyle} formatter={(val: number) => [`${val}%`, undefined]} />
+              <Tooltip
+                contentStyle={tooltipStyle}
+                formatter={(val: number) => [`${val}%`, undefined]}
+              />
             </PieChart>
           </ResponsiveContainer>
         </div>

@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { sipoFrom } from "@/services/dw/siproService";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
   ResponsiveContainer,
 } from "recharts";
 import { Loader2 } from "lucide-react";
@@ -62,9 +68,7 @@ export const FteDotazioneChart = () => {
       ]);
 
       if (uoRes.data) {
-        const entiMap = new Map(
-          (entiRes.data ?? []).map((e: any) => [e.ente_id, e.denominazione])
-        );
+        const entiMap = new Map((entiRes.data ?? []).map((e: any) => [e.ente_id, e.denominazione]));
 
         const data = uoRes.data as any[];
 
@@ -75,7 +79,7 @@ export const FteDotazioneChart = () => {
             dotazione: r.risorse_dotazione ?? 0,
             servizio: r.risorse_servizio_tempo_ind ?? 0,
             gap: (r.risorse_servizio_tempo_ind ?? 0) - (r.risorse_dotazione ?? 0),
-          }))
+          })),
         );
 
         // Benchmark aggregation by ente
@@ -97,7 +101,7 @@ export const FteDotazioneChart = () => {
                 gap: Math.round((a.serv - a.dot) * 10) / 10,
                 copertura: Math.round(copertura * 10) / 10,
               };
-            })
+            }),
           );
         }
       }
@@ -126,7 +130,8 @@ export const FteDotazioneChart = () => {
             Benchmark FTE — Confronto tra Enti
           </h3>
           <p className="text-xs text-muted-foreground">
-            Valori aggregati di dotazione organica, personale in servizio e tasso di copertura per ciascun ente selezionato.
+            Valori aggregati di dotazione organica, personale in servizio e tasso di copertura per
+            ciascun ente selezionato.
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -137,16 +142,45 @@ export const FteDotazioneChart = () => {
               </p>
               <ResponsiveContainer width="100%" height={320}>
                 <BarChart data={benchmark} margin={{ top: 10, right: 10, left: -5, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                  <XAxis dataKey="ente" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    vertical={false}
+                    stroke="hsl(var(--border))"
+                  />
+                  <XAxis
+                    dataKey="ente"
+                    tick={{ fontSize: 10 }}
+                    stroke="hsl(var(--muted-foreground))"
+                  />
                   <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
                   <Tooltip
-                    contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }}
+                    contentStyle={{
+                      background: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: 8,
+                      fontSize: 12,
+                    }}
                     formatter={(v: number, name: string) => [v.toFixed(1), name]}
                   />
-                  <Bar dataKey="dotazione" name="FTE Dotazione" fill={COLOR_DOTAZIONE} radius={[3, 3, 0, 0]} maxBarSize={40} />
-                  <Bar dataKey="servizio" name="FTE Servizio" fill={COLOR_SERVIZIO} radius={[3, 3, 0, 0]} maxBarSize={40} />
-                  <Legend iconType="square" iconSize={10} wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
+                  <Bar
+                    dataKey="dotazione"
+                    name="FTE Dotazione"
+                    fill={COLOR_DOTAZIONE}
+                    radius={[3, 3, 0, 0]}
+                    maxBarSize={40}
+                  />
+                  <Bar
+                    dataKey="servizio"
+                    name="FTE Servizio"
+                    fill={COLOR_SERVIZIO}
+                    radius={[3, 3, 0, 0]}
+                    maxBarSize={40}
+                  />
+                  <Legend
+                    iconType="square"
+                    iconSize={10}
+                    wrapperStyle={{ fontSize: 11, paddingTop: 8 }}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -158,15 +192,43 @@ export const FteDotazioneChart = () => {
               </p>
               <ResponsiveContainer width="100%" height={320}>
                 <BarChart data={benchmark} margin={{ top: 10, right: 30, left: -5, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                  <XAxis dataKey="ente" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
-                  <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" domain={[0, 'auto']} unit="%" />
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    vertical={false}
+                    stroke="hsl(var(--border))"
+                  />
+                  <XAxis
+                    dataKey="ente"
+                    tick={{ fontSize: 10 }}
+                    stroke="hsl(var(--muted-foreground))"
+                  />
+                  <YAxis
+                    tick={{ fontSize: 10 }}
+                    stroke="hsl(var(--muted-foreground))"
+                    domain={[0, "auto"]}
+                    unit="%"
+                  />
                   <Tooltip
-                    contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }}
+                    contentStyle={{
+                      background: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: 8,
+                      fontSize: 12,
+                    }}
                     formatter={(v: number) => [`${v.toFixed(1)}%`, "Copertura"]}
                   />
-                  <Bar dataKey="copertura" name="Copertura %" fill={COLOR_COPERTURA} radius={[3, 3, 0, 0]} maxBarSize={48} />
-                  <Legend iconType="square" iconSize={10} wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
+                  <Bar
+                    dataKey="copertura"
+                    name="Copertura %"
+                    fill={COLOR_COPERTURA}
+                    radius={[3, 3, 0, 0]}
+                    maxBarSize={48}
+                  />
+                  <Legend
+                    iconType="square"
+                    iconSize={10}
+                    wrapperStyle={{ fontSize: 11, paddingTop: 8 }}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -190,10 +252,15 @@ export const FteDotazioneChart = () => {
                     <td className="px-3 py-2 text-foreground font-medium">{r.ente}</td>
                     <td className="px-3 py-2 text-right tabular-nums">{r.dotazione.toFixed(1)}</td>
                     <td className="px-3 py-2 text-right tabular-nums">{r.servizio.toFixed(1)}</td>
-                    <td className={`px-3 py-2 text-right tabular-nums font-semibold ${r.gap < 0 ? "text-destructive" : r.gap > 0 ? "text-emerald-600" : "text-muted-foreground"}`}>
-                      {r.gap > 0 ? "+" : ""}{r.gap.toFixed(1)}
+                    <td
+                      className={`px-3 py-2 text-right tabular-nums font-semibold ${r.gap < 0 ? "text-destructive" : r.gap > 0 ? "text-emerald-600" : "text-muted-foreground"}`}
+                    >
+                      {r.gap > 0 ? "+" : ""}
+                      {r.gap.toFixed(1)}
                     </td>
-                    <td className={`px-3 py-2 text-right tabular-nums font-semibold ${r.copertura < 80 ? "text-destructive" : r.copertura >= 100 ? "text-emerald-600" : "text-foreground"}`}>
+                    <td
+                      className={`px-3 py-2 text-right tabular-nums font-semibold ${r.copertura < 80 ? "text-destructive" : r.copertura >= 100 ? "text-emerald-600" : "text-foreground"}`}
+                    >
                       {r.copertura.toFixed(1)}%
                     </td>
                   </tr>
@@ -214,18 +281,31 @@ export const FteDotazioneChart = () => {
                 <thead>
                   <tr className="bg-[hsl(210,64%,30%)] text-white">
                     <th className="text-left px-2 py-1.5 font-semibold">Unità Organizzativa</th>
-                    <th className="text-right px-2 py-1.5 font-semibold whitespace-nowrap">FTE dotazione</th>
-                    <th className="text-right px-2 py-1.5 font-semibold whitespace-nowrap">FTE servizio</th>
+                    <th className="text-right px-2 py-1.5 font-semibold whitespace-nowrap">
+                      FTE dotazione
+                    </th>
+                    <th className="text-right px-2 py-1.5 font-semibold whitespace-nowrap">
+                      FTE servizio
+                    </th>
                     <th className="text-right px-2 py-1.5 font-semibold whitespace-nowrap">GAP</th>
                   </tr>
                 </thead>
                 <tbody>
                   {pagedRows.map((r, i) => (
-                    <tr key={i} className="border-b border-border hover:bg-muted/40 transition-colors">
+                    <tr
+                      key={i}
+                      className="border-b border-border hover:bg-muted/40 transition-colors"
+                    >
                       <td className="px-2 py-1.5 text-foreground">{r.denominazione}</td>
-                      <td className="px-2 py-1.5 text-right tabular-nums">{r.dotazione.toFixed(1)}</td>
-                      <td className="px-2 py-1.5 text-right tabular-nums">{r.servizio.toFixed(1)}</td>
-                      <td className={`px-2 py-1.5 text-right tabular-nums font-semibold ${r.gap < 0 ? "text-destructive" : r.gap > 0 ? "text-emerald-600" : "text-muted-foreground"}`}>
+                      <td className="px-2 py-1.5 text-right tabular-nums">
+                        {r.dotazione.toFixed(1)}
+                      </td>
+                      <td className="px-2 py-1.5 text-right tabular-nums">
+                        {r.servizio.toFixed(1)}
+                      </td>
+                      <td
+                        className={`px-2 py-1.5 text-right tabular-nums font-semibold ${r.gap < 0 ? "text-destructive" : r.gap > 0 ? "text-emerald-600" : "text-muted-foreground"}`}
+                      >
                         {r.gap.toFixed(2)}
                       </td>
                     </tr>
@@ -234,22 +314,60 @@ export const FteDotazioneChart = () => {
                 <tfoot>
                   <tr className="border-t-2 border-foreground/30 font-bold text-foreground">
                     <td className="px-2 py-1.5 text-right">Totale:</td>
-                    <td className="px-2 py-1.5 text-right tabular-nums">{totDotazione.toFixed(2)}</td>
-                    <td className="px-2 py-1.5 text-right tabular-nums">{totServizio.toFixed(2)}</td>
-                    <td className="px-2 py-1.5 text-right tabular-nums">{(totServizio - totDotazione).toFixed(2)}</td>
+                    <td className="px-2 py-1.5 text-right tabular-nums">
+                      {totDotazione.toFixed(2)}
+                    </td>
+                    <td className="px-2 py-1.5 text-right tabular-nums">
+                      {totServizio.toFixed(2)}
+                    </td>
+                    <td className="px-2 py-1.5 text-right tabular-nums">
+                      {(totServizio - totDotazione).toFixed(2)}
+                    </td>
                   </tr>
                 </tfoot>
               </table>
               {totalPages > 1 && (
                 <div className="flex items-center gap-1 mt-2 text-[11px] text-muted-foreground">
-                  <button onClick={() => setPage(0)} disabled={page === 0} className="px-1.5 py-0.5 rounded border border-border hover:bg-muted disabled:opacity-30">«</button>
-                  <button onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0} className="px-1.5 py-0.5 rounded border border-border hover:bg-muted disabled:opacity-30">‹</button>
+                  <button
+                    onClick={() => setPage(0)}
+                    disabled={page === 0}
+                    className="px-1.5 py-0.5 rounded border border-border hover:bg-muted disabled:opacity-30"
+                  >
+                    «
+                  </button>
+                  <button
+                    onClick={() => setPage(Math.max(0, page - 1))}
+                    disabled={page === 0}
+                    className="px-1.5 py-0.5 rounded border border-border hover:bg-muted disabled:opacity-30"
+                  >
+                    ‹
+                  </button>
                   {Array.from({ length: totalPages }, (_, i) => (
-                    <button key={i} onClick={() => setPage(i)} className={`px-2 py-0.5 rounded border ${i === page ? "bg-primary text-primary-foreground border-primary font-bold" : "border-border hover:bg-muted"}`}>{i + 1}</button>
+                    <button
+                      key={i}
+                      onClick={() => setPage(i)}
+                      className={`px-2 py-0.5 rounded border ${i === page ? "bg-primary text-primary-foreground border-primary font-bold" : "border-border hover:bg-muted"}`}
+                    >
+                      {i + 1}
+                    </button>
                   ))}
-                  <button onClick={() => setPage(Math.min(totalPages - 1, page + 1))} disabled={page === totalPages - 1} className="px-1.5 py-0.5 rounded border border-border hover:bg-muted disabled:opacity-30">›</button>
-                  <button onClick={() => setPage(totalPages - 1)} disabled={page === totalPages - 1} className="px-1.5 py-0.5 rounded border border-border hover:bg-muted disabled:opacity-30">»</button>
-                  <span className="ml-2">{page + 1} di {totalPages} ({rows.length} elementi)</span>
+                  <button
+                    onClick={() => setPage(Math.min(totalPages - 1, page + 1))}
+                    disabled={page === totalPages - 1}
+                    className="px-1.5 py-0.5 rounded border border-border hover:bg-muted disabled:opacity-30"
+                  >
+                    ›
+                  </button>
+                  <button
+                    onClick={() => setPage(totalPages - 1)}
+                    disabled={page === totalPages - 1}
+                    className="px-1.5 py-0.5 rounded border border-border hover:bg-muted disabled:opacity-30"
+                  >
+                    »
+                  </button>
+                  <span className="ml-2">
+                    {page + 1} di {totalPages} ({rows.length} elementi)
+                  </span>
                 </div>
               )}
             </div>
@@ -259,13 +377,50 @@ export const FteDotazioneChart = () => {
               </p>
               <ResponsiveContainer width="100%" height={340}>
                 <BarChart data={rows} margin={{ top: 5, right: 10, left: -5, bottom: 60 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                  <XAxis dataKey="denominazione" tick={{ fontSize: 9 }} stroke="hsl(var(--muted-foreground))" interval={0} angle={-45} textAnchor="end" height={80} />
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    vertical={false}
+                    stroke="hsl(var(--border))"
+                  />
+                  <XAxis
+                    dataKey="denominazione"
+                    tick={{ fontSize: 9 }}
+                    stroke="hsl(var(--muted-foreground))"
+                    interval={0}
+                    angle={-45}
+                    textAnchor="end"
+                    height={80}
+                  />
                   <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
-                  <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} formatter={(value: number, name: string) => [value.toFixed(1), name]} />
-                  <Bar dataKey="dotazione" name="FTE in dotazione" fill={COLOR_DOTAZIONE} radius={[2, 2, 0, 0]} maxBarSize={18} />
-                  <Bar dataKey="servizio" name="FTE in servizio" fill={COLOR_SERVIZIO} radius={[2, 2, 0, 0]} maxBarSize={18} />
-                  <Legend verticalAlign="bottom" iconType="square" iconSize={10} wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
+                  <Tooltip
+                    contentStyle={{
+                      background: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: 8,
+                      fontSize: 12,
+                    }}
+                    formatter={(value: number, name: string) => [value.toFixed(1), name]}
+                  />
+                  <Bar
+                    dataKey="dotazione"
+                    name="FTE in dotazione"
+                    fill={COLOR_DOTAZIONE}
+                    radius={[2, 2, 0, 0]}
+                    maxBarSize={18}
+                  />
+                  <Bar
+                    dataKey="servizio"
+                    name="FTE in servizio"
+                    fill={COLOR_SERVIZIO}
+                    radius={[2, 2, 0, 0]}
+                    maxBarSize={18}
+                  />
+                  <Legend
+                    verticalAlign="bottom"
+                    iconType="square"
+                    iconSize={10}
+                    wrapperStyle={{ fontSize: 11, paddingTop: 8 }}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>

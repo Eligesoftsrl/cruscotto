@@ -1,16 +1,28 @@
 import { useEffect, useState } from "react";
 import { fetchSyllabusPartecipazioni } from "@/services/dw/syllabusService";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 
 export const SyllabusBadgeSection = () => {
   const [byComp, setByComp] = useState<any[]>([]);
 
   useEffect(() => {
     const load = async () => {
-      const partecipazioni = await fetchSyllabusPartecipazioni("id_competenza, esito_finale, livello_da, livello_a");
+      const partecipazioni = await fetchSyllabusPartecipazioni(
+        "id_competenza, esito_finale, livello_da, livello_a",
+      );
       if (!partecipazioni) return;
 
-      const comp: Record<string, { completati: number; inCorso: number; miglioramento: number }> = {};
+      const comp: Record<string, { completati: number; inCorso: number; miglioramento: number }> =
+        {};
       partecipazioni.forEach((p: any) => {
         const c = p.id_competenza ?? "N/D";
         if (!comp[c]) comp[c] = { completati: 0, inCorso: 0, miglioramento: 0 };
@@ -19,10 +31,12 @@ export const SyllabusBadgeSection = () => {
         if ((p.livello_a ?? 0) > (p.livello_da ?? 0)) comp[c].miglioramento++;
       });
 
-      setByComp(Object.entries(comp)
-        .map(([competenza, v]) => ({ competenza: competenza.substring(0, 18), ...v }))
-        .sort((a, b) => (b.completati + b.inCorso) - (a.completati + a.inCorso))
-        .slice(0, 12));
+      setByComp(
+        Object.entries(comp)
+          .map(([competenza, v]) => ({ competenza: competenza.substring(0, 18), ...v }))
+          .sort((a, b) => b.completati + b.inCorso - (a.completati + a.inCorso))
+          .slice(0, 12),
+      );
     };
     load();
   }, []);
@@ -54,7 +68,12 @@ export const SyllabusBadgeSection = () => {
               <XAxis type="number" tick={{ fontSize: 11 }} />
               <YAxis type="category" dataKey="competenza" tick={{ fontSize: 10 }} width={110} />
               <Tooltip />
-              <Bar dataKey="miglioramento" name="Miglioramenti livello" fill="hsl(210,80%,45%)" radius={[0, 4, 4, 0]} />
+              <Bar
+                dataKey="miglioramento"
+                name="Miglioramenti livello"
+                fill="hsl(210,80%,45%)"
+                radius={[0, 4, 4, 0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>

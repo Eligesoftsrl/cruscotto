@@ -1,12 +1,34 @@
 import { useEffect, useState } from "react";
 import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
-import { fetchFamiglieProfessionali, fetchProfiliDiRuolo, fetchCompetenze } from "@/services/dw/minervaService";
+import {
+  fetchFamiglieProfessionali,
+  fetchProfiliDiRuolo,
+  fetchCompetenze,
+} from "@/services/dw/minervaService";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+} from "recharts";
 
 const COLORS = [
-  "hsl(210,80%,45%)", "hsl(30,85%,55%)", "hsl(150,60%,40%)", "hsl(0,70%,55%)",
-  "hsl(270,60%,55%)", "hsl(45,90%,50%)", "hsl(180,50%,45%)", "hsl(330,60%,50%)",
+  "hsl(210,80%,45%)",
+  "hsl(30,85%,55%)",
+  "hsl(150,60%,40%)",
+  "hsl(0,70%,55%)",
+  "hsl(270,60%,55%)",
+  "hsl(45,90%,50%)",
+  "hsl(180,50%,45%)",
+  "hsl(330,60%,50%)",
 ];
 
 export const MinervaCatalogoSection = () => {
@@ -37,22 +59,42 @@ export const MinervaCatalogoSection = () => {
 
       // By famiglia
       const famCount: Record<string, number> = {};
-      profs.forEach((p: any) => { const f = p.famiglia_professionale ?? "Altro"; famCount[f] = (famCount[f] || 0) + 1; });
-      setByFamiglia(Object.entries(famCount).map(([f, c]) => ({ name: f, count: c })).sort((a, b) => b.count - a.count));
+      profs.forEach((p: any) => {
+        const f = p.famiglia_professionale ?? "Altro";
+        famCount[f] = (famCount[f] || 0) + 1;
+      });
+      setByFamiglia(
+        Object.entries(famCount)
+          .map(([f, c]) => ({ name: f, count: c }))
+          .sort((a, b) => b.count - a.count),
+      );
 
       // By area contrattuale
       const areaCount: Record<string, number> = {};
-      profs.forEach((p: any) => { const a = p.area_contrattuale ?? "N/D"; areaCount[a] = (areaCount[a] || 0) + 1; });
+      profs.forEach((p: any) => {
+        const a = p.area_contrattuale ?? "N/D";
+        areaCount[a] = (areaCount[a] || 0) + 1;
+      });
       setByArea(Object.entries(areaCount).map(([a, c]) => ({ name: a, value: c })));
 
       // By ambito ruolo
       const ambitoCount: Record<string, number> = {};
-      profs.forEach((p: any) => { const a = p.ambito_ruolo ?? "N/D"; ambitoCount[a] = (ambitoCount[a] || 0) + 1; });
-      setByAmbito(Object.entries(ambitoCount).map(([a, c]) => ({ name: a.substring(0, 22), count: c })).sort((a, b) => b.count - a.count));
+      profs.forEach((p: any) => {
+        const a = p.ambito_ruolo ?? "N/D";
+        ambitoCount[a] = (ambitoCount[a] || 0) + 1;
+      });
+      setByAmbito(
+        Object.entries(ambitoCount)
+          .map(([a, c]) => ({ name: a.substring(0, 22), count: c }))
+          .sort((a, b) => b.count - a.count),
+      );
 
       // By dimensione professionale
       const dimCount: Record<string, number> = {};
-      (fam ?? []).forEach((f: any) => { const d = f.dimensione_professionale ?? "N/D"; dimCount[d] = (dimCount[d] || 0) + 1; });
+      (fam ?? []).forEach((f: any) => {
+        const d = f.dimensione_professionale ?? "N/D";
+        dimCount[d] = (dimCount[d] || 0) + 1;
+      });
       setByDimensione(Object.entries(dimCount).map(([d, c]) => ({ name: d, value: c })));
     };
     load();
@@ -66,7 +108,7 @@ export const MinervaCatalogoSection = () => {
           { label: "Profili Professionali", value: totPP },
           { label: "Profili di Ruolo", value: totPR },
           { label: "Competenze Censite", value: totComp },
-        ].map(k => (
+        ].map((k) => (
           <div key={k.label} className="tableau-card">
             <div className="p-4 text-center">
               <div className="text-2xl font-bold text-foreground">{k.value}</div>
@@ -99,8 +141,20 @@ export const MinervaCatalogoSection = () => {
           <div className="p-4" style={{ height: 300 }}>
             <ResponsiveContainer>
               <PieChart>
-                <Pie data={byArea} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={90} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`} labelLine={false} fontSize={9}>
-                  {byArea.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                <Pie
+                  data={byArea}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={90}
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  labelLine={false}
+                  fontSize={9}
+                >
+                  {byArea.map((_, i) => (
+                    <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                  ))}
                 </Pie>
                 <Tooltip />
               </PieChart>
@@ -132,8 +186,22 @@ export const MinervaCatalogoSection = () => {
           <div className="p-4" style={{ height: 300 }}>
             <ResponsiveContainer>
               <PieChart>
-                <Pie data={byDimensione} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={90} label={({ name, percent }) => `${name.substring(0, 15)} ${(percent * 100).toFixed(0)}%`} labelLine={false} fontSize={9}>
-                  {byDimensione.map((_, i) => <Cell key={i} fill={COLORS[(i + 3) % COLORS.length]} />)}
+                <Pie
+                  data={byDimensione}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={90}
+                  label={({ name, percent }) =>
+                    `${name.substring(0, 15)} ${(percent * 100).toFixed(0)}%`
+                  }
+                  labelLine={false}
+                  fontSize={9}
+                >
+                  {byDimensione.map((_, i) => (
+                    <Cell key={i} fill={COLORS[(i + 3) % COLORS.length]} />
+                  ))}
                 </Pie>
                 <Tooltip />
               </PieChart>

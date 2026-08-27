@@ -2,7 +2,16 @@ import { useEffect, useState } from "react";
 import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
 import { fetchInpaGraduatorie, fetchInpaBandi } from "@/services/dw/inpaService";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 
 export const InpaGraduatorieSection = () => {
   const { data: enteIds } = useFilteredEnteIds();
@@ -33,21 +42,29 @@ export const InpaGraduatorieSection = () => {
         posti: g.num_posti_banditi ?? 0,
         idonei: g.num_idonei ?? 0,
         assunti: g.num_vincitori_assunti ?? 0,
-        tassoCopertura: (g.num_posti_banditi ?? 0) > 0 ? Math.round(((g.num_vincitori_assunti ?? 0) / g.num_posti_banditi) * 100) : 0,
+        tassoCopertura:
+          (g.num_posti_banditi ?? 0) > 0
+            ? Math.round(((g.num_vincitori_assunti ?? 0) / g.num_posti_banditi) * 100)
+            : 0,
       }));
       setChartData(chart.slice(0, 15));
 
-      setTableData(grads.map((g: any) => ({
-        ente: g.denominazione ?? "-",
-        profilo: g.profilo ?? "-",
-        qualifica: g.qualifica ?? "-",
-        stato: g.stato_graduatoria ?? "-",
-        posti: g.num_posti_banditi ?? 0,
-        idonei: g.num_idonei ?? 0,
-        assunti: g.num_vincitori_assunti ?? 0,
-        tcp: g.tcp_giorni ?? "-",
-        tassoCop: (g.num_posti_banditi ?? 0) > 0 ? Math.round(((g.num_vincitori_assunti ?? 0) / g.num_posti_banditi) * 100) + "%" : "-",
-      })));
+      setTableData(
+        grads.map((g: any) => ({
+          ente: g.denominazione ?? "-",
+          profilo: g.profilo ?? "-",
+          qualifica: g.qualifica ?? "-",
+          stato: g.stato_graduatoria ?? "-",
+          posti: g.num_posti_banditi ?? 0,
+          idonei: g.num_idonei ?? 0,
+          assunti: g.num_vincitori_assunti ?? 0,
+          tcp: g.tcp_giorni ?? "-",
+          tassoCop:
+            (g.num_posti_banditi ?? 0) > 0
+              ? Math.round(((g.num_vincitori_assunti ?? 0) / g.num_posti_banditi) * 100) + "%"
+              : "-",
+        })),
+      );
     };
     load();
   }, [enteIds]);
@@ -60,8 +77,16 @@ export const InpaGraduatorieSection = () => {
     <div className="p-4 space-y-4">
       <div className="grid grid-cols-4 gap-3">
         {[
-          { label: "Tasso Completamento Procedurale", value: `${completamento.tasso}%`, sub: `${completamento.graduatorie} graduatorie / ${completamento.bandi} bandi` },
-          { label: "Tasso Copertura Posti", value: `${tassoGlobale}%`, sub: `${totAssunti} assunti su ${totPosti} banditi` },
+          {
+            label: "Tasso Completamento Procedurale",
+            value: `${completamento.tasso}%`,
+            sub: `${completamento.graduatorie} graduatorie / ${completamento.bandi} bandi`,
+          },
+          {
+            label: "Tasso Copertura Posti",
+            value: `${tassoGlobale}%`,
+            sub: `${totAssunti} assunti su ${totPosti} banditi`,
+          },
           { label: "Graduatorie Totali", value: completamento.graduatorie },
           { label: "Bandi Totali", value: completamento.bandi },
         ].map((kpi) => (
@@ -69,7 +94,9 @@ export const InpaGraduatorieSection = () => {
             <div className="p-4 text-center">
               <div className="text-2xl font-bold text-foreground">{kpi.value}</div>
               <div className="text-[11px] text-muted-foreground mt-1">{kpi.label}</div>
-              {"sub" in kpi && kpi.sub && <div className="text-[9px] text-muted-foreground/60 mt-0.5">{kpi.sub}</div>}
+              {"sub" in kpi && kpi.sub && (
+                <div className="text-[9px] text-muted-foreground/60 mt-0.5">{kpi.sub}</div>
+              )}
             </div>
           </div>
         ))}

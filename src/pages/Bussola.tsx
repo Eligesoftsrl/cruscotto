@@ -23,8 +23,12 @@ const Bussola = () => {
   const [initialIndicatorId, setInitialIndicatorId] = useState<string | undefined>(undefined);
   const [wizardOpen, setWizardOpen] = useState(false);
   const [activeCustomJourney, setActiveCustomJourney] = useState<any>(null);
-  const [initialCustomJourneyStep, setInitialCustomJourneyStep] = useState<number | undefined>(undefined);
-  const [initialCustomJourneyIndicatorId, setInitialCustomJourneyIndicatorId] = useState<string | undefined>(undefined);
+  const [initialCustomJourneyStep, setInitialCustomJourneyStep] = useState<number | undefined>(
+    undefined,
+  );
+  const [initialCustomJourneyIndicatorId, setInitialCustomJourneyIndicatorId] = useState<
+    string | undefined
+  >(undefined);
   const [communityRefreshKey, setCommunityRefreshKey] = useState(0);
   const [selectedTemplate, setSelectedTemplate] = useState<JourneyTemplate | null>(null);
 
@@ -146,28 +150,41 @@ const Bussola = () => {
       />
 
       <Sheet open={!!activePercorso} onOpenChange={(open) => !open && setActivePercorso(null)}>
-        <SheetContent side="right" className="w-full sm:w-[560px] md:w-[640px] lg:w-[720px] p-0 overflow-y-auto">
+        <SheetContent
+          side="right"
+          className="w-full sm:w-[560px] md:w-[640px] lg:w-[720px] p-0 overflow-y-auto"
+        >
           {activePercorso && (
             <BussolaPercorso
               percorsoId={activePercorso}
               initialStep={initialStep}
               initialIndicatorId={initialIndicatorId}
               onBack={() => setActivePercorso(null)}
-              onGoToDashboard={(nav, stepIndex, indicatorId) => handleGoToDashboard(nav, activePercorso, stepIndex, undefined, indicatorId)}
+              onGoToDashboard={(nav, stepIndex, indicatorId) =>
+                handleGoToDashboard(nav, activePercorso, stepIndex, undefined, indicatorId)
+              }
             />
           )}
         </SheetContent>
       </Sheet>
 
-      <Sheet open={!!activeCustomJourney} onOpenChange={(open) => !open && setActiveCustomJourney(null)}>
-        <SheetContent side="right" className="w-full sm:w-[560px] md:w-[640px] lg:w-[720px] p-0 overflow-y-auto">
+      <Sheet
+        open={!!activeCustomJourney}
+        onOpenChange={(open) => !open && setActiveCustomJourney(null)}
+      >
+        <SheetContent
+          side="right"
+          className="w-full sm:w-[560px] md:w-[640px] lg:w-[720px] p-0 overflow-y-auto"
+        >
           {activeCustomJourney && (
             <CustomJourneyViewer
               journey={activeCustomJourney}
               initialStep={initialCustomJourneyStep}
               initialIndicatorId={initialCustomJourneyIndicatorId}
               onBack={() => setActiveCustomJourney(null)}
-              onGoToDashboard={(nav, stepIndex, indicatorId) => handleGoToDashboard(nav, undefined, stepIndex, undefined, indicatorId)}
+              onGoToDashboard={(nav, stepIndex, indicatorId) =>
+                handleGoToDashboard(nav, undefined, stepIndex, undefined, indicatorId)
+              }
             />
           )}
         </SheetContent>

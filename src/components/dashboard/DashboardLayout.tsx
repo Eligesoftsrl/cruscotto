@@ -8,7 +8,11 @@ interface DashboardLayoutProps {
   onSectionChange: (section: string) => void;
 }
 
-export const DashboardLayout = ({ children, activeSection, onSectionChange }: DashboardLayoutProps) => {
+export const DashboardLayout = ({
+  children,
+  activeSection,
+  onSectionChange,
+}: DashboardLayoutProps) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
@@ -21,9 +25,7 @@ export const DashboardLayout = ({ children, activeSection, onSectionChange }: Da
       />
       <div className="flex flex-1 flex-col overflow-hidden">
         <DashboardHeader activeSection={activeSection} />
-        <main className="flex-1 overflow-y-auto p-6">
-          {children}
-        </main>
+        <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>
     </div>
   );

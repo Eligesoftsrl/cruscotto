@@ -8,7 +8,11 @@ interface DataSourceNavProps {
   onSourceChange: (sourceId: string, subItemId?: string) => void;
 }
 
-export const DataSourceNav = ({ activeSource, activeSubItem, onSourceChange }: DataSourceNavProps) => {
+export const DataSourceNav = ({
+  activeSource,
+  activeSubItem,
+  onSourceChange,
+}: DataSourceNavProps) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -50,7 +54,7 @@ export const DataSourceNav = ({ activeSource, activeSubItem, onSourceChange }: D
                 {fonte.label}
                 {hasDropdown && isActive && activeSubItem && (
                   <span className="ml-1 text-[10px] font-normal text-muted-foreground">
-                    ({fonte.subItems!.find(s => s.id === activeSubItem)?.label ?? ""})
+                    ({fonte.subItems!.find((s) => s.id === activeSubItem)?.label ?? ""})
                   </span>
                 )}
               </span>

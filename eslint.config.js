@@ -24,12 +24,18 @@ export default tseslint.config(
       // Declassato a warning: rimozione progressiva degli 'any' pianificata (Fase 3 tipizzazione).
       "@typescript-eslint/no-explicit-any": "warn",
       // Blinda l'architettura: il client Supabase si usa solo nei service.
-      "no-restricted-imports": ["error", {
-        patterns: [{
-          group: ["@/integrations/supabase/client", "**/integrations/supabase/client"],
-          message: "Non importare il client Supabase direttamente: usa un service in src/services.",
-        }],
-      }],
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@/integrations/supabase/client", "**/integrations/supabase/client"],
+              message:
+                "Non importare il client Supabase direttamente: usa un service in src/services.",
+            },
+          ],
+        },
+      ],
     },
   },
   {

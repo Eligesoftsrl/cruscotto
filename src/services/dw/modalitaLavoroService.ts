@@ -25,14 +25,30 @@ export interface ModalitaLavoroData {
 }
 
 export const EMPTY_MODALITA_LAVORO_DATA: ModalitaLavoroData = {
-  lavoroAgile: { agiliTotale: 0, agiliPerc: 0, donneAgiliPerc: 0, uominiAgiliPerc: 0, serieStorica: [] },
-  lavoroFlessibile: { flessibiliTotale: 0, flessibiliPerc: 0, donneFlessibiliPerc: 0, uominiFlessibiliPerc: 0, serieStorica: [] },
+  lavoroAgile: {
+    agiliTotale: 0,
+    agiliPerc: 0,
+    donneAgiliPerc: 0,
+    uominiAgiliPerc: 0,
+    serieStorica: [],
+  },
+  lavoroFlessibile: {
+    flessibiliTotale: 0,
+    flessibiliPerc: 0,
+    donneFlessibiliPerc: 0,
+    uominiFlessibiliPerc: 0,
+    serieStorica: [],
+  },
 };
 
 type MlRow = Partial<Database["public"]["Tables"]["dw_modalita_lavoro"]["Row"]>;
 type OccRow = Partial<Database["public"]["Tables"]["dw_occupazione"]["Row"]>;
 
-export function transformModalitaLavoro(ml: MlRow[], occ: OccRow[], anno: number): ModalitaLavoroData {
+export function transformModalitaLavoro(
+  ml: MlRow[],
+  occ: OccRow[],
+  anno: number,
+): ModalitaLavoroData {
   const n = (x: number | null | undefined) => Number(x) || 0;
   const agile = new Map<number, { u: number; d: number }>();
   const fless = new Map<number, { u: number; d: number }>();
@@ -90,7 +106,9 @@ export async function fetchModalitaLavoro(anno = 2023): Promise<ModalitaLavoroDa
   const [mlRes, occRes] = await Promise.all([
     supabase
       .from("dw_modalita_lavoro")
-      .select("anno, telelavoro_u, telelavoro_d, lavoro_agile_u, lavoro_agile_d, turnazione_u, turnazione_d, reperibilita_u, reperibilita_d"),
+      .select(
+        "anno, telelavoro_u, telelavoro_d, lavoro_agile_u, lavoro_agile_d, turnazione_u, turnazione_d, reperibilita_u, reperibilita_d",
+      ),
     supabase.from("dw_occupazione").select("tp_uomini, tp_donne, anno").eq("anno", anno),
   ]);
   if (mlRes.error) throw mlRes.error;

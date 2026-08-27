@@ -40,43 +40,89 @@ export const GlobalFilterBar = () => {
         )}
       </div>
 
-      <label className="sr-only" htmlFor="filter-anno">Anno</label>
-      <select id="filter-anno" value={filters.anno} onChange={(e) => setFilter("anno", e.target.value)} className={selectClass}>
-        {["2023", "2022", "2021", "2020", "2019"].map((v) => <option key={v}>{v}</option>)}
+      <label className="sr-only" htmlFor="filter-anno">
+        Anno
+      </label>
+      <select
+        id="filter-anno"
+        value={filters.anno}
+        onChange={(e) => setFilter("anno", e.target.value)}
+        className={selectClass}
+      >
+        {["2023", "2022", "2021", "2020", "2019"].map((v) => (
+          <option key={v}>{v}</option>
+        ))}
       </select>
 
       {isDfp && (
         <>
-          <label className="sr-only" htmlFor="filter-comparto">Comparto</label>
-          <select id="filter-comparto" value={filters.comparto} onChange={(e) => setFilter("comparto", e.target.value)} className={selectClass}>
+          <label className="sr-only" htmlFor="filter-comparto">
+            Comparto
+          </label>
+          <select
+            id="filter-comparto"
+            value={filters.comparto}
+            onChange={(e) => setFilter("comparto", e.target.value)}
+            className={selectClass}
+          >
             <option value="Tutti">Tutti i comparti</option>
-            {comparti.map((v) => <option key={v} value={v}>{v}</option>)}
+            {comparti.map((v) => (
+              <option key={v} value={v}>
+                {v}
+              </option>
+            ))}
           </select>
         </>
       )}
 
       {isDfp && (
         <>
-          <label className="sr-only" htmlFor="filter-regione">Regione</label>
-          <select id="filter-regione" value={filters.regione} onChange={(e) => setFilter("regione", e.target.value)} className={selectClass}>
+          <label className="sr-only" htmlFor="filter-regione">
+            Regione
+          </label>
+          <select
+            id="filter-regione"
+            value={filters.regione}
+            onChange={(e) => setFilter("regione", e.target.value)}
+            className={selectClass}
+          >
             <option value="Tutte">Tutte le regioni</option>
-            {regioni.map((v) => <option key={v} value={v}>{v}</option>)}
+            {regioni.map((v) => (
+              <option key={v} value={v}>
+                {v}
+              </option>
+            ))}
           </select>
         </>
       )}
 
       {isDfp && (
         <>
-          <label className="sr-only" htmlFor="filter-dimensione">Categoria PA</label>
-          <select id="filter-dimensione" value={filters.dimensione_pa} onChange={(e) => setFilter("dimensione_pa", e.target.value)} className={selectClass}>
+          <label className="sr-only" htmlFor="filter-dimensione">
+            Categoria PA
+          </label>
+          <select
+            id="filter-dimensione"
+            value={filters.dimensione_pa}
+            onChange={(e) => setFilter("dimensione_pa", e.target.value)}
+            className={selectClass}
+          >
             <option value="Tutte">Tutte le categorie</option>
-            {dimensioni.map((v) => <option key={v} value={v}>{v}</option>)}
+            {dimensioni.map((v) => (
+              <option key={v} value={v}>
+                {v}
+              </option>
+            ))}
           </select>
         </>
       )}
 
       {activeCount > 0 && (
-        <button onClick={resetFilters} className="ml-auto flex items-center gap-1 text-[11px] text-primary hover:underline underline-offset-2" aria-label="Ripristina tutti i filtri">
+        <button
+          onClick={resetFilters}
+          className="ml-auto flex items-center gap-1 text-[11px] text-primary hover:underline underline-offset-2"
+          aria-label="Ripristina tutti i filtri"
+        >
           <RotateCcw className="h-3 w-3" aria-hidden="true" />
           Reset
         </button>

@@ -2,7 +2,13 @@ import { useState } from "react";
 import { getNarrative, narrativeThresholds } from "@/data/narrativeGenerators";
 import { executiveIndicesStatic } from "@/components/dashboard/executive/executiveData";
 import { Slider } from "@/components/ui/slider";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Check, AlertTriangle, Search } from "lucide-react";
@@ -28,7 +34,10 @@ const allIndicators: IndicatorMeta[] = executiveIndicesStatic.map((idx) => ({
   pillar: idx.pillar,
   level: idx.indicatorLevel ?? "executive",
   formula: idx.formula,
-  fonte: idx.fonte.replace(/^Fonte:\s*/, "").split("·")[0].trim(),
+  fonte: idx.fonte
+    .replace(/^Fonte:\s*/, "")
+    .split("·")[0]
+    .trim(),
   value: idx.value,
   assessment: idx.assessment.level,
   hasNarrative: !!narrativeThresholds[idx.id],
@@ -44,7 +53,7 @@ const pillarLabels: Record<string, string> = {
 };
 
 const kpiLabels: Record<string, string> = Object.fromEntries(
-  executiveIndicesStatic.map((idx) => [idx.id, idx.label.replace(/\n/g, " ")])
+  executiveIndicesStatic.map((idx) => [idx.id, idx.label.replace(/\n/g, " ")]),
 );
 
 function getSeverity(id: string, value: number) {
@@ -78,7 +87,8 @@ export default function NarrativeDemo() {
 
   // Filter indicators for the table
   const filteredIndicators = allIndicators.filter((ind) => {
-    const matchSearch = searchTerm === "" ||
+    const matchSearch =
+      searchTerm === "" ||
       ind.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       ind.label.toLowerCase().includes(searchTerm.toLowerCase());
     const matchPillar = filterPillar === "all" || ind.pillar === filterPillar;
@@ -93,7 +103,10 @@ export default function NarrativeDemo() {
 
   return (
     <div className="min-h-screen bg-background p-6 max-w-6xl mx-auto space-y-6">
-      <Link to="/bussola" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
+      <Link
+        to="/bussola"
+        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
         <ArrowLeft className="h-4 w-4" /> Torna al Pannello di Governo
       </Link>
 
@@ -108,13 +121,22 @@ export default function NarrativeDemo() {
           <CardTitle className="text-base">Seleziona indicatore</CardTitle>
         </CardHeader>
         <CardContent>
-          <Select value={selectedKpi} onValueChange={(v) => { setSelectedKpi(v); const idx = executiveIndicesStatic.find(i => i.id === v); setValue(idx ? idx.value : 0.14); }}>
+          <Select
+            value={selectedKpi}
+            onValueChange={(v) => {
+              setSelectedKpi(v);
+              const idx = executiveIndicesStatic.find((i) => i.id === v);
+              setValue(idx ? idx.value : 0.14);
+            }}
+          >
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               {kpiIds.map((id) => (
-                <SelectItem key={id} value={id}>{id} — {kpiLabels[id] ?? id}</SelectItem>
+                <SelectItem key={id} value={id}>
+                  {id} — {kpiLabels[id] ?? id}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -145,7 +167,9 @@ export default function NarrativeDemo() {
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>0%</span>
               {boundaries.map((b) => (
-                <span key={b} className="border-l border-border pl-1">{b === Infinity ? "∞" : Math.round(b * 100) + "%"}</span>
+                <span key={b} className="border-l border-border pl-1">
+                  {b === Infinity ? "∞" : Math.round(b * 100) + "%"}
+                </span>
               ))}
               <span>100%</span>
             </div>
@@ -153,7 +177,11 @@ export default function NarrativeDemo() {
 
           <div className="rounded-lg border border-border bg-muted/50 p-4">
             <p className="text-sm font-medium text-muted-foreground mb-1">Frase generata:</p>
-            <p className="text-foreground leading-relaxed">{narrative || <span className="italic text-muted-foreground">Nessun generatore disponibile</span>}</p>
+            <p className="text-foreground leading-relaxed">
+              {narrative || (
+                <span className="italic text-muted-foreground">Nessun generatore disponibile</span>
+              )}
+            </p>
           </div>
 
           <div className="space-y-1">
@@ -188,7 +216,9 @@ export default function NarrativeDemo() {
               <p className="text-xs text-muted-foreground">Indicatori totali</p>
             </div>
             <div className="rounded-lg border bg-[hsl(var(--chart-green))]/10 p-3 text-center">
-              <p className="text-2xl font-extrabold text-[hsl(var(--chart-green))]">{withNarrative}</p>
+              <p className="text-2xl font-extrabold text-[hsl(var(--chart-green))]">
+                {withNarrative}
+              </p>
               <p className="text-xs text-muted-foreground">Con generatore narrativo</p>
             </div>
             <div className="rounded-lg border bg-destructive/10 p-3 text-center">
@@ -205,7 +235,10 @@ export default function NarrativeDemo() {
               </p>
               <div className="flex flex-wrap gap-2">
                 {missingIndicators.map((ind) => (
-                  <span key={ind.id} className="text-xs px-2 py-1 rounded-full bg-destructive/10 text-destructive font-mono">
+                  <span
+                    key={ind.id}
+                    className="text-xs px-2 py-1 rounded-full bg-destructive/10 text-destructive font-mono"
+                  >
                     {ind.id} ({ind.pillar})
                   </span>
                 ))}
@@ -246,7 +279,9 @@ export default function NarrativeDemo() {
                 <SelectContent>
                   <SelectItem value="all">Tutti i Pillar</SelectItem>
                   {Object.entries(pillarLabels).map(([k, v]) => (
-                    <SelectItem key={k} value={k}>{k} — {v}</SelectItem>
+                    <SelectItem key={k} value={k}>
+                      {k} — {v}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -259,19 +294,26 @@ export default function NarrativeDemo() {
               <thead>
                 <tr className="border-b">
                   <th className="text-left py-2 px-2 font-bold text-muted-foreground">ID</th>
-                  <th className="text-left py-2 px-2 font-bold text-muted-foreground">Indicatore</th>
+                  <th className="text-left py-2 px-2 font-bold text-muted-foreground">
+                    Indicatore
+                  </th>
                   <th className="text-left py-2 px-2 font-bold text-muted-foreground">Pillar</th>
                   <th className="text-left py-2 px-2 font-bold text-muted-foreground">Livello</th>
                   <th className="text-left py-2 px-2 font-bold text-muted-foreground">Formula</th>
                   <th className="text-left py-2 px-2 font-bold text-muted-foreground">Fonte</th>
                   <th className="text-right py-2 px-2 font-bold text-muted-foreground">Valore</th>
                   <th className="text-center py-2 px-2 font-bold text-muted-foreground">Stato</th>
-                  <th className="text-center py-2 px-2 font-bold text-muted-foreground">Narrativo</th>
+                  <th className="text-center py-2 px-2 font-bold text-muted-foreground">
+                    Narrativo
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {filteredIndicators.map((ind) => (
-                  <tr key={ind.id} className="border-b border-border/50 hover:bg-muted/30 transition-colors">
+                  <tr
+                    key={ind.id}
+                    className="border-b border-border/50 hover:bg-muted/30 transition-colors"
+                  >
                     <td className="py-2 px-2 font-mono font-bold text-primary">{ind.id}</td>
                     <td className="py-2 px-2 text-foreground max-w-[200px]">{ind.label}</td>
                     <td className="py-2 px-2">
@@ -280,18 +322,28 @@ export default function NarrativeDemo() {
                       </span>
                     </td>
                     <td className="py-2 px-2 text-muted-foreground capitalize">{ind.level}</td>
-                    <td className="py-2 px-2 text-muted-foreground max-w-[250px] truncate" title={ind.formula}>{ind.formula}</td>
+                    <td
+                      className="py-2 px-2 text-muted-foreground max-w-[250px] truncate"
+                      title={ind.formula}
+                    >
+                      {ind.formula}
+                    </td>
                     <td className="py-2 px-2 text-muted-foreground">{ind.fonte}</td>
                     <td className="py-2 px-2 text-right font-mono font-bold">
                       {ind.value < 0 ? ind.value.toFixed(3) : (ind.value * 100).toFixed(0) + "%"}
                     </td>
                     <td className="py-2 px-2 text-center">
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
-                        ind.assessment === "Critico" || ind.assessment === "Basso" ? "bg-destructive/10 text-destructive" :
-                        ind.assessment === "Buono" || ind.assessment === "Eccellente" ? "bg-[hsl(var(--chart-green))]/10 text-[hsl(var(--chart-green))]" :
-                        ind.assessment === "Placeholder" ? "bg-muted text-muted-foreground" :
-                        "bg-[hsl(var(--chart-orange))]/10 text-[hsl(var(--chart-orange))]"
-                      }`}>
+                      <span
+                        className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                          ind.assessment === "Critico" || ind.assessment === "Basso"
+                            ? "bg-destructive/10 text-destructive"
+                            : ind.assessment === "Buono" || ind.assessment === "Eccellente"
+                              ? "bg-[hsl(var(--chart-green))]/10 text-[hsl(var(--chart-green))]"
+                              : ind.assessment === "Placeholder"
+                                ? "bg-muted text-muted-foreground"
+                                : "bg-[hsl(var(--chart-orange))]/10 text-[hsl(var(--chart-orange))]"
+                        }`}
+                      >
                         {ind.assessment}
                       </span>
                     </td>

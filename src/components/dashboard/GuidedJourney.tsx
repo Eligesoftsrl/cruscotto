@@ -1,14 +1,32 @@
 import React, { useEffect, useState } from "react";
 import {
-  ArrowLeft, ArrowRight, Check, ChevronRight, ChevronDown, ChevronUp,
-  ExternalLink, Layers, Compass, CircleDot, Circle,
-  TrendingUp, TrendingDown, Minus, BookOpen, SlidersHorizontal,
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  ChevronRight,
+  ChevronDown,
+  ChevronUp,
+  ExternalLink,
+  Layers,
+  Compass,
+  CircleDot,
+  Circle,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  BookOpen,
+  SlidersHorizontal,
 } from "lucide-react";
 import { PillarExecutiveSummary } from "./PillarExecutiveSummary";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Slider } from "@/components/ui/slider";
 import { Progress } from "@/components/ui/progress";
-import type { GuidedJourneyDef, JourneyStep, CrossImpact, OperativeCorrelation } from "@/data/guidedJourneys";
+import type {
+  GuidedJourneyDef,
+  JourneyStep,
+  CrossImpact,
+  OperativeCorrelation,
+} from "@/data/guidedJourneys";
 import { executiveIndicesStatic } from "./executive/executiveData";
 import { getNarrative, narrativeThresholds } from "@/data/narrativeGenerators";
 import { interconnessioni, PILLAR_COLORS } from "./executive/executiveInterconnessioni";
@@ -24,11 +42,34 @@ interface GuidedJourneyProps {
 }
 
 /* ── Assessment color mapping to semantic classes ── */
-const assessmentStyles: Record<string, { bg: string; text: string; dot: string; progressColor: string }> = {
-  Buono:    { bg: "bg-[hsl(var(--chart-green))]/10", text: "text-[hsl(var(--chart-green))]", dot: "bg-[hsl(var(--chart-green))]", progressColor: "hsl(var(--chart-green))" },
-  Moderato: { bg: "bg-[hsl(var(--chart-orange))]/10", text: "text-[hsl(var(--chart-orange))]", dot: "bg-[hsl(var(--chart-orange))]", progressColor: "hsl(var(--chart-orange))" },
-  Basso:    { bg: "bg-[hsl(var(--destructive))]/10",  text: "text-[hsl(var(--destructive))]",  dot: "bg-[hsl(var(--destructive))]",  progressColor: "hsl(var(--destructive))" },
-  Critico:  { bg: "bg-[hsl(var(--destructive))]/10",  text: "text-[hsl(var(--destructive))]",  dot: "bg-[hsl(var(--destructive))]",  progressColor: "hsl(var(--destructive))" },
+const assessmentStyles: Record<
+  string,
+  { bg: string; text: string; dot: string; progressColor: string }
+> = {
+  Buono: {
+    bg: "bg-[hsl(var(--chart-green))]/10",
+    text: "text-[hsl(var(--chart-green))]",
+    dot: "bg-[hsl(var(--chart-green))]",
+    progressColor: "hsl(var(--chart-green))",
+  },
+  Moderato: {
+    bg: "bg-[hsl(var(--chart-orange))]/10",
+    text: "text-[hsl(var(--chart-orange))]",
+    dot: "bg-[hsl(var(--chart-orange))]",
+    progressColor: "hsl(var(--chart-orange))",
+  },
+  Basso: {
+    bg: "bg-[hsl(var(--destructive))]/10",
+    text: "text-[hsl(var(--destructive))]",
+    dot: "bg-[hsl(var(--destructive))]",
+    progressColor: "hsl(var(--destructive))",
+  },
+  Critico: {
+    bg: "bg-[hsl(var(--destructive))]/10",
+    text: "text-[hsl(var(--destructive))]",
+    dot: "bg-[hsl(var(--destructive))]",
+    progressColor: "hsl(var(--destructive))",
+  },
 };
 
 const getStyle = (level: string) => assessmentStyles[level] ?? assessmentStyles["Moderato"];
@@ -36,16 +77,20 @@ const getStyle = (level: string) => assessmentStyles[level] ?? assessmentStyles[
 /* ── Trend delta component ── */
 const TrendDelta = ({ current, prev }: { current: number; prev: number }) => {
   const delta = Math.round((current - prev) * 100);
-  if (delta === 0) return (
-    <span className="text-xs text-muted-foreground flex items-center gap-1">
-      <Minus className="h-3 w-3" /> Stabile rispetto all'anno precedente
-    </span>
-  );
+  if (delta === 0)
+    return (
+      <span className="text-xs text-muted-foreground flex items-center gap-1">
+        <Minus className="h-3 w-3" /> Stabile rispetto all'anno precedente
+      </span>
+    );
   const positive = delta > 0;
   return (
-    <span className={`text-xs font-semibold flex items-center gap-1 ${positive ? "text-[hsl(var(--chart-green))]" : "text-[hsl(var(--destructive))]"}`}>
+    <span
+      className={`text-xs font-semibold flex items-center gap-1 ${positive ? "text-[hsl(var(--chart-green))]" : "text-[hsl(var(--destructive))]"}`}
+    >
       {positive ? <TrendingUp className="h-3.5 w-3.5" /> : <TrendingDown className="h-3.5 w-3.5" />}
-      {positive ? "+" : ""}{delta}pp rispetto all'anno precedente
+      {positive ? "+" : ""}
+      {delta}pp rispetto all'anno precedente
     </span>
   );
 };
@@ -72,7 +117,9 @@ const InterconnectionBadges = ({ indicatorId }: { indicatorId: string }) => {
               </span>
             </TooltipTrigger>
             <TooltipContent side="top" className="max-w-xs">
-              <p className="text-xs font-bold">{c.pillar} — {c.label}</p>
+              <p className="text-xs font-bold">
+                {c.pillar} — {c.label}
+              </p>
               <p className="text-[11px] text-muted-foreground">{c.reason}</p>
             </TooltipContent>
           </Tooltip>
@@ -83,7 +130,15 @@ const InterconnectionBadges = ({ indicatorId }: { indicatorId: string }) => {
 };
 
 /* ── Narrative KPI Card (for decision-makers) ── */
-const NarrativeKpiCard = ({ id, insight, onNavigate }: { id: string; insight?: string; onNavigate?: (nav: NavState) => void }) => {
+const NarrativeKpiCard = ({
+  id,
+  insight,
+  onNavigate,
+}: {
+  id: string;
+  insight?: string;
+  onNavigate?: (nav: NavState) => void;
+}) => {
   const [open, setOpen] = useState(false);
   const [simulating, setSimulating] = useState(false);
   const [simValue, setSimValue] = useState<number | null>(null);
@@ -92,7 +147,7 @@ const NarrativeKpiCard = ({ id, insight, onNavigate }: { id: string; insight?: s
 
   const effectiveValue = simValue !== null ? simValue : idx.value;
   const pct = Math.round(effectiveValue * 100);
-  
+
   // Recalculate assessment level for simulated value
   const thresholds = narrativeThresholds[id];
   const simLevel = thresholds
@@ -102,20 +157,25 @@ const NarrativeKpiCard = ({ id, insight, onNavigate }: { id: string; insight?: s
         return ["Critico", "Basso", "Moderato", "Buono"][level] ?? "Moderato";
       })()
     : idx.assessment.level;
-  
+
   const style = getStyle(simValue !== null ? simLevel : idx.assessment.level);
   const generated = getNarrative(id, effectiveValue);
   const narrativeText = generated || insight || idx.assessment.text;
 
   // Extract clean source name from "Fonte: XYZ · detail"
-  const cleanFonte = idx.fonte.replace(/^Fonte:\s*/, "").split("·")[0].trim();
+  const cleanFonte = idx.fonte
+    .replace(/^Fonte:\s*/, "")
+    .split("·")[0]
+    .trim();
 
   // Get interpretation key from metodologia
   const interpretation = idx.metodologia?.interpretazione;
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <div className={`rounded-xl border bg-card shadow-sm overflow-hidden transition-shadow hover:shadow-md ${simValue !== null ? "ring-2 ring-primary/30" : ""}`}>
+      <div
+        className={`rounded-xl border bg-card shadow-sm overflow-hidden transition-shadow hover:shadow-md ${simValue !== null ? "ring-2 ring-primary/30" : ""}`}
+      >
         {/* Always-visible summary */}
         <div className="p-4 space-y-3">
           {/* Row 1: Semaphore + value */}
@@ -128,10 +188,14 @@ const NarrativeKpiCard = ({ id, insight, onNavigate }: { id: string; insight?: s
               <TooltipProvider delayDuration={150}>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="text-[10px] text-muted-foreground font-mono cursor-help border-b border-dotted border-muted-foreground/40">{idx.id}</span>
+                    <span className="text-[10px] text-muted-foreground font-mono cursor-help border-b border-dotted border-muted-foreground/40">
+                      {idx.id}
+                    </span>
                   </TooltipTrigger>
                   <TooltipContent side="bottom" className="max-w-xs">
-                    <p className="text-xs font-bold mb-1">{idx.id} — {idx.label.replace(/\n/g, " ")}</p>
+                    <p className="text-xs font-bold mb-1">
+                      {idx.id} — {idx.label.replace(/\n/g, " ")}
+                    </p>
                     {idx.metodologia?.interpretazione && (
                       <p className="text-[11px] text-muted-foreground leading-snug whitespace-pre-line">
                         {idx.metodologia.interpretazione.split("\n").slice(0, 3).join("\n")}
@@ -141,7 +205,9 @@ const NarrativeKpiCard = ({ id, insight, onNavigate }: { id: string; insight?: s
                 </Tooltip>
               </TooltipProvider>
               {simValue !== null && (
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-bold">SIM</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-bold">
+                  SIM
+                </span>
               )}
             </div>
             <span className="text-2xl font-extrabold text-foreground">{pct}%</span>
@@ -189,7 +255,10 @@ const NarrativeKpiCard = ({ id, insight, onNavigate }: { id: string; insight?: s
                 </p>
                 {simValue !== null && (
                   <button
-                    onClick={() => { setSimValue(null); setSimulating(false); }}
+                    onClick={() => {
+                      setSimValue(null);
+                      setSimulating(false);
+                    }}
                     className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground hover:bg-muted/80 font-semibold transition-colors"
                   >
                     Reset
@@ -207,7 +276,9 @@ const NarrativeKpiCard = ({ id, insight, onNavigate }: { id: string; insight?: s
               <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
                 <span>0%</span>
                 {thresholds?.slice(0, -1).map((t, i) => (
-                  <span key={i} className="border-l border-border pl-1">{Math.round(t.max * 100)}%</span>
+                  <span key={i} className="border-l border-border pl-1">
+                    {Math.round(t.max * 100)}%
+                  </span>
                 ))}
                 <span>100%</span>
               </div>
@@ -216,7 +287,9 @@ const NarrativeKpiCard = ({ id, insight, onNavigate }: { id: string; insight?: s
             {/* Dimensional context */}
             {idx.context && (
               <div>
-                <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide mb-1">Dimensione del fenomeno</p>
+                <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide mb-1">
+                  Dimensione del fenomeno
+                </p>
                 <p className="text-sm text-foreground">{idx.context.text}</p>
               </div>
             )}
@@ -259,20 +332,32 @@ const NarrativeKpiCard = ({ id, insight, onNavigate }: { id: string; insight?: s
 };
 
 /* ── Enriched Cross-impact card ── */
-const ImpactCard = ({ impact, onNavigate }: { impact: CrossImpact; onNavigate: (nav: NavState) => void }) => {
+const ImpactCard = ({
+  impact,
+  onNavigate,
+}: {
+  impact: CrossImpact;
+  onNavigate: (nav: NavState) => void;
+}) => {
   const idx = executiveIndicesStatic.find((i) => i.id === impact.indicatorId);
   const pct = idx && typeof idx.value === "number" ? Math.round(idx.value * 100) : null;
   const style = idx ? getStyle(idx.assessment.level) : null;
 
   return (
     <button
-      onClick={() => onNavigate({ level: "synthetic", pillar: impact.pillar, indicator: impact.indicatorId })}
+      onClick={() =>
+        onNavigate({ level: "synthetic", pillar: impact.pillar, indicator: impact.indicatorId })
+      }
       className="rounded-xl border bg-card hover:bg-accent/40 transition-all hover:shadow-sm p-4 text-left flex flex-col gap-2 group"
     >
       {/* Header: semaphore + pillar + label + value */}
       <div className="flex items-center gap-2 flex-wrap">
         {style && <span className={`h-2 w-2 rounded-full ${style.dot}`} />}
-        {style && <span className={`text-[10px] font-bold uppercase ${style.text}`}>{idx!.assessment.level}</span>}
+        {style && (
+          <span className={`text-[10px] font-bold uppercase ${style.text}`}>
+            {idx!.assessment.level}
+          </span>
+        )}
         <span className="text-xs font-extrabold text-primary">{impact.pillar}</span>
         <span className="text-[10px] text-muted-foreground">·</span>
         <TooltipProvider delayDuration={150}>
@@ -283,19 +368,25 @@ const ImpactCard = ({ impact, onNavigate }: { impact: CrossImpact; onNavigate: (
               </span>
             </TooltipTrigger>
             <TooltipContent side="bottom" className="max-w-xs">
-              <p className="text-xs font-bold mb-1">{impact.indicatorId} — {impact.label}</p>
+              <p className="text-xs font-bold mb-1">
+                {impact.indicatorId} — {impact.label}
+              </p>
               {idx?.metodologia?.interpretazione && (
                 <p className="text-[11px] text-muted-foreground leading-snug whitespace-pre-line">
                   {idx.metodologia.interpretazione.split("\n").slice(0, 3).join("\n")}
                 </p>
               )}
               {!idx?.metodologia?.interpretazione && idx?.assessment?.text && (
-                <p className="text-[11px] text-muted-foreground leading-snug">{idx.assessment.text}</p>
+                <p className="text-[11px] text-muted-foreground leading-snug">
+                  {idx.assessment.text}
+                </p>
               )}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        {pct !== null && <span className="ml-auto text-base font-extrabold text-foreground">{pct}%</span>}
+        {pct !== null && (
+          <span className="ml-auto text-base font-extrabold text-foreground">{pct}%</span>
+        )}
       </div>
 
       {/* Narrative assessment */}
@@ -318,7 +409,13 @@ const ImpactCard = ({ impact, onNavigate }: { impact: CrossImpact; onNavigate: (
 };
 
 /* ── Operative correlation card ── */
-const OperativeCorrelationCard = ({ corr, onNavigate }: { corr: OperativeCorrelation; onNavigate: (nav: NavState) => void }) => (
+const OperativeCorrelationCard = ({
+  corr,
+  onNavigate,
+}: {
+  corr: OperativeCorrelation;
+  onNavigate: (nav: NavState) => void;
+}) => (
   <button
     onClick={() => corr.drillTarget && onNavigate(corr.drillTarget as NavState)}
     disabled={!corr.drillTarget}
@@ -337,7 +434,9 @@ const OperativeCorrelationCard = ({ corr, onNavigate }: { corr: OperativeCorrela
 
 /* ── Step content panel ── */
 const StepPanel = ({
-  step, journey, onNavigate,
+  step,
+  journey,
+  onNavigate,
 }: {
   step: JourneyStep;
   journey: GuidedJourneyDef;
@@ -345,7 +444,13 @@ const StepPanel = ({
 }) => (
   <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-300">
     {/* Question */}
-    <div className="rounded-xl border-2 p-5" style={{ borderColor: `hsl(var(${journey.colorVar}) / 0.35)`, background: `hsl(var(${journey.colorVar}) / 0.04)` }}>
+    <div
+      className="rounded-xl border-2 p-5"
+      style={{
+        borderColor: `hsl(var(${journey.colorVar}) / 0.35)`,
+        background: `hsl(var(${journey.colorVar}) / 0.04)`,
+      }}
+    >
       <h3 className="text-lg font-extrabold text-foreground mb-1">{step.title}</h3>
       <p className="text-base font-semibold" style={{ color: `hsl(var(${journey.colorVar}))` }}>
         {step.question}
@@ -355,19 +460,33 @@ const StepPanel = ({
       {/* Conditional narratives for IGF-like indicators */}
       {step.conditionalNarratives && (
         <div className="mt-3 space-y-2 border-t pt-3">
-          <p className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Lettura per fascia</p>
+          <p className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
+            Lettura per fascia
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <div className="rounded-lg bg-[hsl(var(--chart-green))]/10 p-2.5">
-              <p className="text-[10px] font-bold text-[hsl(var(--chart-green))] mb-1">IGF ≥ 0,70</p>
-              <p className="text-[11px] text-muted-foreground leading-snug">{step.conditionalNarratives.high}</p>
+              <p className="text-[10px] font-bold text-[hsl(var(--chart-green))] mb-1">
+                IGF ≥ 0,70
+              </p>
+              <p className="text-[11px] text-muted-foreground leading-snug">
+                {step.conditionalNarratives.high}
+              </p>
             </div>
             <div className="rounded-lg bg-[hsl(var(--chart-orange))]/10 p-2.5">
-              <p className="text-[10px] font-bold text-[hsl(var(--chart-orange))] mb-1">IGF 0,40–0,60</p>
-              <p className="text-[11px] text-muted-foreground leading-snug">{step.conditionalNarratives.medium}</p>
+              <p className="text-[10px] font-bold text-[hsl(var(--chart-orange))] mb-1">
+                IGF 0,40–0,60
+              </p>
+              <p className="text-[11px] text-muted-foreground leading-snug">
+                {step.conditionalNarratives.medium}
+              </p>
             </div>
             <div className="rounded-lg bg-[hsl(var(--destructive))]/10 p-2.5">
-              <p className="text-[10px] font-bold text-[hsl(var(--destructive))] mb-1">IGF ≤ 0,30</p>
-              <p className="text-[11px] text-muted-foreground leading-snug">{step.conditionalNarratives.low}</p>
+              <p className="text-[10px] font-bold text-[hsl(var(--destructive))] mb-1">
+                IGF ≤ 0,30
+              </p>
+              <p className="text-[11px] text-muted-foreground leading-snug">
+                {step.conditionalNarratives.low}
+              </p>
             </div>
           </div>
         </div>
@@ -382,7 +501,12 @@ const StepPanel = ({
         </h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {step.kpiIds.map((id) => (
-            <NarrativeKpiCard key={id} id={id} insight={step.insights?.[id]} onNavigate={onNavigate} />
+            <NarrativeKpiCard
+              key={id}
+              id={id}
+              insight={step.insights?.[id]}
+              onNavigate={onNavigate}
+            />
           ))}
         </div>
       </div>
@@ -410,7 +534,11 @@ const StepPanel = ({
         </h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {step.impacts.map((imp) => (
-            <ImpactCard key={`${imp.pillar}-${imp.indicatorId}`} impact={imp} onNavigate={onNavigate} />
+            <ImpactCard
+              key={`${imp.pillar}-${imp.indicatorId}`}
+              impact={imp}
+              onNavigate={onNavigate}
+            />
           ))}
         </div>
       </div>
@@ -430,13 +558,21 @@ const StepPanel = ({
 );
 
 /* ── Main component ── */
-export const GuidedJourney = ({ journey, onNavigate, onExit, initialStep = 0, embedded }: GuidedJourneyProps) => {
+export const GuidedJourney = ({
+  journey,
+  onNavigate,
+  onExit,
+  initialStep = 0,
+  embedded,
+}: GuidedJourneyProps) => {
   const [currentStep, setCurrentStep] = useState(initialStep);
   const steps = journey.steps;
   const step = steps[currentStep];
 
   useEffect(() => {
-    const nextStep = Number.isFinite(initialStep) ? Math.min(Math.max(initialStep, 0), steps.length - 1) : 0;
+    const nextStep = Number.isFinite(initialStep)
+      ? Math.min(Math.max(initialStep, 0), steps.length - 1)
+      : 0;
     setCurrentStep(nextStep);
   }, [initialStep, steps.length, journey.id]);
 
@@ -445,7 +581,9 @@ export const GuidedJourney = ({ journey, onNavigate, onExit, initialStep = 0, em
   return (
     <div className={embedded ? "flex flex-col h-full" : "flex-1 p-6 space-y-4"}>
       {/* Header */}
-      <div className={`flex items-center justify-between ${embedded ? "bg-[hsl(213,50%,20%)] px-5 py-4 flex-shrink-0" : ""}`}>
+      <div
+        className={`flex items-center justify-between ${embedded ? "bg-[hsl(213,50%,20%)] px-5 py-4 flex-shrink-0" : ""}`}
+      >
         <div className="flex items-center gap-3">
           <button
             onClick={onExit}
@@ -458,16 +596,25 @@ export const GuidedJourney = ({ journey, onNavigate, onExit, initialStep = 0, em
             <ArrowLeft className="h-4 w-4" /> {embedded ? "Chiudi" : "Executive"}
           </button>
           <div>
-            <h2 className={`text-lg font-extrabold flex items-center gap-2 ${embedded ? "text-white" : "text-foreground"}`}>
-              <span className="px-2 py-0.5 rounded text-xs font-extrabold text-primary-foreground" style={{ background: `hsl(var(${journey.colorVar}))` }}>
+            <h2
+              className={`text-lg font-extrabold flex items-center gap-2 ${embedded ? "text-white" : "text-foreground"}`}
+            >
+              <span
+                className="px-2 py-0.5 rounded text-xs font-extrabold text-primary-foreground"
+                style={{ background: `hsl(var(${journey.colorVar}))` }}
+              >
                 {journey.pillar}
               </span>
               {journey.title}
             </h2>
-            <p className={`text-sm ${embedded ? "text-white/60" : "text-muted-foreground"}`}>{journey.subtitle}</p>
+            <p className={`text-sm ${embedded ? "text-white/60" : "text-muted-foreground"}`}>
+              {journey.subtitle}
+            </p>
           </div>
         </div>
-        <span className={`text-sm font-bold ${embedded ? "text-white/60" : "text-muted-foreground"}`}>
+        <span
+          className={`text-sm font-bold ${embedded ? "text-white/60" : "text-muted-foreground"}`}
+        >
           {currentStep + 1} / {steps.length}
         </span>
       </div>
@@ -486,74 +633,95 @@ export const GuidedJourney = ({ journey, onNavigate, onExit, initialStep = 0, em
                     key={s.id}
                     onClick={() => setCurrentStep(i)}
                     className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-left transition-all whitespace-nowrap flex-shrink-0 ${
-                      isActive ? "bg-primary/10 border border-primary/30" : isCompleted ? "bg-muted/50" : "hover:bg-muted/30"
+                      isActive
+                        ? "bg-primary/10 border border-primary/30"
+                        : isCompleted
+                          ? "bg-muted/50"
+                          : "hover:bg-muted/30"
                     }`}
                   >
                     <span className="flex-shrink-0">
                       {isCompleted ? (
                         <Check className="h-4 w-4 text-primary" />
                       ) : isActive ? (
-                        <CircleDot className="h-4 w-4" style={{ color: `hsl(var(${journey.colorVar}))` }} />
+                        <CircleDot
+                          className="h-4 w-4"
+                          style={{ color: `hsl(var(${journey.colorVar}))` }}
+                        />
                       ) : (
                         <Circle className="h-4 w-4 text-muted-foreground/40" />
                       )}
                     </span>
-                    <span className={`text-xs font-bold ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
+                    <span
+                      className={`text-xs font-bold ${isActive ? "text-foreground" : "text-muted-foreground"}`}
+                    >
                       {i + 1}. {s.title}
                     </span>
                   </button>
                 );
               })}
             </div>
-             <StepPanel step={step} journey={journey} onNavigate={handleNavigateFromStep} />
+            <StepPanel step={step} journey={journey} onNavigate={handleNavigateFromStep} />
           </>
         ) : (
           <div className="space-y-6">
             <PillarExecutiveSummary journey={journey} />
             <div className="flex gap-6">
-            <nav className="hidden md:flex flex-col gap-0 min-w-[220px]" aria-label="Step del percorso">
-              {steps.map((s, i) => {
-                const isActive = i === currentStep;
-                const isCompleted = i < currentStep;
-                return (
-                  <button
-                    key={s.id}
-                    onClick={() => setCurrentStep(i)}
-                    className={`flex items-start gap-3 px-3 py-3 rounded-lg text-left transition-all ${
-                      isActive ? "bg-primary/10" : "hover:bg-muted/50"
-                    }`}
-                  >
-                    <span className="mt-0.5 flex-shrink-0">
-                      {isCompleted ? (
-                        <Check className="h-5 w-5 text-primary" />
-                      ) : isActive ? (
-                        <CircleDot className="h-5 w-5" style={{ color: `hsl(var(${journey.colorVar}))` }} />
-                      ) : (
-                        <Circle className="h-5 w-5 text-muted-foreground/40" />
-                      )}
-                    </span>
-                    <div className="flex flex-col">
-                      <span className={`text-xs font-extrabold ${isActive ? "text-foreground" : isCompleted ? "text-primary" : "text-muted-foreground"}`}>
-                        Tappa {i + 1}
+              <nav
+                className="hidden md:flex flex-col gap-0 min-w-[220px]"
+                aria-label="Step del percorso"
+              >
+                {steps.map((s, i) => {
+                  const isActive = i === currentStep;
+                  const isCompleted = i < currentStep;
+                  return (
+                    <button
+                      key={s.id}
+                      onClick={() => setCurrentStep(i)}
+                      className={`flex items-start gap-3 px-3 py-3 rounded-lg text-left transition-all ${
+                        isActive ? "bg-primary/10" : "hover:bg-muted/50"
+                      }`}
+                    >
+                      <span className="mt-0.5 flex-shrink-0">
+                        {isCompleted ? (
+                          <Check className="h-5 w-5 text-primary" />
+                        ) : isActive ? (
+                          <CircleDot
+                            className="h-5 w-5"
+                            style={{ color: `hsl(var(${journey.colorVar}))` }}
+                          />
+                        ) : (
+                          <Circle className="h-5 w-5 text-muted-foreground/40" />
+                        )}
                       </span>
-                      <span className={`text-[11px] leading-tight ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
-                        {s.title}
-                      </span>
-                    </div>
-                  </button>
-                );
-              })}
-            </nav>
-            <div className="flex-1 min-w-0">
-              <StepPanel step={step} journey={journey} onNavigate={handleNavigateFromStep} />
+                      <div className="flex flex-col">
+                        <span
+                          className={`text-xs font-extrabold ${isActive ? "text-foreground" : isCompleted ? "text-primary" : "text-muted-foreground"}`}
+                        >
+                          Tappa {i + 1}
+                        </span>
+                        <span
+                          className={`text-[11px] leading-tight ${isActive ? "text-foreground" : "text-muted-foreground"}`}
+                        >
+                          {s.title}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </nav>
+              <div className="flex-1 min-w-0">
+                <StepPanel step={step} journey={journey} onNavigate={handleNavigateFromStep} />
+              </div>
             </div>
-          </div>
           </div>
         )}
       </div>
 
       {/* Navigation buttons */}
-      <div className={`flex items-center justify-between pt-2 border-t ${embedded ? "px-5 pb-4 flex-shrink-0" : ""}`}>
+      <div
+        className={`flex items-center justify-between pt-2 border-t ${embedded ? "px-5 pb-4 flex-shrink-0" : ""}`}
+      >
         <button
           onClick={() => setCurrentStep((p) => Math.max(0, p - 1))}
           disabled={currentStep === 0}

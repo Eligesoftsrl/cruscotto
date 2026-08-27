@@ -45,10 +45,18 @@ const Index = () => {
   const getInitialNav = (): NavState => {
     const level = searchParams.get("level") as NavState["level"] | null;
     if (level === "synthetic") {
-      return { level: "synthetic", pillar: searchParams.get("pillar") ?? undefined, indicator: searchParams.get("indicator") ?? undefined };
+      return {
+        level: "synthetic",
+        pillar: searchParams.get("pillar") ?? undefined,
+        indicator: searchParams.get("indicator") ?? undefined,
+      };
     }
     if (level === "operational") {
-      return { level: "operational", source: searchParams.get("source") ?? undefined, indicator: searchParams.get("indicator") ?? undefined };
+      return {
+        level: "operational",
+        source: searchParams.get("source") ?? undefined,
+        indicator: searchParams.get("indicator") ?? undefined,
+      };
     }
     return { level: "executive" };
   };
@@ -69,7 +77,9 @@ const Index = () => {
     if (nav.level === "executive") {
       return (
         <ExecutiveView
-          onDrillDown={(pillar, indicatorId) => setNav({ level: "synthetic", pillar, indicator: indicatorId })}
+          onDrillDown={(pillar, indicatorId) =>
+            setNav({ level: "synthetic", pillar, indicator: indicatorId })
+          }
           onStartJourney={(journeyId) => setNav({ level: "guided", journeyId })}
         />
       );
@@ -81,7 +91,9 @@ const Index = () => {
           <SyntheticPillarView
             pillar={nav.pillar}
             selectedIndicator={nav.indicator}
-            onSelectIndicator={(id) => setNav({ level: "synthetic", pillar: nav.pillar, indicator: id })}
+            onSelectIndicator={(id) =>
+              setNav({ level: "synthetic", pillar: nav.pillar, indicator: id })
+            }
             onGoExecutive={() => setNav({ level: "executive" })}
           />
         );

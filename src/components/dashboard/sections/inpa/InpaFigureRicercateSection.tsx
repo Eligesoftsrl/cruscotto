@@ -1,18 +1,43 @@
 import { useEffect, useState } from "react";
 import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
 import { fetchInpaBandi } from "@/services/dw/inpaService";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
 
-const COLORS = ["hsl(210,80%,45%)", "hsl(30,85%,55%)", "hsl(150,60%,40%)", "hsl(340,70%,55%)", "hsl(260,50%,55%)", "hsl(180,60%,40%)", "hsl(45,80%,50%)", "hsl(300,50%,55%)"];
+const COLORS = [
+  "hsl(210,80%,45%)",
+  "hsl(30,85%,55%)",
+  "hsl(150,60%,40%)",
+  "hsl(340,70%,55%)",
+  "hsl(260,50%,55%)",
+  "hsl(180,60%,40%)",
+  "hsl(45,80%,50%)",
+  "hsl(300,50%,55%)",
+];
 
 // Classificazione base delle figure ricercate
 const classifyFigura = (figura: string): string => {
   const f = (figura ?? "").toLowerCase();
-  if (f.includes("inform") || f.includes("digit") || f.includes("ict") || f.includes("tecnolog")) return "Informatico / Digitale";
-  if (f.includes("giurid") || f.includes("legal") || f.includes("ammin") || f.includes("funzion")) return "Giuridico / Amministrativo";
-  if (f.includes("tecnic") || f.includes("ingegn") || f.includes("architect")) return "Tecnico / Ingegneristico";
-  if (f.includes("econom") || f.includes("contab") || f.includes("finan") || f.includes("ragion")) return "Economico / Finanziario";
-  if (f.includes("sanit") || f.includes("medic") || f.includes("inferm") || f.includes("farmac")) return "Sanitario";
+  if (f.includes("inform") || f.includes("digit") || f.includes("ict") || f.includes("tecnolog"))
+    return "Informatico / Digitale";
+  if (f.includes("giurid") || f.includes("legal") || f.includes("ammin") || f.includes("funzion"))
+    return "Giuridico / Amministrativo";
+  if (f.includes("tecnic") || f.includes("ingegn") || f.includes("architect"))
+    return "Tecnico / Ingegneristico";
+  if (f.includes("econom") || f.includes("contab") || f.includes("finan") || f.includes("ragion"))
+    return "Economico / Finanziario";
+  if (f.includes("sanit") || f.includes("medic") || f.includes("inferm") || f.includes("farmac"))
+    return "Sanitario";
   if (f.includes("comunic") || f.includes("relaz") || f.includes("stampa")) return "Comunicazione";
   if (f.includes("dirig")) return "Dirigenziale";
   return "Altro";
@@ -54,14 +79,18 @@ export const InpaFigureRicercateSection = () => {
             candidature: v.candidature,
             pct: totale > 0 ? +((v.bandi / totale) * 100).toFixed(1) : 0,
           }))
-          .sort((a, b) => b.bandi - a.bandi)
+          .sort((a, b) => b.bandi - a.bandi),
       );
 
       setByFigura(
         Object.entries(figCount)
-          .map(([name, v]) => ({ name, ...v, pct: totale > 0 ? +((v.bandi / totale) * 100).toFixed(1) : 0 }))
+          .map(([name, v]) => ({
+            name,
+            ...v,
+            pct: totale > 0 ? +((v.bandi / totale) * 100).toFixed(1) : 0,
+          }))
           .sort((a, b) => b.bandi - a.bandi)
-          .slice(0, 15)
+          .slice(0, 15),
       );
     };
     load();
@@ -74,14 +103,20 @@ export const InpaFigureRicercateSection = () => {
       <div className="grid grid-cols-3 gap-3">
         {[
           { label: "Categorie Professionali", value: byCategoria.length },
-          { label: "Categoria Più Richiesta", value: topCat?.name ?? "-", sub: topCat ? `${topCat.pct}% dei bandi` : "" },
+          {
+            label: "Categoria Più Richiesta",
+            value: topCat?.name ?? "-",
+            sub: topCat ? `${topCat.pct}% dei bandi` : "",
+          },
           { label: "Figure Distinte", value: byFigura.length },
         ].map((kpi) => (
           <div key={kpi.label} className="tableau-card">
             <div className="p-4 text-center">
               <div className="text-xl font-bold text-foreground">{kpi.value}</div>
               <div className="text-[11px] text-muted-foreground mt-1">{kpi.label}</div>
-              {"sub" in kpi && kpi.sub && <div className="text-[9px] text-muted-foreground/60 mt-0.5">{kpi.sub}</div>}
+              {"sub" in kpi && kpi.sub && (
+                <div className="text-[9px] text-muted-foreground/60 mt-0.5">{kpi.sub}</div>
+              )}
             </div>
           </div>
         ))}
@@ -94,8 +129,18 @@ export const InpaFigureRicercateSection = () => {
             <div className="p-4" style={{ height: 320 }}>
               <ResponsiveContainer>
                 <PieChart>
-                  <Pie data={byCategoria} dataKey="pct" nameKey="name" cx="50%" cy="50%" outerRadius={100} label={({ name, pct }) => `${name}: ${pct}%`}>
-                    {byCategoria.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                  <Pie
+                    data={byCategoria}
+                    dataKey="pct"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    label={({ name, pct }) => `${name}: ${pct}%`}
+                  >
+                    {byCategoria.map((_, i) => (
+                      <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                    ))}
                   </Pie>
                   <Tooltip formatter={(v: any) => `${v}%`} />
                 </PieChart>

@@ -7,7 +7,11 @@ interface ExportButtonProps {
   label?: string;
 }
 
-export const ExportButton = ({ getData, filename = "export", label = "Esporta CSV" }: ExportButtonProps) => {
+export const ExportButton = ({
+  getData,
+  filename = "export",
+  label = "Esporta CSV",
+}: ExportButtonProps) => {
   const [exporting, setExporting] = useState(false);
 
   const handleExport = () => {
@@ -15,10 +19,14 @@ export const ExportButton = ({ getData, filename = "export", label = "Esporta CS
     try {
       const { headers, rows } = getData();
       const bom = "\uFEFF";
-      const csv = bom + [
-        headers.join(";"),
-        ...rows.map(row => row.map(cell => `"${String(cell ?? "").replace(/"/g, '""')}"`).join(";")),
-      ].join("\n");
+      const csv =
+        bom +
+        [
+          headers.join(";"),
+          ...rows.map((row) =>
+            row.map((cell) => `"${String(cell ?? "").replace(/"/g, '""')}"`).join(";"),
+          ),
+        ].join("\n");
 
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);

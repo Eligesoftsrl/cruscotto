@@ -8,9 +8,10 @@ const Welcome = () => {
   const navigate = useNavigate();
   const { profile } = useAuth();
 
-  const orgLabel = profile?.role === "dfp"
-    ? "Dipartimento della Funzione Pubblica"
-    : profile?.ente_denominazione ?? "Il tuo Ente";
+  const orgLabel =
+    profile?.role === "dfp"
+      ? "Dipartimento della Funzione Pubblica"
+      : (profile?.ente_denominazione ?? "Il tuo Ente");
 
   const today = new Date().toLocaleDateString("it-IT", {
     weekday: "long",
@@ -31,8 +32,8 @@ const Welcome = () => {
             Benvenuto nel Cruscotto HR
           </h1>
           <p className="text-sm text-muted-foreground max-w-lg mx-auto">
-            {orgLabel} — Sistema di Monitoraggio HR della Pubblica Amministrazione.
-            Scegli come esplorare i dati del tuo ente.
+            {orgLabel} — Sistema di Monitoraggio HR della Pubblica Amministrazione. Scegli come
+            esplorare i dati del tuo ente.
           </p>
         </div>
 
@@ -48,7 +49,8 @@ const Welcome = () => {
             </div>
             <h2 className="text-lg font-bold text-foreground mb-2">Navigazione Guidata</h2>
             <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-              Esplora i dati attraverso domande e percorsi narrativi, pensato per chi cerca risposte rapide e un quadro d'insieme.
+              Esplora i dati attraverso domande e percorsi narrativi, pensato per chi cerca risposte
+              rapide e un quadro d'insieme.
             </p>
             <div className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-primary group-hover:gap-3 transition-all">
               Inizia il percorso <ArrowRight className="h-4 w-4" />
@@ -65,7 +67,8 @@ const Welcome = () => {
             </div>
             <h2 className="text-lg font-bold text-foreground mb-2">Vista Tecnica</h2>
             <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-              Accedi direttamente agli indicatori, ai benchmark e alle analisi di dettaglio, pensato per analisti e statistici.
+              Accedi direttamente agli indicatori, ai benchmark e alle analisi di dettaglio, pensato
+              per analisti e statistici.
             </p>
             <div className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-muted-foreground group-hover:text-foreground group-hover:gap-3 transition-all">
               Accedi al cruscotto <ArrowRight className="h-4 w-4" />
@@ -75,7 +78,11 @@ const Welcome = () => {
 
         {/* Footer logos */}
         <div className="flex justify-center">
-          <img src={headerLogos} alt="Loghi istituzionali" className="h-10 object-contain opacity-60" />
+          <img
+            src={headerLogos}
+            alt="Loghi istituzionali"
+            className="h-10 object-contain opacity-60"
+          />
         </div>
       </main>
     </div>

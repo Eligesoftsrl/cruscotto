@@ -1,7 +1,18 @@
 import { useEffect, useState } from "react";
 import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
 import { fetchInpaBandi } from "@/services/dw/inpaService";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine, Cell } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  ReferenceLine,
+  Cell,
+} from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 
 /**
@@ -23,7 +34,14 @@ export const InpaEfficaciaSection = () => {
           const cands = b.num_candidature_submitted ?? 0;
           const posti = b.num_posti ?? 0;
           const saturazione = posti > 0 ? Math.round((cands / posti) * 100) : 0;
-          const classe = saturazione > 500 ? "Critico" : saturazione > 200 ? "Sovrasaturo" : saturazione >= 50 ? "Equilibrato" : "Sottosaturo";
+          const classe =
+            saturazione > 500
+              ? "Critico"
+              : saturazione > 200
+                ? "Sovrasaturo"
+                : saturazione >= 50
+                  ? "Equilibrato"
+                  : "Sottosaturo";
           return {
             titolo: (b.figura_ricercata ?? b.codice ?? "N/D").substring(0, 22),
             regione: b.regione ?? "-",
@@ -41,7 +59,9 @@ export const InpaEfficaciaSection = () => {
   }, [enteIds]);
 
   const classi = { Critico: 0, Sovrasaturo: 0, Equilibrato: 0, Sottosaturo: 0 };
-  data.forEach((d) => { if (d.classe in classi) classi[d.classe as keyof typeof classi]++; });
+  data.forEach((d) => {
+    if (d.classe in classi) classi[d.classe as keyof typeof classi]++;
+  });
   const totale = data.length;
 
   const classColors: Record<string, string> = {
@@ -63,7 +83,9 @@ export const InpaEfficaciaSection = () => {
         {distribuzione.map((d) => (
           <div key={d.name} className="tableau-card">
             <div className="p-4 text-center">
-              <div className="text-2xl font-bold" style={{ color: classColors[d.name] }}>{d.value}</div>
+              <div className="text-2xl font-bold" style={{ color: classColors[d.name] }}>
+                {d.value}
+              </div>
               <div className="text-[11px] text-muted-foreground mt-1">{d.name}</div>
               <div className="text-[9px] text-muted-foreground/60 mt-0.5">{d.pct}% dei bandi</div>
             </div>
@@ -75,7 +97,8 @@ export const InpaEfficaciaSection = () => {
         <div className="tableau-card-header">
           Saturazione Bandi (Candidature / Posti × 100)
           <span className="ml-2 text-[10px] font-normal text-muted-foreground">
-            &lt;50% = Sottosaturo · 50-200% = Equilibrato · 200-500% = Sovrasaturo · &gt;500% = Critico
+            &lt;50% = Sottosaturo · 50-200% = Equilibrato · 200-500% = Sovrasaturo · &gt;500% =
+            Critico
           </span>
         </div>
         <div className="p-4" style={{ height: 380 }}>
@@ -85,7 +108,12 @@ export const InpaEfficaciaSection = () => {
               <XAxis type="number" tick={{ fontSize: 11 }} unit="%" />
               <YAxis type="category" dataKey="titolo" tick={{ fontSize: 10 }} width={120} />
               <Tooltip formatter={(v: any) => `${v}%`} />
-              <ReferenceLine x={100} stroke="hsl(var(--foreground))" strokeDasharray="5 5" label={{ value: "100%", fontSize: 10 }} />
+              <ReferenceLine
+                x={100}
+                stroke="hsl(var(--foreground))"
+                strokeDasharray="5 5"
+                label={{ value: "100%", fontSize: 10 }}
+              />
               <Bar dataKey="saturazione" name="Saturazione %">
                 {data.slice(0, 20).map((entry, i) => (
                   <Cell key={i} fill={classColors[entry.classe] ?? "hsl(210,80%,45%)"} />
@@ -107,14 +135,31 @@ export const InpaEfficaciaSection = () => {
               { key: "tipo", header: "Tipo" },
               { key: "posti", header: "Posti", align: "right" },
               { key: "candidature", header: "Candidature", align: "right" },
-              { key: "saturazione", header: "Saturazione %", align: "right", render: (r: any) => (
-                <span className="font-semibold" style={{ color: classColors[r.classe] }}>{r.saturazione}%</span>
-              )},
-              { key: "classe", header: "Classe", render: (r: any) => (
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: classColors[r.classe] + "20", color: classColors[r.classe] }}>
-                  {r.classe}
-                </span>
-              )},
+              {
+                key: "saturazione",
+                header: "Saturazione %",
+                align: "right",
+                render: (r: any) => (
+                  <span className="font-semibold" style={{ color: classColors[r.classe] }}>
+                    {r.saturazione}%
+                  </span>
+                ),
+              },
+              {
+                key: "classe",
+                header: "Classe",
+                render: (r: any) => (
+                  <span
+                    className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                    style={{
+                      backgroundColor: classColors[r.classe] + "20",
+                      color: classColors[r.classe],
+                    }}
+                  >
+                    {r.classe}
+                  </span>
+                ),
+              },
             ]}
           />
         </div>

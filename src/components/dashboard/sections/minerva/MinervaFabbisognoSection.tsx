@@ -2,7 +2,16 @@ import { useEffect, useState } from "react";
 import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
 import { fetchPtfpReclutamento } from "@/services/dw/minervaService";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 
 export const MinervaFabbisognoSection = () => {
   const { data: enteIds } = useFilteredEnteIds();
@@ -13,26 +22,33 @@ export const MinervaFabbisognoSection = () => {
       const reclutamento = await fetchPtfpReclutamento();
       if (!reclutamento) return;
 
-      setData(reclutamento.map((r: any) => ({
-        ente: r.cfiscale_amm ?? "-",
-        triennio: r.triennio ?? "-",
-        anno: r.anno_piano ?? "-",
-        area: r.area_giuridica ?? "-",
-        profilo: r.profilo_di_ruolo ?? "-",
-        procedura: r.procedura_selettiva ?? "-",
-        ula: r.ula_da_assumere ?? 0,
-        valore: Number(r.valore_economico ?? 0).toLocaleString("it-IT"),
-      })));
+      setData(
+        reclutamento.map((r: any) => ({
+          ente: r.cfiscale_amm ?? "-",
+          triennio: r.triennio ?? "-",
+          anno: r.anno_piano ?? "-",
+          area: r.area_giuridica ?? "-",
+          profilo: r.profilo_di_ruolo ?? "-",
+          procedura: r.procedura_selettiva ?? "-",
+          ula: r.ula_da_assumere ?? 0,
+          valore: Number(r.valore_economico ?? 0).toLocaleString("it-IT"),
+        })),
+      );
     };
     load();
   }, [enteIds]);
 
-  const byArea = data.reduce((acc, r) => {
-    if (!acc[r.area]) acc[r.area] = { ula: 0 };
-    acc[r.area].ula += r.ula;
-    return acc;
-  }, {} as Record<string, { ula: number }>);
-  const chartData = Object.entries(byArea).map(([area, v]) => ({ area, ula: (v as any).ula })).sort((a, b) => b.ula - a.ula);
+  const byArea = data.reduce(
+    (acc, r) => {
+      if (!acc[r.area]) acc[r.area] = { ula: 0 };
+      acc[r.area].ula += r.ula;
+      return acc;
+    },
+    {} as Record<string, { ula: number }>,
+  );
+  const chartData = Object.entries(byArea)
+    .map(([area, v]) => ({ area, ula: (v as any).ula }))
+    .sort((a, b) => b.ula - a.ula);
 
   return (
     <div className="p-4 space-y-4">
@@ -45,7 +61,12 @@ export const MinervaFabbisognoSection = () => {
               <XAxis type="number" tick={{ fontSize: 11 }} />
               <YAxis type="category" dataKey="area" tick={{ fontSize: 10 }} width={120} />
               <Tooltip />
-              <Bar dataKey="ula" name="ULA da assumere" fill="hsl(210,80%,45%)" radius={[0, 4, 4, 0]} />
+              <Bar
+                dataKey="ula"
+                name="ULA da assumere"
+                fill="hsl(210,80%,45%)"
+                radius={[0, 4, 4, 0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>

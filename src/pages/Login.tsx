@@ -91,7 +91,8 @@ const Login = () => {
                   Dipartimento della Funzione Pubblica
                 </h2>
                 <p className="text-[13px] text-muted-foreground leading-relaxed">
-                  Accesso completo a tutti gli enti. Visualizzazione aggregata, filtri e confronto tra amministrazioni.
+                  Accesso completo a tutti gli enti. Visualizzazione aggregata, filtri e confronto
+                  tra amministrazioni.
                 </p>
               </div>
               <div className="mt-auto pt-3 text-[12px] font-bold text-primary group-hover:underline uppercase tracking-wide">
@@ -118,7 +119,8 @@ const Login = () => {
                   Responsabile HR — Ente
                 </h2>
                 <p className="text-[13px] text-muted-foreground leading-relaxed">
-                  Accesso limitato ai dati del proprio ente. Seleziona il comune per visualizzare i dati.
+                  Accesso limitato ai dati del proprio ente. Seleziona il comune per visualizzare i
+                  dati.
                 </p>
               </div>
               <div className="mt-auto pt-3 text-[12px] font-bold text-accent group-hover:underline uppercase tracking-wide">
@@ -131,7 +133,10 @@ const Login = () => {
         {step === "pick_ente" && (
           <div className="w-full max-w-md space-y-4">
             <button
-              onClick={() => { setStep("choose"); setSelectedEnte(null); }}
+              onClick={() => {
+                setStep("choose");
+                setSelectedEnte(null);
+              }}
               className="text-[13px] text-primary hover:underline font-semibold transition-colors"
             >
               ← Torna alla selezione profilo
@@ -145,7 +150,9 @@ const Login = () => {
                 </div>
                 <div>
                   <h2 className="text-[15px] font-bold text-foreground">Responsabile HR</h2>
-                  <p className="text-[12px] text-muted-foreground">Seleziona l'ente di appartenenza</p>
+                  <p className="text-[12px] text-muted-foreground">
+                    Seleziona l'ente di appartenenza
+                  </p>
                 </div>
               </div>
 

@@ -31,7 +31,7 @@ export const BenchmarkBar = ({ items }: BenchmarkBarProps) => {
         </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-        {items.map(item => (
+        {items.map((item) => (
           <div key={item.label} className="rounded-lg border bg-background p-3">
             <p className="mb-2 text-[11px] font-medium text-muted-foreground">{item.label}</p>
             <div className="space-y-1.5">
@@ -39,16 +39,19 @@ export const BenchmarkBar = ({ items }: BenchmarkBarProps) => {
                 { v: item.amministrazione, color: "bg-chart-blue", label: "Tua" },
                 { v: item.cluster, color: "bg-chart-teal", label: "Cluster" },
                 { v: item.complesso, color: "bg-muted-foreground/30", label: "PA" },
-              ].map(row => (
+              ].map((row) => (
                 <div key={row.label} className="flex items-center gap-2">
                   <div className="w-full rounded-full bg-muted h-1.5">
                     <div
                       className={`h-1.5 rounded-full ${row.color}`}
-                      style={{ width: `${Math.min((row.v / Math.max(item.amministrazione, item.cluster, item.complesso)) * 100, 100)}%` }}
+                      style={{
+                        width: `${Math.min((row.v / Math.max(item.amministrazione, item.cluster, item.complesso)) * 100, 100)}%`,
+                      }}
                     />
                   </div>
                   <span className="min-w-[3.5rem] text-right text-xs font-semibold text-foreground">
-                    {row.v}{item.suffix || ""}
+                    {row.v}
+                    {item.suffix || ""}
                   </span>
                 </div>
               ))}

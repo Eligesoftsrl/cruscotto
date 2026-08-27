@@ -40,10 +40,10 @@ Non ci sono URL o chiavi hardcoded nel codice (vedi `src/config/env.ts`).
 
 Il comportamento è **env-aware** grazie ai file `.env` gestiti da Vite:
 
-| Ambiente | File usato | `VITE_SUPABASE_URL` |
-|----------|-----------|---------------------|
-| **Online** (produzione/preview) | `.env` | Supabase cloud (`https://<project>.supabase.co`) |
-| **Locale** (sviluppo) | `.env.local` | Supabase self-hosted (`http://localhost:8000`) |
+| Ambiente                        | File usato   | `VITE_SUPABASE_URL`                              |
+| ------------------------------- | ------------ | ------------------------------------------------ |
+| **Online** (produzione/preview) | `.env`       | Supabase cloud (`https://<project>.supabase.co`) |
+| **Locale** (sviluppo)           | `.env.local` | Supabase self-hosted (`http://localhost:8000`)   |
 
 Vite dà **sempre precedenza** a `.env.local` rispetto a `.env`, quindi lo stesso
 codice punta al cloud online e a localhost in locale, senza modifiche.
@@ -64,13 +64,13 @@ EOF
 
 ## Script disponibili
 
-| Comando | Descrizione |
-|---------|-------------|
-| `npm run dev` | Avvia il server di sviluppo (porta 8080) |
-| `npm run build` | Build di produzione |
-| `npm run preview` | Anteprima della build di produzione |
-| `npm run lint` | Linting del codice |
-| `npm run test` | Esegue i test (Vitest) |
+| Comando           | Descrizione                              |
+| ----------------- | ---------------------------------------- |
+| `npm run dev`     | Avvia il server di sviluppo (porta 8080) |
+| `npm run build`   | Build di produzione                      |
+| `npm run preview` | Anteprima della build di produzione      |
+| `npm run lint`    | Linting del codice                       |
+| `npm run test`    | Esegue i test (Vitest)                   |
 
 ## Struttura del progetto
 

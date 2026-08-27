@@ -32,7 +32,11 @@ export async function fetchFilteredEnteIds(params: EnteFilterParams): Promise<nu
 }
 
 /** Valori distinti (comparto/regione/dimensione) da dw_ente per i filtri globali. */
-export async function fetchEnteFilterOptions(): Promise<{ comparti: string[]; regioni: string[]; dimensioni: string[] }> {
+export async function fetchEnteFilterOptions(): Promise<{
+  comparti: string[];
+  regioni: string[];
+  dimensioni: string[];
+}> {
   const [cRes, rRes, dRes] = await Promise.all([
     supabase.from("dw_ente").select("comparto").not("comparto", "is", null),
     supabase.from("dw_ente").select("regione").not("regione", "is", null),
@@ -49,7 +53,11 @@ export async function fetchEnteFilterOptions(): Promise<{ comparti: string[]; re
 
 /** Valori distinti di una colonna da lk_enti (ordinati e deduplicati). */
 export async function fetchLkEntiDistinct(column: "comparto" | "regione"): Promise<string[]> {
-  const { data } = await supabase.from("lk_enti").select(column).not(column, "is", null).order(column);
+  const { data } = await supabase
+    .from("lk_enti")
+    .select(column)
+    .not(column, "is", null)
+    .order(column);
   return [...new Set((data ?? []).map((r: any) => r[column]).filter(Boolean))] as string[];
 }
 

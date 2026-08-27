@@ -35,15 +35,34 @@ export async function fetchBussolaMetrics(enteId: number): Promise<BussolaMetric
       .reduce((s, r) => s + (Number(r.uomini) || 0) + (Number(r.donne) || 0), 0);
 
     if (total > 0) {
-      metrics["over55"] = { value: over55 / total, numerator: over55, denominator: total, description: `${Math.round((over55 / total) * 100)}% del personale \u00b7 ${over55.toLocaleString("it-IT")} unita` };
-      metrics["under35"] = { value: under35 / total, numerator: under35, denominator: total, description: `${Math.round((under35 / total) * 100)}% del personale \u00b7 ${under35.toLocaleString("it-IT")} unita` };
-      metrics["ISG"] = { value: total > 0 && over55 > 0 ? under35 / over55 : 0, numerator: under35, denominator: over55 };
+      metrics["over55"] = {
+        value: over55 / total,
+        numerator: over55,
+        denominator: total,
+        description: `${Math.round((over55 / total) * 100)}% del personale \u00b7 ${over55.toLocaleString("it-IT")} unita`,
+      };
+      metrics["under35"] = {
+        value: under35 / total,
+        numerator: under35,
+        denominator: total,
+        description: `${Math.round((under35 / total) * 100)}% del personale \u00b7 ${under35.toLocaleString("it-IT")} unita`,
+      };
+      metrics["ISG"] = {
+        value: total > 0 && over55 > 0 ? under35 / over55 : 0,
+        numerator: under35,
+        denominator: over55,
+      };
 
       const over60Bands = ["E60", "E65", "E68"];
       const over60 = etaData
         .filter((r) => over60Bands.includes(r.fascia_eta ?? ""))
         .reduce((s, r) => s + (Number(r.uomini) || 0) + (Number(r.donne) || 0), 0);
-      metrics["TEP"] = { value: over60 / total, numerator: over60, denominator: total, description: `${Math.round((over60 / total) * 100)}% in uscita entro 36 mesi \u00b7 ${over60.toLocaleString("it-IT")} unita` };
+      metrics["TEP"] = {
+        value: over60 / total,
+        numerator: over60,
+        denominator: total,
+        description: `${Math.round((over60 / total) * 100)}% in uscita entro 36 mesi \u00b7 ${over60.toLocaleString("it-IT")} unita`,
+      };
     }
   }
 
@@ -58,12 +77,18 @@ export async function fetchBussolaMetrics(enteId: number): Promise<BussolaMetric
     let totU = 0;
     let totD = 0;
     for (const r of occData) {
-      totU += (Number(r.tp_uomini) || 0) + (Number(r.pt_sup50_u) || 0) + (Number(r.pt_inf50_u) || 0);
+      totU +=
+        (Number(r.tp_uomini) || 0) + (Number(r.pt_sup50_u) || 0) + (Number(r.pt_inf50_u) || 0);
       totD += (Number(r.tp_donne) || 0) + (Number(r.pt_sup50_d) || 0) + (Number(r.pt_inf50_d) || 0);
     }
     const tot = totU + totD;
     if (tot > 0) {
-      metrics["genere"] = { value: totD / tot, numerator: totD, denominator: tot, description: `${Math.round((totD / tot) * 100)}% donne, ${Math.round((totU / tot) * 100)}% uomini` };
+      metrics["genere"] = {
+        value: totD / tot,
+        numerator: totD,
+        denominator: tot,
+        description: `${Math.round((totD / tot) * 100)}% donne, ${Math.round((totU / tot) * 100)}% uomini`,
+      };
       metrics["organico"] = { value: tot, numerator: tot, denominator: 1 };
     }
   }
@@ -74,15 +99,29 @@ export async function fetchBussolaMetrics(enteId: number): Promise<BussolaMetric
     supabase.from("dw_cessati").select("uomini, donne").eq("istituzione", enteId).eq("anno", 2023),
   ]);
 
-  const totAssunti = (assuntiData ?? []).reduce((s, r) => s + (Number(r.uomini) || 0) + (Number(r.donne) || 0), 0);
-  const totCessati = (cessatiData ?? []).reduce((s, r) => s + (Number(r.uomini) || 0) + (Number(r.donne) || 0), 0);
+  const totAssunti = (assuntiData ?? []).reduce(
+    (s, r) => s + (Number(r.uomini) || 0) + (Number(r.donne) || 0),
+    0,
+  );
+  const totCessati = (cessatiData ?? []).reduce(
+    (s, r) => s + (Number(r.uomini) || 0) + (Number(r.donne) || 0),
+    0,
+  );
   const organico = metrics["organico"]?.value ?? 0;
 
   if (organico > 0) {
-    metrics["TVO"] = { value: (totAssunti + totCessati) / (organico * 2), numerator: totAssunti + totCessati, denominator: organico };
+    metrics["TVO"] = {
+      value: (totAssunti + totCessati) / (organico * 2),
+      numerator: totAssunti + totCessati,
+      denominator: organico,
+    };
   }
   if (totCessati > 0) {
-    metrics["TSO"] = { value: totAssunti / totCessati, numerator: totAssunti, denominator: totCessati };
+    metrics["TSO"] = {
+      value: totAssunti / totCessati,
+      numerator: totAssunti,
+      denominator: totCessati,
+    };
   }
 
   // === INPA: attrattivita, tempi ===
@@ -95,7 +134,12 @@ export async function fetchBussolaMetrics(enteId: number): Promise<BussolaMetric
     const totCand = inpaData.reduce((s, r) => s + (Number(r.num_candidature_submitted) || 0), 0);
     const totPosti = inpaData.reduce((s, r) => s + (Number(r.num_posti) || 0), 0);
     if (totPosti > 0) {
-      metrics["IAP"] = { value: Math.min(totCand / (totPosti * 15), 1), numerator: totCand, denominator: totPosti, description: `${Math.round(totCand / totPosti)} candidature medie per posizione` };
+      metrics["IAP"] = {
+        value: Math.min(totCand / (totPosti * 15), 1),
+        numerator: totCand,
+        denominator: totPosti,
+        description: `${Math.round(totCand / totPosti)} candidature medie per posizione`,
+      };
     }
   }
 
@@ -109,13 +153,23 @@ export async function fetchBussolaMetrics(enteId: number): Promise<BussolaMetric
     const totBanditi = gradData.reduce((s, r) => s + (Number(r.num_posti_banditi) || 0), 0);
     const totAssuntiGrad = gradData.reduce((s, r) => s + (Number(r.num_vincitori_assunti) || 0), 0);
     const tcpValues = gradData.map((r) => Number(r.tcp_giorni) || 0).filter((v) => v > 0);
-    const avgTcp = tcpValues.length > 0 ? tcpValues.reduce((a, b) => a + b, 0) / tcpValues.length : 0;
+    const avgTcp =
+      tcpValues.length > 0 ? tcpValues.reduce((a, b) => a + b, 0) / tcpValues.length : 0;
 
     if (totBanditi > 0) {
-      metrics["TCPB"] = { value: totAssuntiGrad / totBanditi, numerator: totAssuntiGrad, denominator: totBanditi };
+      metrics["TCPB"] = {
+        value: totAssuntiGrad / totBanditi,
+        numerator: totAssuntiGrad,
+        denominator: totBanditi,
+      };
     }
     if (avgTcp > 0) {
-      metrics["TCP"] = { value: Math.max(0, 1 - avgTcp / 300), numerator: Math.round(avgTcp), denominator: 300, description: `Media ${Math.round(avgTcp)} giorni su 300 normativi` };
+      metrics["TCP"] = {
+        value: Math.max(0, 1 - avgTcp / 300),
+        numerator: Math.round(avgTcp),
+        denominator: 300,
+        description: `Media ${Math.round(avgTcp)} giorni su 300 normativi`,
+      };
     }
   }
 
@@ -136,11 +190,19 @@ export async function fetchBussolaMetrics(enteId: number): Promise<BussolaMetric
     const tep = toNum(kpiData.q6_tep_personale);
     if (tep > 0) {
       const progVert = toNum(kpiData.q6_14_progressioni_vert);
-      metrics["IPR"] = { value: Math.min(progVert / tep, 1), numerator: progVert, denominator: tep };
+      metrics["IPR"] = {
+        value: Math.min(progVert / tep, 1),
+        numerator: progVert,
+        denominator: tep,
+      };
 
       const agileD = toNum(kpiData.q6_16_donne_agile);
       const agileU = toNum(kpiData.q6_16_uomini_agile);
-      metrics["ILA"] = { value: Math.min((agileD + agileU) / tep, 1), numerator: agileD + agileU, denominator: tep };
+      metrics["ILA"] = {
+        value: Math.min((agileD + agileU) / tep, 1),
+        numerator: agileD + agileU,
+        denominator: tep,
+      };
     }
   }
 

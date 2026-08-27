@@ -1,14 +1,22 @@
 import { FilterBar } from "../FilterBar";
 import { useEtaData } from "@/hooks/useEtaData";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
 } from "recharts";
 
 export const EtaSection = () => {
   const { distribuzioneEta, totalePersonale, isLoading, error } = useEtaData(2023);
 
   if (isLoading) return <div className="p-6 text-sm text-muted-foreground">Caricamento dati…</div>;
-  if (error) return <div className="p-6 text-sm text-destructive">Errore nel caricamento dei dati.</div>;
+  if (error)
+    return <div className="p-6 text-sm text-destructive">Errore nel caricamento dei dati.</div>;
 
   return (
     <div className="space-y-6">
@@ -49,20 +57,35 @@ export const EtaSection = () => {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b">
-              <th className="px-4 py-2.5 text-left text-xs font-semibold text-muted-foreground">Fascia</th>
-              <th className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">Uomini</th>
-              <th className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">Donne</th>
-              <th className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">Totale</th>
-              <th className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">%</th>
+              <th className="px-4 py-2.5 text-left text-xs font-semibold text-muted-foreground">
+                Fascia
+              </th>
+              <th className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">
+                Uomini
+              </th>
+              <th className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">
+                Donne
+              </th>
+              <th className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">
+                Totale
+              </th>
+              <th className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">
+                %
+              </th>
             </tr>
           </thead>
           <tbody>
-            {distribuzioneEta.map(r => (
-              <tr key={r.fascia} className="border-b last:border-0 hover:bg-muted/50 transition-colors">
+            {distribuzioneEta.map((r) => (
+              <tr
+                key={r.fascia}
+                className="border-b last:border-0 hover:bg-muted/50 transition-colors"
+              >
                 <td className="px-4 py-2.5 font-medium">{r.fascia}</td>
                 <td className="px-4 py-2.5 text-right">{r.uomini.toLocaleString("it-IT")}</td>
                 <td className="px-4 py-2.5 text-right">{r.donne.toLocaleString("it-IT")}</td>
-                <td className="px-4 py-2.5 text-right font-semibold">{r.totale.toLocaleString("it-IT")}</td>
+                <td className="px-4 py-2.5 text-right font-semibold">
+                  {r.totale.toLocaleString("it-IT")}
+                </td>
                 <td className="px-4 py-2.5 text-right text-muted-foreground">
                   {totalePersonale > 0 ? ((r.totale / totalePersonale) * 100).toFixed(1) : "0.0"}%
                 </td>

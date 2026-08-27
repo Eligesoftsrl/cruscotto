@@ -1,9 +1,31 @@
 import { useEffect, useState } from "react";
 import { fetchSyllabusPa, fetchSyllabusPartecipazioni } from "@/services/dw/syllabusService";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+} from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 
-const COLORS = ["hsl(210,80%,45%)", "hsl(150,60%,40%)", "hsl(30,85%,55%)", "hsl(0,70%,50%)", "hsl(270,60%,55%)", "hsl(180,50%,45%)", "hsl(45,90%,50%)", "hsl(330,60%,50%)", "hsl(120,40%,40%)"];
+const COLORS = [
+  "hsl(210,80%,45%)",
+  "hsl(150,60%,40%)",
+  "hsl(30,85%,55%)",
+  "hsl(0,70%,50%)",
+  "hsl(270,60%,55%)",
+  "hsl(180,50%,45%)",
+  "hsl(45,90%,50%)",
+  "hsl(330,60%,50%)",
+  "hsl(120,40%,40%)",
+];
 
 export const SyllabusAmministrazioniSection = () => {
   const [byCategoria, setByCategoria] = useState<any[]>([]);
@@ -21,7 +43,9 @@ export const SyllabusAmministrazioniSection = () => {
       if (!pa) return;
 
       const partByPa: Record<number, number> = {};
-      (part ?? []).forEach((p: any) => { partByPa[p.id_pa] = (partByPa[p.id_pa] || 0) + 1; });
+      (part ?? []).forEach((p: any) => {
+        partByPa[p.id_pa] = (partByPa[p.id_pa] || 0) + 1;
+      });
 
       setTotals({ pa: pa.length, partecipazioni: part?.length ?? 0 });
 
@@ -46,9 +70,22 @@ export const SyllabusAmministrazioniSection = () => {
         });
       });
 
-      setByCategoria(Object.entries(cat).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value));
-      setByTipologia(Object.entries(tip).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value));
-      setByRegione(Object.entries(reg).map(([name, value]) => ({ name: name.substring(0, 15), value })).sort((a, b) => b.value - a.value).slice(0, 12));
+      setByCategoria(
+        Object.entries(cat)
+          .map(([name, value]) => ({ name, value }))
+          .sort((a, b) => b.value - a.value),
+      );
+      setByTipologia(
+        Object.entries(tip)
+          .map(([name, value]) => ({ name, value }))
+          .sort((a, b) => b.value - a.value),
+      );
+      setByRegione(
+        Object.entries(reg)
+          .map(([name, value]) => ({ name: name.substring(0, 15), value }))
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 12),
+      );
       setTableData(rows.sort((a, b) => b.partecipazioni - a.partecipazioni));
     };
     load();
@@ -57,8 +94,18 @@ export const SyllabusAmministrazioniSection = () => {
   return (
     <div className="p-4 space-y-4">
       <div className="grid grid-cols-2 gap-3">
-        <div className="tableau-card"><div className="p-4 text-center"><div className="text-2xl font-bold">{totals.pa}</div><div className="text-[11px] text-muted-foreground">PA Aderenti</div></div></div>
-        <div className="tableau-card"><div className="p-4 text-center"><div className="text-2xl font-bold">{totals.partecipazioni.toLocaleString()}</div><div className="text-[11px] text-muted-foreground">Partecipazioni Totali</div></div></div>
+        <div className="tableau-card">
+          <div className="p-4 text-center">
+            <div className="text-2xl font-bold">{totals.pa}</div>
+            <div className="text-[11px] text-muted-foreground">PA Aderenti</div>
+          </div>
+        </div>
+        <div className="tableau-card">
+          <div className="p-4 text-center">
+            <div className="text-2xl font-bold">{totals.partecipazioni.toLocaleString()}</div>
+            <div className="text-[11px] text-muted-foreground">Partecipazioni Totali</div>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
@@ -67,8 +114,22 @@ export const SyllabusAmministrazioniSection = () => {
           <div className="p-4" style={{ height: 280 }}>
             <ResponsiveContainer>
               <PieChart>
-                <Pie data={byCategoria} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={90} label={({ name, percent }) => `${name.substring(0, 12)} ${(percent * 100).toFixed(0)}%`} labelLine={false} fontSize={9}>
-                  {byCategoria.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                <Pie
+                  data={byCategoria}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={90}
+                  label={({ name, percent }) =>
+                    `${name.substring(0, 12)} ${(percent * 100).toFixed(0)}%`
+                  }
+                  labelLine={false}
+                  fontSize={9}
+                >
+                  {byCategoria.map((_, i) => (
+                    <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                  ))}
                 </Pie>
                 <Tooltip />
               </PieChart>
@@ -80,8 +141,22 @@ export const SyllabusAmministrazioniSection = () => {
           <div className="p-4" style={{ height: 280 }}>
             <ResponsiveContainer>
               <PieChart>
-                <Pie data={byTipologia} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={90} label={({ name, percent }) => `${name.substring(0, 18)} ${(percent * 100).toFixed(0)}%`} labelLine={false} fontSize={9}>
-                  {byTipologia.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                <Pie
+                  data={byTipologia}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={90}
+                  label={({ name, percent }) =>
+                    `${name.substring(0, 18)} ${(percent * 100).toFixed(0)}%`
+                  }
+                  labelLine={false}
+                  fontSize={9}
+                >
+                  {byTipologia.map((_, i) => (
+                    <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                  ))}
                 </Pie>
                 <Tooltip />
               </PieChart>
