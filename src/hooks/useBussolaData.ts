@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
 import { fetchBussolaMetrics, type BussolaMetrics } from "@/services/dw/bussolaService";
+import { queryKeys } from "@/services/queryKeys";
 
 export type { BussolaMetric } from "@/services/dw/bussolaService";
 
@@ -21,7 +22,7 @@ export function useBussolaData(): BussolaDataResult {
   const enteId = enteIds?.[0];
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["bussola-data", enteId],
+    queryKey: queryKeys.bussola(enteId),
     enabled: !!enteId,
     staleTime: 5 * 60 * 1000,
     queryFn: () => fetchBussolaMetrics(enteId as number),

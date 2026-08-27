@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useFilters } from "@/contexts/FilterContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { fetchFilteredEnteIds } from "@/services/dw/enteService";
+import { queryKeys } from "@/services/queryKeys";
 
 // Ri-esportato dal service per non rompere gli import esistenti nei componenti.
 export { applyEnteFilter } from "@/services/dw/enteService";
@@ -17,14 +18,13 @@ export function useFilteredEnteIds() {
   const isEnteHr = profile?.role === "ente_hr" && !!profile.ente_id;
 
   return useQuery<number[] | null>({
-    queryKey: [
-      "filtered-ente-ids",
-      filters.comparto,
-      filters.regione,
-      filters.dimensione_pa,
-      profile?.ente_id,
-      profile?.role,
-    ],
+    queryKey: queryKeys.filteredEnteIds({
+      comparto: filters.comparto,
+      regione: filters.regione,
+      dimensionePa: filters.dimensione_pa,
+      enteId: profile?.ente_id,
+      role: profile?.role,
+    }),
     queryFn: () =>
       fetchFilteredEnteIds({
         isEnteHr,

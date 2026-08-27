@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/services/queryKeys";
 import { fetchEtaData, EMPTY_ETA_DATA } from "@/services/dw/etaService";
 
 export type { DistribuzioneEtaRow } from "@/services/dw/etaService";
@@ -8,7 +9,7 @@ export type { DistribuzioneEtaRow } from "@/services/dw/etaService";
  */
 export function useEtaData(anno?: number) {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["dw_eta", anno],
+    queryKey: queryKeys.eta(anno),
     queryFn: () => fetchEtaData(anno),
   });
 

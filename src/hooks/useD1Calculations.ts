@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/services/queryKeys";
 import { fetchD1Indicators } from "@/services/dw/d1Service";
 import type { D1Filters, D1Result } from "@/services/dw/d1Service";
 
@@ -17,7 +18,7 @@ export function useD1Calculations(filters?: D1Filters) {
   const fKey = filters ?? {};
 
   return useQuery<D1Result>({
-    queryKey: ["d1-indicators", fKey],
+    queryKey: queryKeys.d1Indicators(fKey),
     queryFn: () => fetchD1Indicators(filters),
   });
 }

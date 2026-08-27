@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/services/queryKeys";
 import { fetchGenereData, EMPTY_GENERE_DATA } from "@/services/dw/genereService";
 
 export type { GenerePerQualificaRow, GenereKpiOverview } from "@/services/dw/genereService";
@@ -8,7 +9,7 @@ export type { GenerePerQualificaRow, GenereKpiOverview } from "@/services/dw/gen
  */
 export function useGenereData(anno?: number) {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["dw_occupazione_genere", anno],
+    queryKey: queryKeys.genere(anno),
     queryFn: () => fetchGenereData(anno),
   });
 

@@ -19,7 +19,8 @@ da affrontare all'occorrenza o in sessioni dedicate.
 
 ## React Query (Fase 4 — completamento)
 
-- [ ] Centralizzare le **query keys** in `src/services/queryKeys.ts` (oggi stringhe sparse nei ~20 hook).
+- [x] Centralizzate le **query keys** in `src/services/queryKeys.ts` (factory tipizzate;
+      11 hook aggiornati, 0 chiavi grezze). FATTO.
 - [x] Default sensati del `QueryClient` (staleTime/retry) — FATTO.
 - [x] Gestione errori globale (toast su query fallita) — FATTO.
 
@@ -51,6 +52,15 @@ da affrontare all'occorrenza o in sessioni dedicate.
 - [x] `OverviewHome` ("Analisi d'Insieme") ora consuma `@/fixtures` + `DemoDataBadge` di
       trasparenza. FATTO.
 - [ ] Riorganizzare `components/dashboard/` in feature-folders per dominio (P3).
+      NB: rischio elevato (35 file "sciolti" con ~25 import relativi incrociati) e nessun
+      beneficio funzionale → consigliato solo con test di regressione dedicato.
+
+## God component (Fase 8 — split strutturale)
+
+- [x] `RapportoNarrativo.tsx` 1189 -> **340** righe; wizard estratto in
+      `src/pages/reportWizardSteps.tsx`. FATTO.
+- [x] `GuidedJourney.tsx` 742 -> **228** righe; parti interne estratte in
+      `src/components/dashboard/guidedJourneyParts.tsx`. FATTO.
 
 ## Test (Fase 7 — estensione)
 

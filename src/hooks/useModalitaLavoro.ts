@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/services/queryKeys";
 import {
   fetchModalitaLavoro,
   EMPTY_MODALITA_LAVORO_DATA,
@@ -9,7 +10,7 @@ export type { LavoroAgile, LavoroFlessibile } from "@/services/dw/modalitaLavoro
 /** Hook thin: delega l'accesso ai dati a modalitaLavoroService. */
 export function useModalitaLavoro(anno = 2023) {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["dw_modalita_lavoro", anno],
+    queryKey: queryKeys.modalitaLavoro(anno),
     queryFn: () => fetchModalitaLavoro(anno),
   });
 

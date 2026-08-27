@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/services/queryKeys";
 import { fetchAssuntiData, EMPTY_ASSUNTI_DATA } from "@/services/dw/assuntiService";
 
 export type { AssuntoPerCausale, SerieStoricaAssunti } from "@/services/dw/assuntiService";
@@ -6,7 +7,7 @@ export type { AssuntoPerCausale, SerieStoricaAssunti } from "@/services/dw/assun
 /** Hook thin: delega l'accesso ai dati a assuntiService. */
 export function useAssuntiData(anno?: number) {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["dw_assunti", anno],
+    queryKey: queryKeys.assunti(anno),
     queryFn: () => fetchAssuntiData(anno),
   });
 
