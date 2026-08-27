@@ -41,6 +41,17 @@ da affrontare all'occorrenza o in sessioni dedicate.
 - [x] **Error Boundary** globale + per-route (`src/components/ErrorBoundary.tsx`): niente piu
       "schermo bianco", fallback con "Riprova"; reset automatico al cambio pagina. FATTO.
 
+## Organizzazione / pulizia mock
+
+- [x] **Rimossi tutti gli import diretti di `@/data/mockData`** dai componenti. Unico punto
+      di ingresso alle fixtures: il barrel `@/fixtures`. FATTO.
+- [x] `filterOptions` spostate in `src/config/filterOptions.ts` (tassonomia statica tipizzata);
+      FilterBar e FilterPills aggiornati. FATTO.
+- [x] Eliminati i componenti orfani `DimensionNav` e `DataSourceNav` (codice morto). FATTO.
+- [x] `OverviewHome` ("Analisi d'Insieme") ora consuma `@/fixtures` + `DemoDataBadge` di
+      trasparenza. FATTO.
+- [ ] Riorganizzare `components/dashboard/` in feature-folders per dominio (P3).
+
 ## Test (Fase 7 — estensione)
 
 - [ ] Unit test sulle trasformazioni di `assunti`, `formazione`, `modalitaLavoro` e sugli indicatori `IAC`/`D1`.

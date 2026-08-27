@@ -1,4 +1,4 @@
-import { filterOptions } from "@/data/mockData";
+import { filterOptions } from "@/config/filterOptions";
 
 interface FilterBarProps {
   showMacrocategoria?: boolean;

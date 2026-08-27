@@ -15,7 +15,8 @@ import {
   serieStoricaPersonale,
   personaleMacrocategoria,
   benchmarkData,
-} from "@/data/mockData";
+} from "@/fixtures";
+import { DemoDataBadge } from "@/components/dashboard/DemoDataBadge";
 import {
   BarChart,
   Bar,
@@ -183,6 +184,8 @@ export const OverviewHome = () => {
           Panoramica sintetica dello stato del personale · Dati al 31/12/2023{filterLabel}
         </p>
       </div>
+
+      <DemoDataBadge note="Analisi d'insieme: panoramica su dati dimostrativi, in attesa dell'aggregato di sintesi dal data warehouse. I valori variano in modo simulato al cambio dei filtri." />
 
       {/* DFP Filters */}
       {isDfp && <DfpOverviewFilters value={dfpFilters} onChange={setDfpFilters} />}

@@ -5,9 +5,9 @@
  * esplicito quando i dati reali da Supabase non sono disponibili (es. tabella
  * vuota, ambiente demo, sviluppo offline).
  *
- * Migrazione graduale: le sezioni che ancora importano da `@/data/mockData`
- * verranno spostate una alla volta a consumare i dati reali tramite gli hook in
- * `@/hooks` (che a loro volta usano i service in `@/services`). Le fixtures
- * restano qui come rete di sicurezza.
+ * Nota: nessun componente importa piu direttamente da `@/data/mockData`.
+ * L'unico punto di ingresso alle fixtures e questo barrel (`@/fixtures`), cosi
+ * la "rete di sicurezza" demo resta centralizzata e facilmente rimovibile quando
+ * le tabelle reali (es. `ca_*` via ETL) saranno popolate.
  */
 export * from "@/data/mockData";

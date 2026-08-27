@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Download, X, ChevronDown, RotateCcw } from "lucide-react";
 import { useFilters, type FilterState } from "@/contexts/FilterContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { filterOptions } from "@/data/mockData";
+import { filterOptions } from "@/config/filterOptions";
 
 interface FilterDef {
   key: keyof FilterState;
