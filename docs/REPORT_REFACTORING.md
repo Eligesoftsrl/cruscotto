@@ -26,6 +26,14 @@ codice *prima/dopo* e schermate dell'applicazione.
    - 8.5 Componenti riutilizzabili (KpiStat, ChartCard, SectionStates)
    - 8.6 Configurazione Supabase centralizzata (env-aware)
 9. Dettaglio degli interventi (fase per fase)
+9-bis. Fase di consolidamento: robustezza, qualità e organizzazione (con esempi Prima/Dopo)
+   - 9b.1 Anti "schermo bianco": Error Boundary
+   - 9b.2 Zero errori di lint (qualità del codice)
+   - 9b.3 Formattazione automatica (Prettier + EditorConfig)
+   - 9b.4 Filtri: da "mock" a configurazione statica
+   - 9b.5 Rimozione codice morto e mock residui
+   - 9b.6 Cache keys centralizzate (React Query)
+   - 9b.7 Fine dei "file mostruosi" (split dei god component)
 10. Configurazione ambienti (online / locale)
 11. Sicurezza e qualità (guardrail automatici)
 12. Performance (code-splitting)
@@ -107,6 +115,11 @@ TanStack Query (React Query) · React Router · Supabase (PostgreSQL).
 | Test unitari sulle trasformazioni pure | verdi (harness Vitest riparato) |
 | Credenziali/URL hardcoded rimossi | **tutti** → `VITE_SUPABASE_URL` |
 | Warning/errori di console applicativi | **0** |
+| Errori ESLint (dopo consolidamento) | **0** (erano 7) |
+| File "mostruosi" spezzati | 2 → il più grande da **1189 a 340 righe** |
+| Cache key React Query centralizzate | **11 hook**, 0 chiavi grezze |
+| File normalizzati con Prettier | **175** |
+| Protezione anti "schermo bianco" | Error Boundary **globale + per-route** |
 
 ---
 
@@ -448,6 +461,192 @@ mai modificare i sorgenti (vedi §10).
 
 ---
 
+## 9-bis. Fase di consolidamento: robustezza, qualità e organizzazione
+
+> Dopo aver connesso l'app ai dati reali, questa fase ha reso il codice **solido,
+> professionale e manutenibile** — il salto definitivo da "prototipo Lovable che
+> funziona" a "prodotto software di livello enterprise". Anche qui: **esempi di codice
+> reali Prima/Dopo**, perché la differenza si vede nel dettaglio.
+
+### 9b.1 Anti "schermo bianco": Error Boundary
+
+**PRIMA (Lovable):** nessuna protezione. Se un singolo componente andava in errore (un
+dato mancante, un calcolo imprevisto), **l'intera applicazione diventava una pagina
+bianca** — l'utente non capiva cosa fare e perdeva il lavoro in corso.
+
+**DOPO:** una "rete di sicurezza" (Error Boundary) globale **e per ogni pagina**. Se
+qualcosa va storto, il resto dell'app continua a funzionare e l'utente vede un messaggio
+chiaro con un pulsante "Riprova".
+
+```tsx
+// src/components/ErrorBoundary.tsx — estratto
+static getDerivedStateFromError(error: Error) {
+  return { error };                 // intercetta l'errore invece di far crashare tutto
+}
+componentDidUpdate(prev) {
+  // cambiando pagina l'errore si azzera da solo: la nuova sezione si carica pulita
+  if (this.state.error && prev.resetKey !== this.props.resetKey) this.setState({ error: null });
+}
+```
+
+```tsx
+// src/App.tsx — la protezione avvolge tutta l'app e ogni route
+<ErrorBoundary>                        {/* globale */}
+  ...
+  <RoutedErrorBoundary>                {/* per-route: si resetta ad ogni navigazione */}
+    <Suspense fallback={<FullscreenSpinner />}>
+      <Routes>...</Routes>
+    </Suspense>
+  </RoutedErrorBoundary>
+</ErrorBoundary>
+```
+
+**Perché conta:** affidabilità percepita da chi usa il cruscotto. Mai più schermate
+bianche in una riunione con i vertici.
+
+### 9b.2 Zero errori di lint (qualità del codice)
+
+Il "linter" è il controllo qualità automatico del codice. Sono stati **azzerati i 7
+errori** che si trascinavano dal prototipo. Esempio emblematico — un errore classico dei
+generatori automatici (un hook React chiamato in un punto non consentito):
+
+```diff
+-{idx.formulaBreakdown && (() => {
+-  const [drillNum, setDrillNum] = React.useState(false);   // ❌ errore: hook dentro una callback
+-  const [drillDen, setDrillDen] = React.useState(false);   // ❌
+-  ...
+-})()}
++// stati spostati a livello del componente (uso corretto degli hook)
++const [drillNum, setDrillNum] = useState(false);           // ✅
++const [drillDen, setDrillDen] = useState(false);           // ✅
+```
+
+Altro esempio — import non standard nella configurazione:
+
+```diff
+-plugins: [require("tailwindcss-animate")],          // ❌ vecchio stile CommonJS
++import tailwindcssAnimate from "tailwindcss-animate";
++plugins: [tailwindcssAnimate],                      // ✅ import ES moderno
+```
+
+**Risultato: `0 errori` di lint** (restano solo avvisi non bloccanti, legati alla
+tipizzazione progressiva già pianificata).
+
+### 9b.3 Formattazione automatica (Prettier + EditorConfig)
+
+**PRIMA:** nessuno standard di formattazione → stili incoerenti tra file (indentazione,
+virgolette, spaziature), tipico di codice generato e poi ritoccato a mano.
+
+**DOPO:** **Prettier** + **EditorConfig** garantiscono uno stile identico in tutto il
+progetto e su qualsiasi editor del team. Basta un comando:
+
+```jsonc
+// package.json
+"scripts": {
+  "format": "prettier --write .",        // riformatta tutto
+  "format:check": "prettier --check ."   // verifica in fase di controllo
+}
+```
+
+**175 file** normalizzati in un colpo solo. D'ora in poi ogni sviluppatore scrive nello
+stesso stile, senza discussioni.
+
+### 9b.4 Filtri: da "mock" a configurazione statica
+
+I filtri del cruscotto (comparti, categorie, regioni…) prima venivano pescati da un file
+chiamato `mockData` — un nome fuorviante, perché **non sono dati finti** ma tassonomie
+ufficiali della PA.
+
+```diff
+- import { filterOptions } from "@/data/mockData";     // ❌ sembravano "dati mock"
++ import { filterOptions } from "@/config/filterOptions"; // ✅ configurazione statica, tipizzata
+```
+
+```ts
+// src/config/filterOptions.ts — ora è chiaro che è una tassonomia di riferimento
+export const filterOptions: FilterOptions = {
+  comparti: ["Tutti", "Ministeri", "Agenzie fiscali", "Università", "SSN", ...],
+  regioni: ["Tutte", "Lazio", "Lombardia", "Campania", ...],
+  ...
+};
+```
+
+**Perché conta:** il codice ora *dice la verità* su cosa sono quei dati, e i filtri sono
+gestiti in un unico punto tipizzato.
+
+### 9b.5 Rimozione codice morto e mock residui
+
+- **Eliminati i componenti orfani** `DimensionNav` e `DataSourceNav` (codice mai usato,
+  ereditato dal prototipo).
+- **`OverviewHome`** ("Analisi d'Insieme") ora attinge esplicitamente al layer `fixtures`
+  ed espone un **badge "dati dimostrativi"** trasparente, invece di mescolare mock e dati
+  reali in silenzio.
+
+```diff
+- import { kpiOverview, serieStoricaPersonale, ... } from "@/data/mockData";
++ import { kpiOverview, serieStoricaPersonale, ... } from "@/fixtures";
++ import { DemoDataBadge } from "@/components/dashboard/DemoDataBadge";
+...
++ <DemoDataBadge note="Analisi d'insieme: panoramica su dati dimostrativi, in attesa
++                      dell'aggregato di sintesi dal data warehouse." />
+```
+
+**Risultato:** **nessun componente** importa più direttamente `mockData`; l'unica porta
+d'accesso ai dati demo è il layer `@/fixtures`, facilmente rimovibile quando arriveranno
+i dati reali via ETL.
+
+### 9b.6 Cache keys centralizzate (React Query)
+
+**PRIMA:** ogni hook definiva "a mano" la propria chiave di cache come stringa sparsa →
+rischio di errori di battitura e di cache non invalidate correttamente.
+
+**DOPO:** un unico registro tipizzato in `src/services/queryKeys.ts`. **11 hook**
+aggiornati, **0 chiavi grezze** rimaste.
+
+```diff
+- queryKey: ["dw_eta", anno],                 // ❌ stringa ripetuta e sparsa nei file
++ queryKey: queryKeys.eta(anno),              // ✅ chiave centralizzata e tipizzata
+```
+
+```ts
+// src/services/queryKeys.ts — un solo posto per tutte le cache key
+export const queryKeys = {
+  eta: (anno?: number) => ["dw_eta", anno] as const,
+  genere: (anno?: number) => ["dw_occupazione_genere", anno] as const,
+  cessati: (anno?: number) => ["dw_cessati", anno] as const,
+  // ...e così via per tutti i domini
+};
+```
+
+### 9b.7 Fine dei "file mostruosi" (split dei god component)
+
+Il prototipo conteneva alcuni file enormi che facevano "tutto": difficili da leggere,
+modificare e testare. Sono stati **spezzati in moduli** mantenendo **identico il
+comportamento** (verificato a schermo).
+
+| File | Prima | Dopo | Estratto in |
+|------|------:|-----:|-------------|
+| `RapportoNarrativo.tsx` | **1189 righe** | **340 righe** | `reportWizardSteps.tsx` (i 4 passi del wizard) |
+| `GuidedJourney.tsx` | **742 righe** | **228 righe** | `guidedJourneyParts.tsx` (card e pannelli interni) |
+
+```diff
+// src/pages/RapportoNarrativo.tsx — ora è un "orchestratore" leggibile
++ import { STEPS, StepAudience, StepSections, StepCustomize, StepPreview,
++          SectionRenderer, type WizardStep } from "@/pages/reportWizardSteps";
+...
+- function StepAudience({ ... }) { /* 60 righe */ }
+- function StepSections({ ... }) { /* 280 righe */ }
+- function StepCustomize({ ... }) { /* 170 righe */ }
+- function StepPreview({ ... }) { /* 70 righe */ }
+- function SectionRenderer({ ... }) { /* 230 righe */ }   // ← tutto spostato in un file dedicato
+```
+
+**Perché conta:** un file di 340 righe si legge e si modifica in sicurezza; uno di 1189
+no. È la differenza tra un codice che un team può far evolvere e uno che "nessuno vuole
+toccare".
+
+---
+
 ## 10. Configurazione ambienti (online / locale)
 
 | Ambiente | File | `VITE_SUPABASE_URL` |
@@ -512,15 +711,19 @@ schermata molto più leggera e reattiva.
 
 Vedi `TODO.md`. In sintesi, nessuno di questi item impatta il funzionamento attuale:
 
-- **Tipizzazione forte dei grafici SIPRO** (13 file): sostituire l'entry point generico
-  `sipoFrom` con funzioni `fetch` dedicate e tipizzate, rimuovendo gli `any` nelle
-  trasformazioni multi-tabella.
-- **Tipizzazione dei restanti service di dominio** (INPA, Minerva, Syllabus, Bussola, D1).
-- **Centralizzazione delle query keys** in `src/services/queryKeys.ts`.
+- **Tipizzazione dei service di dominio** (INPA, Minerva, Syllabus, Bussola, D1) e dei
+  grafici SIPRO: rimozione progressiva degli `any` residui. *(Valutato non indispensabile
+  in questa fase — pianificato come miglioria successiva.)*
 - **Estensione dei test** (assunti, formazione, modalità lavoro, indicatori IAC/D1).
 - **Lato cliente (ETL):** popolamento delle tabelle `ca_*` per migrare le sezioni oggi
   "dato demo" (Anzianità, Titolo di studio, serie storiche) dai fixtures ai dati reali.
 - **Autenticazione SSO/Keycloak** in sostituzione dell'attuale login dimostrativo.
+- **Riorganizzazione in feature-folder** di `components/dashboard/`: valutata ad alto
+  rischio (molti import incrociati) e senza beneficio funzionale → rimandata.
+
+> Nota: la **centralizzazione delle query keys**, l'**Error Boundary**, la **formattazione
+> automatica** e lo **split dei god component** — un tempo in questa lista — sono ora
+> **completati** (vedi §9-bis).
 
 ---
 
