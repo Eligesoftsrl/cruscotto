@@ -2,7 +2,6 @@
 
 **Preparato da:** Perfexia Srl
 **Progetto:** Cruscotto HR — Sistema di monitoraggio HR della Pubblica Amministrazione
-**Repository:** `github.com/Eligesoftsrl/cruscotto`
 **Oggetto:** Sintesi completa e dettagliata degli interventi effettuati sul codice, dallo
 stato iniziale (repository generata con Lovable) allo stato attuale, con esempi di
 codice *prima/dopo* e schermate dell'applicazione.
