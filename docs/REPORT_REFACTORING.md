@@ -3,7 +3,7 @@
 **Preparato da:** Perfexia Srl
 **Progetto:** Cruscotto HR — Sistema di monitoraggio HR della Pubblica Amministrazione
 **Oggetto:** Sintesi completa e dettagliata degli interventi effettuati sul codice, dallo
-stato iniziale (repository generata con Lovable) allo stato attuale, con esempi di
+stato iniziale (repository del Prototipo iniziale) allo stato attuale, con esempi di
 codice *prima/dopo* e schermate dell'applicazione.
 
 ---
@@ -11,7 +11,7 @@ codice *prima/dopo* e schermate dell'applicazione.
 ## Indice
 
 1. Sintesi esecutiva
-2. Il punto di partenza: com'era il codice generato da Lovable
+2. Il punto di partenza: com'era il codice del Prototipo iniziale
 3. Stack tecnologico
 4. Numeri del refactoring (a colpo d'occhio)
 5. Confronto Prima / Dopo
@@ -33,6 +33,7 @@ codice *prima/dopo* e schermate dell'applicazione.
    - 9b.5 Rimozione codice morto e mock residui
    - 9b.6 Cache keys centralizzate (React Query)
    - 9b.7 Fine dei "file mostruosi" (split dei god component)
+9-ter. Mappa dei file di dati dimostrativi (mock) — dove sono
 10. Configurazione ambienti (online / locale)
 11. Sicurezza e qualità (guardrail automatici)
 12. Performance (code-splitting)
@@ -44,7 +45,7 @@ codice *prima/dopo* e schermate dell'applicazione.
 
 ## 1. Sintesi esecutiva
 
-Il progetto è stato importato da una repository generata con **Lovable** (uno strumento
+Il progetto è stato importato dalla repository del **Prototipo** iniziale (generato con uno strumento
 di prototipazione rapida) e **completamente ristrutturato** per renderlo pulito,
 manutenibile, sicuro e scalabile, **senza modificarne le funzionalità** per l'utente
 finale. In estrema sintesi:
@@ -69,9 +70,9 @@ test verdi, pronta alla consegna.
 
 ---
 
-## 2. Il punto di partenza: com'era il codice generato da Lovable
+## 2. Il punto di partenza: com'era il codice del Prototipo iniziale
 
-Lovable è ottimo per generare **rapidamente** un prototipo funzionante, ma il codice
+Lo strumento di prototipazione è ottimo per generare **rapidamente** un prototipo funzionante, ma il codice
 che produce è pensato per "far vedere qualcosa che funziona", non per essere mantenuto
 ed evoluto nel tempo da un team. Nel dettaglio, la versione iniziale presentava:
 
@@ -124,7 +125,7 @@ TanStack Query (React Query) · React Router · Supabase (PostgreSQL).
 
 ## 5. Confronto Prima / Dopo
 
-| Aspetto | Prima (Lovable) | Dopo (refactoring) |
+| Aspetto | Prima (Prototipo) | Dopo (refactoring) |
 |--------|------------------|--------------------|
 | Accesso ai dati | Client Supabase importato e usato **direttamente in ~46 componenti** | Centralizzato in un **Service Layer** (`src/services`); i componenti non toccano più Supabase |
 | Dati delle sezioni | Molte sezioni su **dati mock** (JSON) | Sezioni collegate ai **dati reali** `dw_*`; demo residui segnalati con badge |
@@ -463,13 +464,13 @@ mai modificare i sorgenti (vedi §10).
 ## 9-bis. Fase di consolidamento: robustezza, qualità e organizzazione
 
 > Dopo aver connesso l'app ai dati reali, questa fase ha reso il codice **solido,
-> professionale e manutenibile** — il salto definitivo da "prototipo Lovable che
+> professionale e manutenibile** — il salto definitivo da "Prototipo che
 > funziona" a "prodotto software di livello enterprise". Anche qui: **esempi di codice
 > reali Prima/Dopo**, perché la differenza si vede nel dettaglio.
 
 ### 9b.1 Anti "schermo bianco": Error Boundary
 
-**PRIMA (Lovable):** nessuna protezione. Se un singolo componente andava in errore (un
+**PRIMA (Prototipo):** nessuna protezione. Se un singolo componente andava in errore (un
 dato mancante, un calcolo imprevisto), **l'intera applicazione diventava una pagina
 bianca** — l'utente non capiva cosa fare e perdeva il lavoro in corso.
 
@@ -643,6 +644,60 @@ comportamento** (verificato a schermo).
 **Perché conta:** un file di 340 righe si legge e si modifica in sicurezza; uno di 1189
 no. È la differenza tra un codice che un team può far evolvere e uno che "nessuno vuole
 toccare".
+
+---
+
+## 9-ter. Mappa dei file di dati dimostrativi (mock) — dove sono
+
+> Per trasparenza, ecco **esattamente dove risiedono** i dati dimostrativi nel codice.
+> Sono isolati e centralizzati: un domani, quando arriveranno i dati reali (tabelle
+> `ca_*` via ETL), basterà agire su questi punti senza toccare le schermate.
+
+### Punto d'ingresso unico
+
+- **`src/fixtures/index.ts`** — l'**unica porta d'accesso** ai dati dimostrativi. Nessun
+  componente li importa direttamente: passano tutti da qui. Questo rende la loro rimozione
+  futura semplice e controllata.
+
+### Dati dimostrativi del "Conto Annuale"
+
+- **`src/data/json/mockData.json`** — è **il file JSON con i dati di esempio del Conto
+  Annuale** (aggregati per grafici e KPI).
+- **`src/data/mockData.ts`** — sottile wrapper TypeScript che espone i contenuti del JSON.
+
+Contenuto del file e stato attuale di ciascun blocco:
+
+| Chiave nel JSON | Sezione applicativa | Stato attuale |
+|---|---|---|
+| `distribuzioneEta`, `serieStoricaEta` | Analisi Età | Collegata ai dati reali `dw_*` |
+| `generePerQualifica` | Analisi Genere | Collegata ai dati reali `dw_*` |
+| `cessazioniPerCausale`, `serieStoricaTurnover` | Cessazioni / Turnover | Collegata ai dati reali `dw_*` |
+| `assuntiPerCausale` | Assunti | Collegata ai dati reali `dw_*` |
+| `formazione` | Formazione | Collegata ai dati reali `dw_*` |
+| `lavoroAgile`, `lavoroFlessibile` | Modalità di lavoro | Collegata ai dati reali `dw_*` |
+| `progressioni` | Progressioni | Collegata ai dati reali `dw_*` |
+| `distribuzioneAnzianita`, `serieStoricaAnzianita` | **Anzianità** | **Dato dimostrativo** (badge) → `ca_anzianita` |
+| `personaleTitoloStudio` | **Titolo di studio** | **Dato dimostrativo** (badge) → `ca_titolo_studio` |
+| `serieStoricaPersonale`, `personaleMacrocategoria`, `kpiOverview` | Analisi d'Insieme | **Dato dimostrativo** (badge) |
+| `benchmarkData` | Benchmark storici | **Dato dimostrativo** (badge) |
+
+> Le voci contrassegnate come **"dato dimostrativo"** sono quelle che, ad oggi, non hanno
+> ancora una tabella sorgente popolata e sono segnalate a schermo con il badge apposito.
+> Con l'arrivo dei dati reali (`ca_anzianita`, `ca_titolo_studio`, ecc.) verranno collegate
+> alle rispettive tabelle e il badge sparirà.
+
+### Cosa NON è "mock" (dati statici di riferimento, non dimostrativi)
+
+Per chiarezza: i file seguenti **non** contengono dati finti, ma **configurazione /
+contenuti statici** dell'applicazione (tassonomie, cataloghi, testi):
+
+- `src/config/filterOptions.ts` — opzioni dei filtri (comparti, categorie, regioni…).
+- `src/data/indicatorCatalog.ts` — catalogo degli indicatori.
+- `src/data/reportSections.ts` — struttura del rapporto narrativo.
+- `src/data/siproSchema.ts` — schema dei processi SIPro.
+- `src/data/guidedJourneys.ts`, `journeyTemplates.ts`, `bussolaPercorsi.ts`,
+  `journeys/d1…d6` — definizione (configurabile) dei percorsi guidati.
+- `src/data/narrativeGenerators.ts` — generatori dei testi narrativi.
 
 ---
 
