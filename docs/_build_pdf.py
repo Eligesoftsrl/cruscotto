@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Converte docs/REPORT_REFACTORING.md in HTML stampabile per l'export PDF via Chrome."""
 import re
+import sys
 from pathlib import Path
 from markdown_it import MarkdownIt
 
 DOCS = Path(__file__).parent
-md_text = (DOCS / "REPORT_REFACTORING.md").read_text(encoding="utf-8")
+SRC_NAME = sys.argv[1] if len(sys.argv) > 1 else "REPORT_REFACTORING.md"
+md_text = (DOCS / SRC_NAME).read_text(encoding="utf-8")
 
 md = (
     MarkdownIt("commonmark", {"html": True, "linkify": True, "typographer": True})
