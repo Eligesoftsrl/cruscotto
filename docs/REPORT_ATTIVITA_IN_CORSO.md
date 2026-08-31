@@ -34,12 +34,10 @@ esempi di codice *prima/dopo* e schermate dell'applicazione.
    - 9b.6 Cache keys centralizzate (React Query)
    - 9b.7 Fine dei "file mostruosi" (split dei god component)
 9-ter. Mappa dei file di dati dimostrativi (mock) — dove sono
-10. Configurazione ambienti (online / locale)
-11. Sicurezza e qualità (guardrail automatici)
-12. Performance (code-splitting)
-13. Verifiche di qualità effettuate
-14. Cosa resta (debito tecnico, non bloccante)
-15. Glossario dei termini tecnici
+10. Sicurezza e qualità (guardrail automatici)
+11. Performance (code-splitting)
+12. Verifiche di qualità (in corso)
+13. Glossario dei termini tecnici
 
 ---
 
@@ -703,21 +701,7 @@ contenuti statici** dell'applicazione (tassonomie, cataloghi, testi):
 
 ---
 
-## 10. Configurazione ambienti (online / locale)
-
-| Ambiente | File | `VITE_SUPABASE_URL` |
-|----------|------|----------------------|
-| Online (produzione) | `.env` | Supabase cloud |
-| Locale (sviluppo) | `.env.local` (ignorato da git) | `http://localhost:8000` |
-
-Avvio locale: `npm install` → creare `.env.local` → `npm run dev` (porta 8080).
-
-Vite dà **sempre** precedenza a `.env.local` rispetto a `.env`: così lo stesso codice usa
-il cloud online e il database locale in sviluppo, senza alcuna modifica ai sorgenti.
-
----
-
-## 11. Sicurezza e qualità (guardrail automatici)
+## 10. Sicurezza e qualità (guardrail automatici)
 
 - **Nessuna credenziale/URL nel codice**: tutto passa da variabili d'ambiente `VITE_*`.
 - **Regola ESLint anti-architettura** (`no-restricted-imports`): il client Supabase può
@@ -736,7 +720,7 @@ il cloud online e il database locale in sviluppo, senza alcuna modifica ai sorge
 
 ---
 
-## 12. Performance (code-splitting)
+## 11. Performance (code-splitting)
 
 Prima: un unico file JavaScript da **~1.9 MB** scaricato tutto in una volta, anche solo
 per vedere la pagina di login.
@@ -752,7 +736,7 @@ schermata molto più leggera e reattiva.
 
 ---
 
-## 13. Verifiche di qualità (in corso)
+## 12. Verifiche di qualità (in corso)
 
 - `tsc --noEmit` (type-check) eseguito a ogni intervento.
 - **Build di produzione** in esecuzione senza errori.
@@ -762,27 +746,7 @@ schermata molto più leggera e reattiva.
 
 ---
 
-## 14. Attività pianificate / prossime
-
-In sintesi, le linee di lavoro su cui stiamo proseguendo o che sono in programma:
-
-- **Tipizzazione dei service di dominio** (INPA, Minerva, Syllabus, Bussola, D1) e dei
-  grafici SIPRO: rimozione progressiva degli `any` residui.
-- **Estensione dei test** (assunti, formazione, modalità lavoro, indicatori IAC/D1).
-- **Lato cliente (ETL):** popolamento delle tabelle `ca_*` per migrare le sezioni oggi
-  "dato demo" (Anzianità, Titolo di studio, serie storiche) dai fixtures ai dati reali.
-- **Autenticazione SSO/Keycloak** in sostituzione dell'attuale login dimostrativo.
-- **Segregazione dati per ruolo (RLS)** e **area di amministrazione**.
-- **Accessibilità WCAG / allineamento al Design System della PA (AGID)**.
-- **Riorganizzazione in feature-folder** di `components/dashboard/`.
-
-> Nota: le linee di lavoro relative a robustezza (Error Boundary), qualità (lint,
-> formattazione), organizzazione (query keys, split dei moduli) sono tra le attività
-> attualmente in corso descritte in §9-bis.
-
----
-
-## 15. Glossario dei termini tecnici
+## 13. Glossario dei termini tecnici
 
 - **Refactoring**: riorganizzare il codice migliorandone la struttura interna senza
   cambiarne il comportamento esterno.
