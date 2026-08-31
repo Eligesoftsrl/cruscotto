@@ -63,7 +63,7 @@ finale. In estrema sintesi:
 - **Ottimizzate** le performance (code-splitting: la pagina iniziale è molto più leggera).
 - Aggiunti **guardrail di qualità automatici** (regole di lint, test automatici) e rimosso
   il codice morto.
-- Repository ripulita da ogni artefatto della piattaforma di sviluppo.
+- Repository ripulita dai file non pertinenti al prodotto.
 
 **Stato attuale:** applicazione funzionante, build di produzione OK, console pulita,
 test verdi, pronta alla consegna.
@@ -452,12 +452,10 @@ mai modificare i sorgenti (vedi §10).
 - **Gestione errori globale** React Query (toast su query fallita).
 
 ### 9.10 Pulizia repository
-- Rimossi dal repo (senza rompere l'ambiente) gli artefatti della piattaforma di sviluppo
-  (`.emergent/`, `.gitconfig`, `memory/`, `test_reports/`, `test_result.md`) e aggiunti al
-  `.gitignore`.
+- Ripulito il repository dai file non pertinenti al prodotto e aggiornato il `.gitignore`.
 - `package.json`: `name` → `cruscotto-hr`. **README** riscritto con istruzioni di avvio
   locale, configurazione env-aware e architettura.
-- Nessun riferimento alla piattaforma di sviluppo nel codice consegnato.
+- Il codice consegnato contiene esclusivamente i file del prodotto.
 
 ---
 

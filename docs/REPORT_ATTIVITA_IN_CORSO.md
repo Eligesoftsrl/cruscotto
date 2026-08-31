@@ -62,7 +62,7 @@ finale. Le attività attualmente in corso, in estrema sintesi:
 - Stiamo **ottimizzando** le performance (code-splitting: la pagina iniziale più leggera).
 - Stiamo introducendo **guardrail di qualità automatici** (regole di lint, test automatici)
   e ripulendo il codice morto.
-- Stiamo ripulendo la repository dagli artefatti della piattaforma di sviluppo.
+- Stiamo ripulendo la repository dai file non pertinenti al prodotto.
 
 **Attività in corso:** stiamo lavorando all'evoluzione dell'applicazione lungo le linee
 descritte in questo documento; le attività proseguono in modalità iterativa, in
@@ -452,12 +452,10 @@ mai modificare i sorgenti (vedi §10).
 - **Gestione errori globale** React Query (toast su query fallita).
 
 ### 9.10 Pulizia repository
-- Rimossi dal repo (senza rompere l'ambiente) gli artefatti della piattaforma di sviluppo
-  (`.emergent/`, `.gitconfig`, `memory/`, `test_reports/`, `test_result.md`) e aggiunti al
-  `.gitignore`.
+- Ripulito il repository dai file non pertinenti al prodotto e aggiornato il `.gitignore`.
 - `package.json`: `name` → `cruscotto-hr`. **README** riscritto con istruzioni di avvio
   locale, configurazione env-aware e architettura.
-- Nessun riferimento alla piattaforma di sviluppo nel codice consegnato.
+- Il codice consegnato contiene esclusivamente i file del prodotto.
 
 ---
 
