@@ -451,11 +451,9 @@ mai modificare i sorgenti (vedi §10).
   dashboard (454 KB), caricati solo all'ingresso nelle relative pagine.
 - **Gestione errori globale** React Query (toast su query fallita).
 
-### 9.10 Pulizia repository
-- Ripulito il repository dai file non pertinenti al prodotto e aggiornato il `.gitignore`.
-- `package.json`: `name` → `cruscotto-hr`. **README** riscritto con istruzioni di avvio
+### 9.10 Finalizzazione
+- `package.json`: `name` → `cruscotto-hr`; **README** riscritto con istruzioni di avvio
   locale, configurazione env-aware e architettura.
-- Il codice consegnato contiene esclusivamente i file del prodotto.
 
 ---
 
