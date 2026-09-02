@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { Building2, Shield, Loader2, ChevronDown } from "lucide-react";
+import { isKeycloakEnabled } from "@/auth/keycloak";
+import { Building2, Shield, Loader2, ChevronDown, LogIn } from "lucide-react";
 
 interface Ente {
   ente_id: number;
@@ -30,13 +31,28 @@ const Login = () => {
 
   const handleEnteClick = async () => {
     setLoadingEnti(true);
+    // Fonte allineata ai dati della dashboard: dw_ente (id_ente),
+    // cosi l'ente selezionato corrisponde ai dati effettivamente mostrati.
     const { data } = await supabase
-      .from("lk_enti")
-      .select("ente_id, denominazione")
+      .from("dw_ente")
+      .select("id_ente, denominazione")
       .order("denominazione");
-    if (data) setEnti(data as Ente[]);
+    if (data) {
+      setEnti((data as { id_ente: number; denominazione: string }[]).map((e) => ({
+        ente_id: e.id_ente,
+        denominazione: e.denominazione,
+      })));
+    }
     setLoadingEnti(false);
     setStep("pick_ente");
+  };
+
+  const handleSso = async () => {
+    setSigningIn(true);
+    // In modalita Keycloak il ruolo passato viene ignorato: ruolo ed ente
+    // arrivano dai claim del token dopo il redirect di login.
+    await signIn("dfp");
+    setSigningIn(false);
   };
 
   const handleEnteConfirm = async () => {
@@ -50,6 +66,63 @@ const Login = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  // --- Modalita Keycloak: accesso solo via SSO ---
+  // Ruolo (dfp / ente_hr) ed ente arrivano dai claim del token: niente
+  // scelta profilo ne selezione ente. Il flusso mock resta come fallback
+  // quando Keycloak non e configurato (variabili .env assenti).
+  if (isKeycloakEnabled) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <div className="h-1 w-full bg-primary" />
+        <div className="flex-1 flex flex-col items-center justify-center px-4">
+          <div className="text-center space-y-3 mb-10">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-primary text-primary-foreground text-3xl shadow-lg">
+              🏛️
+            </div>
+            <h1 className="text-3xl font-bold text-foreground tracking-tight">Cruscotto HR</h1>
+            <p className="text-[14px] text-muted-foreground max-w-md leading-relaxed">
+              Accedi con le credenziali istituzionali (SSO)
+            </p>
+          </div>
+
+          <div className="w-full max-w-md rounded-lg border-2 bg-card p-7 space-y-5">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-lg flex items-center justify-center bg-primary text-primary-foreground">
+                <Shield className="h-5 w-5" />
+              </div>
+              <div>
+                <h2 className="text-[15px] font-bold text-foreground">Accesso riservato</h2>
+                <p className="text-[12px] text-muted-foreground">
+                  Il profilo e l'ente vengono determinati automaticamente dal tuo account
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={handleSso}
+              disabled={signingIn}
+              className="w-full flex items-center justify-center gap-2 rounded-md bg-primary text-primary-foreground py-3 text-[14px] font-bold transition-colors hover:bg-primary/90 disabled:opacity-60 disabled:cursor-wait uppercase tracking-wide"
+            >
+              {signingIn ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" /> Reindirizzamento...
+                </>
+              ) : (
+                <>
+                  <LogIn className="h-4 w-4" /> Accedi con SSO
+                </>
+              )}
+            </button>
+          </div>
+
+          <p className="mt-10 text-[12px] text-muted-foreground/60">
+            Autenticazione gestita tramite Identity Provider (Keycloak)
+          </p>
+        </div>
       </div>
     );
   }

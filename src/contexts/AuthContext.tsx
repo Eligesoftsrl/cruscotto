@@ -108,9 +108,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     let enteDenom: string | undefined;
     if (role === "ente_hr" && enteId) {
       const { data } = await supabase
-        .from("lk_enti")
+        .from("dw_ente")
         .select("denominazione")
-        .eq("ente_id", enteId)
+        .eq("id_ente", enteId)
         .maybeSingle();
       if (data) enteDenom = data.denominazione;
     }
