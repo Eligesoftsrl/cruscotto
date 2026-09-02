@@ -41,7 +41,11 @@ function profileFromKeycloak(): UserProfile | null {
   const clientRoles = (clientId ? resourceAccess[clientId]?.roles ?? [] : []) as string[];
   const roles = [...realmRoles, ...clientRoles].map((r) => r.toLowerCase());
 
-  const isDfp = roles.some((r) => ["dfp", "super_admin", "superadmin", "admin"].includes(r));
+  const isDfp = roles.some((r) =>
+    ["dfp", "super_admin", "superadmin", "admin", "amministratore-gru", "amministratore"].includes(
+      r,
+    ),
+  );
   const role: AppRole = isDfp ? "dfp" : "ente_hr";
 
   const enteRaw = (c.ente_id ?? c.enteId ?? null) as string | number | null;
