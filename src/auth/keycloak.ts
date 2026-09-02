@@ -18,14 +18,16 @@ export const keycloak = isKeycloakEnabled
 
 let initialization: Promise<boolean> | undefined;
 
-/** Inizializza Keycloak una sola volta (idempotente, sicuro con React StrictMode). */
+/** Inizializza Keycloak una sola volta (idempotente, sicuro con React StrictMode).
+ * NB: niente iframe (check-sso silenzioso disabilitato): molti IdP, incluso questo,
+ * hanno una CSP `frame-ancestors` che impedisce di incorporarli in un iframe. Usiamo
+ * quindi il flusso a redirect. `init()` completa comunque il login al ritorno dal
+ * redirect (legge `code`/`state` dall'URL) anche senza `onLoad`. */
 export function initKeycloak(): Promise<boolean> {
   if (!isKeycloakEnabled) return Promise.resolve(false);
   initialization ??= keycloak.init({
-    onLoad: "check-sso",
     pkceMethod: "S256",
     checkLoginIframe: false,
-    silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
   });
   return initialization;
 }
