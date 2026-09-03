@@ -162,3 +162,258 @@ La MV deve **esporre la stessa colonna** con lo stesso nome e semantica.
 > **Nota**: la mappa chiave-ente (§A) è cruciale. Se nel DB reale l'ente ha una chiave unica
 > (es. codice fiscale), la MV può fare il join/lookup per **riprodurre** la colonna attesa
 > (es. generare un `id_ente`/`istituzione` coerente con `dw_ente.id_ente`).
+
+
+---
+
+## E. Colonne usate per ogni tabella (per il `SELECT` delle MV)
+
+> Estratte automaticamente dalle chiamate `.select()/.eq()/.order()` del codice.
+
+> Dove compare `SELECT *`, la MV deve esporre **tutte** le colonne della tabella originale.
+
+
+### `dw_assunti`
+
+- **Colonne lette**: `anno`, `causale`, `donne`, `uomini`
+- **Colonne per filtro/ordinamento** (devono esistere): `anno`, `istituzione`
+
+### `dw_bridge_profilo_competenza`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+- **Colonne lette**: `cod_competenza`, `cod_profilo_di_ruolo`, `dipendenti_totali_profilo`, `dipendenti_valutati`, `id_ente`, `livello_target`, `livello_valutato_medio`
+- **Colonne per filtro/ordinamento** (devono esistere): `id_ente`
+
+### `dw_causali`
+
+- **Colonne lette**: `cod_alfa`, `descrizione`
+- **Colonne per filtro/ordinamento** (devono esistere): `anno`
+
+### `dw_cessati`
+
+- **Colonne lette**: `anno`, `causale`, `donne`, `uomini`
+- **Colonne per filtro/ordinamento** (devono esistere): `anno`, `istituzione`
+
+### `dw_competenza`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `dw_ente`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+- **Colonne lette**: `categoria_cruscotto`, `comparto`, `denominazione`, `id_ente`, `organico_2023`, `regione`
+- **Colonne per filtro/ordinamento** (devono esistere): `categoria_cruscotto`, `comparto`, `denominazione`, `id_ente`, `regione`
+
+### `dw_eta`
+
+- **Colonne lette**: `anno`, `donne`, `fascia_eta`, `uomini`
+- **Colonne per filtro/ordinamento** (devono esistere): `anno`, `istituzione`
+
+### `dw_famiglia_professionale`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `dw_fascia_eta`
+
+- **Colonne lette**: `classe`, `codice`, `eta_min`
+- **Colonne per filtro/ordinamento** (devono esistere): `eta_min`
+
+### `dw_formazione`
+
+- **Colonne lette**: `anno`, `form_donne`, `form_uomini`, `ore_media_d`, `ore_media_u`
+
+### `dw_inpa_bandi`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+- **Colonne lette**: `anno`, `num_candidature_submitted`, `num_posti`, `regione`, `settore_pubblicazione`, `stato_bando`, `tipo_procedura`
+- **Colonne per filtro/ordinamento** (devono esistere): `data_pubblicazione`, `id_ente`
+
+### `dw_inpa_candidati`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `dw_kpi_rilevazione`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+- **Colonne lette**: `denominazione`, `id_ente`, `q1_1_adozione_modello`, `q1_5_n_profili_definiti`, `q1_6_n_profili_competenze`, `q2_5_assessment`, `q6_tep_personale`
+- **Colonne per filtro/ordinamento** (devono esistere): `id_ente`
+
+### `dw_lp_graduatorie`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+- **Colonne lette**: `num_posti_banditi`, `num_vincitori_assunti`, `tcp_giorni`
+- **Colonne per filtro/ordinamento** (devono esistere): `id_ente`
+
+### `dw_minerva_assessment`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `dw_modalita_lavoro`
+
+- **Colonne lette**: `anno`, `lavoro_agile_d`, `lavoro_agile_u`, `reperibilita_d`, `reperibilita_u`, `telelavoro_d`, `telelavoro_u`, `turnazione_d`, `turnazione_u`
+
+### `dw_occupazione`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+- **Colonne lette**: `anno`, `pt_inf50_d`, `pt_inf50_u`, `pt_sup50_d`, `pt_sup50_u`, `qualifica`, `tp_donne`, `tp_uomini`
+- **Colonne per filtro/ordinamento** (devono esistere): `anno`, `istituzione`
+
+### `dw_passaggi_qualifica`
+
+- **Colonne lette**: `anno`, `numero_passaggi`, `tipo_passaggio`
+
+### `dw_profilo_di_ruolo`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `dw_ptfp_dotazione`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `dw_ptfp_reclutamento`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `dw_syllabus_catalogo`
+
+- *(nessuna colonna esplicita rilevata — verificare nel service dedicato)*
+
+### `dw_syllabus_pa`
+
+- *(nessuna colonna esplicita rilevata — verificare nel service dedicato)*
+
+### `dw_syllabus_partecipazioni`
+
+- *(nessuna colonna esplicita rilevata — verificare nel service dedicato)*
+
+### `ft_sipo_criticita_processi`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `ft_sipo_criticita_uo`
+
+- **Colonne lette**: `criticita_id`, `uo_id`
+
+### `ft_sipo_fasi`
+
+- **Colonne lette**: `fase_id`, `in_outsourcing`, `lavoro_agile`, `lavoro_agile_id`, `livello_digitalizzazione_id`, `outsourcing_id`, `processo_id`
+
+### `ft_sipo_fasi_uo_partecipanti`
+
+- **Colonne lette**: `fase_id`, `uo_partecipante_id`
+
+### `ft_sipo_organizzazione`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+- **Colonne lette**: `ente_id`, `organizzazione_id`
+
+### `ft_sipo_processi`
+
+- **Colonne lette**: `coinvolgimento_amministrazioni`, `denominazione`, `ente_id`, `giorni_previsti`, `grado_rilevanza_id`, `obiettivo_strategico_id`, `picchi_frequenza_id`, `picchi_intensita_id`, `picchi_stagionali`, `presidio_continuativo`, `processo_id`, `processo_semplificazione_id`, `tempo_medio_effettivo`, `tipologia_id`
+- **Colonne per filtro/ordinamento** (devono esistere): `data_fine`, `ente_id`
+
+### `ft_sipo_profili_di_ruolo_fasi`
+
+- **Colonne lette**: `fase_id`, `fte_assegnati`, `fte_programmati`, `profilo_fase_id`, `sipo_profilo_di_ruolo_id`
+
+### `ft_sipo_provvedimenti_organizzazione`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `ft_sipo_uo`
+
+- **Colonne lette**: `denominazione`, `ente_id`, `livello_gerarchico`, `livello_resp_id`, `lk_sipo_livelli_resp_uo`, `risorse_dotazione`, `risorse_servizio_tempo_ind`, `uo_id`
+- **Colonne per filtro/ordinamento** (devono esistere): `data_fine_validita`, `denominazione`, `ente_id`
+
+### `lk_enti`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+- **Colonne lette**: `denominazione`, `ente_id`
+- **Colonne per filtro/ordinamento** (devono esistere): `denominazione`
+
+### `lk_minerva_ambito_ruolo`
+
+- **Colonne lette**: `descrizione`, `id`
+
+### `lk_minerva_area_contrattuale`
+
+- **Colonne lette**: `descrizione`, `id`
+
+### `lk_minerva_famiglia_professionale`
+
+- **Colonne lette**: `descrizione`, `id`
+
+### `lk_picchi_frequenza_annuale_processi`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `lk_picchi_intensita_processi`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `lk_sipo_copertura_profili_di_ruolo`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `lk_sipo_criticita_processi`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `lk_sipo_criticita_uo`
+
+- **Colonne lette**: `categoria`, `criticita_id`, `descrizione`
+
+### `lk_sipo_grado_rilevanza_processi`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `lk_sipo_lavoro_agile_fasi`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `lk_sipo_livello_digitalizzazione_fasi`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `lk_sipo_obiettivi_strategici_processi`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `lk_sipo_outsourcing_fasi`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `lk_sipo_profili_di_ruolo`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+- **Colonne lette**: `ente_id`, `id_ambito_ruolo`, `id_area_contrattuale`, `id_famiglia_professionale`, `id_minerva_profilo_professionale`, `profilo_ruolo`, `profilo_ruolo_id`
+- **Colonne per filtro/ordinamento** (devono esistere): `data_eliminazione`, `ente_id`
+
+### `lk_sipo_semplificazione_processi`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `lk_sipo_stato_organizzazione`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `lk_sipo_tipologia_funzione`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+
+### `user_journey_step_indicators`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+- **Colonne per filtro/ordinamento** (devono esistere): `step_id`
+
+### `user_journey_steps`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+- **Colonne lette**: `id`
+- **Colonne per filtro/ordinamento** (devono esistere): `journey_id`, `step_order`
+
+### `user_journeys`
+
+- **SELECT** `*` → includere **tutte le colonne** (vedi schema completo)
+- **Colonne lette**: `id`
+- **Colonne per filtro/ordinamento** (devono esistere): `created_at`, `id`
