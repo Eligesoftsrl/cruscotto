@@ -41,15 +41,26 @@ function profileFromKeycloak(): UserProfile | null {
   const clientRoles = (clientId ? resourceAccess[clientId]?.roles ?? [] : []) as string[];
   const roles = [...realmRoles, ...clientRoles].map((r) => r.toLowerCase());
 
+  // Ruoli considerati "amministratore" (superadmin DFP + Formez) -> profilo `dfp`.
   const isDfp = roles.some((r) =>
-    ["dfp", "super_admin", "superadmin", "admin", "amministratore-gru", "amministratore"].includes(
-      r,
-    ),
+    [
+      "dfp",
+      "super_admin",
+      "superadmin",
+      "admin",
+      "amministratore",
+      "amministratore-gru",
+      "amministratore-formez",
+      "amministratore-unico",
+    ].includes(r),
   );
   const role: AppRole = isDfp ? "dfp" : "ente_hr";
 
-  const enteRaw = (c.ente_id ?? c.enteId ?? null) as string | number | null;
-  const ente_id = enteRaw != null && enteRaw !== "" ? Number(enteRaw) : null;
+  // Ente dell'utente. Per ora il claim `istatcode` trasporta direttamente
+  // l'id_ente di `dw_ente` (es. 13 = Comune di Roma). Fallback su `ente_id`/`enteId`.
+  const enteRaw = (c.istatcode ?? c.ente_id ?? c.enteId ?? null) as string | number | null;
+  const enteParsed = enteRaw != null && enteRaw !== "" ? Number(enteRaw) : null;
+  const ente_id = enteParsed != null && Number.isFinite(enteParsed) ? enteParsed : null;
 
   const fullName =
     (c.name as string) ??
