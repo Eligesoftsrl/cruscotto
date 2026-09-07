@@ -19,6 +19,42 @@
 
 ---
 
+## ⚖️ Obbligatorio vs condizionato (da leggere prima)
+
+Due piani diversi, spesso confusi:
+
+- **Accessibilità (WCAG 2.1 AA / Legge Stanca)** → **OBBLIGATORIA**. Non impone però né un font
+  né una palette specifici: richiede requisiti misurabili (contrasti, ridimensionamento, tastiera,
+  semantica, ecc.). Si può essere pienamente conformi **mantenendo font e colori attuali**, purché
+  rispettino i contrasti.
+- **Linee guida di design AGID (Design System Italia — font Titillium Web + palette)** →
+  **CONDIZIONATE**. Formalmente prescritte per i servizi web della PA, ma con margini di
+  flessibilità e applicazione legata alla **natura del servizio**.
+
+| Elemento | Obbligatorio per accessibilità? | Richiesto dalle linee guida di design AGID? |
+|---|:---:|:---:|
+| Contrasti / ridimensionamento / tastiera / semantica | **Sì** | Sì |
+| **Font Titillium Web** | No | Prescritto (con flessibilità) |
+| **Palette AGID** | No | Prescritto (con flessibilità) |
+
+### Due livelli di intervento
+- **Livello A — Conformità WCAG (impatto grafico ~nullo)**: struttura semantica, tastiera/focus,
+  form, tabelle, comportamento SPA, correzione contrasti, dichiarazione di accessibilità.
+  → L'aspetto dell'applicazione **resta sostanzialmente invariato**.
+- **Livello B — Stile Design System PA (impatto grafico visibile)**: adozione del font
+  **Titillium Web** e della **palette AGID**. → **Opzionale/condizionato** alla natura del servizio.
+
+### 🎯 Domanda dirimente per il cliente
+> Il cruscotto è considerato un **servizio pubblico** soggetto al Design System Italia, oppure uno
+> **strumento interno** per operatori per cui è sufficiente la conformità **WCAG 2.1 AA**?
+
+- **Strumento interno** → si procede col **solo Livello A**: font e palette **restano gli attuali**
+  (solo fix contrasti), impatto grafico minimo.
+- **Servizio pubblico** → si valuta anche il **Livello B** (Titillium + palette), con impatto
+  grafico maggiore, da concordare.
+
+---
+
 ## 2. Interventi per area
 
 ### 2.1 Struttura semantica e landmark  — *Sforzo: Basso*
@@ -37,10 +73,10 @@
 - *Criteri WCAG: 2.1.1, 2.1.2, 2.4.3, 2.4.7*
 
 ### 2.3 Colori e contrasto  — *Sforzo: Medio*
-- Palette allineata alle indicazioni AGID
-- Contrasti conformi: testo ≥ **4.5:1**, elementi UI e bordi ≥ **3:1**
-- Verifica degli stati **hover / focus / disabled** (spesso non conformi)
-- L'informazione **non deve essere veicolata dal solo colore** (badge di stato, esiti, etichette "Demo"): aggiungere icona o testo
+- Contrasti conformi: testo ≥ **4.5:1**, elementi UI e bordi ≥ **3:1** — **(Livello A, obbligatorio)**
+- Verifica degli stati **hover / focus / disabled** (spesso non conformi) — **(Livello A)**
+- L'informazione **non deve essere veicolata dal solo colore** (badge di stato, esiti, etichette "Demo"): aggiungere icona o testo — **(Livello A)**
+- Adozione della **palette AGID** — **(Livello B, opzionale/condizionato)**: la palette attuale può essere mantenuta se rispetta i contrasti
 - *Criteri WCAG: 1.4.1, 1.4.3, 1.4.11*
 
 ### 2.4 Form e filtri (login, filtri ente, wizard report)  — *Sforzo: Medio*
@@ -56,10 +92,10 @@
 - *Criteri WCAG: 1.3.1, 4.1.2*
 
 ### 2.6 Tipografia, ridimensionamento e layout responsivo  — *Sforzo: Basso*
-- Font **Titillium Web** (Design System PA)
-- Testo ridimensionabile fino al **200%** senza perdita di contenuto/funzionalità
-- **Reflow** fino a 320px di larghezza senza scroll orizzontale
-- Spaziature testo conformi (interlinea, spaziatura paragrafi)
+- Font **Titillium Web** (Design System PA) — **(Livello B, opzionale/condizionato)**: il font attuale può essere mantenuto ai fini WCAG
+- Testo ridimensionabile fino al **200%** senza perdita di contenuto/funzionalità — **(Livello A, obbligatorio)**
+- **Reflow** fino a 320px di larghezza senza scroll orizzontale — **(Livello A)**
+- Spaziature testo conformi (interlinea, spaziatura paragrafi) — **(Livello A)**
 - *Criteri WCAG: 1.4.4, 1.4.10, 1.4.12*
 
 ### 2.7 Comportamento SPA (Single Page Application)  — *Sforzo: Medio*
@@ -81,7 +117,7 @@
 ### Fase 0 — Fondamenta (rapida, alto valore, rischio nullo)
 1. **Audit di baseline** automatico (axe-core + Lighthouse/pa11y) su 5 pagine chiave → fotografia iniziale e lista prioritizzata dei non-conformi
 2. **Struttura semantica + skip-link + `lang` + focus-visible** (§2.1, §2.2 base)
-3. **Design tokens PA**: Titillium Web + palette + correzione dei contrasti falliti (§2.3, §2.6)
+3. **Correzione contrasti** falliti (Livello A, obbligatorio) e impostazione dei design token di base. L'eventuale adozione di **Titillium Web + palette AGID** (Livello B) è **opzionale** e da attivare solo se il servizio è soggetto al Design System (§ "Obbligatorio vs condizionato")
 
 ### Fase 1 — Componenti (interventi mirati)
 4. **Form e filtri** accessibili: label, errori `aria-live`, gestione focus (§2.4)
