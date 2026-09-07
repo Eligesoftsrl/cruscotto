@@ -45,7 +45,8 @@ echo "== 7. Creazione viste dw_* (in ordine di dipendenza) =="
 cd /app/docs/views
 for f in dw_ente.sql v_kpi_ente_wide.sql dw_kpi_rilevazione.sql dw_verifica_indicatori.sql \
          dw_occupazione.sql dw_assunti.sql dw_cessati.sql dw_eta.sql dw_formazione.sql dw_modalita_lavoro.sql \
-         dw_causali.sql dw_comparto_contratto.sql dw_fascia_eta.sql; do
+         dw_causali.sql dw_comparto_contratto.sql dw_fascia_eta.sql \
+         dw_passaggi_qualifica.sql dw_qualifiche.sql; do
   [ -f "$f" ] && sudo -u postgres psql -d realdb -f "$f" >/dev/null 2>>/tmp/r_views.log && echo "   ok $f" || echo "   (skip/err $f)"
 done
 

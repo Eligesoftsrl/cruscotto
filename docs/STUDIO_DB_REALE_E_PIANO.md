@@ -173,3 +173,36 @@ generati per le sezioni demografiche.
 sono disponibili in `ca.lk_comparti_categorie_contratti` / `ca.lk_contratti_categorie`:
 potranno alimentare eventuali lookup aggiuntivi se i grafici le richiederanno.
 
+
+---
+
+## 12. AGGIORNAMENTO — Qualifiche estese + Passaggi qualifica (validate)
+
+| Vista | Sorgente `ca` | Righe | Uso live |
+|---|---|---|---|
+| `dw_qualifiche.sql` | `lk_comparti_categorie_contratti` | 3.110 | No (lookup ruoli) |
+| `dw_passaggi_qualifica.sql` | `ft_passaggi_qualifica` | 199.608 | Sì (progressioni) |
+
+### 12.1 `dw_qualifiche` — ruoli per esteso
+Chiave di join validata **100%** (2019/2019 ruoli occupazione):
+```
+dw_occupazione.qualifica = dw_qualifiche.categoria      (= CODI_QUALIFICA)
+dw_occupazione.contratto = dw_qualifiche.cod_contratto
+```
+La colonna `categoria` contiene il **codice qualifica** (il contratto app non ha una colonna
+esplicita per esso), `descrizione` = ruolo esteso (es. "POSIZIONE ECONOMICA C2"),
+`macrocategoria` = raggruppamento (DIRIGENTI, ecc.).
+
+### 12.2 `dw_passaggi_qualifica` — progressioni
+Mapping diretto da `ca.ft_passaggi_qualifica`. Il `TIPO_PASSAGGIO` reale è `V`/`O`; tradotto
+nell'adapter in `Verticale`/`Orizzontale` per compatibilità col frontend (`/vert/i`).
+Volumi validati (2024: 45.355 verticali, 164.737 orizzontali).
+
+### 12.3 ⚠️ InPA e Syllabus — SORGENTE DATI ASSENTE
+Le sezioni **InPA** (`dw_inpa_bandi`, `dw_inpa_candidati`, `dw_lp_graduatorie`, `dw_ptfp_reclutamento`)
+e **Syllabus** (`dw_syllabus_pa`, `dw_syllabus_catalogo`, `dw_syllabus_partecipazioni`) **non hanno
+alcuna tabella sorgente** nei due dump forniti (`dwh.sql`, `ca_52.sql`) — verificato su tutti gli
+schemi. Sono sistemi esterni (portale reclutamento InPA e piattaforma competenze Syllabus).
+**Per popolarle con dati reali serve che il committente fornisca i relativi dump/estrazioni.**
+Nel frattempo restano alimentate dai dati demo/JSON già presenti nell'app.
+
