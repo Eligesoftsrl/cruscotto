@@ -143,3 +143,33 @@ Lo script **`docs/setup_local_pg.sh`** reinstalla PostgreSQL 17 (PGDG), riscaric
 ripristina `dwh` + `ca` e ricrea tutte le viste `dw_*` in ordine di dipendenza. Da rieseguire
 se il pod viene resettato.
 
+
+---
+
+## 11. AGGIORNAMENTO — Viste lookup descrizioni (validate)
+
+Costruite 3 viste di lookup per tradurre i codici in descrizioni leggibili:
+
+| Vista | Sorgente `ca` | Righe | Uso live |
+|---|---|---|---|
+| `dw_causali.sql` | `vw_lk_causali_assunzione` + `vw_lk_causali_cessazione` | 18 | Sì (assunti/cessati) |
+| `dw_comparto_contratto.sql` | `lk_mappa_comparti_contratti` | 49 | No (contratto) |
+| `dw_fascia_eta.sql` | derivata dai 12 codici reali di `ft_eta` | 12 | Sì (eta) |
+
+### 11.1 `dw_causali` — chiave di join corretta
+I fatti usano codici **prefissati** (`A23` assunzione, `C01` cessazione), NON i codici nudi
+di `lk_causali` (`23`, `01`). La fonte corretta sono le viste `ca.vw_lk_causali_*` che espongono
+`causale_id` = codice prefissato identico ai fatti (il prefisso A/C risolve anche l'ambiguità del
+codice `28`). Coverage join validata: **9/11** codici (es. "NOMINA DA CONCORSO" 165.054 assunti
+2023). I codici `A26`, `A40` (+2 cessazione) non hanno descrizione in nessuna tabella del dump →
+fallback al codice (comportamento già previsto dai service).
+
+### 11.2 `dw_fascia_eta`
+Join validato **12/12** con `dw_eta.fascia_eta` (E0..E68); etichette e ordinamento (`eta_min`)
+generati per le sezioni demografiche.
+
+### 11.3 Descrizioni categoria/contratto/qualifica
+`dw_comparto_contratto` fornisce comparto+contratto. Le descrizioni di CATEGORIA/QUALIFICA
+sono disponibili in `ca.lk_comparti_categorie_contratti` / `ca.lk_contratti_categorie`:
+potranno alimentare eventuali lookup aggiuntivi se i grafici le richiederanno.
+
