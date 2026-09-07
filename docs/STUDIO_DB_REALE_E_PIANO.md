@@ -67,3 +67,36 @@ e le viste dei fatti mapperanno `cf_ente` → `id_ente`.
 ## 7-bis. VALIDAZIONE su dati reali (eseguita)\nDump ripristinato in un PostgreSQL 17 locale e viste costruite/testate sui **dati veri**:\n\n| Elemento | Esito |\n|---|---|\n| Restore `dwh` | OK (solo `lk_shp_*` geografiche saltate: richiedono PostGIS) |\n| Dati | `lk_questionari_enti` 23.594 · `lk_comuni` 8.093 · `ft_questionari_globale` 36.992 · indicatori 25 · elements 62 |\n| **`public.dw_ente`** | ✅ costruita e validata (23.594 enti) → `views/dw_ente.sql` |\n| **`public.v_kpi_ente_wide`** | ✅ pivot EAV→wide validato: 619 righe, **264 enti monitorati**, 78 metriche → `views/v_kpi_ente_wide.sql` |\n| Calcolo indicatore reale | ✅ es. assunti TI (raw_element 2.1, GRU, 2024-12) = 2359; Brescia 149, Padova 99... |\n\n**Nota**: solo **264 enti** hanno dati di questionario (su 23.594 in anagrafica) — è il set realmente monitorato.\n**Chiave di join dei fatti = `cf_ente` (codice fiscale)** → `id_ente` risolto via `lk_questionari_enti`.\n\n### Viste prodotte (in `views/`)\n- `dw_ente.sql` — anagrafica ente (validata)\n- `v_kpi_ente_wide.sql` — pivot base per-ente da cui derivare `dw_kpi_rilevazione` e i fatti (validata)\n\n### Prossimi passi\n- Da `v_kpi_ente_wide` derivare `public.dw_kpi_rilevazione` (rinominare `q_<dim>_<n>` → nomi attesi) e le `dw_*` dei fatti.\n- Ricostruire `dw_verifica_indicatori` dalle 25 query di `lk_anagrafica_indicatori` (per-ente).\n- Esporre le viste via PostgREST (GRANT SELECT a `anon`/`authenticated`).\n\n## 8. Allegati di analisi (in `analisi_dwh/`)
 - `elements.txt` — dizionario dei 64 element
 - `indicatori.txt` — i 27 indicatori con le query di calcolo
+
+---
+
+## 9. AGGIORNAMENTO — Viste fatti KPI (validate sui dati reali)
+
+### 9.1 `dw_kpi_rilevazione.sql` (NUOVA — validata, 115 enti)
+- Deriva da `v_kpi_ente_wide` filtrata sulla campagna più recente e completa,
+  allineata al dizionario `lk_questionari_elements` (2025-04):
+  `progetto = 'progetto_gru'`, `rilevazione = '2025-12'`.
+- Mappa ~70 colonne `q*` del contratto app (`types.ts`) ai `raw_element` reali:
+  - Binari: da `valore_num` (1 → `Sì`; per `q1_1_adozione_modello`: 1 → `Formalmente`).
+  - Numerici: `valore_num` castato a `text` (il contratto app è `text`).
+  - Totali/denominatori (`q6_tep_personale`, `q6_totale_donne`, `q6_sw_hr_totali`, ...):
+    derivati per somma dei sotto-elementi (es. TI = 6.4.a+b+c+d).
+  - Colonne senza sorgente reale (`q6_4_posti_vacanti_*`, `q6_12_donne_agile_pct`): NULL + TODO.
+
+### 9.2 `dw_verifica_indicatori.sql` (NUOVA — validata, contratto)
+- **Non interrogata da query live**: radar/indici Executive sono array demo statici in
+  `executiveData.ts`; l'IAC è ricalcolato lato client da `dw_kpi_rilevazione` (`iacService.ts`).
+- La vista mantiene il contratto: anagrafica (`id_ente`, `denominazione`, `tipologia`) e
+  `organico_2023` popolati; indici compositi (`iac`, `iap`, `icec`, ...) esposti NULL —
+  richiedono la **metodologia ufficiale di scoring** del committente.
+
+### 9.3 Nota sulle campagne (schemi `raw_element` diversi)
+- `GRU`/`2024-12`: schema vecchio (6.16 gg, 6.17.a-d, 6.18.a-d).
+- `progetto_gru`/`2025-12`: allineato al dizionario 2025-04 (6.16.a/b, 6.17, 6.18, 6.19.a-d, 6.20.a-d).
+- Le viste usano `progetto_gru`/`2025-12`. Rilevazione/progetto **parametrizzabili** nel CTE `w`.
+
+### 9.4 Prossimi passi
+- Costruire le `dw_*` occupazionali (`dw_occupazione`, `dw_assunti`, `dw_cessati`, `dw_eta`,
+  `dw_formazione`, `dw_modalita_lavoro`) dal dump reale Conti Annuali `ca_52.sql` (schema `ca`).
+- Esporre tutte le viste via PostgREST (GRANT SELECT `anon`/`authenticated`) + RLS su claim JWT.
+
