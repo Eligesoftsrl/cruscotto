@@ -1,0 +1,64 @@
+COPY dwh.lk_questionari_elements (dimensione, raw_element, descrizione, campagna) FROM stdin;
+Dimensione 3 - Recruitment	Q3.5	L'amministrazione nel 2024 ha realizzato azioni di onboarding per i nuovi assunti?	2025-04
+Dimensione 1 - Rilevazione e classificazione di professioni e competenze	Q1.1	L'amministrazione al 31 dicembre 2024 si è dotata di un sistema professionale basato sulle competenze?	2025-04
+Dimensione 1 - Rilevazione e classificazione di professioni e competenze	Q1.2.a	Indicare l’atto e la data di formale adozione del sistema professionale basato sulle competenze – Atto formale di adozione	2025-04
+Dimensione 1 - Rilevazione e classificazione di professioni e competenze	Q1.2.b	Indicare l’atto e la data di formale adozione del sistema professionale basato sulle competenze – Data di adozione	2025-04
+Dimensione 1 - Rilevazione e classificazione di professioni e competenze	Q1.3	L'amministrazione al 31 dicembre 2024 ha adottato una library dei processi di lavoro?	2025-04
+Dimensione 1 - Rilevazione e classificazione di professioni e competenze	Q1.4	L'amministrazione al 31 dicembre 2024 si è dotata di un dizionario delle competenze?	2025-04
+Dimensione 1 - Rilevazione e classificazione di professioni e competenze	Q1.5	Indicare il numero di profili professionali definiti dall’amministrazione al 31 dicembre 2024	2025-04
+Dimensione 1 - Rilevazione e classificazione di professioni e competenze	Q1.6	Indicare il numero di profili professionali, declinati per competenze, definiti dall’amministrazione al 31 dicembre 2024 e utilizzati per la gestione delle risorse umane	2025-04
+Dimensione 2 - Programmazione del fabbisogno di personale	Q2.1	Indicare il numero di unità di personale assunte a tempo indeterminato nel 2024	2025-04
+Dimensione 2 - Programmazione del fabbisogno di personale	Q2.2	Indicare il numero di unità di personale assunte a tempo indeterminato nel 2024 con età inferiore a 35 anni	2025-04
+Dimensione 2 - Programmazione del fabbisogno di personale	Q2.3	Indicare il numero di assunzioni a tempo indeterminato programmate dall’amministrazione per l’anno 2024	2025-04
+Dimensione 2 - Programmazione del fabbisogno di personale	Q2.4	Indicare il numero di unità di personale con incarico EQ o appartenenti all’area EP assunte a tempo indeterminato nel corso del 2024	2025-04
+Dimensione 2 - Programmazione del fabbisogno di personale	Q2.5	L'amministrazione nel triennio 2022-2024 ha effettuato un’analisi (assessment) delle competenze per verificare il livello di possesso del proprio personale?	2025-04
+Dimensione 2 - Programmazione del fabbisogno di personale	Q2.6	Indicare il numero di unità di personale assunte a tempo indeterminato nel 2024 a copertura del turnover	2025-04
+Dimensione 3 - Recruitment	Q3.1	Indicare il numero di concorsi banditi nel 2024 per il reclutamento di personale a tempo indeterminato	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.9	Indicare l’età media al 31 dicembre 2024 del personale a tempo indeterminato	2025-04
+Dimensione 3 - Recruitment	Q3.2	Indicare il numero di concorsi banditi nel 2024 per il reclutamento di personale a tempo indeterminato che prevedono profili professionali basati su un sistema professionale basato sulle competenze	2025-04
+Dimensione 3 - Recruitment	Q3.3	Indicare il numero di concorsi banditi nel 2024 per il reclutamento di personale a tempo indeterminato che prevedono profili derivanti da un dizionario delle competenze	2025-04
+Dimensione 3 - Recruitment	Q3.4	Indicare il numero di concorsi banditi nel 2024 che prevedono l'accertamento delle competenze trasversali dei candidati	2025-04
+Dimensione 3 - Recruitment	Q3.6	L'amministrazione nel 2024 ha fatto ricorso a contratti di apprendistato per il reclutamento di nuovo personale?	2025-04
+Dimensione 4 - Sviluppo del personale	Q4.1	L'amministrazione nel 2024 ha rilevato il fabbisogno formativo a valle della determinazione dei gap di competenze (assessment)?	2025-04
+Dimensione 4 - Sviluppo del personale	Q4.2	Indicare il numero di percorsi formativi rivolti al proprio personale realizzati nel 2024	2025-04
+Dimensione 4 - Sviluppo del personale	Q4.3	Indicare il numero di percorsi formativi volti ad accrescere le competenze trasversali del proprio personale svolti nel 2024	2025-04
+Dimensione 5 - Rewarding e sviluppo di carriera	Q5.1	L'amministrazione al 31 dicembre 2024 ha integrato il sistema di valutazione della performance individuale e il sistema professionale basato sulle competenze?	2025-04
+Dimensione 5 - Rewarding e sviluppo di carriera	Q5.2	L'amministrazione ha attivato nel corso del 2024 modelli di incentivazione e riconoscimento non monetari per il proprio personale?	2025-04
+Dimensione 5 - Rewarding e sviluppo di carriera	Q5.3	Indicare il numero di convenzioni attive al 31 dicembre 2024 tra l’amministrazione e le Università e Centri di alta formazione finalizzate ad attività di sviluppo professionale del personale	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.1	Indicare il numero totale di processi lavorativi dell'amministrazione mappati al 31 dicembre 2024	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.2	Indicare il numero dei processi lavorativi semplificati o digitalizzati dall'amministrazione al 31 dicembre 2024	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.3.a	Numero posizioni per personale dirigente	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.3.b	Numero posizioni per personale non dirigente	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.4.a	Numero unità di personale a tempo indeterminato dirigente donne	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.4.b	Numero unità di personale a tempo indeterminato dirigente uomini	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.4.c	Numero unità di personale a tempo indeterminato non dirigente donne	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.4.d	Numero unità di personale a tempo indeterminato non dirigente uomini	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.5.a	Numero unità di personale a tempo determinato dirigente donne	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.5.b	Numero unità di personale a tempo determinato dirigente uomini	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.5.c	Numero unità di personale a tempo determinato non dirigente donne	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.5.d	Numero unità di personale a tempo determinato non dirigente uomini	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.6	Indicare il numero di unità di personale a tempo indeterminato in servizio al 31 dicembre 2024 con età inferiore a 35 anni	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.7	Indicare il numero di unità di personale con incarico EQ o EP in servizio nell’amministrazione al 31 dicembre 2024	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.8	Indicare il numero di dipendenti EQ o EP in servizio a tempo indeterminato al 31 dicembre 2024 con età inferiore a 35 anni	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.10	Indicare il numero di unità di personale comandate OUT al 31 dicembre 2024	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.11	Indicare il numero di unità di personale comandate IN al 31 dicembre 2024	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.12.a	Numero di unità di personale che hanno preso servizio nel corso del primo semestre del 2025	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.12.b	Numero di unità di personale cessate dal servizio nel corso del primo semestre del 2025	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.13.a	Numero di unità di personale entrate in servizio in seguito a procedure di mobilità volontaria nel corso del primo semestre del 2025	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.13.b	Numero di unità di personale cessate dal servizio in seguito a procedure di mobilità volontaria nel corso del primo semestre del 2025	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.14.a	Numero di progressioni orizzontali avvenute nel corso del primo semestre del 2025	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.14.b	Numero di progressioni verticali avvenute nel corso del primo semestre del 2025	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.15	Indicare il numero di dipendenti in servizio al 31 dicembre 2024 con forme di contratti flessibili	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.16.a	Numero di unità di personale donna in lavoro agile al 30 giugno 2025	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.16.b	Numero di unità di personale uomo in lavoro agile al 30 giugno 2025	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.17	Indicare il numero di giornate lavorate in modalità agile dal personale a tempo indeterminato nel 2024	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.18	Indicare il numero di giornate lavorate complessivamente dal personale a tempo indeterminato nel 2024	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.19.a	Numero di motori di flusso di lavoro (workflow) in uso al 31 dicembre 2024	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.19.b	Numero di sistemi di knowledge sharing in uso al 31 dicembre 2024	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.19.c	Numero di piattaforme di collaboration in uso al 31 dicembre 2024	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.19.d	Numero di altre dotazioni in uso al 31 dicembre 2024	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.20.a	Numero di motori di flusso di lavoro (workflow): sistemi gestionali che permettono di creare flussi di lavoro personalizzati per coordinare le attività del team, creare diagrammi di flusso di lavoro e gestire processi aziendali complessi, automatizzare flussi di lavoro tra le applicazioni e i servizi per sincronizzare file, ottenere notifiche e raccogliere dati.	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.20.b	Numero di sistemi di knowledge sharing: sistemi che consentono ai team di creare, condividere e collaborare su documenti e knowledge base, di facilitare la condivisione di documenti e informazioni all’interno dell’organizzazione, piattaforme di e-learning che supporta la condivisione della conoscenza attraverso corsi online e materiali didattici.	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.20.c	Numero di piattaforme di collaboration: piattaforme di messaggistica per la collaborazione in tempo reale tra i team, che integrano chat, videochiamate e strumenti di collaborazione per migliorare la produttività del team, attraverso l’utilizzo di bacheche, liste e schede.	2025-04
+Dimensione 6 - Capacity building e performance organizzativa	Q6.20.d	Numero di altre dotazioni	2025-04
+\.
