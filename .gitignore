@@ -38,3 +38,4 @@ test_reports/
 test_result.md
 .next/
 yarn.lock
+ca_52.sql

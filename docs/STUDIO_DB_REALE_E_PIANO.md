@@ -100,3 +100,46 @@ e le viste dei fatti mapperanno `cf_ente` → `id_ente`.
   `dw_formazione`, `dw_modalita_lavoro`) dal dump reale Conti Annuali `ca_52.sql` (schema `ca`).
 - Esporre tutte le viste via PostgREST (GRANT SELECT `anon`/`authenticated`) + RLS su claim JWT.
 
+
+---
+
+## 10. AGGIORNAMENTO — Viste occupazionali da Conti Annuali (`ca`) — validate
+
+Importato il dump reale **`ca_52.sql`** (schema `ca`, Conti Annuali, PostgreSQL 16→17,
+54 tabelle) e costruite 6 viste materializzate, **validate sui dati reali** (anni 2012-2024):
+
+| Vista | Sorgente `ca` | Righe |
+|---|---|---|
+| `dw_occupazione.sql` | `ft_occupazione` | 1.211.654 |
+| `dw_assunti.sql` | `ft_assunzioni` | 221.737 |
+| `dw_cessati.sql` | `ft_cessazioni` | 430.711 |
+| `dw_eta.sql` | `ft_eta` | 2.836.412 |
+| `dw_formazione.sql` | `ft_formazione` | 491.209 |
+| `dw_modalita_lavoro.sql` | `ft_modalita_lavoro_flessibile` | 95.896 |
+
+### 10.1 Chiave ente (`istituzione`) — mapping validato
+La colonna app `istituzione` (int) = `dw_ente.id_ente`. Percorso di join (vedi `_ca_map_note.md`):
+```
+ca.<fact>.ISTITUZIONE = ca.lk_istituzioni.istituzione_id
+ca.lk_istituzioni.CODI_FISCALE = dwh.lk_questionari_enti.codice_fiscale_ente
+dwh.lk_questionari_enti.id = dw_ente.id_ente  (= istituzione)
+```
+Overlap verificato: **12.274** codici fiscali CA combaciano con l'anagrafica enti dwh.
+
+### 10.2 Note di mappatura
+- Nomi colonna reali in MAIUSCOLO/virgolette (es. `"PERSONALE_TEMPO_PIENO_DONNE"` → `tp_donne`).
+- `dw_occupazione.macrocat`: non presente in `ft_occupazione` → NULL.
+- `dw_formazione.ore_media_*`: la fonte CA esprime la media in **giornate** (`FORM_MEDIA_*`),
+  mappata su `ore_media_d/u` per rispettare il contratto app.
+- `categoria`/`contratto`/`qualifica`/`causale`: esposti come **codici** (join descrizioni via
+  lookup `dw_causali`/`dw_comparto_contratto` da costruire in seguito).
+
+### 10.3 Spot-check (Comune di Trieste, id_ente 8843, 2023)
+- Occupazione: 2.158 tempo pieno (D 1.453 / U 705) + 249 part-time.
+- Assunti: 237 (D 123 / U 114) su 13 righe contratto/qualifica.
+
+### 10.4 Ambiente di test (pod effimeri)
+Lo script **`docs/setup_local_pg.sh`** reinstalla PostgreSQL 17 (PGDG), riscarica i dump,
+ripristina `dwh` + `ca` e ricrea tutte le viste `dw_*` in ordine di dipendenza. Da rieseguire
+se il pod viene resettato.
+
