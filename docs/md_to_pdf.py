@@ -3,8 +3,8 @@
 import sys, markdown
 from xhtml2pdf import pisa
 
-MD = "/app/docs/VISTE_PRODOTTE.md"
-PDF = "/app/docs/VISTE_PRODOTTE.pdf"
+MD = sys.argv[1] if len(sys.argv) > 1 else "/app/docs/VISTE_PRODOTTE.md"
+PDF = sys.argv[2] if len(sys.argv) > 2 else MD.rsplit(".", 1)[0] + ".pdf"
 
 CSS = """
 @page { size: A4; margin: 1.6cm 1.4cm; }
