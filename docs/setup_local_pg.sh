@@ -6,8 +6,9 @@
 set -e
 export DEBIAN_FRONTEND=noninteractive
 
-DWH_URL="https://customer-assets-gfyr7b9c.emergentagent.net/job_cruscotto-refactor/artifacts/3rww4fix_dwh.sql"
-CA_URL="https://customer-assets-gfyr7b9c.emergentagent.net/job_cruscotto-refactor/artifacts/cl7fsreq_ca_52.sql"
+# Cartella in cui posizionare i dump reali del committente (dwh.sql, ca_52.sql).
+# Impostabile via variabile d'ambiente DUMP_DIR (default: cartella corrente).
+DUMP_DIR="${DUMP_DIR:-$(pwd)}"
 
 echo "== 1. Installazione PostgreSQL 17 (PGDG) =="
 apt-get install -y curl ca-certificates gnupg lsb-release >/dev/null 2>&1 || true
@@ -23,10 +24,11 @@ echo "== 2. Avvio cluster =="
 pg_ctlcluster 17 main start || service postgresql start || true
 sleep 3
 
-echo "== 3. Download dump =="
+echo "== 3. Copia dump nella cartella di lavoro =="
 cd /tmp
-[ -f dwh.sql ]  || curl -fsSL "$DWH_URL" -o dwh.sql
-[ -f ca_52.sql ] || curl -fsSL "$CA_URL" -o ca_52.sql
+# I dump dwh.sql e ca_52.sql devono essere forniti dal committente in $DUMP_DIR
+[ -f dwh.sql ]   || cp "$DUMP_DIR/dwh.sql"   /tmp/dwh.sql
+[ -f ca_52.sql ] || cp "$DUMP_DIR/ca_52.sql" /tmp/ca_52.sql
 chown postgres:postgres /tmp/dwh.sql /tmp/ca_52.sql
 
 echo "== 4. Ricreazione database realdb =="
