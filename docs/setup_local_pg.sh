@@ -50,5 +50,10 @@ for f in dw_ente.sql v_kpi_ente_wide.sql dw_kpi_rilevazione.sql dw_verifica_indi
   [ -f "$f" ] && sudo -u postgres psql -d realdb -f "$f" >/dev/null 2>>/tmp/r_views.log && echo "   ok $f" || echo "   (skip/err $f)"
 done
 
+echo "== 7-bis. Creazione viste STUB (vuote, tabelle senza sorgente reale) =="
+if [ -f /app/docs/views/stub/_ALL_STUBS.sql ]; then
+  sudo -u postgres psql -d realdb -f /app/docs/views/stub/_ALL_STUBS.sql >/dev/null 2>>/tmp/r_views.log && echo "   ok stub" || echo "   (err stub)"
+fi
+
 echo "== FATTO =="
 sudo -u postgres psql -d realdb -c "SELECT table_schema, count(*) FROM information_schema.tables WHERE table_schema IN ('dwh','ca','public') GROUP BY 1;"
