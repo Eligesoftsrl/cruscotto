@@ -6,6 +6,7 @@ import {
   LineChart, Line, Legend,
 } from "recharts";
 import { useFilters } from "@/contexts/FilterContext";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   usePersonaleServizio, useEtaCard, useAnzianita, useFasceGenere,
   useEvoluzione, useBenchmark,
@@ -61,6 +62,8 @@ const Select = ({
 
 export const AnalisiEtaContent = () => {
   const { filters } = useFilters();
+  const { profile } = useAuth();
+  const isDfp = profile?.role === "dfp";
   const [serieGenere, setSerieGenere] = useState<Genere>("T");
   const [benchDim, setBenchDim] = useState<BenchDimensione>("comparto");
   const [enteTerm, setEnteTerm] = useState("");
@@ -102,7 +105,7 @@ export const AnalisiEtaContent = () => {
         <p className="text-sm font-semibold text-foreground">
           {ente ? <>Amministrazione: <span className="text-primary">{ente.descrizione}</span></> : "Totale PA"} · Conto Annuale RGS · Anno {filtri.anno}
         </p>
-        <div className="relative w-[320px] max-w-full">
+        <div className="relative w-[320px] max-w-full" style={{ display: isDfp ? undefined : "none" }}>
           <input
             value={ente ? ente.descrizione : enteTerm}
             onChange={(e) => { setEnte(null); setEnteTerm(e.target.value); }}
