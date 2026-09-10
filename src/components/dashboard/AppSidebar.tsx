@@ -45,6 +45,9 @@ const pillars = [
   { id: "D6", label: "Capacity building e performance", icon: BarChart2 },
 ];
 
+/** Pillar disattivati SOLO nella Vista Sintetica (indicazione committente). */
+const DISABLED_SYNTHETIC_PILLARS = new Set(["D1", "D3"]);
+
 /* ── Synthetic indicators per pillar (from PDF methodology) ── */
 export const syntheticIndicators: Record<string, { id: string; label: string }[]> = {
   D1: [
@@ -155,7 +158,7 @@ const siproIndicators = [
   { id: "sipro-tempi-picchi", label: "Tempi e Picchi" },
 ];
 
-export const operationalSources = [
+const operationalSourcesAll = [
   {
     id: "conto-annuale",
     label: "Conto Annuale",
@@ -226,6 +229,15 @@ export const operationalSources = [
     ],
   },
 ];
+
+/**
+ * Sezioni disattivate su indicazione del committente (fonti dati non ancora
+ * disponibili). Le definizioni restano sopra per riattivarle rapidamente.
+ */
+const DISABLED_SOURCE_IDS = new Set(["inpa", "minerva", "syllabus", "lavoro-pubblico"]);
+export const operationalSources = operationalSourcesAll.filter(
+  (s) => !DISABLED_SOURCE_IDS.has(s.id),
+);
 
 interface AppSidebarProps {
   nav: NavState;
@@ -317,7 +329,9 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
       {/* ── Synthetic ── */}
       <div data-tour="sidebar-synthetic">
         {sectionLabel("Vista Sintetica")}
-        {pillars.map((p) => {
+        {pillars
+          .filter((p) => !DISABLED_SYNTHETIC_PILLARS.has(p.id))
+          .map((p) => {
           const PIcon = p.icon;
           const isExp = expandedPillar === p.id;
           const isPillarActive = nav.level === "synthetic" && nav.pillar === p.id;
