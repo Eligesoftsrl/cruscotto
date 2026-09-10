@@ -74,6 +74,7 @@ export const AnalisiEtaContent = () => {
 
   const p = personale.data; const e = eta.data; const a = anz.data;
   const fasceRows = fasce.data ?? [];
+  const piramideRows = fasceRows.filter((r) => !/tutt/i.test(r.fascia_eta));
   const benchRows = (bench.data ?? []).map((r) => ({ ...r, gap: (r.valore_gruppo ?? 0) }));
 
   return (
@@ -135,7 +136,7 @@ export const AnalisiEtaContent = () => {
         <div className="rounded-lg border bg-card p-5">
           <h4 className="mb-3 text-sm font-semibold text-foreground">Piramide per età e genere</h4>
           <ResponsiveContainer width="100%" height={340}>
-            <BarChart layout="vertical" data={fasceRows} stackOffset="sign" margin={{ left: 10, right: 10 }}>
+            <BarChart layout="vertical" data={piramideRows} stackOffset="sign" margin={{ left: 10, right: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
               <XAxis type="number" tick={{ fontSize: 10 }} tickFormatter={(v: number) => nf.format(Math.abs(v))} />
               <YAxis type="category" dataKey="fascia_eta" tick={{ fontSize: 10 }} width={54} />

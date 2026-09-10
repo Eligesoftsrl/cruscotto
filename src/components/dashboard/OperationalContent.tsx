@@ -4,6 +4,7 @@ import { PyramidChart } from "@/components/dashboard/PyramidChart";
 import { EtaLineChart } from "@/components/dashboard/EtaLineChart";
 import { BenchmarkDotPlot } from "@/components/dashboard/BenchmarkDotPlot";
 import { GenereTable } from "@/components/dashboard/GenereTable";
+import { AnalisiEtaContent } from "@/components/dashboard/AnalisiEtaContent";
 import { AnzianitaSection } from "@/components/dashboard/sections/AnzianitaSection";
 import { CessazioniSection } from "@/components/dashboard/sections/CessazioniSection";
 import { PrevisioneCessazioniSection } from "@/components/dashboard/sections/PrevisioneCessazioniSection";
@@ -109,18 +110,7 @@ export const OperationalContent = ({
 
     switch (indicator) {
       case "analisi-eta":
-        return (
-          <>
-            <FilterPills />
-            <div className="p-4 grid grid-cols-12 gap-3 flex-1">
-              <KpiStrip />
-              <PyramidChart />
-              <EtaLineChart />
-              <BenchmarkDotPlot />
-              <GenereTable />
-            </div>
-          </>
-        );
+        return wrap(<AnalisiEtaContent />);
       case "analisi-anzianita":
         return wrap(<AnzianitaSection />);
       case "cessazioni":
