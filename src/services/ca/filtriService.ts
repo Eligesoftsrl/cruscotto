@@ -47,10 +47,30 @@ export const fetchAnni = async (): Promise<number[]> => {
 };
 
 export const fetchComparti = (anno: number) => query("comparto", anno);
-export const fetchRegioni = (anno: number) => query("regione", anno);
 // chiave_padre = 'comparto:<codice>'
 export const fetchMacrocategorie = (anno: number, chiaveComparto: string) =>
   query("macrocategoria", anno, chiaveComparto);
 // chiave_padre = <chiave della macrocategoria selezionata>
 export const fetchCategorie = (anno: number, chiaveMacro: string) =>
   query("categoria", anno, chiaveMacro);
+
+export const fetchRegioni = (anno: number) => query("regione", anno);
+
+/** Ricerca enti per il selettore (autocomplete): tipo='ente', filtro ilike sulla descrizione. */
+export async function searchEnti(anno: number, term: string): Promise<FiltroOpzione[]> {
+  if (!term || term.trim().length < 2) return [];
+  const { data, error } = await sbUntyped
+    .from("mv_filtri")
+    .select("codice, descrizione")
+    .eq("tipo", "ente")
+    .eq("anno", anno)
+    .ilike("descrizione", `%${term.trim()}%`)
+    .order("descrizione", { ascending: true })
+    .limit(20);
+  if (error) throw error;
+  return (data ?? []).map((r) => ({
+    chiave: String((r as Record<string, unknown>).codice ?? ""),
+    codice: String((r as Record<string, unknown>).codice ?? ""),
+    descrizione: clean((r as Record<string, unknown>).descrizione as string),
+  }));
+}

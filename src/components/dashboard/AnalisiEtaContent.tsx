@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { searchEnti } from "@/services/ca/filtriService";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   LineChart, Line, Legend,
@@ -61,10 +63,20 @@ export const AnalisiEtaContent = () => {
   const { filters } = useFilters();
   const [serieGenere, setSerieGenere] = useState<Genere>("T");
   const [benchDim, setBenchDim] = useState<BenchDimensione>("comparto");
+  const [enteTerm, setEnteTerm] = useState("");
+  const [ente, setEnte] = useState<{ codice: string; descrizione: string } | null>(null);
+
+  const anno = Number(filters.anno) || 2023;
+  const entiQ = useQuery({
+    queryKey: ["enti-search", anno, enteTerm],
+    queryFn: () => searchEnti(anno, enteTerm),
+    enabled: enteTerm.trim().length >= 2,
+  });
 
   const gMap: Record<string, Genere> = { Tutti: "T", Uomini: "U", Donne: "D" };
   const filtri: EtaFiltri = {
-    anno: Number(filters.anno) || 2023,
+    anno,
+    istituzione: ente?.codice ?? null,
     comparto: filters.comparto !== "Tutti" ? filters.comparto : null,
     macrocategoria: filters.macrocategoria !== "Tutte" ? filters.macrocategoria : null,
     categoria: filters.categoria !== "Tutte" ? filters.categoria : null,
@@ -86,9 +98,33 @@ export const AnalisiEtaContent = () => {
 
   return (
     <div className="space-y-6">
-      <p className="text-sm font-semibold text-foreground">
-        Dati del Conto Annuale · Rilevazione RGS · Ultimo anno {filtri.anno} · Serie storica 2012–{filtri.anno}
-      </p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm font-semibold text-foreground">
+          {ente ? <>Amministrazione: <span className="text-primary">{ente.descrizione}</span></> : "Totale PA"} · Conto Annuale RGS · Anno {filtri.anno}
+        </p>
+        <div className="relative w-[320px] max-w-full">
+          <input
+            value={ente ? ente.descrizione : enteTerm}
+            onChange={(e) => { setEnte(null); setEnteTerm(e.target.value); }}
+            placeholder="Cerca un ente (es. Roma Capitale)…"
+            className="w-full rounded border bg-background px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-ring"
+          />
+          {ente && (
+            <button onClick={() => { setEnte(null); setEnteTerm(""); }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-muted-foreground hover:text-destructive">✕</button>
+          )}
+          {!ente && (entiQ.data?.length ?? 0) > 0 && (
+            <div className="absolute z-50 mt-1 w-full max-h-[240px] overflow-y-auto rounded-lg border bg-card shadow-lg">
+              {entiQ.data!.map((o) => (
+                <button key={o.codice} onClick={() => { setEnte({ codice: o.codice, descrizione: o.descrizione }); setEnteTerm(""); }}
+                  className="block w-full text-left px-3 py-1.5 text-[11px] text-foreground hover:bg-muted">
+                  {o.descrizione} <span className="text-muted-foreground">({o.codice})</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* ---------------------------- KPI CARDS ---------------------------- */}
       <div className="flex flex-wrap gap-4">
