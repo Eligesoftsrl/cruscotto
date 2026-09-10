@@ -1,102 +1,58 @@
 import { useState, useRef, useEffect } from "react";
 import { Download, X, ChevronDown, RotateCcw } from "lucide-react";
-import { useFilters, type FilterState } from "@/contexts/FilterContext";
+import { useQuery } from "@tanstack/react-query";
+import { useFilters } from "@/contexts/FilterContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { filterOptions } from "@/config/filterOptions";
+import {
+  fetchAnni, fetchComparti, fetchRegioni, fetchMacrocategorie, fetchCategorie,
+} from "@/services/ca/filtriService";
 
-interface FilterDef {
-  key: keyof FilterState;
-  label: string;
-  options: string[];
-  group: "structural" | "benchmark";
-}
+interface Opt { value: string; label: string }
 
-const FILTER_DEFS: FilterDef[] = [
-  {
-    key: "macrocategoria",
-    label: "Macrocategoria",
-    options: filterOptions.macrocategorie,
-    group: "structural",
-  },
-  { key: "categoria", label: "Categoria", options: filterOptions.categorie, group: "structural" },
-  { key: "genere", label: "Genere", options: ["Tutti", "Uomini", "Donne"], group: "structural" },
-  {
-    key: "anno",
-    label: "Anno",
-    options: ["2023", "2022", "2021", "2020", "2019", "2018"],
-    group: "structural",
-  },
-  { key: "comparto", label: "Comparto", options: filterOptions.comparti, group: "benchmark" },
-  { key: "regione", label: "Regione", options: filterOptions.regioni, group: "benchmark" },
-];
+const ALL_COMP = "Tutti";
+const ALL_F = "Tutte";
 
-const defaultValues: Record<string, string> = {
-  macrocategoria: "Tutte",
-  categoria: "Tutte",
-  comparto: "Tutti",
-  regione: "Tutte",
-  genere: "Tutti",
-  anno: "2023",
-};
-
-const DropdownPill = ({ def }: { def: FilterDef }) => {
-  const { filters, setFilter } = useFilters();
+const Pill = ({
+  label, value, display, options, onChange, onClear, active, disabled,
+}: {
+  label: string; value: string; display: string; options: Opt[];
+  onChange: (v: string) => void; onClear: () => void; active: boolean; disabled?: boolean;
+}) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const value = filters[def.key];
-  const isActive = value !== defaultValues[def.key];
-
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    if (open) document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    const h = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
+    if (open) document.addEventListener("mousedown", h);
+    return () => document.removeEventListener("mousedown", h);
   }, [open]);
-
   return (
     <div ref={ref} className="relative">
       <button
+        disabled={disabled}
         onClick={() => setOpen(!open)}
-        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] transition-colors ${
-          isActive
-            ? "border-primary bg-primary/5 text-primary"
-            : "text-muted-foreground hover:border-primary hover:text-primary"
+        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] transition-colors disabled:opacity-40 ${
+          active ? "border-primary bg-primary/5 text-primary" : "text-muted-foreground hover:border-primary hover:text-primary"
         }`}
       >
-        <span
-          className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-primary" : "bg-muted-foreground/40"}`}
-        />
-        {isActive ? `${def.label}: ${value}` : def.label}
-        {isActive ? (
-          <X
-            className="h-3 w-3 ml-0.5 hover:text-destructive"
-            onClick={(e) => {
-              e.stopPropagation();
-              setFilter(def.key, defaultValues[def.key]);
-            }}
-          />
+        <span className={`w-1.5 h-1.5 rounded-full ${active ? "bg-primary" : "bg-muted-foreground/40"}`} />
+        {active ? `${label}: ${display}` : label}
+        {active ? (
+          <X className="h-3 w-3 ml-0.5 hover:text-destructive" onClick={(e) => { e.stopPropagation(); onClear(); }} />
         ) : (
           <ChevronDown className="h-3 w-3 ml-0.5" />
         )}
       </button>
-
       {open && (
-        <div className="absolute top-full left-0 mt-1 z-50 min-w-[180px] bg-card border rounded-lg shadow-lg py-1 max-h-[240px] overflow-y-auto">
-          {def.options.map((opt) => (
+        <div className="absolute top-full left-0 mt-1 z-50 min-w-[200px] bg-card border rounded-lg shadow-lg py-1 max-h-[260px] overflow-y-auto">
+          {options.map((o) => (
             <button
-              key={opt}
-              onClick={() => {
-                setFilter(def.key, opt);
-                setOpen(false);
-              }}
+              key={o.value}
+              onClick={() => { onChange(o.value); setOpen(false); }}
               className={`w-full text-left px-3 py-1.5 text-[11px] transition-colors ${
-                value === opt
-                  ? "bg-primary/10 text-primary font-semibold"
-                  : "text-foreground hover:bg-muted"
+                value === o.value ? "bg-primary/10 text-primary font-semibold" : "text-foreground hover:bg-muted"
               }`}
             >
-              {opt}
+              {o.label}
             </button>
           ))}
         </div>
@@ -106,36 +62,78 @@ const DropdownPill = ({ def }: { def: FilterDef }) => {
 };
 
 export const FilterPills = () => {
-  const { activeCount, resetFilters, filters } = useFilters();
+  const { filters, setFilter, resetFilters, activeCount } = useFilters();
   const { profile } = useAuth();
   const isEnteHr = profile?.role === "ente_hr";
-  const structural = FILTER_DEFS.filter((d) => d.group === "structural");
-  const benchmark = isEnteHr ? [] : FILTER_DEFS.filter((d) => d.group === "benchmark");
+  const anno = Number(filters.anno) || 2023;
+
+  const anniQ = useQuery({ queryKey: ["mvf", "anni"], queryFn: fetchAnni });
+  const compartiQ = useQuery({ queryKey: ["mvf", "comparti", anno], queryFn: () => fetchComparti(anno) });
+  const regioniQ = useQuery({ queryKey: ["mvf", "regioni", anno], queryFn: () => fetchRegioni(anno) });
+  const macroQ = useQuery({
+    queryKey: ["mvf", "macro", anno, filters.comparto],
+    queryFn: () => fetchMacrocategorie(anno, `comparto:${filters.comparto}`),
+    enabled: filters.comparto !== ALL_COMP,
+  });
+  const macroChiave = (macroQ.data ?? []).find((m) => m.codice === filters.macrocategoria)?.chiave;
+  const categorieQ = useQuery({
+    queryKey: ["mvf", "cat", anno, macroChiave],
+    queryFn: () => fetchCategorie(anno, macroChiave!),
+    enabled: Boolean(macroChiave),
+  });
+
+  const opt = (rows: { codice: string; descrizione: string }[] | undefined, allLabel: string, allVal: string): Opt[] =>
+    [{ value: allVal, label: allLabel }, ...(rows ?? []).map((r) => ({ value: r.codice, label: r.descrizione }))];
+  const lbl = (rows: { codice: string; descrizione: string }[] | undefined, v: string) =>
+    (rows ?? []).find((r) => r.codice === v)?.descrizione ?? v;
 
   return (
     <div className="bg-card border-b px-5 py-2 flex items-center gap-2 flex-wrap">
-      {structural.map((def) => (
-        <DropdownPill key={def.key} def={def} />
-      ))}
+      {/* Macrocategoria (dipende da Comparto) */}
+      <Pill label="Macrocategoria" value={filters.macrocategoria} display={lbl(macroQ.data, filters.macrocategoria)}
+        active={filters.macrocategoria !== ALL_F} disabled={filters.comparto === ALL_COMP}
+        options={opt(macroQ.data, "Tutte", ALL_F)}
+        onChange={(v) => { setFilter("macrocategoria", v); setFilter("categoria", ALL_F); }}
+        onClear={() => { setFilter("macrocategoria", ALL_F); setFilter("categoria", ALL_F); }} />
 
-      {benchmark.length > 0 && (
+      {/* Categoria (dipende da Macrocategoria) */}
+      <Pill label="Categoria" value={filters.categoria} display={lbl(categorieQ.data, filters.categoria)}
+        active={filters.categoria !== ALL_F} disabled={!macroChiave}
+        options={opt(categorieQ.data, "Tutte", ALL_F)}
+        onChange={(v) => setFilter("categoria", v)} onClear={() => setFilter("categoria", ALL_F)} />
+
+      {/* Genere */}
+      <Pill label="Genere" value={filters.genere} display={filters.genere}
+        active={filters.genere !== "Tutti"}
+        options={[{ value: "Tutti", label: "Tutti" }, { value: "Uomini", label: "Uomini" }, { value: "Donne", label: "Donne" }]}
+        onChange={(v) => setFilter("genere", v)} onClear={() => setFilter("genere", "Tutti")} />
+
+      {/* Anno */}
+      <Pill label="Anno" value={filters.anno} display={filters.anno} active={filters.anno !== "2023"}
+        options={(anniQ.data ?? [2023]).map((y) => ({ value: String(y), label: String(y) }))}
+        onChange={(v) => { setFilter("anno", v); setFilter("comparto", ALL_COMP); setFilter("macrocategoria", ALL_F); setFilter("categoria", ALL_F); }}
+        onClear={() => setFilter("anno", "2023")} />
+
+      {!isEnteHr && (
         <>
           <div className="w-px h-5 bg-border" />
-          {benchmark.map((def) => (
-            <DropdownPill key={def.key} def={def} />
-          ))}
+          {/* Comparto */}
+          <Pill label="Comparto" value={filters.comparto} display={lbl(compartiQ.data, filters.comparto)}
+            active={filters.comparto !== ALL_COMP} options={opt(compartiQ.data, "Tutti i comparti", ALL_COMP)}
+            onChange={(v) => { setFilter("comparto", v); setFilter("macrocategoria", ALL_F); setFilter("categoria", ALL_F); }}
+            onClear={() => { setFilter("comparto", ALL_COMP); setFilter("macrocategoria", ALL_F); setFilter("categoria", ALL_F); }} />
+          {/* Regione */}
+          <Pill label="Regione" value={filters.regione} display={lbl(regioniQ.data, filters.regione)}
+            active={filters.regione !== ALL_F} options={opt(regioniQ.data, "Tutte le regioni", ALL_F)}
+            onChange={(v) => setFilter("regione", v)} onClear={() => setFilter("regione", ALL_F)} />
         </>
       )}
 
       {activeCount > 0 && (
         <>
           <div className="w-px h-5 bg-border" />
-          <button
-            onClick={resetFilters}
-            className="flex items-center gap-1 px-2 py-1 rounded-full text-[10px] text-muted-foreground hover:text-destructive transition-colors"
-          >
-            <RotateCcw className="h-3 w-3" />
-            Reset ({activeCount})
+          <button onClick={resetFilters} className="flex items-center gap-1 px-2 py-1 rounded-full text-[10px] text-muted-foreground hover:text-destructive transition-colors">
+            <RotateCcw className="h-3 w-3" /> Reset ({activeCount})
           </button>
         </>
       )}

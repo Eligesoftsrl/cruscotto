@@ -3,13 +3,12 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   LineChart, Line, Legend,
 } from "recharts";
-import { useEtaFilters } from "@/hooks/useEtaFilters";
+import { useFilters } from "@/contexts/FilterContext";
 import {
   usePersonaleServizio, useEtaCard, useAnzianita, useFasceGenere,
   useEvoluzione, useBenchmark,
 } from "@/hooks/useAnalisiEta";
-import type { Genere, BenchDimensione } from "@/services/ca/analisiEtaService";
-import type { FiltroOpzione } from "@/services/ca/filtriService";
+import type { Genere, BenchDimensione, EtaFiltri } from "@/services/ca/analisiEtaService";
 
 /* --------------------------- helper di formato --------------------------- */
 const nf = new Intl.NumberFormat("it-IT");
@@ -59,9 +58,19 @@ const Select = ({
 );
 
 export const AnalisiEtaContent = () => {
-  const { filtri, stato, opzioni, set } = useEtaFilters(2023);
+  const { filters } = useFilters();
   const [serieGenere, setSerieGenere] = useState<Genere>("T");
   const [benchDim, setBenchDim] = useState<BenchDimensione>("comparto");
+
+  const gMap: Record<string, Genere> = { Tutti: "T", Uomini: "U", Donne: "D" };
+  const filtri: EtaFiltri = {
+    anno: Number(filters.anno) || 2023,
+    comparto: filters.comparto !== "Tutti" ? filters.comparto : null,
+    macrocategoria: filters.macrocategoria !== "Tutte" ? filters.macrocategoria : null,
+    categoria: filters.categoria !== "Tutte" ? filters.categoria : null,
+    regione: filters.regione !== "Tutte" ? filters.regione : null,
+    genere: gMap[filters.genere] ?? "T",
+  };
 
   const personale = usePersonaleServizio(filtri);
   const eta = useEtaCard(filtri);
@@ -70,12 +79,10 @@ export const AnalisiEtaContent = () => {
   const evo = useEvoluzione(filtri, serieGenere);
   const bench = useBenchmark(filtri, benchDim);
 
-  const findOpt = (list: FiltroOpzione[], codice: string) => list.find((o) => o.codice === codice) ?? null;
-
   const p = personale.data; const e = eta.data; const a = anz.data;
   const fasceRows = fasce.data ?? [];
   const piramideRows = fasceRows.filter((r) => !/tutt/i.test(r.fascia_eta));
-  const benchRows = (bench.data ?? []).map((r) => ({ ...r, gap: (r.valore_gruppo ?? 0) }));
+  const benchRows = bench.data ?? [];
 
   return (
     <div className="space-y-6">
@@ -83,40 +90,12 @@ export const AnalisiEtaContent = () => {
         Dati del Conto Annuale · Rilevazione RGS · Ultimo anno {filtri.anno} · Serie storica 2012–{filtri.anno}
       </p>
 
-      {/* ---------------------------- FILTRI ---------------------------- */}
-      <div className="rounded-lg border bg-card p-4 flex flex-wrap items-center gap-4">
-        <Select label="Anno" value={String(stato.anno)} onChange={(v) => set.onAnno(Number(v))}>
-          {(opzioni.anni.length ? opzioni.anni : [filtri.anno]).map((y) => <option key={y} value={y}>{y}</option>)}
-        </Select>
-        <Select label="Comparto" value={stato.comparto?.codice ?? ""} onChange={(v) => set.onComparto(v ? findOpt(opzioni.comparti, v) : null)}>
-          <option value="">Tutti i comparti</option>
-          {opzioni.comparti.map((o) => <option key={o.codice} value={o.codice}>{o.descrizione}</option>)}
-        </Select>
-        <Select label="Macrocategoria" value={stato.macro?.codice ?? ""} disabled={!stato.comparto}
-          onChange={(v) => set.onMacro(v ? findOpt(opzioni.macro, v) : null)}>
-          <option value="">Tutte</option>
-          {opzioni.macro.map((o) => <option key={o.codice} value={o.codice}>{o.descrizione}</option>)}
-        </Select>
-        <Select label="Categoria" value={stato.categoria?.codice ?? ""} disabled={!stato.macro}
-          onChange={(v) => set.setCategoria(v ? findOpt(opzioni.categorie, v) : null)}>
-          <option value="">Tutte</option>
-          {opzioni.categorie.map((o) => <option key={o.codice} value={o.codice}>{o.descrizione}</option>)}
-        </Select>
-        <Select label="Regione" value={stato.regione ?? ""} onChange={(v) => set.setRegione(v || null)}>
-          <option value="">Tutte le regioni</option>
-          {opzioni.regioni.map((o) => <option key={o.codice} value={o.codice}>{o.descrizione}</option>)}
-        </Select>
-        <Select label="Genere" value={stato.genere} onChange={(v) => set.setGenere(v as Genere)}>
-          <option value="T">Tutti</option><option value="U">Uomini</option><option value="D">Donne</option>
-        </Select>
-      </div>
-
       {/* ---------------------------- KPI CARDS ---------------------------- */}
       <div className="flex flex-wrap gap-4">
         <Kpi accent="hsl(220,60%,50%)" titolo="Personale in servizio"
           valore={p ? nf.format(p.personale) : "—"}
-          delta={p?.var_pct_prec != null ? signPP(p.var_pct_prec, "%") : undefined}
-          riga2={p ? { l: `Min ${nf.format(p.min_storico ?? 0)}`, r: `Max ${nf.format(p.max_storico ?? 0)}` } : undefined} />
+          delta={p?.personale_var_prec_pct != null ? signPP(p.personale_var_prec_pct, "%") : undefined}
+          riga2={p ? { l: `Min ${nf.format(p.personale_min_storico ?? 0)}`, r: `Max ${nf.format(p.personale_max_storico ?? 0)}` } : undefined} />
         <Kpi accent="hsl(25,85%,55%)" titolo="Età media" valore={n1(e?.eta_media)} unita="anni"
           delta={e?.eta_var_prec != null ? signPP(e.eta_var_prec, "aa") : undefined}
           riga2={e ? { l: `Cluster ${n1(e.eta_cluster)}`, r: `PA ${n1(e.eta_pa)}` } : undefined} />
@@ -167,9 +146,9 @@ export const AnalisiEtaContent = () => {
               <YAxis tick={{ fontSize: 10 }} domain={["auto", "auto"]} />
               <Tooltip formatter={(v: number) => n1(Number(v))} />
               <Legend />
-              <Line type="monotone" dataKey="valore_amm" name="Questa amm." stroke="hsl(220,60%,50%)" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="valore_cluster" name="Cluster" stroke="hsl(25,85%,55%)" strokeDasharray="5 4" dot={false} />
-              <Line type="monotone" dataKey="valore_pa" name="Totale PA" stroke="hsl(220,10%,60%)" dot={false} />
+              <Line type="monotone" dataKey="eta_selezione" name="Questa selezione" stroke="hsl(220,60%,50%)" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="eta_cluster" name="Cluster" stroke="hsl(25,85%,55%)" strokeDasharray="5 4" dot={false} />
+              <Line type="monotone" dataKey="eta_pa" name="Totale PA" stroke="hsl(220,10%,60%)" dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -193,9 +172,9 @@ export const AnalisiEtaContent = () => {
             <BarChart layout="vertical" data={benchRows} margin={{ left: 10, right: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
               <XAxis type="number" tick={{ fontSize: 10 }} domain={["auto", "auto"]} />
-              <YAxis type="category" dataKey="etichetta" tick={{ fontSize: 9 }} width={130} />
+              <YAxis type="category" dataKey="gruppo_descrizione" tick={{ fontSize: 9 }} width={130} />
               <Tooltip formatter={(v: number) => n1(Number(v))} />
-              <Bar dataKey="valore_gruppo" name="Valore gruppo" fill="hsl(220,60%,50%)" radius={[0, 3, 3, 0]} />
+              <Bar dataKey="eta_gruppo" name="Età media" fill="hsl(220,60%,50%)" radius={[0, 3, 3, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

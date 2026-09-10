@@ -138,7 +138,7 @@ const Index = () => {
         <div className="ml-[260px] flex-1 flex flex-col min-h-screen">
           <TopBar nav={nav} onNavigate={setNav} />
           <NavigationStepper nav={nav} onNavigate={setNav} />
-          <GlobalFilterBar />
+          {/* GlobalFilterBar rimosso: i filtri sono ora le sole "pill" in alto (FilterPills) su indicazione committente */}
           <main id="main-content" className="flex-1 flex flex-col" role="main">
             {renderContent()}
           </main>

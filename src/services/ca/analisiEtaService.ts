@@ -49,9 +49,9 @@ async function rpcOne<T>(fn: string, params: Record<string, unknown>): Promise<T
 /* ----------------------------- Tipi output ------------------------------- */
 export interface PersonaleServizio {
   personale: number;
-  var_pct_prec: number | null;
-  min_storico: number | null;
-  max_storico: number | null;
+  personale_var_prec_pct: number | null;
+  personale_min_storico: number | null;
+  personale_max_storico: number | null;
 }
 export interface EtaCard {
   eta_media: number; eta_var_prec: number | null; eta_cluster: number | null; eta_pa: number | null;
@@ -68,10 +68,11 @@ export interface FasciaGenereRow {
   donne_pct: number | null; donne_pa_pct: number | null; delta_pa_pp: number | null;
 }
 export interface EvoluzioneRow {
-  anno: number; valore_amm: number | null; valore_cluster: number | null; valore_pa: number | null;
+  anno: number; eta_selezione: number | null; eta_cluster: number | null; eta_pa: number | null;
 }
 export interface BenchmarkRow {
-  etichetta: string; valore_gruppo: number | null; valore_amm: number | null;
+  gruppo_codice: string; gruppo_descrizione: string;
+  personale: number | null; eta_gruppo: number | null; eta_selezione: number | null;
 }
 
 /* ------------------------------ Chiamate --------------------------------- */
