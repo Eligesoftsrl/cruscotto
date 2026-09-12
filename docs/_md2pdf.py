@@ -23,9 +23,9 @@ h3 { font-size: 12px; color: #1e40af; margin-top: 12px; }
 h4 { font-size: 11px; color: #334155; margin-top: 10px; }
 p, li { font-size: 10px; }
 code { font-family: Courier, monospace; font-size: 8.5px; background: #f1f5f9; padding: 1px 2px; }
-pre { background: #0f172a; color: #e2e8f0; font-family: Courier, monospace; font-size: 8px;
-      padding: 8px; border-radius: 4px; line-height: 1.35; white-space: pre-wrap; }
-pre code { background: transparent; color: #e2e8f0; padding: 0; }
+pre { background: #f3f4f6; color: #111827; font-family: Courier, monospace; font-size: 8px;
+      padding: 8px; border: 1px solid #cbd5e1; line-height: 1.35; white-space: pre-wrap; }
+pre code { background: transparent; color: #111827; padding: 0; }
 table { border-collapse: collapse; width: 100%; margin: 6px 0; }
 th, td { border: 1px solid #cbd5e1; padding: 3px 5px; font-size: 8.5px; text-align: left; vertical-align: top; }
 th { background: #e2e8f0; color: #0b3d91; font-weight: bold; }
