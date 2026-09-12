@@ -3,7 +3,6 @@ export * from "./etaService";
 export * from "./genereService";
 export * from "./bussolaService";
 export * from "./cessatiService";
-export * from "./assuntiService";
 export * from "./formazioneService";
 export * from "./progressioniService";
 export * from "./modalitaLavoroService";
