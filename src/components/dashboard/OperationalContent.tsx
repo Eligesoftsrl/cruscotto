@@ -6,7 +6,7 @@ import { BenchmarkDotPlot } from "@/components/dashboard/BenchmarkDotPlot";
 import { GenereTable } from "@/components/dashboard/GenereTable";
 import { AnalisiEtaContent } from "@/components/dashboard/AnalisiEtaContent";
 import { AnzianitaContent } from "@/components/dashboard/AnzianitaContent";
-import { CessazioniSection } from "@/components/dashboard/sections/CessazioniSection";
+import { CessazioniContent } from "@/components/dashboard/CessazioniContent";
 import { PrevisioneCessazioniSection } from "@/components/dashboard/sections/PrevisioneCessazioniSection";
 import { AssuntiCausaleContent } from "@/components/dashboard/AssuntiCausaleContent";
 import { TassoTurnoverSection } from "@/components/dashboard/sections/TassoTurnoverSection";
@@ -114,7 +114,7 @@ export const OperationalContent = ({
       case "analisi-anzianita":
         return wrap(<AnzianitaContent />);
       case "cessazioni":
-        return wrap(<CessazioniSection />);
+        return wrap(<CessazioniContent />);
       case "previsione-cessazioni":
         return wrap(<PrevisioneCessazioniSection />);
       case "assunti-causale":
