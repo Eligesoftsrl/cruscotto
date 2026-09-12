@@ -5,7 +5,7 @@ import { EtaLineChart } from "@/components/dashboard/EtaLineChart";
 import { BenchmarkDotPlot } from "@/components/dashboard/BenchmarkDotPlot";
 import { GenereTable } from "@/components/dashboard/GenereTable";
 import { AnalisiEtaContent } from "@/components/dashboard/AnalisiEtaContent";
-import { AnzianitaSection } from "@/components/dashboard/sections/AnzianitaSection";
+import { AnzianitaContent } from "@/components/dashboard/AnzianitaContent";
 import { CessazioniSection } from "@/components/dashboard/sections/CessazioniSection";
 import { PrevisioneCessazioniSection } from "@/components/dashboard/sections/PrevisioneCessazioniSection";
 import { AssuntiCausaleSection } from "@/components/dashboard/sections/AssuntiCausaleSection";
@@ -112,7 +112,7 @@ export const OperationalContent = ({
       case "analisi-eta":
         return wrap(<AnalisiEtaContent />);
       case "analisi-anzianita":
-        return wrap(<AnzianitaSection />);
+        return wrap(<AnzianitaContent />);
       case "cessazioni":
         return wrap(<CessazioniSection />);
       case "previsione-cessazioni":
