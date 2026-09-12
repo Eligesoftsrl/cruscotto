@@ -120,7 +120,6 @@ const contoAnnualeIndicators = [
   { id: "analisi-eta", label: "Analisi per età" },
   { id: "analisi-anzianita", label: "Anzianità di servizio" },
   { id: "cessazioni", label: "Cessazioni dal servizio" },
-  { id: "previsione-cessazioni", label: "Previsione cessazioni" },
   { id: "assunti-causale", label: "Assunti per causale" },
   { id: "tasso-turnover", label: "Tasso di turnover" },
   { id: "tasso-sostituzione", label: "Tasso sostituzione" },
