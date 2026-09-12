@@ -9,8 +9,8 @@ import { AnzianitaContent } from "@/components/dashboard/AnzianitaContent";
 import { CessazioniContent } from "@/components/dashboard/CessazioniContent";
 import { PrevisioneCessazioniSection } from "@/components/dashboard/sections/PrevisioneCessazioniSection";
 import { AssuntiCausaleContent } from "@/components/dashboard/AssuntiCausaleContent";
-import { TassoTurnoverSection } from "@/components/dashboard/sections/TassoTurnoverSection";
-import { TassoSostituzioneSection } from "@/components/dashboard/sections/TassoSostituzioneSection";
+import { TassoTurnoverContent } from "@/components/dashboard/TassoTurnoverContent";
+import { TassoSostituzioneContent } from "@/components/dashboard/TassoSostituzioneContent";
 import { FormatiPersonaleSection } from "@/components/dashboard/sections/FormatiPersonaleSection";
 import { ProgressioniSection } from "@/components/dashboard/sections/ProgressioniSection";
 import { AnalisiPersonaleSection } from "@/components/dashboard/sections/AnalisiPersonaleSection";
@@ -120,9 +120,9 @@ export const OperationalContent = ({
       case "assunti-causale":
         return wrap(<AssuntiCausaleContent />);
       case "tasso-turnover":
-        return wrap(<TassoTurnoverSection />);
+        return wrap(<TassoTurnoverContent />);
       case "tasso-sostituzione":
-        return wrap(<TassoSostituzioneSection />);
+        return wrap(<TassoSostituzioneContent />);
       case "formati-personale":
         return wrap(<FormatiPersonaleSection />);
       case "progressioni":
