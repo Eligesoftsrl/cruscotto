@@ -3,15 +3,13 @@
 Excel di mappatura RPC↔UI usati per costruire le schede del Conto Annuale.
 Fonte ufficiale del contratto dati (RPC `fa_ca_*`, parametri, campi di output e note).
 
-## Presenti
+## Presenti (6/6 — set completo)
 - `mappatura-scheda-analisi-eta.xlsx`
 - `mappatura-scheda-anzianita.xlsx`
-- `mappatura-scheda-turnover.xlsx`
-- `mappatura-scheda-sostituzione.xlsx`
-
-## Da aggiungere (in arrivo)
 - `mappatura-scheda-assunti.xlsx`
 - `mappatura-scheda-cessazioni.xlsx`
+- `mappatura-scheda-turnover.xlsx`
+- `mappatura-scheda-sostituzione.xlsx`
 
 ## Divergenze note mappatura ↔ backend (da riallineare col team backend)
 - Le RPC `*_evoluzione` **non accettano più `p_anno`** (la mappatura lo indica come
