@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Compass, ArrowLeft } from "lucide-react";
 import { FilterProvider } from "@/contexts/FilterContext";
@@ -15,7 +14,7 @@ import { NavigationStepper } from "@/components/dashboard/NavigationStepper";
 import { OnboardingTour } from "@/components/dashboard/OnboardingTour";
 
 const Index = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const bussolaPercorso = searchParams.get("from_bussola");
@@ -43,7 +42,10 @@ const Index = () => {
 
   const showReturnButton = bussolaPercorso || fromJourney || fromCustomJourney || customJourneyId;
 
-  const getInitialNav = (): NavState => {
+  // La navigazione interna e derivata dall'URL: ogni cambio vista aggiunge una
+  // voce nella cronologia del browser, cosi "Indietro/Avanti" scorrono tra le
+  // viste (Executive -> Sintetica/Operativa -> voce) invece di uscire subito.
+  const nav: NavState = (() => {
     const level = searchParams.get("level") as NavState["level"] | null;
     if (level === "synthetic") {
       return {
@@ -59,10 +61,24 @@ const Index = () => {
         indicator: searchParams.get("indicator") ?? undefined,
       };
     }
+    if (level === "guided") {
+      return { level: "guided", journeyId: searchParams.get("journeyId") ?? undefined };
+    }
     return { level: "executive" };
-  };
+  })();
 
-  const [nav, setNav] = useState<NavState>(getInitialNav);
+  // Aggiorna l'URL (push in cronologia) preservando i parametri di contesto
+  // (bussola / percorsi guidati) usati altrove nella pagina.
+  const setNav = (next: NavState) => {
+    const p = new URLSearchParams(searchParams);
+    ["level", "pillar", "source", "indicator", "journeyId"].forEach((k) => p.delete(k));
+    p.set("level", next.level);
+    if (next.pillar) p.set("pillar", next.pillar);
+    if (next.source) p.set("source", next.source);
+    if (next.indicator) p.set("indicator", next.indicator);
+    if (next.journeyId) p.set("journeyId", next.journeyId);
+    setSearchParams(p); // default: push -> crea una voce di cronologia
+  };
 
   const renderContent = () => {
     if (nav.level === "guided" && nav.journeyId && guidedJourneys[nav.journeyId]) {
