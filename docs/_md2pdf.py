@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
-"""Converte il documento tecnico Markdown in PDF (xhtml2pdf)."""
+"""Converte un documento Markdown in PDF (xhtml2pdf).
+
+Uso:
+    python3 docs/_md2pdf.py [SORGENTE.md] [DESTINAZIONE.pdf]
+Se non passati, usa la Documentazione tecnica come default.
+"""
+import sys
 import markdown
 from xhtml2pdf import pisa
 
-SRC = "/app/docs/DOCUMENTAZIONE_TECNICA_SCHEDE_CONTO_ANNUALE.md"
-OUT = "/app/docs/DOCUMENTAZIONE_TECNICA_SCHEDE_CONTO_ANNUALE.pdf"
+SRC = sys.argv[1] if len(sys.argv) > 1 else "/app/docs/DOCUMENTAZIONE_TECNICA_SCHEDE_CONTO_ANNUALE.md"
+OUT = sys.argv[2] if len(sys.argv) > 2 else SRC.rsplit(".", 1)[0] + ".pdf"
 
 with open(SRC, "r", encoding="utf-8") as f:
     md_text = f.read()
