@@ -48,6 +48,7 @@ import { LpDistribuzioneSection } from "@/components/dashboard/sections/lavoropu
 import { LpDotazioneSection } from "@/components/dashboard/sections/lavoropubblico/LpDotazioneSection";
 import { Info, Construction } from "lucide-react";
 
+import { NdMode } from "./NdMode";
 import { BottomUpNav } from "./BottomUpNav";
 
 interface OperationalContentProps {
@@ -138,8 +139,11 @@ export const OperationalContent = ({
     }
   }
 
-  // InPA
+  // InPA — placeholder N/D (fonti dati non ancora disponibili)
   if (source === "inpa") {
+    return (
+      <NdMode>
+        {(() => {
     switch (indicator) {
       case "inpa-amministrazioni":
         return <InpaAmministrazioniSection />;
@@ -164,10 +168,17 @@ export const OperationalContent = ({
       case "inpa-attrattivita":
         return <InpaAttrattivitaSection />;
     }
+          return null;
+        })()}
+      </NdMode>
+    );
   }
 
-  // Minerva
+  // Minerva — placeholder N/D
   if (source === "minerva") {
+    return (
+      <NdMode>
+        {(() => {
     switch (indicator) {
       case "minerva-catalogo":
         return <MinervaCatalogoSection />;
@@ -182,10 +193,17 @@ export const OperationalContent = ({
       case "minerva-fabbisogno":
         return <MinervaFabbisognoSection />;
     }
+          return null;
+        })()}
+      </NdMode>
+    );
   }
 
-  // Syllabus
+  // Syllabus — placeholder N/D
   if (source === "syllabus") {
+    return (
+      <NdMode>
+        {(() => {
     switch (indicator) {
       case "syllabus-amministrazioni":
         return <SyllabusAmministrazioniSection />;
@@ -198,6 +216,10 @@ export const OperationalContent = ({
       case "syllabus-gap-formazione":
         return <SyllabusGapFormazioneSection />;
     }
+          return null;
+        })()}
+      </NdMode>
+    );
   }
 
   // KPI Riforma PA
@@ -212,14 +234,21 @@ export const OperationalContent = ({
     }
   }
 
-  // Lavoro Pubblico
+  // Lavoro Pubblico — placeholder N/D
   if (source === "lavoro-pubblico") {
+    return (
+      <NdMode>
+        {(() => {
     switch (indicator) {
       case "lp-distribuzione":
         return <LpDistribuzioneSection />;
       case "lp-dotazione":
         return <LpDotazioneSection />;
     }
+          return null;
+        })()}
+      </NdMode>
+    );
   }
 
   // Fallback: select an indicator

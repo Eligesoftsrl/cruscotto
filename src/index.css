@@ -189,3 +189,30 @@
     font-variant-numeric: tabular-nums;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   NdMode: stato placeholder "dati non disponibili".
+   Svuota i grafici Recharts (serie/etichette nascoste; restano assi e griglia)
+   nelle sole sezioni marcate .nd-mode. I numeri KPI diventano "N/D" via JS.
+--------------------------------------------------------------------------- */
+.nd-mode .recharts-bar-rectangle,
+.nd-mode .recharts-bar-rectangles,
+.nd-mode .recharts-rectangle,
+.nd-mode .recharts-line-curve,
+.nd-mode .recharts-line-dots,
+.nd-mode .recharts-area-area,
+.nd-mode .recharts-area-curve,
+.nd-mode .recharts-area-dots,
+.nd-mode .recharts-pie,
+.nd-mode .recharts-sector,
+.nd-mode .recharts-scatter,
+.nd-mode .recharts-dot,
+.nd-mode .recharts-label-list,
+.nd-mode .recharts-radial-bar-sectors {
+  display: none !important;
+}
+
+/* NdMode: azzera le barre di avanzamento CSS (Vista Sintetica D1/D3). */
+.nd-mode .h-2.bg-muted.rounded-sm > div {
+  display: none !important;
+}

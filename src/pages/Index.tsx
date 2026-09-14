@@ -6,6 +6,7 @@ import { AppSidebar, type NavState } from "@/components/dashboard/AppSidebar";
 import { TopBar } from "@/components/dashboard/TopBar";
 import { ExecutiveView } from "@/components/dashboard/ExecutiveView";
 import { SyntheticPillarView } from "@/components/dashboard/SyntheticPillarView";
+import { NdMode } from "@/components/dashboard/NdMode";
 import { OperationalContent } from "@/components/dashboard/OperationalContent";
 import { GuidedJourney } from "@/components/dashboard/GuidedJourney";
 import { guidedJourneys } from "@/data/guidedJourneys";
@@ -87,7 +88,7 @@ const Index = () => {
 
     if (nav.level === "synthetic") {
       if (nav.pillar) {
-        return (
+        const view = (
           <SyntheticPillarView
             pillar={nav.pillar}
             selectedIndicator={nav.indicator}
@@ -97,6 +98,9 @@ const Index = () => {
             onGoExecutive={() => setNav({ level: "executive" })}
           />
         );
+        // D1/D3: fonti dati non ancora disponibili -> modalita placeholder (N/D)
+        const isNdPillar = nav.pillar === "D1" || nav.pillar === "D3";
+        return isNdPillar ? <NdMode>{view}</NdMode> : view;
       }
       return <ExecutiveView />;
     }

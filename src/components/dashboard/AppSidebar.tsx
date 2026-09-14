@@ -45,8 +45,9 @@ const pillars = [
   { id: "D6", label: "Capacity building e performance", icon: BarChart2 },
 ];
 
-/** Pillar disattivati SOLO nella Vista Sintetica (indicazione committente). */
-const DISABLED_SYNTHETIC_PILLARS = new Set(["D1", "D3"]);
+/** Pillar disattivati SOLO nella Vista Sintetica (indicazione committente).
+ *  Riabilitati: restano visibili/navigabili ma in modalita placeholder (N/D). */
+const DISABLED_SYNTHETIC_PILLARS = new Set<string>([]);
 
 /* ── Synthetic indicators per pillar (from PDF methodology) ── */
 export const syntheticIndicators: Record<string, { id: string; label: string }[]> = {
@@ -215,7 +216,6 @@ const operationalSourcesAll = [
     indicators: [
       { id: "kpi-success-rate", label: "KPI Success Rate" },
       { id: "kpi-abilitanti", label: "KPI Abilitanti (Blocchi)" },
-      { id: "kpi-benchmark", label: "Benchmark KPI tra enti" },
     ],
   },
   {
@@ -230,10 +230,10 @@ const operationalSourcesAll = [
 ];
 
 /**
- * Sezioni disattivate su indicazione del committente (fonti dati non ancora
- * disponibili). Le definizioni restano sopra per riattivarle rapidamente.
+ * Sezioni tenute in modalita placeholder (N/D): visibili e navigabili, ma con
+ * valori numerici "N/D" e grafici svuotati finche le fonti dati non sono pronte.
  */
-const DISABLED_SOURCE_IDS = new Set(["inpa", "minerva", "syllabus", "lavoro-pubblico"]);
+const DISABLED_SOURCE_IDS = new Set<string>([]);
 export const operationalSources = operationalSourcesAll.filter(
   (s) => !DISABLED_SOURCE_IDS.has(s.id),
 );
