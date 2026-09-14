@@ -49,6 +49,10 @@ export const NdMode = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div ref={ref} className="nd-mode">
+      <div className="flex items-center gap-2 px-4 py-1.5 text-[11px] font-medium text-amber-800 bg-amber-50 border-b border-amber-200">
+        <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500" />
+        Dati non disponibili — sezione in attesa delle fonti dati (valori mostrati come N/D)
+      </div>
       {children}
     </div>
   );

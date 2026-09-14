@@ -216,3 +216,8 @@
 .nd-mode .h-2.bg-muted.rounded-sm > div {
   display: none !important;
 }
+
+/* NdMode: nasconde i piccoli badge di variazione (es. "+8.0pp") in placeholder. */
+.nd-mode span.inline-flex.items-center.text-xs.font-semibold {
+  display: none !important;
+}
