@@ -28,7 +28,10 @@ export interface AssuntiFiltri {
 }
 
 /** Costruisce l'oggetto parametri RPC omettendo i valori vuoti. */
-function buildParams(f: AssuntiFiltri): Record<string, unknown> {
+function buildParams(
+  f: AssuntiFiltri,
+  opts: { includeGenere?: boolean; movimento?: "A" | "C" } = {},
+): Record<string, unknown> {
   const p: Record<string, unknown> = {};
   if (f.anno != null) p.p_anno = f.anno;
   if (f.istituzione) p.p_istituzione = f.istituzione;
@@ -37,7 +40,8 @@ function buildParams(f: AssuntiFiltri): Record<string, unknown> {
   if (f.macrocategoria) p.p_macrocategoria = f.macrocategoria;
   if (f.categoria) p.p_categoria = f.categoria;
   if (f.regione) p.p_regione = f.regione;
-  if (f.genere && f.genere !== "T") p.p_genere = f.genere;
+  if (opts.includeGenere !== false && f.genere && f.genere !== "T") p.p_genere = f.genere;
+  if (opts.movimento) p.p_movimento = opts.movimento; // sempre presente quando previsto
   return p;
 }
 
@@ -59,15 +63,19 @@ export interface AssuntiKpi {
   donne_pct: number; // gia in scala %, NON moltiplicare
   personale: number; // fonte mv_occupazione
 }
-/** fa_ca_assunti_causali: alimenta barre (uomini/donne) e donut (valore/percentuale). */
+/**
+ * Causali di ASSUNZIONE: la RPC fa_ca_assunti_causali e stata RIMOSSA dal backend.
+ * Si usa fa_ca_cessazioni_causali con p_movimento='A' (stesse righe attese).
+ * Campi: causale, descrizione, uomini, donne, tutti, percentuale (NIENTE 'valore').
+ * p_genere e ignorato da questa funzione.
+ */
 export interface AssuntiCausaleRow {
   causale: string;
   descrizione: string;
-  uomini: number; // NON influenzato da p_genere
-  donne: number; // NON influenzato da p_genere
-  tutti: number; // NON influenzato da p_genere
-  valore: number; // influenzato da p_genere
-  percentuale: number; // influenzato da p_genere
+  uomini: number;
+  donne: number;
+  tutti: number; // uomini + donne
+  percentuale: number; // quota sul totale
 }
 /** fa_ca_assunti_evoluzione: formato largo (anno, assunti), nessun pivot. */
 export interface AssuntiEvoluzioneRow {
@@ -80,9 +88,13 @@ export interface AssuntiEvoluzioneRow {
 export const fetchAssuntiKpi = (f: AssuntiFiltri) =>
   rpcOne<AssuntiKpi>("fa_ca_assunti_kpi", buildParams(f));
 
-// Barre (Uomini/Donne) + donut (Composizione per causale): stessa risposta.
+// Barre (Uomini/Donne) + donut (Composizione per causale).
+// NB: fa_ca_assunti_causali RIMOSSA -> si usa fa_ca_cessazioni_causali con p_movimento='A'.
 export const fetchAssuntiCausali = (f: AssuntiFiltri) =>
-  rpcRows<AssuntiCausaleRow>("fa_ca_assunti_causali", buildParams(f));
+  rpcRows<AssuntiCausaleRow>(
+    "fa_ca_cessazioni_causali",
+    buildParams(f, { includeGenere: false, movimento: "A" }),
+  );
 
 // Trend assunzioni: la RPC NON accetta p_anno (limite superiore interno).
 export const fetchAssuntiEvoluzione = (f: AssuntiFiltri) => {

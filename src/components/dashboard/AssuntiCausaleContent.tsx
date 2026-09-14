@@ -144,7 +144,7 @@ export const AssuntiCausaleContent = () => {
           <h4 className="mb-3 text-sm font-semibold text-foreground">Composizione per causale</h4>
           <ResponsiveContainer width="100%" height={360}>
             <PieChart>
-              <Pie data={causaliRows} dataKey="valore" nameKey="descrizione"
+              <Pie data={causaliRows} dataKey="tutti" nameKey="descrizione"
                 cx="50%" cy="45%" innerRadius={60} outerRadius={100} paddingAngle={1}
                 label={(e: { percentuale?: number }) => (e.percentuale != null ? `${n1(e.percentuale)}%` : "")}
                 labelLine={false}>
