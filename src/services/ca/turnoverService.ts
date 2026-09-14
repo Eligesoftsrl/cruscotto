@@ -66,6 +66,9 @@ export interface TurnoverEvoluzioneRow {
 export const fetchTurnoverKpi = (f: TurnoverFiltri) =>
   rpcOne<TurnoverKpi>("fa_ca_turnover_kpi", buildParams(f));
 
-// p_anno = limite superiore della serie. Alimenta combo, saldo cumulato e tabella.
-export const fetchTurnoverEvoluzione = (f: TurnoverFiltri) =>
-  rpcRows<TurnoverEvoluzioneRow>("fa_ca_turnover_evoluzione", buildParams(f));
+// La RPC NON accetta p_anno (limite superiore interno). Alimenta combo, saldo cumulato e tabella.
+export const fetchTurnoverEvoluzione = (f: TurnoverFiltri) => {
+  const params = buildParams(f);
+  delete params.p_anno;
+  return rpcRows<TurnoverEvoluzioneRow>("fa_ca_turnover_evoluzione", params);
+};

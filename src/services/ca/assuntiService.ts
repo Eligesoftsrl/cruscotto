@@ -84,6 +84,9 @@ export const fetchAssuntiKpi = (f: AssuntiFiltri) =>
 export const fetchAssuntiCausali = (f: AssuntiFiltri) =>
   rpcRows<AssuntiCausaleRow>("fa_ca_assunti_causali", buildParams(f));
 
-// Trend assunzioni: p_anno e il LIMITE SUPERIORE (m.anno <= p_anno).
-export const fetchAssuntiEvoluzione = (f: AssuntiFiltri) =>
-  rpcRows<AssuntiEvoluzioneRow>("fa_ca_assunti_evoluzione", buildParams(f));
+// Trend assunzioni: la RPC NON accetta p_anno (limite superiore interno).
+export const fetchAssuntiEvoluzione = (f: AssuntiFiltri) => {
+  const params = buildParams(f);
+  delete params.p_anno;
+  return rpcRows<AssuntiEvoluzioneRow>("fa_ca_assunti_evoluzione", params);
+};

@@ -65,5 +65,9 @@ export interface SostituzioneEvoluzioneRow {
 export const fetchSostituzioneKpi = (f: SostituzioneFiltri) =>
   rpcOne<SostituzioneKpi>("fa_ca_sostituzione_kpi", buildParams(f));
 
-export const fetchSostituzioneEvoluzione = (f: SostituzioneFiltri) =>
-  rpcRows<SostituzioneEvoluzioneRow>("fa_ca_sostituzione_evoluzione", buildParams(f));
+// La RPC NON accetta p_anno (limite superiore interno).
+export const fetchSostituzioneEvoluzione = (f: SostituzioneFiltri) => {
+  const params = buildParams(f);
+  delete params.p_anno;
+  return rpcRows<SostituzioneEvoluzioneRow>("fa_ca_sostituzione_evoluzione", params);
+};

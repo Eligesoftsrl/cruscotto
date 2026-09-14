@@ -90,8 +90,12 @@ export const fetchFasceGenere = (f: EtaFiltri) =>
   rpcRows<FasciaGenereRow>("fa_ca_eta_fasce_genere", buildParams(f, { includeGenere: false }));
 
 // Evoluzione: il genere qui e pilotato dal toggle locale (ha precedenza).
-export const fetchEvoluzione = (f: EtaFiltri, genereToggle: Genere) =>
-  rpcRows<EvoluzioneRow>("fa_ca_eta_evoluzione", buildParams({ ...f, genere: genereToggle }));
+// NB: la RPC *_evoluzione NON accetta p_anno (il limite superiore e interno).
+export const fetchEvoluzione = (f: EtaFiltri, genereToggle: Genere) => {
+  const params = buildParams({ ...f, genere: genereToggle });
+  delete params.p_anno;
+  return rpcRows<EvoluzioneRow>("fa_ca_eta_evoluzione", params);
+};
 
 export const fetchBenchmark = (f: EtaFiltri, dimensione: BenchDimensione) =>
   rpcRows<BenchmarkRow>("fa_ca_eta_benchmark", { ...buildParams(f), p_dimensione: dimensione });

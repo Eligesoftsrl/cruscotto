@@ -100,6 +100,9 @@ export const fetchCessazioniCausali = async (f: CessazioniFiltri, movimento: Mov
   return rows.map((r) => ({ ...r, descrizione: clean(r.descrizione) }));
 };
 
-// Serie storica assunti vs cessati: p_anno e il LIMITE SUPERIORE (m.anno <= p_anno).
-export const fetchCessazioniEvoluzione = (f: CessazioniFiltri) =>
-  rpcRows<CessazioniEvoluzioneRow>("fa_ca_cessazioni_evoluzione", buildParams(f));
+// Serie storica assunti vs cessati: la RPC NON accetta p_anno (limite interno).
+export const fetchCessazioniEvoluzione = (f: CessazioniFiltri) => {
+  const params = buildParams(f);
+  delete params.p_anno;
+  return rpcRows<CessazioniEvoluzioneRow>("fa_ca_cessazioni_evoluzione", params);
+};

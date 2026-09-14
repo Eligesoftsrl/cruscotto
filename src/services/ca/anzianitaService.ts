@@ -85,6 +85,9 @@ export const fetchAnzianitaKpi = (f: AnzFiltri) =>
 export const fetchAnzianitaFasce = (f: AnzFiltri) =>
   rpcRows<AnzFasciaRow>("fa_ca_anzianita_fasce_genere", buildParams(f, { includeGenere: false }));
 
-// Evoluzione composizione: p_anno e il LIMITE SUPERIORE (m.anno <= p_anno).
-export const fetchAnzianitaEvoluzione = (f: AnzFiltri) =>
-  rpcRows<AnzEvoluzioneRow>("fa_ca_anzianita_evoluzione", buildParams(f));
+// Evoluzione composizione: la RPC NON accetta p_anno (limite superiore interno).
+export const fetchAnzianitaEvoluzione = (f: AnzFiltri) => {
+  const params = buildParams(f);
+  delete params.p_anno;
+  return rpcRows<AnzEvoluzioneRow>("fa_ca_anzianita_evoluzione", params);
+};
