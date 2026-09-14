@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { ND_PLACEHOLDER_ENABLED } from "@/config/ndMode";
 
 /**
  * NdMode — stato "placeholder" per le sezioni le cui fonti dati NON sono ancora
@@ -19,6 +20,7 @@ export const NdMode = ({ children }: { children: React.ReactNode }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!ND_PLACEHOLDER_ENABLED) return;
     const root = ref.current;
     if (!root) return;
     let raf = 0;
@@ -46,6 +48,9 @@ export const NdMode = ({ children }: { children: React.ReactNode }) => {
       cancelAnimationFrame(raf);
     };
   }, []);
+
+  // Interruttore spento: pass-through, le sezioni mostrano i dati normalmente.
+  if (!ND_PLACEHOLDER_ENABLED) return <>{children}</>;
 
   return (
     <div ref={ref} className="nd-mode">
