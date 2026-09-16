@@ -107,9 +107,11 @@ export const OperationalContent = ({
 
   // Conto Annuale
   if (source === "conto-annuale" && indicator) {
+    // Genere ombreggiato/bloccato nelle schede in cui non è utilizzato.
+    const lockGenere = ["progressioni", "lavoro-flessibile", "analisi-genere"].includes(indicator);
     const wrap = (children: React.ReactNode) => (
       <>
-        <FilterPills />
+        <FilterPills lockGenere={lockGenere} />
         <div className="p-4 flex-1">{children}</div>
         {bottomUpNav}
       </>

@@ -47,7 +47,7 @@ export const LavoroFlessibileSection = () => {
     <div className="space-y-4">
       <KpiGrid>
         <KpiStat
-          label="Personale flessibile"
+          label="Personale flessibile (% sul totale del personale in servizio)"
           value={formatPct(flessibiliPerc)}
           icon={Clock}
           color="hsl(var(--chart-blue))"
@@ -66,7 +66,7 @@ export const LavoroFlessibileSection = () => {
           color="hsl(var(--chart-blue))"
         />
         <KpiStat
-          label="Crescita vs primo anno"
+          label={`Crescita vs primo anno (${serieStorica[0].anno})`}
           value={crescita}
           icon={TrendingUp}
           color="hsl(var(--chart-teal))"

@@ -2,10 +2,9 @@ import { KpiStat, KpiGrid } from "../KpiStat";
 import { SectionError, SectionLoading } from "../SectionStates";
 import { tooltipStyle } from "../chartTheme";
 import { useFormazioneData } from "@/hooks/useFormazioneData";
+import { CURRENT_YEAR } from "@/config/constants";
 import { GraduationCap, Clock, Users, TrendingUp } from "lucide-react";
 import {
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -25,16 +24,8 @@ const formazionePerArea = [
   { area: "Operatori", formati: 1920, totale: 3130, perc: 61.3 },
 ];
 
-const formazioneTipologia = [
-  { tipo: "Competenze digitali", ore: 12500 },
-  { tipo: "Competenze manageriali", ore: 8200 },
-  { tipo: "Aggiornamento normativo", ore: 9800 },
-  { tipo: "Lingue straniere", ore: 4500 },
-  { tipo: "Sicurezza sul lavoro", ore: 7500 },
-];
-
 export const FormatiPersonaleSection = () => {
-  const { formazione, isLoading, error } = useFormazioneData(2023);
+  const { formazione, isLoading, error } = useFormazioneData(CURRENT_YEAR);
 
   if (isLoading) return <SectionLoading />;
   if (error) return <SectionError />;
@@ -81,8 +72,8 @@ export const FormatiPersonaleSection = () => {
             color: "hsl(var(--chart-orange))",
           },
           {
-            label: "Variazione vs anno prec.",
-            value: `${parseFloat(formazioneVar) >= 0 ? "+" : ""}${formazioneVar} pp`,
+            label: "Variazione % vs anno prec.",
+            value: `${parseFloat(formazioneVar) >= 0 ? "+" : ""}${formazioneVar}%`,
             icon: TrendingUp,
             color:
               parseFloat(formazioneVar) >= 0 ? "hsl(var(--chart-teal))" : "hsl(var(--chart-red))",
@@ -177,33 +168,6 @@ export const FormatiPersonaleSection = () => {
             </ComposedChart>
           </ResponsiveContainer>
         </div>
-      </div>
-
-      {/* Tipologia formazione (dettaglio illustrativo) */}
-      <div className="bg-card border rounded-lg p-4">
-        <h3 className="text-xs font-semibold text-foreground mb-3">
-          Ore di Formazione per Tipologia
-        </h3>
-        <ResponsiveContainer width="100%" height={240}>
-          <BarChart data={formazioneTipologia} layout="vertical" margin={{ left: 10 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" horizontal={false} />
-            <XAxis type="number" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
-            <YAxis
-              type="category"
-              dataKey="tipo"
-              tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
-              width={150}
-            />
-            <Tooltip contentStyle={tooltipStyle} />
-            <Bar
-              dataKey="ore"
-              name="Ore"
-              fill="hsl(var(--chart-teal))"
-              barSize={20}
-              radius={[0, 4, 4, 0]}
-            />
-          </BarChart>
-        </ResponsiveContainer>
       </div>
     </div>
   );

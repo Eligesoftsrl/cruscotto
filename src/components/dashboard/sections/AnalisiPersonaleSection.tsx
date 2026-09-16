@@ -65,7 +65,7 @@ export const AnalisiPersonaleSection = () => {
             color: "hsl(var(--chart-teal))",
           },
           {
-            label: "Variazione vs anno prec.",
+            label: "Variazione % vs anno prec.",
             value: `+${kpiOverview.personaleTotaleVar}%`,
             icon: TrendingUp,
             color: "hsl(var(--chart-teal))",
@@ -107,6 +107,9 @@ export const AnalisiPersonaleSection = () => {
               </Bar>
             </BarChart>
           </ResponsiveContainer>
+          <p className="text-[10.5px] text-muted-foreground mt-2 italic">
+            Nota: Per popolare il grafico è necessario selezionare un comparto.
+          </p>
         </div>
 
         {/* Titolo di studio donut */}
@@ -142,7 +145,7 @@ export const AnalisiPersonaleSection = () => {
       {/* Serie storica */}
       <div className="bg-card border rounded-lg p-4">
         <h3 className="text-xs font-semibold text-foreground mb-3">
-          Evoluzione Personale (×1.000) — 2012–2023
+          Evoluzione Personale (×1.000)
         </h3>
         <ResponsiveContainer width="100%" height={260}>
           <LineChart data={serieStoricaPersonale}>

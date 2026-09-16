@@ -13,10 +13,10 @@ const ALL_COMP = "Tutti";
 const ALL_F = "Tutte";
 
 const Pill = ({
-  label, value, display, options, onChange, onClear, active, disabled,
+  label, value, display, options, onChange, onClear, active, disabled, title,
 }: {
   label: string; value: string; display: string; options: Opt[];
-  onChange: (v: string) => void; onClear: () => void; active: boolean; disabled?: boolean;
+  onChange: (v: string) => void; onClear: () => void; active: boolean; disabled?: boolean; title?: string;
 }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -29,6 +29,7 @@ const Pill = ({
     <div ref={ref} className="relative">
       <button
         disabled={disabled}
+        title={title}
         onClick={() => setOpen(!open)}
         className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] transition-colors disabled:opacity-40 ${
           active ? "border-primary bg-primary/5 text-primary" : "text-muted-foreground hover:border-primary hover:text-primary"
@@ -61,7 +62,7 @@ const Pill = ({
   );
 };
 
-export const FilterPills = () => {
+export const FilterPills = ({ lockGenere = false }: { lockGenere?: boolean } = {}) => {
   const { filters, setFilter, resetFilters, activeCount } = useFilters();
   const { profile } = useAuth();
   const isEnteHr = profile?.role === "ente_hr";
@@ -102,9 +103,11 @@ export const FilterPills = () => {
         options={opt(categorieQ.data, "Tutte", ALL_F)}
         onChange={(v) => setFilter("categoria", v)} onClear={() => setFilter("categoria", ALL_F)} />
 
-      {/* Genere */}
+      {/* Genere (ombreggiato e bloccato nelle schede in cui non è utilizzato,
+          mantenendo il valore eventualmente selezionato altrove) */}
       <Pill label="Genere" value={filters.genere} display={filters.genere}
-        active={filters.genere !== "Tutti"}
+        active={filters.genere !== "Tutti"} disabled={lockGenere}
+        title={lockGenere ? "Filtro non utilizzato in questa scheda" : undefined}
         options={[{ value: "Tutti", label: "Tutti" }, { value: "Uomini", label: "Uomini" }, { value: "Donne", label: "Donne" }]}
         onChange={(v) => setFilter("genere", v)} onClear={() => setFilter("genere", "Tutti")} />
 

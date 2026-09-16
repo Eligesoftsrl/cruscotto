@@ -39,13 +39,13 @@ export const ProgressioniSection = () => {
 
       <div className="grid gap-4 sm:grid-cols-3">
         <KpiCard
-          title="Progressioni Verticali 2023"
+          title="Progressioni Verticali"
           value={latest.verticali}
           icon={ArrowUpRight}
           accent
         />
         <KpiCard
-          title="Progressioni Orizzontali 2023"
+          title="Progressioni Orizzontali"
           value={latest.orizzontali}
           icon={ArrowUpRight}
         />
