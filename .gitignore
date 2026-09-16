@@ -39,3 +39,7 @@ test_result.md
 .next/
 yarn.lock
 ca_52.sql
+
+# 2026-09-16 Emergent Support (#255170): scoped negation so the platform git-add
+# pathspec stops erroring. .env stays OUT of commits via the save routine own exclusion.
+!/.env

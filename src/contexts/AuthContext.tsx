@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { isKeycloakEnabled, keycloak, initKeycloak } from "@/auth/keycloak";
+import { setLogUser, resetLogUser, logAccesso, clearAccessDedupe } from "@/services/admin/logger";
 
 export type AppRole = "dfp" | "ente_hr";
 
@@ -79,7 +80,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (isKeycloakEnabled) {
       let active = true;
       const refresh = () => {
-        if (active) setProfile(profileFromKeycloak());
+        if (!active) return;
+        const p = profileFromKeycloak();
+        setProfile(p);
+        if (p) {
+          setLogUser({ username: p.full_name, ruolo: p.role });
+          logAccesso("success");
+        }
       };
       initKeycloak()
         .then(refresh)
@@ -100,7 +107,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const stored = sessionStorage.getItem("mock_profile");
     if (stored) {
       try {
-        setProfile(JSON.parse(stored));
+        const p = JSON.parse(stored) as UserProfile;
+        setProfile(p);
+        setLogUser({ username: p.full_name, ruolo: p.role });
       } catch {
         // sessione malformata: ignoro e resto non autenticato
       }
@@ -134,9 +143,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
     setProfile(p);
     sessionStorage.setItem("mock_profile", JSON.stringify(p));
+    setLogUser({ username: p.full_name, ruolo: p.role });
+    logAccesso("success");
   };
 
   const signOut = () => {
+    resetLogUser();
+    clearAccessDedupe();
     if (isKeycloakEnabled) {
       void keycloak.logout({ redirectUri: `${window.location.origin}/` });
       return;

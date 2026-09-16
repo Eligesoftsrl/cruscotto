@@ -1,7 +1,15 @@
-import { LogOut, Compass, Home } from "lucide-react";
+import { LogOut, Compass, Home, ShieldCheck, ChevronDown } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { NavState } from "./AppSidebar";
 import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import headerLogos from "@/assets/header-logos.png";
 
 interface TopBarProps {
@@ -14,6 +22,7 @@ export const TopBar = ({ nav, onNavigate }: TopBarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isWelcome = location.pathname === "/";
+  const isAdmin = profile?.role === "dfp";
   const isPannelloOrRapporto =
     location.pathname.startsWith("/bussola") || location.pathname.startsWith("/rapporto");
 
@@ -31,21 +40,45 @@ export const TopBar = ({ nav, onNavigate }: TopBarProps) => {
         <div className="flex-1" />
 
         {profile && (
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold bg-white/20">
-              {profile.full_name?.[0]?.toUpperCase() ?? "U"}
-            </div>
-            <span className="text-white/80 text-[11px] font-medium truncate max-w-[100px]">
-              {profile.full_name}
-            </span>
-            <button
-              onClick={signOut}
-              className="p-1 rounded hover:bg-white/10 transition"
-              title="Esci"
-            >
-              <LogOut className="h-3 w-3 text-white/70" />
-            </button>
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center gap-2 rounded px-2 py-1 outline-none transition hover:bg-white/10 focus:ring-2 focus:ring-white/40">
+              <div className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold bg-white/20">
+                {profile.full_name?.[0]?.toUpperCase() ?? "U"}
+              </div>
+              <span className="text-white/90 text-[11px] font-medium truncate max-w-[140px]">
+                {profile.full_name}
+              </span>
+              <ChevronDown className="h-3 w-3 text-white/60" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold leading-tight">{profile.full_name}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {isAdmin
+                      ? "Amministratore (DFP)"
+                      : (profile.ente_denominazione ?? "Responsabile HR")}
+                  </span>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {isAdmin && (
+                <DropdownMenuItem onClick={() => navigate("/admin")}>
+                  <ShieldCheck className="h-4 w-4 mr-2" /> Amministrazione
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem onClick={() => navigate("/")}>
+                <Home className="h-4 w-4 mr-2" /> Home
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={signOut}
+                className="text-destructive focus:text-destructive"
+              >
+                <LogOut className="h-4 w-4 mr-2" /> Esci
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
       </header>
 

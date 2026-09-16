@@ -50,6 +50,8 @@ import { Info, Construction } from "lucide-react";
 
 import { NdMode } from "./NdMode";
 import { BottomUpNav } from "./BottomUpNav";
+import { useAdminState } from "@/services/admin/adminStore";
+import { CA_INDICATOR_FLAG } from "@/config/schedeFlags";
 
 interface OperationalContentProps {
   source: string;
@@ -64,6 +66,10 @@ export const OperationalContent = ({
   onGoExecutive,
   onGoSynthetic,
 }: OperationalContentProps) => {
+  const { flags } = useAdminState();
+  const isFlagOff = (key?: string) =>
+    key ? !(flags.find((f) => f.key === key)?.enabled ?? true) : false;
+
   // Map source to related pillar for bottom-up nav
   const sourcePillarMap: Record<string, string> = {
     "conto-annuale": "D2",
@@ -108,6 +114,27 @@ export const OperationalContent = ({
         {bottomUpNav}
       </>
     );
+
+    // Feature flag: scheda disattivata dall'Admin -> avviso, niente dati.
+    if (isFlagOff(CA_INDICATOR_FLAG[indicator])) {
+      return (
+        <div className="flex-1 flex items-center justify-center p-8">
+          <div className="tableau-card max-w-md w-full">
+            <div className="tableau-card-header flex items-center gap-2">
+              <Construction className="h-4 w-4" />
+              Funzione disattivata
+            </div>
+            <div className="p-8 text-center">
+              <Construction className="h-10 w-10 text-muted-foreground/30 mx-auto mb-4" />
+              <p className="text-[12px] text-muted-foreground leading-relaxed">
+                Questa scheda è stata disattivata dall'amministratore nel Pannello di
+                Amministrazione. Riattivala dalla sezione «Funzionalità» per visualizzarne i dati.
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    }
 
     switch (indicator) {
       case "analisi-eta":

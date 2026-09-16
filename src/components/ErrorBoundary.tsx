@@ -1,5 +1,6 @@
 import React from "react";
 import { AlertTriangle, RefreshCw } from "lucide-react";
+import { logErrore } from "@/services/admin/logger";
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -35,6 +36,12 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   componentDidCatch(error: Error, info: React.ErrorInfo) {
     // Log in console per il debug. In produzione qui si può inviare a un servizio di monitoraggio.
     console.error("[ErrorBoundary]", error, info.componentStack);
+    try {
+      // SEC-004: non persistiamo lo stack trace nei log (resta solo in console).
+      logErrore(error.message, "boundary");
+    } catch {
+      /* il logging non deve mai far fallire il boundary */
+    }
   }
 
   reset = () => this.setState({ error: null });

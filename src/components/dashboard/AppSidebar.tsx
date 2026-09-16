@@ -21,10 +21,14 @@ import {
   Activity,
   GraduationCap,
   HelpCircle,
+  ShieldCheck,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { resetOnboardingTour } from "./OnboardingTour";
 import { GlossaryDialog } from "./GlossaryDialog";
+import { useAdminState } from "@/services/admin/adminStore";
+import { CA_INDICATOR_FLAG } from "@/config/schedeFlags";
 
 /* ── NavState ── */
 export interface NavState {
@@ -245,10 +249,25 @@ interface AppSidebarProps {
 
 export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
   const { profile, signOut } = useAuth();
+  const { flags } = useAdminState();
+  const navigate = useNavigate();
   const [expandedPillar, setExpandedPillar] = useState<string | null>(null);
   const [expandedSource, setExpandedSource] = useState<string | null>(null);
 
   const isExec = nav.level === "executive";
+
+  // Feature flag disattivati -> nasconde le relative schede reali del Conto Annuale.
+  const disabledFlags = new Set(flags.filter((f) => !f.enabled).map((f) => f.key));
+  const visibleSources = operationalSources.map((src) => {
+    if (src.id !== "conto-annuale") return src;
+    return {
+      ...src,
+      indicators: src.indicators.filter((ind) => {
+        const key = CA_INDICATOR_FLAG[ind.id];
+        return !key || !disabledFlags.has(key);
+      }),
+    };
+  });
 
   const navBtn = (active: boolean, onClick: () => void, children: React.ReactNode, indent = 0) => (
     <button
@@ -413,7 +432,7 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
       {/* ── Operational ── */}
       <div data-tour="sidebar-operational">
         {sectionLabel("Vista Operativa")}
-        {operationalSources.map((src) => {
+        {visibleSources.map((src) => {
           const SrcIcon = src.icon;
           const isExp = expandedSource === src.id;
           const isSrcActive = nav.level === "operational" && nav.source === src.id;
@@ -507,6 +526,18 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
       </div>
 
       <div className="flex-1" />
+
+      {/* ── Amministrazione (solo profilo DFP/admin) ── */}
+      {profile?.role === "dfp" && (
+        <button
+          onClick={() => navigate("/admin")}
+          className="flex items-center gap-2.5 w-full py-2.5 px-5 text-[12.5px] transition-all hover:bg-white/[0.06] border-t focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white/40"
+          style={{ color: "hsl(210 15% 65%)", borderColor: "hsl(var(--sidebar-border))" }}
+        >
+          <ShieldCheck className="h-[18px] w-[18px]" style={{ color: "hsl(var(--primary))" }} />
+          <span className="font-semibold">Amministrazione</span>
+        </button>
+      )}
 
       {/* ── User ── */}
       {profile && (

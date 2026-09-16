@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { toast } from "sonner";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { UsageTracker } from "@/components/admin/UsageTracker";
+import { logErrore } from "@/services/admin/logger";
 import Login from "./pages/Login";
 
 // Route lazy-loaded: riducono il bundle iniziale (code-splitting).
@@ -15,6 +17,7 @@ const Index = lazy(() => import("./pages/Index"));
 const Bussola = lazy(() => import("./pages/Bussola"));
 const RapportoNarrativo = lazy(() => import("./pages/RapportoNarrativo"));
 const NarrativeDemo = lazy(() => import("./pages/NarrativeDemo"));
+const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -23,6 +26,8 @@ const queryClient = new QueryClient({
     onError: (error) => {
       const message = error instanceof Error ? error.message : "Errore nel caricamento dei dati";
       toast.error("Errore di caricamento", { description: message });
+      // SEC-004: registriamo solo il messaggio, senza stack trace.
+      logErrore(message, "query");
     },
   }),
   defaultOptions: {
@@ -61,6 +66,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <AuthProvider>
+            <UsageTracker />
             <RoutedErrorBoundary>
               <Suspense fallback={<FullscreenSpinner />}>
                 <Routes>
@@ -102,6 +108,14 @@ const App = () => (
                     element={
                       <ProtectedRoute>
                         <NarrativeDemo />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin"
+                    element={
+                      <ProtectedRoute>
+                        <Admin />
                       </ProtectedRoute>
                     }
                   />
