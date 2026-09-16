@@ -11,12 +11,12 @@ import { PrevisioneCessazioniSection } from "@/components/dashboard/sections/Pre
 import { AssuntiCausaleContent } from "@/components/dashboard/AssuntiCausaleContent";
 import { TassoTurnoverContent } from "@/components/dashboard/TassoTurnoverContent";
 import { TassoSostituzioneContent } from "@/components/dashboard/TassoSostituzioneContent";
-import { FormatiPersonaleSection } from "@/components/dashboard/sections/FormatiPersonaleSection";
-import { ProgressioniSection } from "@/components/dashboard/sections/ProgressioniSection";
-import { AnalisiPersonaleSection } from "@/components/dashboard/sections/AnalisiPersonaleSection";
-import { LavoroFlessibileSection } from "@/components/dashboard/sections/LavoroFlessibileSection";
-import { LavoroAgileSection } from "@/components/dashboard/sections/LavoroAgileSection";
-import { AnalisiGenereSection } from "@/components/dashboard/sections/AnalisiGenereSection";
+import { FormazioneContent } from "@/components/dashboard/FormazioneContent";
+import { ProgressioniContent } from "@/components/dashboard/ProgressioniContent";
+import { AnalisiPersonaleContent } from "@/components/dashboard/AnalisiPersonaleContent";
+import { LavoroFlessibileContent } from "@/components/dashboard/LavoroFlessibileContent";
+import { LavoroAgileContent } from "@/components/dashboard/LavoroAgileContent";
+import { AnalisiGenereContent } from "@/components/dashboard/AnalisiGenereContent";
 import { SiproContentRouter } from "@/components/dashboard/SiproContentRouter";
 import { OverviewHome } from "@/components/dashboard/OverviewHome";
 import { InpaBandiSection } from "@/components/dashboard/sections/inpa/InpaBandiSection";
@@ -154,17 +154,17 @@ export const OperationalContent = ({
       case "tasso-sostituzione":
         return wrap(<TassoSostituzioneContent />);
       case "formati-personale":
-        return wrap(<FormatiPersonaleSection />);
+        return wrap(<FormazioneContent />);
       case "progressioni":
-        return wrap(<ProgressioniSection />);
+        return wrap(<ProgressioniContent />);
       case "analisi-personale":
-        return wrap(<AnalisiPersonaleSection />);
+        return wrap(<AnalisiPersonaleContent />);
       case "lavoro-flessibile":
-        return wrap(<LavoroFlessibileSection />);
+        return wrap(<LavoroFlessibileContent />);
       case "lavoro-agile":
-        return wrap(<LavoroAgileSection />);
+        return wrap(<LavoroAgileContent />);
       case "analisi-genere":
-        return wrap(<AnalisiGenereSection />);
+        return wrap(<AnalisiGenereContent />);
     }
   }
 
