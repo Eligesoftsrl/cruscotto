@@ -6,10 +6,12 @@ import {
   Activity,
   AlertTriangle,
   BarChart3,
+  LayoutGrid,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { TopBar } from "@/components/dashboard/TopBar";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { SchedePanel } from "@/components/admin/SchedePanel";
 import { FeatureFlagsPanel } from "@/components/admin/FeatureFlagsPanel";
 import { AccessLogPanel } from "@/components/admin/AccessLogPanel";
 import { EventLogPanel } from "@/components/admin/EventLogPanel";
@@ -38,8 +40,11 @@ const Admin = () => {
           </div>
         </header>
 
-        <Tabs defaultValue="flags">
+        <Tabs defaultValue="schede">
           <TabsList className="mb-4 flex-wrap h-auto">
+            <TabsTrigger value="schede">
+              <LayoutGrid className="h-4 w-4 mr-1.5" /> Schede
+            </TabsTrigger>
             <TabsTrigger value="flags">
               <ToggleLeft className="h-4 w-4 mr-1.5" /> Funzionalità
             </TabsTrigger>
@@ -57,6 +62,7 @@ const Admin = () => {
             </TabsTrigger>
           </TabsList>
 
+          <TabsContent value="schede"><SchedePanel /></TabsContent>
           <TabsContent value="flags"><FeatureFlagsPanel /></TabsContent>
           <TabsContent value="accessi"><AccessLogPanel /></TabsContent>
           <TabsContent value="eventi"><EventLogPanel /></TabsContent>

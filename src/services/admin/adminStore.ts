@@ -129,6 +129,18 @@ export function toggleFlag(key: string, enabled: boolean) {
   });
 }
 
+/** Attiva/disattiva in blocco un insieme di feature flag (una sola notifica). */
+export function setManyFlags(keys: string[], enabled: boolean) {
+  const set = new Set(keys);
+  const ts = new Date().toISOString();
+  setState({
+    ...state,
+    flags: state.flags.map((f) =>
+      set.has(f.key) ? { ...f, enabled, updatedAt: ts } : f,
+    ),
+  });
+}
+
 export function addAccess(e: Omit<AccessLog, "id" | "ts"> & { ts?: string }) {
   const { ts, ...rest } = e;
   const row: AccessLog = { id: uid(), ts: ts ?? new Date().toISOString(), ...rest };

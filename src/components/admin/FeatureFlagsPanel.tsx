@@ -8,23 +8,31 @@ import { Badge } from "@/components/ui/badge";
 export const FeatureFlagsPanel = () => {
   const { flags } = useAdminState();
 
+  // Le schede del Conto Annuale hanno una sezione dedicata ("Schede"): qui
+  // gestiamo solo le altre funzionalità (Navigazione, Sistema, ...).
+  const generalFlags = useMemo(
+    () => flags.filter((f) => f.category !== "Schede Conto Annuale"),
+    [flags],
+  );
+
   const grouped = useMemo(() => {
     const m = new Map<string, FeatureFlag[]>();
-    flags.forEach((f) => {
+    generalFlags.forEach((f) => {
       const arr = m.get(f.category) ?? [];
       arr.push(f);
       m.set(f.category, arr);
     });
     return Array.from(m.entries());
-  }, [flags]);
+  }, [generalFlags]);
 
-  const activeCount = flags.filter((f) => f.enabled).length;
+  const activeCount = generalFlags.filter((f) => f.enabled).length;
 
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted-foreground">
-        {activeCount} di {flags.length} funzionalità attive. Disattivando una voce, la relativa
-        funzione può essere nascosta/disabilitata nell'app.
+        {activeCount} di {generalFlags.length} funzionalità attive. Disattivando una voce, la relativa
+        funzione può essere nascosta/disabilitata nell'app. Le schede del Conto Annuale si gestiscono
+        dalla sezione «Schede».
       </p>
       {grouped.map(([cat, list]) => (
         <Card key={cat}>
