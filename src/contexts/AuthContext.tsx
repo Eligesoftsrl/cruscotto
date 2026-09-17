@@ -8,6 +8,8 @@ export type AppRole = "dfp" | "ente_hr";
 interface UserProfile {
   role: AppRole;
   ente_id: number | null;
+  /** Codici fiscali degli enti abilitati (claim Keycloak `enti_cf`). */
+  enti_cf: string[];
   full_name: string;
   ente_denominazione?: string;
 }
@@ -63,12 +65,27 @@ function profileFromKeycloak(): UserProfile | null {
   const enteParsed = enteRaw != null && enteRaw !== "" ? Number(enteRaw) : null;
   const ente_id = enteParsed != null && Number.isFinite(enteParsed) ? enteParsed : null;
 
+  // Codici fiscali degli enti abilitati: claim `enti_cf` (array di stringhe).
+  // Accetta anche una singola stringa o CSV, per robustezza.
+  const rawCf = c.enti_cf ?? c.cf_ente ?? null;
+  let enti_cf: string[] = [];
+  if (Array.isArray(rawCf)) {
+    enti_cf = rawCf.map((v) => String(v).trim()).filter(Boolean);
+  } else if (typeof rawCf === "string" && rawCf.trim()) {
+    enti_cf = rawCf.split(/[,;\s]+/).map((v) => v.trim()).filter(Boolean);
+  }
+
   const fullName =
     (c.name as string) ??
     (c.preferred_username as string) ??
     (role === "dfp" ? "Utente DFP" : "Responsabile HR");
 
-  return { role, ente_id: role === "dfp" ? null : ente_id, full_name: fullName };
+  return {
+    role,
+    ente_id: role === "dfp" ? null : ente_id,
+    enti_cf: role === "dfp" ? [] : enti_cf,
+    full_name: fullName,
+  };
 }
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -138,6 +155,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const p: UserProfile = {
       role,
       ente_id: role === "dfp" ? null : (enteId ?? null),
+      // Demo locale (senza Keycloak): CF Comune di Roma per l'utente ente.
+      enti_cf: role === "ente_hr" ? ["80054330586"] : [],
       full_name: role === "dfp" ? "Utente DFP" : "Responsabile HR",
       ente_denominazione: enteDenom,
     };

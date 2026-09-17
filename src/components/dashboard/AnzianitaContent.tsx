@@ -7,6 +7,7 @@ import {
 } from "recharts";
 import { useFilters } from "@/contexts/FilterContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { useEnteScope } from "@/hooks/useEnteScope";
 import {
   useAnzianitaKpi, useAnzianitaFasce, useAnzianitaEvoluzione,
 } from "@/hooks/useSchedaAnzianita";
@@ -44,6 +45,7 @@ export const AnzianitaContent = () => {
   const { filters } = useFilters();
   const { profile } = useAuth();
   const isDfp = profile?.role === "dfp";
+  const enteScope = useEnteScope();
   const [enteTerm, setEnteTerm] = useState("");
   const [ente, setEnte] = useState<{ codice: string; descrizione: string } | null>(null);
 
@@ -59,6 +61,7 @@ export const AnzianitaContent = () => {
   const filtri: AnzFiltri = {
     anno,
     istituzione: ente?.codice ?? null,
+    codiceFiscale: enteScope.codiceFiscale,
     comparto: filters.comparto !== "Tutti" ? filters.comparto : null,
     macrocategoria: filters.macrocategoria !== "Tutte" ? filters.macrocategoria : null,
     categoria: filters.categoria !== "Tutte" ? filters.categoria : null,
@@ -96,8 +99,9 @@ export const AnzianitaContent = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm font-semibold text-foreground">
-          {ente ? <>Amministrazione: <span className="text-primary">{ente.descrizione}</span></> : "Totale PA"} · Conto Annuale RGS · Anno {filtri.anno}
+          {ente ? <>Amministrazione: <span className="text-primary">{ente.descrizione}</span></> : enteScope.label ? <>Amministrazione: <span className="text-primary">{enteScope.label}</span></> : "Totale PA"} · Conto Annuale RGS · Anno {filtri.anno}
         </p>
+        {enteScope.control}
         <div className="relative w-[320px] max-w-full" style={{ display: isDfp ? undefined : "none" }}>
           <input
             value={ente ? ente.descrizione : enteTerm}
