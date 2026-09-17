@@ -4,14 +4,20 @@
 --  Da applicare sul progetto Supabase del cliente.
 --
 --  Copre le 5 funzioni Admin attive lato frontend:
---    1. feature_flags   -> gestione funzionalità (on/off)
+--    1. feature_flags   -> gestione funzionalità (on/off) + 12 schede Conto Annuale
 --    2. log_accessi     -> lista accessi (login con orario)
 --    3. log_eventi      -> log eventi / navigazione
 --    4. log_errori      -> log errori applicativi
 --    5. v_stat_*        -> statistiche di utilizzo (VISTE derivate dagli eventi)
 --
 --  NB: le chiavi di `feature_flags.key` DEVONO coincidere con quelle usate
---      dal frontend (vedi src/services/admin/featureRegistry.ts).
+--      dal frontend (vedi src/services/admin/featureRegistry.ts e
+--      src/config/schedeCatalog.ts per la mappatura schede -> sezioni).
+--
+--  IDEMPOTENTE: tutte le istruzioni usano `if not exists` / `on conflict do
+--  nothing`, quindi lo script può essere rieseguito senza errori; ri-eseguendolo
+--  vengono SOLO aggiunte le eventuali nuove chiavi mancanti (le righe già
+--  presenti non vengono sovrascritte).
 -- =============================================================================
 
 create extension if not exists pgcrypto;   -- per gen_random_uuid()
@@ -28,20 +34,55 @@ create table if not exists public.feature_flags (
   updated_at  timestamptz not null default now()
 );
 
--- Seed iniziale allineato al frontend (featureRegistry.ts).
+-- Seed iniziale allineato al frontend (src/services/admin/featureRegistry.ts).
+-- Le 12 schede del Conto Annuale sono ora TUTTE gestibili on/off dal Pannello
+-- Admin → sezione «Schede» (aggiornamento del 2026).
 insert into public.feature_flags (key, label, description, category, enabled) values
-  ('guided_navigation',  'Navigazione Guidata', 'Percorsi narrativi / Bussola',                'Navigazione',           true),
-  ('technical_dashboard', 'Vista Tecnica',       'Cruscotto tecnico con indicatori e benchmark','Navigazione',           true),
-  ('narrative_report',    'Rapporto Narrativo',  'Generazione del rapporto narrativo',          'Navigazione',           true),
-  ('scheda_eta',          'Analisi Età',          'Scheda Conto Annuale — analisi per età',       'Schede Conto Annuale',  true),
-  ('scheda_anzianita',    'Anzianità',            'Scheda Conto Annuale — anzianità di servizio',  'Schede Conto Annuale',  true),
-  ('scheda_assunti',      'Assunti',             'Scheda Conto Annuale — assunzioni per causale', 'Schede Conto Annuale',  true),
-  ('scheda_cessazioni',   'Cessazioni',          'Scheda Conto Annuale — cessazioni per causale', 'Schede Conto Annuale',  true),
-  ('scheda_turnover',     'Turnover',            'Scheda Conto Annuale — tasso di turnover',      'Schede Conto Annuale',  true),
-  ('scheda_sostituzione', 'Sostituzione',        'Scheda Conto Annuale — tasso di sostituzione',  'Schede Conto Annuale',  true),
-  ('export_dati',         'Export Dati',         'Esportazione tabelle e grafici',              'Sistema',               true),
-  ('admin_panel',         'Pannello Admin',      'Accesso al pannello di amministrazione',      'Sistema',               true)
+  ('guided_navigation',        'Navigazione Guidata',   'Percorsi narrativi / Bussola (Pannello di Governo)',            'Navigazione',           true),
+  ('technical_dashboard',      'Vista Tecnica',         'Cruscotto tecnico con indicatori e benchmark',                  'Navigazione',           true),
+  ('narrative_report',         'Rapporto Narrativo',    'Generazione del rapporto narrativo',                            'Navigazione',           true),
+  ('scheda_eta',               'Analisi Età',           'Scheda Conto Annuale — analisi anagrafica per età',             'Schede Conto Annuale',  true),
+  ('scheda_anzianita',         'Anzianità',             'Scheda Conto Annuale — anzianità di servizio',                  'Schede Conto Annuale',  true),
+  ('scheda_assunti',           'Assunti',               'Scheda Conto Annuale — assunzioni per causale',                 'Schede Conto Annuale',  true),
+  ('scheda_cessazioni',        'Cessazioni',            'Scheda Conto Annuale — cessazioni per causale',                 'Schede Conto Annuale',  true),
+  ('scheda_turnover',          'Turnover',              'Scheda Conto Annuale — tasso di turnover',                      'Schede Conto Annuale',  true),
+  ('scheda_sostituzione',      'Sostituzione',          'Scheda Conto Annuale — tasso di sostituzione',                  'Schede Conto Annuale',  true),
+  ('scheda_formazione',        'Formazione',            'Scheda Conto Annuale — personale formato',                      'Schede Conto Annuale',  true),
+  ('scheda_progressioni',      'Progressioni',          'Scheda Conto Annuale — progressioni di carriera',               'Schede Conto Annuale',  true),
+  ('scheda_analisi_personale', 'Analisi del personale', 'Scheda Conto Annuale — analisi del personale in servizio',      'Schede Conto Annuale',  true),
+  ('scheda_lavoro_flessibile', 'Lavoro flessibile',     'Scheda Conto Annuale — contratti di lavoro flessibile',         'Schede Conto Annuale',  true),
+  ('scheda_lavoro_agile',      'Lavoro agile',          'Scheda Conto Annuale — diffusione del lavoro agile',            'Schede Conto Annuale',  true),
+  ('scheda_analisi_genere',    'Analisi per genere',    'Scheda Conto Annuale — analisi per genere',                     'Schede Conto Annuale',  true),
+  ('export_dati',              'Export Dati',           'Esportazione tabelle e grafici (CSV/immagini)',                 'Sistema',               true),
+  ('admin_panel',              'Pannello Admin',        'Accesso al pannello di amministrazione',                        'Sistema',               true)
 on conflict (key) do nothing;
+
+-- -----------------------------------------------------------------------------
+--  MAPPATURA FLAG SCHEDA  ->  ID indicatore (sidebar)  ->  RPC Conto Annuale
+--  (solo a fini documentali: nessun oggetto DB da creare qui — gli RPC fa_ca_*
+--   esistono già lato Conto Annuale). Serve per capire cosa viene nascosto
+--   quando una scheda è disattivata.
+--
+--  scheda_eta               | analisi-eta        | fa_ca_eta, fa_ca_eta_evoluzione,
+--                           |                    |   fa_ca_eta_fasce_genere, fa_ca_eta_benchmark
+--  scheda_anzianita         | analisi-anzianita  | fa_ca_anzianita_kpi, fa_ca_anzianita_media,
+--                           |                    |   fa_ca_anzianita_evoluzione, fa_ca_anzianita_fasce_genere
+--  scheda_assunti           | assunti-causale    | fa_ca_assunti_kpi, fa_ca_assunti_evoluzione
+--  scheda_cessazioni        | cessazioni         | fa_ca_cessazioni_kpi, fa_ca_cessazioni_causali,
+--                           |                    |   fa_ca_cessazioni_evoluzione
+--  scheda_turnover          | tasso-turnover     | fa_ca_turnover_kpi, fa_ca_turnover_evoluzione
+--  scheda_sostituzione      | tasso-sostituzione | fa_ca_sostituzione_kpi, fa_ca_sostituzione_evoluzione
+--  scheda_formazione        | formati-personale  | fa_ca_formazione_kpi, fa_ca_formazione_evoluzione,
+--                           |                    |   fa_ca_formazione_macrocategorie
+--  scheda_progressioni      | progressioni       | fa_ca_progressioni_kpi, fa_ca_progressioni_evoluzione
+--  scheda_analisi_personale | analisi-personale  | fa_ca_personale_kpi, fa_ca_personale_evoluzione,
+--                           |                    |   fa_ca_personale_categorie, fa_ca_personale_servizio,
+--                           |                    |   fa_ca_personale_titoli
+--  scheda_lavoro_flessibile | lavoro-flessibile  | fa_ca_lavoro_flessibile_kpi, fa_ca_lavoro_flessibile_evoluzione
+--  scheda_lavoro_agile      | lavoro-agile       | fa_ca_lavoro_agile_kpi, fa_ca_lavoro_agile_evoluzione
+--  scheda_analisi_genere    | analisi-genere     | fa_ca_genere_kpi, fa_ca_genere_piramide,
+--                           |                    |   fa_ca_genere_qualifiche
+-- -----------------------------------------------------------------------------
 
 -- -----------------------------------------------------------------------------
 -- 2) LOG ACCESSI (login con orario)
