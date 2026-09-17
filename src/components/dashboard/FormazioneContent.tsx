@@ -14,9 +14,9 @@ import type { Genere, FormazioneFiltri } from "@/services/ca/formazioneService";
 
 const nf = new Intl.NumberFormat("it-IT");
 const n1 = (v: number | null | undefined) =>
-  v == null ? "—" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
+  v == null ? "N/D" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
 const signed = (v: number | null | undefined) =>
-  v == null ? "—" : `${v > 0 ? "+" : ""}${n1(v)}`;
+  v == null ? "N/D" : `${v > 0 ? "+" : ""}${n1(v)}`;
 const TEAL = "hsl(175,55%,42%)";
 const BLUE = "hsl(215,70%,50%)";
 
@@ -104,9 +104,9 @@ export const FormazioneContent = () => {
 
       {/* KPI (misura in GIORNATE) */}
       <div className="flex flex-wrap gap-4">
-        <Kpi accent={TEAL} titolo="Giornate di formazione" valore={loading ? "…" : (k?.giornate_formazione != null ? nf.format(Math.round(k.giornate_formazione)) : "—")} />
+        <Kpi accent={TEAL} titolo="Giornate di formazione" valore={loading ? "…" : (k?.giornate_formazione != null ? nf.format(Math.round(k.giornate_formazione)) : "N/D")} />
         <Kpi accent={BLUE} titolo="Giornate pro capite" valore={loading ? "…" : n1(k?.giornate_pro_capite)} />
-        <Kpi accent="hsl(220,10%,55%)" titolo="Personale in servizio" valore={loading ? "…" : (k?.personale != null ? nf.format(k.personale) : "—")} />
+        <Kpi accent="hsl(220,10%,55%)" titolo="Personale in servizio" valore={loading ? "…" : (k?.personale != null ? nf.format(k.personale) : "N/D")} />
         <Kpi accent="hsl(160,60%,40%)" titolo="Variazione % vs anno prec." unita="%" valore={loading ? "…" : signed(k?.var_prec_pct)} />
       </div>
 

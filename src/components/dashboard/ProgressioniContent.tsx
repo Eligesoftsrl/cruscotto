@@ -93,9 +93,9 @@ export const ProgressioniContent = () => {
 
       {/* KPI (3 card, una sola chiamata). Le etichette non riportano l'anno. */}
       <div className="flex flex-wrap gap-4">
-        <Kpi accent={VERT} titolo="Progressioni Verticali" valore={loading ? "…" : (k ? nf.format(k.verticali) : "—")} />
-        <Kpi accent={ORIZZ} titolo="Progressioni Orizzontali" valore={loading ? "…" : (k ? nf.format(k.orizzontali) : "—")} />
-        <Kpi accent={TOT} titolo="Totale Progressioni" valore={loading ? "…" : (k ? nf.format(k.totale) : "—")} />
+        <Kpi accent={VERT} titolo="Progressioni Verticali" valore={loading ? "…" : (k ? nf.format(k.verticali) : "N/D")} />
+        <Kpi accent={ORIZZ} titolo="Progressioni Orizzontali" valore={loading ? "…" : (k ? nf.format(k.orizzontali) : "N/D")} />
+        <Kpi accent={TOT} titolo="Totale Progressioni" valore={loading ? "…" : (k ? nf.format(k.totale) : "N/D")} />
       </div>
 
       {/* Bar chart per anno */}

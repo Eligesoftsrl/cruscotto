@@ -16,7 +16,7 @@ import type { Genere, BenchDimensione, EtaFiltri } from "@/services/ca/analisiEt
 /* --------------------------- helper di formato --------------------------- */
 const nf = new Intl.NumberFormat("it-IT");
 const n1 = (v: number | null | undefined) =>
-  v == null ? "—" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
+  v == null ? "N/D" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
 const signPP = (v: number | null | undefined, unit = "pp") =>
   v == null ? "" : `${v > 0 ? "▲ +" : v < 0 ? "▼ " : "→ "}${n1(v)} ${unit} vs prec.`;
 
@@ -132,7 +132,7 @@ export const AnalisiEtaContent = () => {
       {/* ---------------------------- KPI CARDS ---------------------------- */}
       <div className="flex flex-wrap gap-4">
         <Kpi accent="hsl(220,60%,50%)" titolo="Personale in servizio"
-          valore={p ? nf.format(p.personale) : "—"}
+          valore={p ? nf.format(p.personale) : "N/D"}
           delta={p?.personale_var_prec_pct != null ? signPP(p.personale_var_prec_pct, "%") : undefined}
           riga2={p ? { l: `Min ${nf.format(p.personale_min_storico ?? 0)}`, r: `Max ${nf.format(p.personale_max_storico ?? 0)}` } : undefined} />
         <Kpi accent="hsl(25,85%,55%)" titolo="Età media" valore={n1(e?.eta_media)} unita="anni"
@@ -238,7 +238,7 @@ export const AnalisiEtaContent = () => {
                     <td className="py-2 pr-2 text-right">{nf.format(r.tutti)}</td>
                     <td className="py-2 pr-2 text-right">{n1(r.donne_pct)}%</td>
                     <td className={`py-2 text-right ${(r.delta_pa_pp ?? 0) > 0 ? "text-red-600" : (r.delta_pa_pp ?? 0) < 0 ? "text-green-600" : ""}`}>
-                      {r.delta_pa_pp == null ? "—" : `${r.delta_pa_pp > 0 ? "+" : ""}${n1(r.delta_pa_pp)} pp`}
+                      {r.delta_pa_pp == null ? "N/D" : `${r.delta_pa_pp > 0 ? "+" : ""}${n1(r.delta_pa_pp)} pp`}
                     </td>
                   </tr>
                 ))}

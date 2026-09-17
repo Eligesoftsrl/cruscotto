@@ -11,7 +11,7 @@ import type { GenereFiltri } from "@/services/ca/genereService";
 
 const nf = new Intl.NumberFormat("it-IT");
 const n1 = (v: number | null | undefined) =>
-  v == null ? "—" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
+  v == null ? "N/D" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
 const DONNE = "hsl(330,65%,55%)";
 const UOMINI = "hsl(215,70%,50%)";
 
@@ -94,7 +94,7 @@ export const AnalisiGenereContent = () => {
         <Kpi accent={DONNE} titolo="% Donne" unita="%" valore={loading ? "…" : n1(k?.donne_pct)} />
         <Kpi accent={UOMINI} titolo="% Uomini" unita="%" valore={loading ? "…" : n1(k?.uomini_pct)} />
         <Kpi accent="hsl(25,85%,55%)" titolo="Gender gap" unita="%" valore={loading ? "…" : n1(k?.gender_gap_pp)} />
-        <Kpi accent="hsl(160,60%,40%)" titolo="Qualifica più bilanciata" valore={loading ? "…" : (k?.desc_qualifica_bilanciata ?? "—")} />
+        <Kpi accent="hsl(160,60%,40%)" titolo="Qualifica più bilanciata" valore={loading ? "…" : (k?.desc_qualifica_bilanciata ?? "N/D")} />
       </div>
 
       {/* Distribuzione genere per qualifica (stacked, max 20) */}

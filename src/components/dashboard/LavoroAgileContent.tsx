@@ -12,7 +12,7 @@ import type { LavoroAgileFiltri } from "@/services/ca/lavoroAgileService";
 
 const nf = new Intl.NumberFormat("it-IT");
 const n1 = (v: number | null | undefined) =>
-  v == null ? "—" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
+  v == null ? "N/D" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
 const DONNE = "hsl(330,65%,55%)";
 const UOMINI = "hsl(215,70%,50%)";
 const AGILE = "hsl(175,55%,42%)";
@@ -113,7 +113,7 @@ export const LavoroAgileContent = () => {
           sub={k ? `${nf.format(k.lavoro_agile_tutti)} unità` : undefined} />
         <Kpi accent={DONNE} titolo="Donne in lavoro agile" unita="%" valore={loading ? "…" : n1(k?.donne_pct)} />
         <Kpi accent={TOT} titolo={k?.picco_anno ? `Picco (${k.picco_anno})` : "Picco"}
-          valore={loading ? "…" : (k ? nf.format(Math.round(k.picco_tutti ?? 0)) : "—")} />
+          valore={loading ? "…" : (k ? nf.format(Math.round(k.picco_tutti ?? 0)) : "N/D")} />
         <Kpi accent={UOMINI} titolo="Trend vs anno di picco" unita="%"
           valore={loading ? "…" : n1(k?.variazione_da_picco_pct)} />
       </div>

@@ -12,9 +12,9 @@ import type { Genere, SostituzioneFiltri } from "@/services/ca/sostituzioneServi
 
 const nf = new Intl.NumberFormat("it-IT");
 const n1 = (v: number | null | undefined) =>
-  v == null ? "—" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
+  v == null ? "N/D" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
 const signed = (v: number | null | undefined) =>
-  v == null ? "—" : `${v > 0 ? "+" : ""}${nf.format(v)}`;
+  v == null ? "N/D" : `${v > 0 ? "+" : ""}${nf.format(v)}`;
 
 const Kpi = ({ titolo, valore, unita, accent }: {
   titolo: string; valore: string; unita?: string; accent: string;
@@ -90,9 +90,9 @@ export const TassoSostituzioneContent = () => {
         <Kpi accent="hsl(220,60%,50%)" titolo="Tasso sostituzione" unita="%" valore={n1(k?.sostituzione_pct)} />
         <Kpi accent="hsl(175,55%,42%)" titolo="Media periodo" unita="%" valore={n1(k?.media_periodo_pct)} />
         <Kpi accent="hsl(145,50%,42%)" titolo="Anni con ricambio positivo"
-          valore={k ? `${nf.format(k.anni_ricambio_positivo)} / ${nf.format(k.anni_periodo)}` : "—"} />
+          valore={k ? `${nf.format(k.anni_ricambio_positivo)} / ${nf.format(k.anni_periodo)}` : "N/D"} />
         <Kpi accent="hsl(25,85%,55%)" titolo="Variazione vs anno prec." unita="pp"
-          valore={k?.sostituzione_var_prec_pp == null ? "—" : signed(k.sostituzione_var_prec_pp)} />
+          valore={k?.sostituzione_var_prec_pp == null ? "N/D" : signed(k.sostituzione_var_prec_pp)} />
       </div>
 
       {/* Bar chart tasso di sostituzione (nessuna didascalia) */}

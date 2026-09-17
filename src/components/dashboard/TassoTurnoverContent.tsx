@@ -12,9 +12,9 @@ import type { Genere, TurnoverFiltri } from "@/services/ca/turnoverService";
 
 const nf = new Intl.NumberFormat("it-IT");
 const n1 = (v: number | null | undefined) =>
-  v == null ? "—" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
+  v == null ? "N/D" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
 const signed = (v: number | null | undefined) =>
-  v == null ? "—" : `${v > 0 ? "+" : ""}${nf.format(v)}`;
+  v == null ? "N/D" : `${v > 0 ? "+" : ""}${nf.format(v)}`;
 const deltaPP = (v: number | null | undefined) =>
   v == null ? undefined : `${v > 0 ? "▲ +" : v < 0 ? "▼ " : "→ "}${n1(v)} pp vs anno prec.`;
 
@@ -92,8 +92,8 @@ export const TassoTurnoverContent = () => {
       {/* KPI */}
       <div className="flex flex-wrap gap-4">
         <Kpi accent="hsl(25,85%,55%)" titolo="Tasso turnover" unita="%" valore={n1(k?.turnover_pct)} delta={deltaPP(k?.turnover_var_prec_pp)} />
-        <Kpi accent="hsl(0,70%,50%)" titolo="Cessati" valore={k ? nf.format(k.cessati) : "—"} />
-        <Kpi accent="hsl(175,55%,42%)" titolo="Assunti" valore={k ? nf.format(k.assunti) : "—"} />
+        <Kpi accent="hsl(0,70%,50%)" titolo="Cessati" valore={k ? nf.format(k.cessati) : "N/D"} />
+        <Kpi accent="hsl(175,55%,42%)" titolo="Assunti" valore={k ? nf.format(k.assunti) : "N/D"} />
         <Kpi accent={saldoAccent} titolo="Saldo netto" valore={signed(k?.saldo)} />
       </div>
 

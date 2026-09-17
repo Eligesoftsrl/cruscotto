@@ -14,8 +14,8 @@ import type { Genere, PersonaleFiltri } from "@/services/ca/personaleService";
 
 const nf = new Intl.NumberFormat("it-IT");
 const n1 = (v: number | null | undefined) =>
-  v == null ? "—" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
-const signed = (v: number | null | undefined) => (v == null ? "—" : `${v > 0 ? "+" : ""}${n1(v)}`);
+  v == null ? "N/D" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
+const signed = (v: number | null | undefined) => (v == null ? "N/D" : `${v > 0 ? "+" : ""}${n1(v)}`);
 const PALETTE = ["hsl(215,70%,50%)", "hsl(175,55%,42%)", "hsl(25,85%,55%)", "hsl(330,65%,55%)", "hsl(260,55%,55%)", "hsl(160,60%,40%)"];
 
 const Kpi = ({ titolo, valore, unita, accent }: { titolo: string; valore: string; unita?: string; accent: string }) => (
@@ -97,9 +97,9 @@ export const AnalisiPersonaleContent = () => {
 
       {/* KPI */}
       <div className="flex flex-wrap gap-4">
-        <Kpi accent="hsl(215,70%,50%)" titolo="Personale totale" valore={loading ? "…" : (k?.personale != null ? nf.format(k.personale) : "—")} />
-        <Kpi accent="hsl(25,85%,55%)" titolo="Dirigenti" valore={loading ? "…" : (k?.dirigenti != null ? nf.format(k.dirigenti) : "—")} />
-        <Kpi accent="hsl(175,55%,42%)" titolo="Non dirigenti" valore={loading ? "…" : (k?.non_dirigenti != null ? nf.format(k.non_dirigenti) : "—")} />
+        <Kpi accent="hsl(215,70%,50%)" titolo="Personale totale" valore={loading ? "…" : (k?.personale != null ? nf.format(k.personale) : "N/D")} />
+        <Kpi accent="hsl(25,85%,55%)" titolo="Dirigenti" valore={loading ? "…" : (k?.dirigenti != null ? nf.format(k.dirigenti) : "N/D")} />
+        <Kpi accent="hsl(175,55%,42%)" titolo="Non dirigenti" valore={loading ? "…" : (k?.non_dirigenti != null ? nf.format(k.non_dirigenti) : "N/D")} />
         <Kpi accent="hsl(160,60%,40%)" titolo="Variazione % vs anno prec." unita="%" valore={loading ? "…" : signed(k?.var_prec_pct)} />
       </div>
 

@@ -12,7 +12,7 @@ import type { LavoroFlessibileFiltri } from "@/services/ca/lavoroFlessibileServi
 
 const nf = new Intl.NumberFormat("it-IT");
 const n1 = (v: number | null | undefined) =>
-  v == null ? "—" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
+  v == null ? "N/D" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
 const DONNE = "hsl(330,65%,55%)";
 const UOMINI = "hsl(215,70%,50%)";
 const FLEX = "hsl(175,55%,42%)";
