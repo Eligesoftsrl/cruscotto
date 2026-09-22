@@ -1,0 +1,12 @@
+# Header di cache per hosting statico (Netlify / Cloudflare Pages).
+# I file in public/ vengono copiati in dist/ durante la build.
+
+/index.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/version.json
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# Asset con hash nel nome (immutabili): cache lunga.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

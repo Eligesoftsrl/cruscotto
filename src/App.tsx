@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { UsageTracker } from "@/components/admin/UsageTracker";
+import { UpdateBanner } from "@/components/UpdateBanner";
 import { logErrore } from "@/services/admin/logger";
 import Login from "./pages/Login";
 
@@ -64,6 +65,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        <UpdateBanner />
         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <AuthProvider>
             <UsageTracker />

@@ -1,0 +1,28 @@
+# Apache — header di cache per SPA con asset hashati + fallback SPA.
+# Copiato in dist/ durante la build. Le direttive sono avvolte in <IfModule>
+# per non generare errori se i moduli non sono abilitati.
+
+<IfModule mod_headers.c>
+  # Asset con hash nel nome: cache lunga e immutabile.
+  <FilesMatch "\.(js|css|woff2?|ttf|eot|svg|png|jpe?g|gif|ico|webp)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  # index.html: mai in cache (referenzia i chunk con hash correnti).
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+  # version.json: sempre fresco (rilevamento nuove build).
+  <FilesMatch "version\.json$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# Fallback SPA: tutte le rotte non-file servono index.html.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>

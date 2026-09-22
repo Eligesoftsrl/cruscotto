@@ -22,6 +22,25 @@ export const APP_BUILD_ID =
 const BUILD_KEY = "app_build_id";
 const RELOAD_FLAG = "cache_bust_reloaded";
 
+/**
+ * Legge il build id attualmente pubblicato dal server (/version.json), senza
+ * cache. Restituisce null in dev o se il file non è disponibile.
+ */
+export async function fetchLatestBuildId(): Promise<string | null> {
+  try {
+    const res = await fetch(`/version.json?_=${Date.now().toString(36)}`, {
+      cache: "no-store",
+      headers: { "Cache-Control": "no-cache" },
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { buildId?: unknown };
+    if (data?.buildId == null) return null;
+    return String(data.buildId);
+  } catch {
+    return null;
+  }
+}
+
 const CHUNK_ERR =
   /Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed|ChunkLoadError|Unable to preload/i;
 
