@@ -27,6 +27,10 @@ export default defineConfig(() => {
       ...(isManagedEnv ? { allowedHosts: true as const } : {}),
     },
     plugins: [react()],
+    // Build id univoco per ogni build: usato per il cache-busting lato client.
+    define: {
+      __APP_BUILD_ID__: JSON.stringify(String(Date.now())),
+    },
     build: {
       chunkSizeWarningLimit: 900,
       rollupOptions: {
