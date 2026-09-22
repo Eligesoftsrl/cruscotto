@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { Info } from "lucide-react";
 import { ND_PLACEHOLDER_ENABLED } from "@/config/ndMode";
 
 /**
@@ -49,8 +50,19 @@ export const NdMode = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  // Interruttore spento: pass-through, le sezioni mostrano i dati normalmente.
-  if (!ND_PLACEHOLDER_ENABLED) return <>{children}</>;
+  // Interruttore spento: le sezioni mostrano i dati (mock/fixtures), con un
+  // banner che segnala che i valori sono a scopo dimostrativo.
+  if (!ND_PLACEHOLDER_ENABLED) {
+    return (
+      <div>
+        <div className="flex items-center gap-2 px-4 py-1.5 text-[11px] font-medium text-amber-800 bg-amber-50 border-b border-amber-200">
+          <Info className="h-3.5 w-3.5 shrink-0" />
+          Dati a scopo dimostrativo — questa sezione usa valori di esempio in attesa delle fonti dati ufficiali
+        </div>
+        {children}
+      </div>
+    );
+  }
 
   return (
     <div ref={ref} className="nd-mode">
