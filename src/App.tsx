@@ -10,6 +10,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { UsageTracker } from "@/components/admin/UsageTracker";
 import { UpdateBanner } from "@/components/UpdateBanner";
 import { logErrore } from "@/services/admin/logger";
+import { Unauthorized } from "@/components/Unauthorized";
 import Login from "./pages/Login";
 
 // Route lazy-loaded: riducono il bundle iniziale (code-splitting).
@@ -47,8 +48,10 @@ const FullscreenSpinner = () => (
 );
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { profile, loading } = useAuth();
+  const { profile, loading, unauthorized } = useAuth();
   if (loading) return <FullscreenSpinner />;
+  // Autenticato ma con ruolo non consentito: accesso inibito.
+  if (unauthorized) return <Unauthorized />;
   if (!profile) return <Navigate to="/login" replace />;
   return <>{children}</>;
 };

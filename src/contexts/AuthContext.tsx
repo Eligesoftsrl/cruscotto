@@ -5,6 +5,21 @@ import { setLogUser, resetLogUser, logAccesso, clearAccessDedupe } from "@/servi
 
 export type AppRole = "dfp" | "ente_hr";
 
+/** Ruoli Keycloak considerati amministratore (profilo `dfp`). */
+const DFP_ROLES = [
+  "dfp",
+  "super_admin",
+  "superadmin",
+  "admin",
+  "amministratore",
+  "amministratore-gru",
+  "amministratore-formez",
+  "amministratore-unico",
+];
+
+/** Ruoli Keycloak consentiti per gli utenti-ente (profilo `ente_hr`). */
+const ENTE_ROLES = ["ente_hr", "ente-hr", "hr_ente", "hr-cruscotto", "hr_cruscotto"];
+
 interface UserProfile {
   role: AppRole;
   ente_id: number | null;
@@ -17,6 +32,8 @@ interface UserProfile {
 interface AuthContextValue {
   profile: UserProfile | null;
   loading: boolean;
+  /** true = utente autenticato ma con ruolo NON consentito (accesso negato). */
+  unauthorized: boolean;
   signIn: (role: AppRole, enteId?: number | null) => Promise<void>;
   signOut: () => void;
 }
@@ -24,6 +41,7 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue>({
   profile: null,
   loading: true,
+  unauthorized: false,
   signIn: async () => {},
   signOut: () => {},
 });
@@ -31,12 +49,16 @@ const AuthContext = createContext<AuthContextValue>({
 export const useAuth = () => useContext(AuthContext);
 
 /**
- * Deriva il profilo applicativo dai claim del token Keycloak.
- * NB: la mappatura ruolo/ente e provvisoria e verra rifinita quando l'admin
- * definira i claim (`ente_id`, ruoli) nel token di accesso.
+ * Risolve l'autenticazione Keycloak in profilo applicativo.
+ * Restituisce `unauthorized: true` quando l'utente è autenticato ma:
+ *  - NON possiede un ruolo consentito (DFP o ente HR), oppure
+ *  - è un ente HR privo di codici fiscali (`enti_cf`) nel token.
+ * In questi casi l'accesso viene inibito (nessun profilo) per evitare errori.
  */
-function profileFromKeycloak(): UserProfile | null {
-  if (!keycloak?.authenticated || !keycloak.tokenParsed) return null;
+function resolveKeycloak(): { profile: UserProfile | null; unauthorized: boolean } {
+  if (!keycloak?.authenticated || !keycloak.tokenParsed) {
+    return { profile: null, unauthorized: false };
+  }
   const c = keycloak.tokenParsed as Record<string, unknown>;
   const realmRoles = ((c.realm_access as { roles?: string[] } | undefined)?.roles ?? []) as string[];
   const clientId = import.meta.env.VITE_KEYCLOAK_CLIENT_ID as string | undefined;
@@ -44,52 +66,56 @@ function profileFromKeycloak(): UserProfile | null {
   const clientRoles = (clientId ? resourceAccess[clientId]?.roles ?? [] : []) as string[];
   const roles = [...realmRoles, ...clientRoles].map((r) => r.toLowerCase());
 
-  // Ruoli considerati "amministratore" (superadmin DFP + Formez) -> profilo `dfp`.
-  const isDfp = roles.some((r) =>
-    [
-      "dfp",
-      "super_admin",
-      "superadmin",
-      "admin",
-      "amministratore",
-      "amministratore-gru",
-      "amministratore-formez",
-      "amministratore-unico",
-    ].includes(r),
-  );
-  const role: AppRole = isDfp ? "dfp" : "ente_hr";
-
-  // Ente dell'utente. Per ora il claim `istatcode` trasporta direttamente
-  // l'id_ente di `dw_ente` (es. 13 = Comune di Roma). Fallback su `ente_id`/`enteId`.
-  const enteRaw = (c.istatcode ?? c.ente_id ?? c.enteId ?? null) as string | number | null;
-  const enteParsed = enteRaw != null && enteRaw !== "" ? Number(enteRaw) : null;
-  const ente_id = enteParsed != null && Number.isFinite(enteParsed) ? enteParsed : null;
-
-  // Codici fiscali degli enti abilitati: claim `enti_cf` (array di stringhe).
-  // Accetta anche una singola stringa o CSV, per robustezza.
-  const rawCf = c.enti_cf ?? c.cf_ente ?? null;
-  let enti_cf: string[] = [];
-  if (Array.isArray(rawCf)) {
-    enti_cf = rawCf.map((v) => String(v).trim()).filter(Boolean);
-  } else if (typeof rawCf === "string" && rawCf.trim()) {
-    enti_cf = rawCf.split(/[,;\s]+/).map((v) => v.trim()).filter(Boolean);
-  }
+  const isDfp = roles.some((r) => DFP_ROLES.includes(r));
+  const isEnte = roles.some((r) => ENTE_ROLES.includes(r));
 
   const fullName =
     (c.name as string) ??
     (c.preferred_username as string) ??
-    (role === "dfp" ? "Utente DFP" : "Responsabile HR");
+    (isDfp ? "Utente DFP" : "Responsabile HR");
 
-  return {
-    role,
-    ente_id: role === "dfp" ? null : ente_id,
-    enti_cf: role === "dfp" ? [] : enti_cf,
-    full_name: fullName,
-  };
+  // Amministratore/DFP: accesso completo, nessun perimetro ente.
+  if (isDfp) {
+    return {
+      profile: { role: "dfp", ente_id: null, enti_cf: [], full_name: fullName },
+      unauthorized: false,
+    };
+  }
+
+  // Utente-ente: consentito solo se ha un ruolo ente valido.
+  if (isEnte) {
+    // Ente di appartenenza (claim provvisorio `istatcode`).
+    const enteRaw = (c.istatcode ?? c.ente_id ?? c.enteId ?? null) as string | number | null;
+    const enteParsed = enteRaw != null && enteRaw !== "" ? Number(enteRaw) : null;
+    const ente_id = enteParsed != null && Number.isFinite(enteParsed) ? enteParsed : null;
+
+    // Codici fiscali degli enti abilitati (claim `enti_cf`).
+    const rawCf = c.enti_cf ?? c.cf_ente ?? null;
+    let enti_cf: string[] = [];
+    if (Array.isArray(rawCf)) {
+      enti_cf = rawCf.map((v) => String(v).trim()).filter(Boolean);
+    } else if (typeof rawCf === "string" && rawCf.trim()) {
+      enti_cf = rawCf.split(/[,;\s]+/).map((v) => v.trim()).filter(Boolean);
+    }
+
+    // Scelta cliente: ente HR senza alcun CF -> accesso negato (evita errori).
+    if (enti_cf.length === 0) {
+      return { profile: null, unauthorized: true };
+    }
+
+    return {
+      profile: { role: "ente_hr", ente_id, enti_cf, full_name: fullName },
+      unauthorized: false,
+    };
+  }
+
+  // Nessun ruolo consentito -> accesso negato.
+  return { profile: null, unauthorized: true };
 }
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [unauthorized, setUnauthorized] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -98,11 +124,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       let active = true;
       const refresh = () => {
         if (!active) return;
-        const p = profileFromKeycloak();
+        const { profile: p, unauthorized: u } = resolveKeycloak();
         setProfile(p);
+        setUnauthorized(u);
         if (p) {
           setLogUser({ username: p.full_name, ruolo: p.role });
           logAccesso("success");
+        } else if (u) {
+          // Accesso negato: registro il tentativo (ruolo non consentito).
+          const tp = (keycloak.tokenParsed ?? {}) as Record<string, unknown>;
+          const uname =
+            (tp.preferred_username as string) ?? (tp.name as string) ?? "sconosciuto";
+          setLogUser({ username: uname, ruolo: "non_autorizzato" });
+          logAccesso("fail");
         }
       };
       initKeycloak()
@@ -113,8 +147,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         });
       keycloak.onAuthSuccess = refresh;
       keycloak.onAuthRefreshSuccess = refresh;
-      keycloak.onAuthLogout = () => active && setProfile(null);
-      keycloak.onAuthRefreshError = () => active && setProfile(null);
+      keycloak.onAuthLogout = () => {
+        if (!active) return;
+        setProfile(null);
+        setUnauthorized(false);
+      };
+      keycloak.onAuthRefreshError = () => {
+        if (!active) return;
+        setProfile(null);
+        setUnauthorized(false);
+      };
       return () => {
         active = false;
       };
@@ -178,7 +220,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ profile, loading, signIn, signOut }}>
+    <AuthContext.Provider value={{ profile, loading, unauthorized, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
