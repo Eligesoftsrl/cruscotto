@@ -10,6 +10,8 @@
  */
 import { useSyncExternalStore } from "react";
 import { sbUntyped } from "@/integrations/supabase/untyped";
+import { EXCHANGE_ENABLED } from "@/integrations/supabase/exchangeToken";
+import { adminProxy } from "./proxyClient";
 import type { AccessLog, ErrorLog, EventLog, FeatureFlag } from "./types";
 import { DEFAULT_FEATURE_FLAGS } from "./featureRegistry";
 
@@ -82,6 +84,29 @@ function setState(next: AdminState) {
 let loadPromise: Promise<void> | undefined;
 async function loadAll(): Promise<void> {
   try {
+    // --- Modalità proxy sicuro (VITE_EXCHANGE_URL attiva) ---
+    if (EXCHANGE_ENABLED) {
+      const flagsRows = await adminProxy.listFlags().catch(() => [] as Row[]);
+      const [acc, ev, er] = await Promise.all([
+        adminProxy.listAccessi().catch(() => [] as Row[]),
+        adminProxy.listEventi().catch(() => [] as Row[]),
+        adminProxy.listErrori().catch(() => [] as Row[]),
+      ]);
+      const dbFlags = flagsRows.map(mapFlag);
+      const known = new Set(dbFlags.map((f) => f.key));
+      const merged = dbFlags.length
+        ? [...dbFlags, ...DEFAULT_FEATURE_FLAGS.filter((d) => !known.has(d.key)).map((d) => ({ ...d }))]
+        : state.flags;
+      setState({
+        flags: merged,
+        access: acc.map(mapAccess),
+        eventi: ev.map(mapEvento),
+        errori: er.map(mapErrore),
+      });
+      return;
+    }
+
+    // --- Modalità diretta Supabase (anon) ---
     const [ff, la, le, lr] = await Promise.all([
       sbUntyped.from("feature_flags").select("*"),
       sbUntyped.from("log_accessi").select("*").order("ts", { ascending: false }).limit(MAX_LOGS),
@@ -136,6 +161,13 @@ export function useAdminState(): AdminState {
 // ---------------------------------------------------------------------------
 function persistFlags(keys: string[], enabled: boolean, ts: string) {
   const prev = state.flags;
+  if (EXCHANGE_ENABLED) {
+    Promise.all(keys.map((k) => adminProxy.setFlag(k, enabled))).catch((err) => {
+      console.error("[adminStore] proxy setFlag fallito", err);
+      setState({ ...getState(), flags: prev });
+    });
+    return;
+  }
   sbUntyped
     .from("feature_flags")
     .update({ enabled, updated_at: ts })
@@ -172,6 +204,10 @@ export function addAccess(e: Omit<AccessLog, "id" | "ts"> & { ts?: string }) {
   const { ts, ...rest } = e;
   const row: AccessLog = { id: uid(), ts: ts ?? new Date().toISOString(), ...rest };
   setState({ ...state, access: [row, ...state.access].slice(0, MAX_LOGS) });
+  if (EXCHANGE_ENABLED) {
+    adminProxy.logAccesso(rest.esito).catch(() => {});
+    return;
+  }
   sbUntyped
     .from("log_accessi")
     .insert({
@@ -189,6 +225,10 @@ export function addEvento(e: Omit<EventLog, "id" | "ts"> & { ts?: string }) {
   const { ts, ...rest } = e;
   const row: EventLog = { id: uid(), ts: ts ?? new Date().toISOString(), ...rest };
   setState({ ...state, eventi: [row, ...state.eventi].slice(0, MAX_LOGS) });
+  if (EXCHANGE_ENABLED) {
+    adminProxy.logEvento(rest.azione, rest.sezione, rest.dettagli).catch(() => {});
+    return;
+  }
   sbUntyped
     .from("log_eventi")
     .insert({
@@ -208,6 +248,10 @@ export function addErrore(e: Omit<ErrorLog, "id" | "ts"> & { ts?: string }) {
   const row: ErrorLog = { id: uid(), ts: ts ?? new Date().toISOString(), ...rest };
   setState({ ...state, errori: [row, ...state.errori].slice(0, MAX_LOGS) });
   // SEC-004: non persistiamo lo stack trace.
+  if (EXCHANGE_ENABLED) {
+    adminProxy.logErrore(rest.messaggio, rest.livello, rest.origine).catch(() => {});
+    return;
+  }
   sbUntyped
     .from("log_errori")
     .insert({
@@ -223,6 +267,9 @@ export function addErrore(e: Omit<ErrorLog, "id" | "ts"> & { ts?: string }) {
 
 export function clearLog(kind: "access" | "eventi" | "errori") {
   setState({ ...state, [kind]: [] } as AdminState);
+  // In modalità proxy non è previsto un endpoint di cancellazione: si svuota
+  // solo la vista locale (i log restano nel DB, gestibili lato back-end).
+  if (EXCHANGE_ENABLED) return;
   const table = kind === "access" ? "log_accessi" : kind === "eventi" ? "log_eventi" : "log_errori";
   sbUntyped
     .from(table)

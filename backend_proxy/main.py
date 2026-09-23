@@ -72,7 +72,10 @@ def exchange(claims: dict = Depends(require_authorized)):
 # ============================================================
 
 @app.get("/admin/feature-flags")
-def list_flags(_: dict = Depends(require_admin)):
+def list_flags(_: dict = Depends(require_authorized)):
+    # Lettura consentita a ogni utente AUTORIZZATO: le flag servono al frontend
+    # per il gating del menu (anche per gli utenti ente). La SCRITTURA resta
+    # riservata agli admin (vedi set_flag).
     with get_cursor() as cur:
         cur.execute(
             "select key, label, description, category, enabled, updated_by, updated_at "
