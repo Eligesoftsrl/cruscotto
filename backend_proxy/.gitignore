@@ -1,0 +1,5 @@
+# File di ambiente REALE del proxy (NON committare).
+.env
+.venv/
+__pycache__/
+*.pyc
