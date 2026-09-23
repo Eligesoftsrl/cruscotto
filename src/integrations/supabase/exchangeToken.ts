@@ -10,9 +10,21 @@
  */
 import { ensureFreshToken } from "@/auth/keycloak";
 
-export const EXCHANGE_URL = (
-  (import.meta.env.VITE_EXCHANGE_URL as string | undefined) ?? ""
-).replace(/\/+$/, "");
+// URL base del proxy di sicurezza.
+//
+// Regola (nessun file .env da gestire a mano, tutto nel codice committato):
+//  - PRODUZIONE (build `yarn build`): il proxy è attivo di DEFAULT su "/auth"
+//    (opzione A, stesso dominio). Apache inoltra /auth/ -> proxy FastAPI.
+//  - SVILUPPO / ANTEPRIMA (`vite dev`): il proxy è DISATTIVO -> modalità diretta
+//    (chiave anon), così l'anteprima e il pannello Admin restano funzionanti.
+//
+// Override opzionale: VITE_EXCHANGE_URL può forzare un URL diverso (qualsiasi
+// ambiente) oppure disattivare il proxy in produzione col valore "off".
+const explicit = ((import.meta.env.VITE_EXCHANGE_URL as string | undefined) ?? "").trim();
+const proxyOff = explicit.toLowerCase() === "off";
+const fallback = import.meta.env.PROD ? "/auth" : "";
+
+export const EXCHANGE_URL = proxyOff ? "" : (explicit || fallback).replace(/\/+$/, "");
 
 export const EXCHANGE_ENABLED = EXCHANGE_URL.length > 0;
 
