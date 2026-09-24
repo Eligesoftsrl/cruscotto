@@ -46,6 +46,11 @@ Nel file `backend_proxy/.env` (già presente, **non** in git) valorizzare i `CHA
 | `KEYCLOAK_AUDIENCE` | `oqtane-gru-cruscotto` (consigliato) | client Keycloak della SPA |
 | `DB_SCHEMA` | `scruscotto` | già impostato |
 | `ALLOWED_ORIGINS` | (non necessario in opzione A, stessa origine) | — |
+| `ADMIN_ROLES` | `admin,amministratore,super_admin,amministratore-gru,amministratore-formez,amministratore-unico` | Ruoli con accesso al pannello `/admin/*`. **NON** include `dfp` da solo: il DFP vede tutti gli enti ma non amministra. Già impostato. |
+
+> ℹ️ **Separazione DFP / Amministratore**: la vista globale (`DFP_ROLES`, che include `dfp`)
+> è distinta dai privilegi di amministrazione (`ADMIN_ROLES`, che **non** include `dfp`).
+> Gli endpoint `/admin/*` sono protetti da `require_admin`, coerente con il frontend.
 
 > ⚠️ **Requisito chiave**: `SUPABASE_JWT_SECRET` **deve coincidere** col JWT secret con cui PostgREST verifica i token (stessa istanza degli RPC), altrimenti i token coniati verranno rifiutati.
 
@@ -148,8 +153,10 @@ yarn build
    ```
 3. Decodificare l'access_token (jwt.io): deve contenere `role=authenticated`, `is_global`, `enti_cf`.
 4. `GET /auth/admin/feature-flags` con token **admin** → 200; con token **ente** → 200 (lettura consentita); scrittura flag con token ente → **403**.
+   - Con token **DFP senza ruolo admin**: lettura flag → 200, ma `/auth/admin/*` riservati (scrittura flag, log, statistiche) → **403** e pannello non accessibile dalla SPA.
 5. Login nella SPA:
-   - **DFP**: vede tutto; può scegliere l'ente dalla ricerca.
+   - **DFP (solo `dfp`)**: vede tutti gli enti; **non** vede la voce Amministrazione.
+   - **DFP + ruolo amministrativo**: vede tutto **e** accede al pannello di amministrazione.
    - **Ente (Hr-Cruscotto)**: vede solo i propri dati; con 2 CF appare il selettore.
    - Prova a forzare un CF non proprio in una RPC → **errore/negato** (RLS/guard).
    - **Ruolo non previsto** → schermata "Accesso non autorizzato".

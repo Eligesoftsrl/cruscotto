@@ -40,6 +40,15 @@ DFP_ROLES = _role_set(
 )
 ENTE_ROLES = _role_set("ENTE_ROLES", "hr-cruscotto,ente_hr,ente-hr,hr_cruscotto")
 
+# Ruoli con privilegi di AMMINISTRAZIONE (accesso agli endpoint /admin/*).
+# NB: il solo ruolo `dfp` NON è incluso: vista globale sì, amministrazione no.
+# Coerente con il frontend (profilo `dfp` vs flag `is_admin`).
+ADMIN_ROLES = _role_set(
+    "ADMIN_ROLES",
+    "admin,amministratore,super_admin,"
+    "amministratore-gru,amministratore-formez,amministratore-unico",
+)
+
 _jwks_client = PyJWKClient(f"{KEYCLOAK_ISSUER}/protocol/openid-connect/certs")
 
 
@@ -72,6 +81,15 @@ def roles_of(claims: dict) -> list[str]:
 def is_global(claims: dict) -> bool:
     """True se l'utente ha un ruolo admin/DFP -> vista globale."""
     return any(r.lower() in DFP_ROLES for r in roles_of(claims))
+
+
+def is_admin(claims: dict) -> bool:
+    """True se l'utente ha un ruolo con privilegi di amministrazione.
+
+    Il solo ruolo `dfp` (vista globale) NON è sufficiente: serve un ruolo
+    presente in ADMIN_ROLES. Coerente col frontend (flag `is_admin`).
+    """
+    return any(r.lower() in ADMIN_ROLES for r in roles_of(claims))
 
 
 def is_ente(claims: dict) -> bool:
@@ -144,7 +162,10 @@ def require_authorized(claims: dict = Depends(current_claims)) -> dict:
 
 
 def require_admin(claims: dict = Depends(current_claims)) -> dict:
-    """Consente solo gli utenti con ruolo globale/admin."""
-    if not is_global(claims):
+    """Consente solo gli utenti con privilegi di amministrazione.
+
+    Il solo ruolo `dfp` (vista globale) non basta: serve un ruolo ADMIN_ROLES.
+    """
+    if not is_admin(claims):
         raise HTTPException(status_code=403, detail="Accesso riservato agli amministratori")
     return claims
