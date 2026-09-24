@@ -1,6 +1,6 @@
 # 4. Stato e attività (roadmap)
 
-[◀ Torna all'indice](Home.md)
+[◀ Torna all'indice](Home)
 
 Questa pagina è un **documento vivo**: va aggiornata man mano che le attività procedono.
 Serve a tenere sotto controllo ciò che è stato fatto, ciò che è in corso e ciò che resta
@@ -9,7 +9,7 @@ da fare o da verificare.
 > Come aggiornarla: spostate le voci tra le sezioni (Da fare → In corso → Da testare →
 > Completato) e aggiornate la data qui sotto.
 >
-> **Ultimo aggiornamento:** _(inserire data)_
+> **Ultimo aggiornamento:** 24/09/2026
 
 ---
 
@@ -58,4 +58,4 @@ da fare o da verificare.
 4. Inoltrare la segnalazione al referente del progetto, che la inserirà nell'elenco qui
    sopra.
 
-[◀ Torna all'indice](Home.md)
+[◀ Torna all'indice](Home)

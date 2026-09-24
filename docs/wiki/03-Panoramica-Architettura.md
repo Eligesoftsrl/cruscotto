@@ -1,6 +1,6 @@
 # 3. Panoramica dell'architettura
 
-[◀ Torna all'indice](Home.md)
+[◀ Torna all'indice](Home)
 
 Questa pagina offre una **visione d'insieme**, non tecnica, di come è costruito il
 cruscotto. L'obiettivo è far capire i principi generali, senza entrare nei dettagli
@@ -57,6 +57,6 @@ evita di lavorare su versioni obsolete.
 Le analisi disponibili e i dati che le alimentano vengono ampliati e affinati nel tempo.
 Alcune sezioni possono quindi essere aggiunte, riviste o temporaneamente presentate a
 scopo dimostrativo. Lo stato aggiornato delle attività è nella pagina
-[Stato e attività](04-Stato-e-Roadmap.md).
+[Stato e attività](04-Stato-e-Roadmap).
 
-[▶ Prossima pagina: Stato e attività (roadmap)](04-Stato-e-Roadmap.md)
+[▶ Prossima pagina: Stato e attività (roadmap)](04-Stato-e-Roadmap)

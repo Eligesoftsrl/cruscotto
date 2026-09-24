@@ -1,6 +1,6 @@
 # 2. Ruoli e accessi
 
-[◀ Torna all'indice](Home.md)
+[◀ Torna all'indice](Home)
 
 Questa pagina spiega, in modo semplice, chi può accedere al cruscotto e cosa può vedere.
 
@@ -38,6 +38,6 @@ all'utente: non è qualcosa che l'utente possa modificare da sé.
 - Gli accessi e le attività principali vengono registrati per finalità di monitoraggio.
 
 > Per una visione generale di come questi principi sono realizzati, vedi la
-> [Panoramica dell'architettura](03-Panoramica-Architettura.md).
+> [Panoramica dell'architettura](03-Panoramica-Architettura).
 
-[▶ Prossima pagina: Panoramica dell'architettura](03-Panoramica-Architettura.md)
+[▶ Prossima pagina: Panoramica dell'architettura](03-Panoramica-Architettura)

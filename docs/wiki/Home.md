@@ -9,10 +9,10 @@ senza tecnicismi.
 
 ## Indice
 
-1. [Manuale utente](01-Manuale-Utente.md) — come si usa il cruscotto, passo per passo
-2. [Ruoli e accessi](02-Ruoli-e-Accessi.md) — chi vede cosa e come si entra
-3. [Panoramica dell'architettura](03-Panoramica-Architettura.md) — come è fatto, in generale
-4. [Stato e attività (roadmap)](04-Stato-e-Roadmap.md) — cosa è fatto, cosa è in corso, cosa resta
+1. [Manuale utente](01-Manuale-Utente) — come si usa il cruscotto, passo per passo
+2. [Ruoli e accessi](02-Ruoli-e-Accessi) — chi vede cosa e come si entra
+3. [Panoramica dell'architettura](03-Panoramica-Architettura) — come è fatto, in generale
+4. [Stato e attività (roadmap)](04-Stato-e-Roadmap) — cosa è fatto, cosa è in corso, cosa resta
 
 ## In breve
 
@@ -21,5 +21,5 @@ Il Cruscotto HR è un'applicazione web che presenta i dati del personale attrave
 proprie credenziali aziendali e vede soltanto i dati di propria competenza.
 
 > Il progetto è in continua evoluzione: nuove analisi e nuovi dati vengono aggiunti e
-> affinati nel tempo. La pagina [Stato e attività](04-Stato-e-Roadmap.md) tiene traccia
+> affinati nel tempo. La pagina [Stato e attività](04-Stato-e-Roadmap) tiene traccia
 > di ciò che è in lavorazione.

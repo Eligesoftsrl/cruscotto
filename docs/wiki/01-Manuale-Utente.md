@@ -1,6 +1,6 @@
 # 1. Manuale utente
 
-[◀ Torna all'indice](Home.md)
+[◀ Torna all'indice](Home)
 
 Questa pagina spiega come usare il Cruscotto HR nella vita di tutti i giorni. Non serve
 alcuna competenza tecnica.
@@ -82,4 +82,4 @@ sono disponibili. L'avviso serve proprio a segnalarlo.
 Verifica di usare le credenziali aziendali corrette. Se il problema persiste, contatta il
 referente della tua struttura.
 
-[▶ Prossima pagina: Ruoli e accessi](02-Ruoli-e-Accessi.md)
+[▶ Prossima pagina: Ruoli e accessi](02-Ruoli-e-Accessi)
