@@ -15,7 +15,8 @@ componenti:
 1. l'**applicazione web** utilizzata nel browser;
 2. il **sistema di autenticazione** aziendale, che identifica l'utente e ne stabilisce le
    autorizzazioni;
-3. la **base dati**, che alimenta le analisi.
+3. la **base dati**, che raccoglie e integra i dati provenienti da diverse fonti a
+   supporto delle analisi.
 
 Tra l'applicazione e la base dati opera uno strato di protezione che regola gli accessi e
 garantisce l'isolamento dei dati tra enti.

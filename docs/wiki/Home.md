@@ -1,7 +1,7 @@
 # Cruscotto HR — Documentazione
 
-Documentazione del **Cruscotto HR**, lo strumento per la consultazione e l'analisi dei
-dati del personale.
+Documentazione del **Cruscotto HR**, applicazione per la consultazione e l'analisi di
+indicatori e dati provenienti da diverse fonti.
 
 La documentazione è organizzata in una sezione d'uso, una dedicata ai profili e agli
 accessi, una di approfondimento tecnico sull'architettura e una di monitoraggio delle
@@ -16,8 +16,8 @@ attività.
 
 ## In sintesi
 
-Il Cruscotto HR è un'applicazione web che presenta i dati del personale tramite schede
-tematiche con indicatori, grafici e tabelle. L'accesso avviene con le credenziali
+Il Cruscotto HR è un'applicazione web che elabora e presenta, tramite schede tematiche
+con indicatori, grafici e tabelle, dati provenienti da diverse fonti. L'accesso avviene con le credenziali
 aziendali e ciascun utente visualizza esclusivamente i dati di propria competenza.
 
 > Il progetto è in evoluzione: nuove analisi e nuovi dati vengono integrati e affinati nel
