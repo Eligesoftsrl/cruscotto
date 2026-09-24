@@ -21,8 +21,9 @@ import { UsageStatsPanel } from "@/components/admin/UsageStatsPanel";
 const Admin = () => {
   const { profile } = useAuth();
 
-  // Solo super admin (mappato su ruolo `dfp`). Gli altri tornano alla home.
-  if (profile && profile.role !== "dfp") return <Navigate to="/" replace />;
+  // Accesso al pannello riservato ai profili con privilegi di amministrazione.
+  // Il ruolo `dfp` da solo (vista globale) NON è sufficiente: serve `is_admin`.
+  if (profile && !profile.is_admin) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen bg-muted/30">

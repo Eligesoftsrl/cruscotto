@@ -22,7 +22,8 @@ export const TopBar = ({ nav, onNavigate }: TopBarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isWelcome = location.pathname === "/";
-  const isAdmin = profile?.role === "dfp";
+  const isAdmin = !!profile?.is_admin;
+  const isDfp = profile?.role === "dfp";
   const isPannelloOrRapporto =
     location.pathname.startsWith("/bussola") || location.pathname.startsWith("/rapporto");
 
@@ -57,7 +58,9 @@ export const TopBar = ({ nav, onNavigate }: TopBarProps) => {
                   <span className="text-xs text-muted-foreground">
                     {isAdmin
                       ? "Amministratore (DFP)"
-                      : (profile.ente_denominazione ?? "Responsabile HR")}
+                      : isDfp
+                        ? "Utente DFP"
+                        : (profile.ente_denominazione ?? "Responsabile HR")}
                   </span>
                 </div>
               </DropdownMenuLabel>

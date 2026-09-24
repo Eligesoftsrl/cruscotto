@@ -527,8 +527,8 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
 
       <div className="flex-1" />
 
-      {/* ── Amministrazione (solo profilo DFP/admin) ── */}
-      {profile?.role === "dfp" && (
+      {/* ── Amministrazione (solo profili con privilegi admin) ── */}
+      {profile?.is_admin && (
         <button
           onClick={() => navigate("/admin")}
           className="flex items-center gap-2.5 w-full py-2.5 px-5 text-[12.5px] transition-all hover:bg-white/[0.06] border-t focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white/40"

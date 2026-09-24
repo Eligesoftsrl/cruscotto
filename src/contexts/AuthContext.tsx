@@ -5,9 +5,11 @@ import { setLogUser, resetLogUser, logAccesso, clearAccessDedupe } from "@/servi
 
 export type AppRole = "dfp" | "ente_hr";
 
-/** Ruoli Keycloak considerati amministratore (profilo `dfp`). */
-const DFP_ROLES = [
-  "dfp",
+/**
+ * Ruoli Keycloak con privilegi di AMMINISTRAZIONE (accesso al pannello `/admin`).
+ * Il solo ruolo `dfp` NON è incluso: vede tutti gli enti ma non amministra.
+ */
+const ADMIN_ROLES = [
   "super_admin",
   "superadmin",
   "admin",
@@ -17,11 +19,19 @@ const DFP_ROLES = [
   "amministratore-unico",
 ];
 
+/**
+ * Ruoli Keycloak con VISTA GLOBALE su tutti gli enti (profilo `dfp`).
+ * Comprende `dfp` e tutti i ruoli amministrativi (che vedono comunque tutto).
+ */
+const DFP_ROLES = ["dfp", ...ADMIN_ROLES];
+
 /** Ruoli Keycloak consentiti per gli utenti-ente (profilo `ente_hr`). */
 const ENTE_ROLES = ["ente_hr", "ente-hr", "hr_ente", "hr-cruscotto", "hr_cruscotto"];
 
 interface UserProfile {
   role: AppRole;
+  /** true = possiede privilegi di amministrazione (accesso al pannello `/admin`). */
+  is_admin: boolean;
   ente_id: number | null;
   /** Codici fiscali degli enti abilitati (claim Keycloak `enti_cf`). */
   enti_cf: string[];
@@ -68,6 +78,7 @@ function resolveKeycloak(): { profile: UserProfile | null; unauthorized: boolean
 
   const isDfp = roles.some((r) => DFP_ROLES.includes(r));
   const isEnte = roles.some((r) => ENTE_ROLES.includes(r));
+  const isAdmin = roles.some((r) => ADMIN_ROLES.includes(r));
 
   const fullName =
     (c.name as string) ??
@@ -75,9 +86,11 @@ function resolveKeycloak(): { profile: UserProfile | null; unauthorized: boolean
     (isDfp ? "Utente DFP" : "Responsabile HR");
 
   // Amministratore/DFP: accesso completo, nessun perimetro ente.
+  // `is_admin` distingue chi può gestire il pannello (`/admin`) da chi ha
+  // solo la vista globale (ruolo `dfp` senza ruoli amministrativi).
   if (isDfp) {
     return {
-      profile: { role: "dfp", ente_id: null, enti_cf: [], full_name: fullName },
+      profile: { role: "dfp", is_admin: isAdmin, ente_id: null, enti_cf: [], full_name: fullName },
       unauthorized: false,
     };
   }
@@ -104,7 +117,7 @@ function resolveKeycloak(): { profile: UserProfile | null; unauthorized: boolean
     }
 
     return {
-      profile: { role: "ente_hr", ente_id, enti_cf, full_name: fullName },
+      profile: { role: "ente_hr", is_admin: false, ente_id, enti_cf, full_name: fullName },
       unauthorized: false,
     };
   }
@@ -196,6 +209,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const p: UserProfile = {
       role,
+      // Demo locale (senza Keycloak): il DFP dimostrativo ha privilegi admin
+      // per consentire la prova del pannello in anteprima.
+      is_admin: role === "dfp",
       ente_id: role === "dfp" ? null : (enteId ?? null),
       // Demo locale (senza Keycloak): CF Comune di Roma per l'utente ente.
       enti_cf: role === "ente_hr" ? ["80054330586"] : [],
