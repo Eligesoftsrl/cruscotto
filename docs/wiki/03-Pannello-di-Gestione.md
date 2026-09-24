@@ -8,9 +8,11 @@ utenti privi delle relative autorizzazioni.
 
 ## 3.1 Accesso al pannello
 
-L'accesso è consentito ai soli profili amministrativi ed è raggiungibile dall'apposita
-voce, disponibile unicamente per gli utenti abilitati. Le altre tipologie di utente non
-visualizzano né possono raggiungere questa area.
+L'accesso è consentito ai soli profili con privilegi di amministrazione ed è raggiungibile
+dall'apposita voce, disponibile unicamente per gli utenti abilitati. La sola vista globale
+su tutti gli enti (profilo DFP) non è sufficiente: in assenza dei privilegi di
+amministrazione la voce non viene mostrata e l'area non è raggiungibile. Le altre tipologie
+di utente non visualizzano né possono raggiungere questa area.
 
 ## 3.2 Gestione delle schede
 
