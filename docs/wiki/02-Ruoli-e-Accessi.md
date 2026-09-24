@@ -2,42 +2,42 @@
 
 [◀ Torna all'indice](Home)
 
-Questa pagina spiega, in modo semplice, chi può accedere al cruscotto e cosa può vedere.
+La presente sezione descrive i profili di accesso e il relativo ambito di visibilità dei
+dati.
 
-## 2.1 Come si entra
+## 2.1 Modalità di accesso
 
-L'accesso avviene con le **credenziali aziendali** tramite il sistema di autenticazione
-centralizzato (single sign-on). Non esistono password dedicate al cruscotto: si usa lo
-stesso accesso degli altri servizi interni.
+L'accesso avviene con le credenziali aziendali tramite il sistema di autenticazione
+centralizzato (single sign-on). Non sono previste password dedicate al cruscotto: si
+utilizza il medesimo accesso degli altri servizi interni.
 
-## 2.2 I profili
+## 2.2 Profili
 
-| Profilo | Chi è | Cosa vede |
-|--------|-------|-----------|
-| **Amministratore** | Referente centrale | Tutti i dati; può scegliere qualsiasi ente |
-| **Responsabile di ente** | Utente di uno o più enti | Solo i dati degli enti a cui è abilitato |
-| **Non abilitato** | Utente senza autorizzazione | Nessun accesso: compare una schermata dedicata |
+| Profilo | Descrizione | Ambito di visibilità |
+|--------|-------------|----------------------|
+| **Amministratore** | Referente centrale | Tutti i dati; selezione di qualsiasi ente |
+| **Responsabile di ente** | Utente di uno o più enti | Solo i dati degli enti abilitati |
+| **Non abilitato** | Utente privo di autorizzazione | Nessun accesso: schermata dedicata |
 
-## 2.3 Il perimetro dei dati
+## 2.3 Perimetro dei dati
 
-Ogni utente vede **solo** i dati di propria competenza. Questo “perimetro” viene
-determinato automaticamente al momento dell'accesso, in base alle abilitazioni associate
-all'utente: non è qualcosa che l'utente possa modificare da sé.
+Ciascun utente visualizza esclusivamente i dati di propria competenza. Tale perimetro
+viene determinato automaticamente in fase di accesso, sulla base delle abilitazioni
+associate all'utente, e non è modificabile dall'utente stesso.
 
-- Un responsabile abilitato a un solo ente vede direttamente i dati di quell'ente.
-- Un responsabile abilitato a più enti può passare dall'uno all'altro tramite l'apposito
-  selettore.
-- L'amministratore non ha limiti di perimetro e può selezionare qualsiasi ente.
+- Il responsabile abilitato a un solo ente ne visualizza direttamente i dati.
+- Il responsabile abilitato a più enti può alternarli mediante l'apposito selettore.
+- L'amministratore non è soggetto a limitazioni di perimetro.
 
 ## 2.4 Sicurezza degli accessi
 
-- Le autorizzazioni sono gestite centralmente: abilitare o disabilitare un utente è
-  compito dei referenti degli accessi.
-- L'isolamento tra enti è garantito a più livelli, così che ciascuno resti nel proprio
-  perimetro.
-- Gli accessi e le attività principali vengono registrati per finalità di monitoraggio.
+- La gestione delle autorizzazioni è centralizzata: l'abilitazione o la disabilitazione di
+  un utente compete ai referenti degli accessi.
+- L'isolamento tra enti è garantito su più livelli, in modo che ciascun utente resti nel
+  proprio perimetro.
+- Gli accessi e le attività principali sono registrati a fini di monitoraggio.
 
-> Per una visione generale di come questi principi sono realizzati, vedi la
-> [Panoramica dell'architettura](03-Panoramica-Architettura).
+> Per il dettaglio delle soluzioni adottate si rimanda alla
+> [Architettura tecnica](03-Architettura-Tecnica).
 
-[▶ Prossima pagina: Panoramica dell'architettura](03-Panoramica-Architettura)
+[▶ Pagina successiva: Architettura tecnica](03-Architettura-Tecnica)

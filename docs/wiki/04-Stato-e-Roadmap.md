@@ -1,13 +1,13 @@
-# 4. Stato e attività (roadmap)
+# 4. Stato e attività
 
 [◀ Torna all'indice](Home)
 
-Questa pagina è un **documento vivo**: va aggiornata man mano che le attività procedono.
-Serve a tenere sotto controllo ciò che è stato fatto, ciò che è in corso e ciò che resta
-da fare o da verificare.
+La presente pagina costituisce un documento di monitoraggio, da aggiornare con il
+procedere delle attività. Riepiloga quanto realizzato, quanto in corso e quanto ancora da
+svolgere o da verificare.
 
-> Come aggiornarla: spostate le voci tra le sezioni (Da fare → In corso → Da testare →
-> Completato) e aggiornate la data qui sotto.
+> Modalità di aggiornamento: spostare le voci tra le sezioni (Da fare → In corso → Da
+> testare → Completato) e aggiornare la data seguente.
 >
 > **Ultimo aggiornamento:** 24/09/2026
 
@@ -21,22 +21,22 @@ da fare o da verificare.
 
 ## 🟡 Da fare
 
-- **Selettore dell'ente in alto**: spostare la scelta dell'ente nella barra superiore,
-  sempre visibile su tutte le schede (per gli utenti abilitati a più enti).
-- **Indicazione del perimetro**: mostrare in ogni pagina un riferimento chiaro all'ente
+- **Selettore dell'ente nella barra superiore**: rendere la scelta dell'ente sempre
+  visibile su tutte le schede, per gli utenti abilitati a più enti.
+- **Indicazione del perimetro**: riportare in ogni pagina un riferimento chiaro all'ente
   attualmente selezionato.
 - **Accessibilità**: proseguire l'adeguamento alle linee guida di accessibilità della PA.
-- **Nuove analisi e nuovi dati**: ampliare progressivamente le sezioni con dati
-  definitivi al posto di quelli dimostrativi.
+- **Nuove analisi e nuovi dati**: ampliare progressivamente le sezioni con dati definitivi
+  in sostituzione di quelli dimostrativi.
 
 ## 🔵 Da testare / verificare
 
 - Accesso con i diversi profili (amministratore e responsabile di ente).
-- Corretto isolamento dei dati tra enti diversi.
+- Corretto isolamento dei dati tra enti distinti.
 - Cambio ente per gli utenti abilitati a più enti.
-- Attivazione/disattivazione delle schede dal pannello di gestione.
+- Attivazione e disattivazione delle schede dal pannello di gestione.
 - Ricezione dell'avviso di aggiornamento e ricarica alla nuova versione.
-- Coerenza dei dati mostrati al variare dei filtri.
+- Coerenza dei dati al variare dei filtri.
 
 ## ✅ Completato
 
@@ -44,18 +44,22 @@ da fare o da verificare.
 - Accesso tramite credenziali aziendali (single sign-on) con controllo delle
   autorizzazioni.
 - Visualizzazione dei soli dati di competenza (perimetro per ente).
-- Pannello di gestione per attivare/disattivare le schede e consultare statistiche e log.
+- Riorganizzazione del codice a livelli (componenti, hook, servizi) con isolamento
+  dell'accesso ai dati in un unico punto.
+- Rimozione dei dati simulati e del codice verboso dalle sezioni principali.
+- Pannello di gestione per l'attivazione delle schede e la consultazione di statistiche e
+  registri.
 - Meccanismo di aggiornamento sicuro delle versioni.
 - Schermata dedicata per gli utenti non abilitati.
 
 ---
 
-## Come segnalare un problema o proporre un miglioramento
+## Segnalazione di problemi e proposte di miglioramento
 
-1. Descrivere in modo semplice cosa si stava facendo e cosa è successo.
-2. Indicare, se possibile, la scheda o la sezione interessata e i filtri attivi.
+1. Descrivere l'attività in corso al momento del problema e l'esito riscontrato.
+2. Indicare, ove possibile, la scheda o la sezione interessata e i filtri attivi.
 3. Allegare eventuali immagini della schermata.
-4. Inoltrare la segnalazione al referente del progetto, che la inserirà nell'elenco qui
-   sopra.
+4. Trasmettere la segnalazione al referente del progetto, che provvederà a inserirla
+   nell'elenco soprastante.
 
 [◀ Torna all'indice](Home)
