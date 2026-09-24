@@ -1,34 +1,25 @@
-# Cruscotto HR — Wiki tecnica
+# Cruscotto HR — Guida e documentazione
 
-Benvenuti nella documentazione tecnica del **Cruscotto HR**, l'applicazione di analisi
-dei dati del personale della Pubblica Amministrazione (Conto Annuale e sezioni
-correlate).
+Benvenuti nella documentazione del **Cruscotto HR**, lo strumento che rende semplice
+consultare e analizzare i dati del personale.
 
-Questa wiki descrive il progetto dalla A alla Z: il percorso di conversione, la
-struttura del codice, la suddivisione in layer, il modello dati, l'autenticazione,
-l'isolamento multi-ente e l'architettura di sicurezza (proxy + RLS).
+Questa guida è pensata per **tutti**: chi usa il cruscotto ogni giorno, i responsabili e
+chi deve avere un quadro generale del progetto. Il linguaggio è volutamente chiaro e
+senza tecnicismi.
 
 ## Indice
 
-1. [Panoramica e obiettivi](01-Panoramica.md)
-2. [Percorso di conversione](02-Percorso-di-Conversione.md)
-3. [Architettura e layer applicativi](03-Architettura-e-Layer.md)
-4. [Struttura delle cartelle](04-Struttura-delle-Cartelle.md)
-5. [Autenticazione, ruoli e multi-ente](05-Autenticazione-Ruoli-e-Multitenant.md)
-6. [Sicurezza: proxy e RLS](06-Sicurezza-Proxy-e-RLS.md)
-7. [Modello dati, RPC e filtri a cascata](07-Modello-Dati-RPC-e-Filtri.md)
-8. [Pannello Admin](08-Pannello-Admin.md)
-9. [Build, deploy e cache](09-Build-Deploy-e-Cache.md)
-10. [Convenzioni e sviluppo](10-Convenzioni-e-Sviluppo.md)
+1. [Manuale utente](01-Manuale-Utente.md) — come si usa il cruscotto, passo per passo
+2. [Ruoli e accessi](02-Ruoli-e-Accessi.md) — chi vede cosa e come si entra
+3. [Panoramica dell'architettura](03-Panoramica-Architettura.md) — come è fatto, in generale
+4. [Stato e attività (roadmap)](04-Stato-e-Roadmap.md) — cosa è fatto, cosa è in corso, cosa resta
 
-## In sintesi
+## In breve
 
-- **Frontend**: Single Page Application in React + TypeScript, servita come file statici.
-- **Dati**: letti da un backend PostgREST/Supabase tramite funzioni RPC dedicate.
-- **Autenticazione**: SSO tramite Keycloak (OpenID Connect, flusso PKCE).
-- **Multi-ente**: ogni utente vede solo i dati del proprio perimetro, derivato dal token.
-- **Sicurezza dati**: un proxy applicativo scambia il token SSO con un token firmato per
-  il database e le policy RLS applicano l'isolamento a livello di riga.
+Il Cruscotto HR è un'applicazione web che presenta i dati del personale attraverso
+**schede tematiche** con numeri chiave, grafici e tabelle. Ogni utente accede con le
+proprie credenziali aziendali e vede soltanto i dati di propria competenza.
 
-> Le pagine sono collegate tra loro con link relativi ai file `.md`, così la wiki è
-> navigabile sia da repository sia da wiki Git.
+> Il progetto è in continua evoluzione: nuove analisi e nuovi dati vengono aggiunti e
+> affinati nel tempo. La pagina [Stato e attività](04-Stato-e-Roadmap.md) tiene traccia
+> di ciò che è in lavorazione.
