@@ -1,4 +1,4 @@
-# 3. Architettura tecnica
+# 4. Architettura tecnica
 
 [◀ Torna all'indice](Home)
 
@@ -6,7 +6,7 @@ La presente sezione illustra la struttura dell'applicazione e il lavoro di riorg
 svolto. L'obiettivo è fornire un quadro tecnico d'insieme, senza esporre dettagli
 realizzativi delle singole analisi (interni e in evoluzione).
 
-## 3.1 Impianto generale
+## 4.1 Impianto generale
 
 L'applicazione è una Single Page Application (React con TypeScript), distribuita come
 insieme di file statici e servita su web server in HTTPS. Si articola, in sintesi, in tre
@@ -21,7 +21,7 @@ componenti:
 Tra l'applicazione e la base dati opera uno strato di protezione che regola gli accessi e
 garantisce l'isolamento dei dati tra enti.
 
-## 3.2 Suddivisione del codice a livelli
+## 4.2 Suddivisione del codice a livelli
 
 Il codice è organizzato per responsabilità nette, secondo un modello a livelli:
 
@@ -44,7 +44,7 @@ Il codice è organizzato per responsabilità nette, secondo un modello a livelli
 - **Configurazione** — i parametri d'ambiente (indirizzi dei servizi e impostazioni) sono
   centralizzati e non incorporati nel codice.
 
-## 3.3 Lavoro di riorganizzazione svolto
+## 4.3 Lavoro di riorganizzazione svolto
 
 Rispetto all'impianto iniziale (prototipo con dati simulati e logica dispersa nei
 componenti), sono stati realizzati i seguenti interventi:
@@ -71,25 +71,25 @@ componenti), sono stati realizzati i seguenti interventi:
   attivare o disattivare le schede e di consultare statistiche d'uso e registri di
   attività.
 
-## 3.4 Accesso e protezione dei dati
+## 4.4 Accesso e protezione dei dati
 
 L'utente si autentica una sola volta con le credenziali aziendali; in funzione del profilo,
 l'applicazione espone i soli dati consentiti. Lo strato di protezione interposto tra
 applicazione e base dati verifica la legittimità delle richieste e assicura che ciascun
 utente operi entro il proprio perimetro.
 
-## 3.5 Distribuzione e aggiornamenti
+## 4.5 Distribuzione e aggiornamenti
 
 L'applicazione web e lo strato di protezione dei dati costituiscono due componenti
 distinti, distribuiti separatamente. Le nuove versioni sono rilasciate in modo che gli
 utenti ne ricevano automaticamente le novità, con un avviso che invita alla ricarica
 quando necessario, evitando l'utilizzo di versioni non aggiornate.
 
-## 3.6 Natura evolutiva del progetto
+## 4.6 Natura evolutiva del progetto
 
 Le analisi disponibili e i dati che le alimentano vengono progressivamente ampliati e
 affinati. Alcune sezioni possono pertanto essere aggiunte, riviste o temporaneamente
 presentate a scopo dimostrativo. Lo stato aggiornato delle attività è riportato nella
-pagina [Stato e attività](04-Stato-e-Roadmap).
+pagina [Stato e attività](06-Stato-e-Roadmap).
 
-[▶ Pagina successiva: Stato e attività](04-Stato-e-Roadmap)
+[▶ Pagina successiva: Glossario](05-Glossario)

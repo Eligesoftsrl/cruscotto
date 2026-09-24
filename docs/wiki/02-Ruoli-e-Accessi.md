@@ -38,6 +38,6 @@ associate all'utente, e non è modificabile dall'utente stesso.
 - Gli accessi e le attività principali sono registrati a fini di monitoraggio.
 
 > Per il dettaglio delle soluzioni adottate si rimanda alla
-> [Architettura tecnica](03-Architettura-Tecnica).
+> [Architettura tecnica](04-Architettura-Tecnica).
 
-[▶ Pagina successiva: Architettura tecnica](03-Architettura-Tecnica)
+[▶ Pagina successiva: Pannello di gestione](03-Pannello-di-Gestione)
