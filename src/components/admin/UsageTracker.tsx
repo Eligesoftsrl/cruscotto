@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { logEvento } from "@/services/admin/logger";
+import { useAuth } from "@/contexts/AuthContext";
 
 /**
  * Traccia la navigazione (per le statistiche di utilizzo).
@@ -26,10 +27,14 @@ const SECTION_LABELS: Record<string, string> = {
 
 export const UsageTracker = () => {
   const location = useLocation();
+  const { profile } = useAuth();
   const params = new URLSearchParams(location.search);
   const section = params.get("section") ?? params.get("scheda") ?? "";
 
   useEffect(() => {
+    // Non tracciare finché l'utente non è autenticato: durante il callback di
+    // login il token non è ancora pronto e la chiamata fallirebbe (401/422).
+    if (!profile) return;
     const base = PATH_LABELS[location.pathname] ?? location.pathname;
     const label =
       location.pathname === "/dashboard" && section && SECTION_LABELS[section]
@@ -37,7 +42,7 @@ export const UsageTracker = () => {
         : base;
     logEvento("navigazione", label, { path: location.pathname + location.search });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname, section]);
+  }, [location.pathname, section, profile]);
 
   return null;
 };

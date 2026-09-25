@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from "
 import { supabase } from "@/integrations/supabase/client";
 import { isKeycloakEnabled, keycloak, initKeycloak } from "@/auth/keycloak";
 import { setLogUser, resetLogUser, logAccesso, clearAccessDedupe } from "@/services/admin/logger";
+import { ensureAdminLoaded } from "@/services/admin/adminStore";
 
 export type AppRole = "dfp" | "ente_hr";
 
@@ -143,6 +144,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (p) {
           setLogUser({ username: p.full_name, ruolo: p.role });
           logAccesso("success");
+          // Ora c'è un token valido: carico i dati Admin (idempotente).
+          void ensureAdminLoaded();
         } else if (u) {
           // Accesso negato: registro il tentativo (ruolo non consentito).
           const tp = (keycloak.tokenParsed ?? {}) as Record<string, unknown>;
@@ -182,6 +185,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const p = JSON.parse(stored) as UserProfile;
         setProfile(p);
         setLogUser({ username: p.full_name, ruolo: p.role });
+        void ensureAdminLoaded();
       } catch {
         // sessione malformata: ignoro e resto non autenticato
       }
@@ -222,6 +226,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     sessionStorage.setItem("mock_profile", JSON.stringify(p));
     setLogUser({ username: p.full_name, ruolo: p.role });
     logAccesso("success");
+    void ensureAdminLoaded();
   };
 
   const signOut = () => {

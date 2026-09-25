@@ -137,8 +137,10 @@ export function ensureAdminLoaded(): Promise<void> {
   return loadPromise;
 }
 
-// Le feature flag servono a tutta l'app: avvio il caricamento all'import.
-void ensureAdminLoaded();
+// Modalità DIRETTA (chiave anon): le feature flag servono subito -> carico all'import.
+// Modalità PROXY: il caricamento parte DOPO il login (vedi AuthContext), quando esiste
+// un token valido, per evitare chiamate /admin/* non autenticate (401/422 "a freddo").
+if (!EXCHANGE_ENABLED) void ensureAdminLoaded();
 
 export function subscribe(cb: () => void): () => void {
   listeners.add(cb);
