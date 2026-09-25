@@ -38,6 +38,8 @@ svolgere o da verificare.
 
 ## 📦 Rilascio del 25/09/2026 — attività completate
 
+**Build di riferimento (buildId):** `1790353325754`
+
 Messa in produzione (staging) dello **strato di protezione dei dati (proxy)** e relativa
 messa a punto. Attività svolte e verificate end-to-end:
 
