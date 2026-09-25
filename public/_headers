@@ -7,6 +7,12 @@
 /version.json
   Cache-Control: no-cache, no-store, must-revalidate
 
+# File a percorso fisso (non hashati): rivalidare, niente immutable.
+/favicon.webp
+  Cache-Control: public, max-age=0, must-revalidate
+/favicon.ico
+  Cache-Control: public, max-age=0, must-revalidate
+
 # Asset con hash nel nome (immutabili): cache lunga.
 /assets/*
   Cache-Control: public, max-age=31536000, immutable

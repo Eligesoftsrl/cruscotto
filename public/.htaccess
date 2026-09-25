@@ -3,10 +3,19 @@
 # per non generare errori se i moduli non sono abilitati.
 
 <IfModule mod_headers.c>
-  # Asset con hash nel nome: cache lunga e immutabile.
+  # Default per i file a PERCORSO FISSO (favicon, robots, ecc., NON hashati):
+  # rivalidare sempre -> gli aggiornamenti (es. favicon) si propagano subito.
   <FilesMatch "\.(js|css|woff2?|ttf|eot|svg|png|jpe?g|gif|ico|webp)$">
-    Header set Cache-Control "public, max-age=31536000, immutable"
+    Header set Cache-Control "public, max-age=0, must-revalidate"
   </FilesMatch>
+
+  # Solo gli asset con hash nel nome (cartella /assets/) sono immutabili.
+  <If "%{REQUEST_URI} =~ m#^/assets/#">
+    <FilesMatch "\.(js|css|woff2?|ttf|eot|svg|png|jpe?g|gif|ico|webp)$">
+      Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+  </If>
+
   # index.html: mai in cache (referenzia i chunk con hash correnti).
   <FilesMatch "\.html$">
     Header set Cache-Control "no-cache, no-store, must-revalidate"
