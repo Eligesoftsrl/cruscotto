@@ -31,8 +31,12 @@ create table if not exists public.feature_flags (
   description text,
   category    text,
   enabled     boolean not null default true,
+  updated_by  text,
   updated_at  timestamptz not null default now()
 );
+
+-- Migrazione per tabelle già create in precedenza (idempotente):
+alter table public.feature_flags add column if not exists updated_by text;
 
 -- Seed iniziale allineato al frontend (src/services/admin/featureRegistry.ts).
 -- Le 12 schede del Conto Annuale sono ora TUTTE gestibili on/off dal Pannello

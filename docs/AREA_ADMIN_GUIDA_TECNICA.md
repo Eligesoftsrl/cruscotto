@@ -54,6 +54,7 @@ create table if not exists public.feature_flags (
   description text,
   category    text,
   enabled     boolean not null default true,
+  updated_by  text,          -- chi ha modificato il flag (username dal token)
   updated_at  timestamptz not null default now()
 );
 

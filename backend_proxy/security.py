@@ -25,10 +25,6 @@ KEYCLOAK_ISSUER = os.environ["KEYCLOAK_ISSUER"]          # es. https://identity.
 KEYCLOAK_AUDIENCE = os.environ.get("KEYCLOAK_AUDIENCE")  # opzionale ma consigliato
 SUPABASE_JWT_SECRET = os.environ["SUPABASE_JWT_SECRET"]  # lo stesso JWT_SECRET dell'istanza PostgREST/Supabase
 TOKEN_TTL_SECONDS = int(os.environ.get("TOKEN_TTL_SECONDS", "3600"))
-# Tolleranza (secondi) sullo sfasamento di orologio tra Keycloak e proxy.
-# Assorbe piccoli skew su iat/nbf/exp (es. "token not yet valid"/"expired").
-# NB: NON sostituisce la sincronizzazione NTP; è solo un cuscinetto di sicurezza.
-JWT_LEEWAY_SECONDS = int(os.environ.get("JWT_LEEWAY_SECONDS", "120"))
 
 
 def _role_set(env_name: str, default: str) -> set[str]:
@@ -66,7 +62,6 @@ def verify_keycloak_token(token: str) -> dict:
             algorithms=["RS256"],
             issuer=KEYCLOAK_ISSUER,
             audience=KEYCLOAK_AUDIENCE or None,
-            leeway=JWT_LEEWAY_SECONDS,
             options={"verify_aud": bool(KEYCLOAK_AUDIENCE)},
         )
     except jwt.PyJWTError as e:
