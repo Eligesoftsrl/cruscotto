@@ -9,14 +9,12 @@ svolgere o da verificare.
 > Modalità di aggiornamento: spostare le voci tra le sezioni (Da fare → In corso → Da
 > testare → Completato) e aggiornare la data seguente.
 >
-> **Ultimo aggiornamento:** 24/09/2026
+> **Ultimo aggiornamento:** 25/09/2026
 
 ---
 
 ## 🟢 In corso
 
-- Attivazione dello strato di protezione dei dati (in attesa della configurazione
-  sull'infrastruttura).
 - Consolidamento e verifica dei dati delle analisi già disponibili.
 
 ## 🟡 Da fare
@@ -37,6 +35,27 @@ svolgere o da verificare.
 - Attivazione e disattivazione delle schede dal pannello di gestione.
 - Ricezione dell'avviso di aggiornamento e ricarica alla nuova versione.
 - Coerenza dei dati al variare dei filtri.
+
+## 📦 Rilascio del 25/09/2026 — attività completate
+
+Messa in produzione (staging) dello **strato di protezione dei dati (proxy)** e relativa
+messa a punto. Attività svolte e verificate end-to-end:
+
+- **Proxy di sicurezza attivo**: scambio del token di accesso aziendale con un token per la
+  base dati; endpoint dell'area di amministrazione serviti tramite il proxy.
+- **Autenticazione allineata**: risolto lo sfasamento di orario tra i server (i token non
+  vengono più rifiutati); accesso e scambio token funzionanti.
+- **Separazione DFP / Amministratore**: l'utente con sola vista globale (DFP) vede tutti
+  gli enti ma non accede all'amministrazione; l'accesso al pannello richiede un ruolo
+  amministrativo. Regola applicata sia nell'interfaccia sia nel proxy.
+- **Pannello di gestione operativo**: feature flag, statistiche d'uso e registri
+  (accessi/eventi/errori) letti e scritti correttamente.
+- **Font applicativo servito localmente**: rimossa la dipendenza esterna, risolto il blocco
+  dovuto alle policy di sicurezza del browser (CSP).
+- **Icona dell'applicazione (favicon)**: ripristinata l'immagine personalizzata e corretta
+  la gestione della cache, così gli aggiornamenti si propagano correttamente.
+- **Robustezza all'avvio**: le chiamate all'area amministrazione attendono il completamento
+  del login, eliminando gli errori transitori in fase di accesso.
 
 ## ✅ Completato
 
