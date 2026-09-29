@@ -90,6 +90,37 @@ export const FilterPills = ({ lockGenere = false }: { lockGenere?: boolean } = {
 
   return (
     <div className="bg-card border-b px-5 py-2 flex items-center gap-2 flex-wrap">
+      {/* Anno */}
+      <Pill label="Anno" value={filters.anno} display={filters.anno} active={filters.anno !== "2023"}
+        options={(anniQ.data ?? [2023]).map((y) => ({ value: String(y), label: String(y) }))}
+        onChange={(v) => { setFilter("anno", v); setFilter("comparto", ALL_COMP); setFilter("macrocategoria", ALL_F); setFilter("categoria", ALL_F); }}
+        onClear={() => setFilter("anno", "2023")} />
+
+      {/* Genere (ombreggiato e bloccato nelle schede in cui non è utilizzato,
+          mantenendo il valore eventualmente selezionato altrove) */}
+      <Pill label="Genere" value={filters.genere} display={filters.genere}
+        active={filters.genere !== "Tutti"} disabled={lockGenere}
+        title={lockGenere ? "Filtro non utilizzato in questa scheda" : undefined}
+        options={[{ value: "Tutti", label: "Tutti" }, { value: "Uomini", label: "Uomini" }, { value: "Donne", label: "Donne" }]}
+        onChange={(v) => setFilter("genere", v)} onClear={() => setFilter("genere", "Tutti")} />
+
+      {!isEnteHr && (
+        <>
+          {/* Regione */}
+          <Pill label="Regione" value={filters.regione} display={lbl(regioniQ.data, filters.regione)}
+            active={filters.regione !== ALL_F} options={opt(regioniQ.data, "Tutte le regioni", ALL_F)}
+            onChange={(v) => setFilter("regione", v)} onClear={() => setFilter("regione", ALL_F)} />
+          {/* Comparto (avvia la cascata Comparto -> Macrocategoria -> Categoria) */}
+          <Pill label="Comparto" value={filters.comparto} display={lbl(compartiQ.data, filters.comparto)}
+            active={filters.comparto !== ALL_COMP} options={opt(compartiQ.data, "Tutti i comparti", ALL_COMP)}
+            onChange={(v) => { setFilter("comparto", v); setFilter("macrocategoria", ALL_F); setFilter("categoria", ALL_F); }}
+            onClear={() => { setFilter("comparto", ALL_COMP); setFilter("macrocategoria", ALL_F); setFilter("categoria", ALL_F); }} />
+        </>
+      )}
+
+      {/* Separatore tra i filtri di contesto e la cascata Macrocategoria/Categoria */}
+      <div className="w-px h-5 bg-border" />
+
       {/* Macrocategoria (dipende da Comparto) */}
       <Pill label="Macrocategoria" value={filters.macrocategoria} display={lbl(macroQ.data, filters.macrocategoria)}
         active={filters.macrocategoria !== ALL_F} disabled={filters.comparto === ALL_COMP}
@@ -102,35 +133,6 @@ export const FilterPills = ({ lockGenere = false }: { lockGenere?: boolean } = {
         active={filters.categoria !== ALL_F} disabled={!macroChiave}
         options={opt(categorieQ.data, "Tutte", ALL_F)}
         onChange={(v) => setFilter("categoria", v)} onClear={() => setFilter("categoria", ALL_F)} />
-
-      {/* Genere (ombreggiato e bloccato nelle schede in cui non è utilizzato,
-          mantenendo il valore eventualmente selezionato altrove) */}
-      <Pill label="Genere" value={filters.genere} display={filters.genere}
-        active={filters.genere !== "Tutti"} disabled={lockGenere}
-        title={lockGenere ? "Filtro non utilizzato in questa scheda" : undefined}
-        options={[{ value: "Tutti", label: "Tutti" }, { value: "Uomini", label: "Uomini" }, { value: "Donne", label: "Donne" }]}
-        onChange={(v) => setFilter("genere", v)} onClear={() => setFilter("genere", "Tutti")} />
-
-      {/* Anno */}
-      <Pill label="Anno" value={filters.anno} display={filters.anno} active={filters.anno !== "2023"}
-        options={(anniQ.data ?? [2023]).map((y) => ({ value: String(y), label: String(y) }))}
-        onChange={(v) => { setFilter("anno", v); setFilter("comparto", ALL_COMP); setFilter("macrocategoria", ALL_F); setFilter("categoria", ALL_F); }}
-        onClear={() => setFilter("anno", "2023")} />
-
-      {!isEnteHr && (
-        <>
-          <div className="w-px h-5 bg-border" />
-          {/* Comparto */}
-          <Pill label="Comparto" value={filters.comparto} display={lbl(compartiQ.data, filters.comparto)}
-            active={filters.comparto !== ALL_COMP} options={opt(compartiQ.data, "Tutti i comparti", ALL_COMP)}
-            onChange={(v) => { setFilter("comparto", v); setFilter("macrocategoria", ALL_F); setFilter("categoria", ALL_F); }}
-            onClear={() => { setFilter("comparto", ALL_COMP); setFilter("macrocategoria", ALL_F); setFilter("categoria", ALL_F); }} />
-          {/* Regione */}
-          <Pill label="Regione" value={filters.regione} display={lbl(regioniQ.data, filters.regione)}
-            active={filters.regione !== ALL_F} options={opt(regioniQ.data, "Tutte le regioni", ALL_F)}
-            onChange={(v) => setFilter("regione", v)} onClear={() => setFilter("regione", ALL_F)} />
-        </>
-      )}
 
       {activeCount > 0 && (
         <>

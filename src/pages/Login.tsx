@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { isKeycloakEnabled } from "@/auth/keycloak";
+import { Unauthorized } from "@/components/Unauthorized";
 import { Building2, Shield, Loader2, ChevronDown, LogIn } from "lucide-react";
 
 interface Ente {
@@ -11,7 +12,7 @@ interface Ente {
 }
 
 const Login = () => {
-  const { profile, loading, signIn } = useAuth();
+  const { profile, loading, signIn, unauthorized } = useAuth();
   const navigate = useNavigate();
   const [step, setStep] = useState<"choose" | "pick_ente">("choose");
   const [enti, setEnti] = useState<Ente[]>([]);
@@ -69,6 +70,10 @@ const Login = () => {
       </div>
     );
   }
+
+  // Autenticato via SSO ma privo di ruolo/ente abilitato: mostra il messaggio
+  // "Non si dispone degli accessi necessari..." invece della pagina di login.
+  if (unauthorized) return <Unauthorized />;
 
   // --- Modalita Keycloak: accesso solo via SSO ---
   // Ruolo (dfp / ente_hr) ed ente arrivano dai claim del token: niente

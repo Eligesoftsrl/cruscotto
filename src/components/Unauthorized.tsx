@@ -19,12 +19,8 @@ export const Unauthorized = () => {
             <ShieldAlert className="h-8 w-8" />
           </div>
           <h1 className="text-xl font-bold text-foreground">Accesso non autorizzato</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Il tuo account non dispone di un ruolo abilitato all'utilizzo del Cruscotto,
-            oppure non risulta associato ad alcun ente.
-          </p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Per l'abilitazione contatta l'amministratore del sistema.
+          <p className="mt-3 text-sm text-foreground">
+            Non si dispone degli accessi necessari, contattare l'amministrazione.
           </p>
           <Button onClick={signOut} className="mt-6 w-full gap-2">
             <LogOut className="h-4 w-4" /> Esci
