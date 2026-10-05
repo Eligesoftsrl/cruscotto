@@ -29,7 +29,7 @@ export const CriticitaProcessiView = ({ title = "Criticità e semplificazione de
       {lista.error ? <ErrorBox error={lista.error} /> : lista.isLoading ? <LoadingSpinner /> : (
         <div className="bg-card border rounded-xl p-5 space-y-2">
           <h3 className="text-[15px] font-bold text-foreground">{title}</h3>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+          <div className="space-y-6 pt-2">
             <div>
               <div className="overflow-auto rounded-md border">
                 <table className="w-full text-[12px]">
@@ -64,9 +64,9 @@ export const CriticitaProcessiView = ({ title = "Criticità e semplificazione de
                   <BarChart data={macro} layout="vertical" margin={{ top: 5, right: 40, left: 10, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border))" />
                     <XAxis type="number" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" allowDecimals={false} />
-                    <YAxis type="category" dataKey="name" tick={{ fontSize: 9 }} stroke="hsl(var(--muted-foreground))" width={190} />
+                    <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" width={320} />
                     <Tooltip contentStyle={TOOLTIP_STYLE} />
-                    <Bar dataKey="value" name="Occorrenze" radius={[0, 4, 4, 0]} maxBarSize={28}>
+                    <Bar dataKey="value" name="Occorrenze" radius={[0, 4, 4, 0]} maxBarSize={30}>
                       {macro.map((_, i) => <Cell key={i} fill={BAR_COLOR} />)}
                       <LabelList dataKey="value" position="insideRight" style={{ fontSize: 11, fontWeight: 700, fill: "white" }} />
                     </Bar>

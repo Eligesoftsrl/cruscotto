@@ -27,7 +27,7 @@ export const OutsourcingFasiView = () => {
   const totalRighe = rows[0]?.totale_righe ?? 0;
   const totalPages = Math.max(1, Math.ceil(totalRighe / PER_PAGE));
   const chartData = (top.data ?? []).map((r) => ({
-    name: r.processo.length > 28 ? r.processo.slice(0, 28) + "…" : r.processo,
+    name: r.processo.length > 46 ? r.processo.slice(0, 46) + "…" : r.processo,
     value: r.numero_uo,
     coinvolge: coinvolge(r.altre_amministrazioni),
   }));
@@ -40,7 +40,7 @@ export const OutsourcingFasiView = () => {
       {dett.error ? <ErrorBox error={dett.error} /> : dett.isLoading ? <LoadingSpinner /> : (
         <div className="bg-card border rounded-xl p-5 space-y-2">
           <h3 className="text-[15px] font-bold text-foreground">Coinvolgimento delle Unità Organizzative per processo</h3>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+          <div className="space-y-6 pt-2">
             <div>
               <div className="overflow-auto rounded-md border">
                 <table className="w-full text-[12px]">
@@ -70,7 +70,7 @@ export const OutsourcingFasiView = () => {
                 <BarChart data={chartData} layout="vertical" margin={{ top: 5, right: 40, left: 10, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border))" />
                   <XAxis type="number" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" allowDecimals={false} />
-                  <YAxis type="category" dataKey="name" tick={{ fontSize: 9 }} stroke="hsl(var(--muted-foreground))" width={180} />
+                  <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" width={340} />
                   <Tooltip contentStyle={TOOLTIP_STYLE} />
                   <Bar dataKey="value" name="N° UO" radius={[0, 4, 4, 0]} maxBarSize={20}>
                     {chartData.map((d, i) => <Cell key={i} fill={d.coinvolge ? COLOR_YES : COLOR_NO} />)}
