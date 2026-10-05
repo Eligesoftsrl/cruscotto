@@ -9,7 +9,7 @@ svolgere o da verificare.
 > Modalità di aggiornamento: spostare le voci tra le sezioni (Da fare → In corso → Da
 > testare → Completato) e aggiornare la data seguente.
 >
-> **Ultimo aggiornamento:** 25/09/2026
+> **Ultimo aggiornamento:** 05/10/2026
 
 ---
 
@@ -35,6 +35,41 @@ svolgere o da verificare.
 - Attivazione e disattivazione delle schede dal pannello di gestione.
 - Ricezione dell'avviso di aggiornamento e ricarica alla nuova versione.
 - Coerenza dei dati al variare dei filtri.
+
+## 📦 Prossima release (in preparazione) — completamento SIPrO e migliorie Amministrazione
+
+Release in fase di verifica, in rilascio a breve. Attività realizzate:
+
+**Completamento del modulo SIPrO (dati reali)**
+
+- Migrate a dati reali tutte e quattro le sezioni SIPrO: **Organizzazione**, **Processi**,
+  **Profili e Cataloghi** e **Benchmark** (confronto multi-ente), in sostituzione dei
+  precedenti dati dimostrativi.
+- Impaginazione adattiva di tabelle e grafici (impilati sugli schermi piccoli, affiancati su
+  quelli ampi), etichette leggibili nei grafici a torta e menù laterale SIPrO raggruppato
+  per categoria con apertura/chiusura "a fisarmonica".
+
+**Area di amministrazione**
+
+- **Gestione schede estesa al SIPrO**: anche le schede SIPrO si possono attivare/disattivare
+  dal pannello, come già per il Conto Annuale.
+- **«Schede più consultate» ora alimentata**: il tracciamento registra la consultazione
+  delle singole schede (Conto Annuale e SIPrO), così il grafico mostra le schede
+  effettivamente più utilizzate.
+- **Voce «Pannello Admin» protetta**: non più disattivabile dall'interfaccia, per evitare la
+  perdita accidentale dell'accesso all'area di amministrazione.
+
+**Configurazione e dati dinamici**
+
+- **Anno di riferimento dinamico**: l'applicazione propone automaticamente l'ultimo anno
+  disponibile nei dati, superando il riferimento fisso all'anno precedente.
+- **Limite enti del Benchmark configurabile da base dati** (parametro `benchmark_max_enti`),
+  modificabile dal sistemista senza nuovi rilasci.
+- Pulizia del codice: rimossi i componenti e i servizi dimostrativi non più utilizzati.
+
+**Nota per il sistemista:** per rendere persistenti i nuovi parametri è previsto un breve
+script SQL (tabella di configurazione `app_config` e nuove chiavi delle schede SIPrO nella
+tabella dei feature flag), fornito a corredo del rilascio.
 
 ## 📦 Rilascio del 25/09/2026 — attività completate
 

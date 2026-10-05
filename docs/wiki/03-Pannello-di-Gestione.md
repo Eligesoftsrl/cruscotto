@@ -32,7 +32,30 @@ durante le fasi di lavorazione o di verifica dei dati.
 forma grafica (ad esempio grafici a barre e a torta). Le statistiche offrono un quadro
 sintetico dell'adozione delle diverse schede.
 
-## 3.4 Registri di attività
+Il grafico **«Schede più consultate»** si basa sul tracciamento delle consultazioni: a ogni
+apertura di una scheda (sia del Conto Annuale sia del SIPrO) viene registrato un evento con
+l'etichetta della scheda stessa. Il grafico mostra quindi le schede effettivamente più
+utilizzate. Nota: il conteggio parte dalle consultazioni successive all'attivazione del
+tracciamento; una base dati appena popolata potrà risultare inizialmente vuota e si
+riempirà con l'uso dell'applicazione.
+
+## 3.4 Protezione della funzionalità «Pannello Admin»
+
+Tra le funzionalità di sistema è presente la voce **«Pannello Admin»**. Per prevenire il
+rischio di perdere l'accesso all'area di amministrazione, questa voce è **protetta** e non
+può essere disattivata dall'interfaccia (l'interruttore è mostrato come bloccato, con
+apposita segnalazione). Un'eventuale disattivazione è riservata al sistemista, da eseguire
+esclusivamente sulla base dati.
+
+## 3.5 Configurazione del confronto tra enti (Benchmark)
+
+Il numero massimo di enti confrontabili contemporaneamente nella scheda SIPrO
+«Benchmark» è un parametro di configurazione memorizzato nella base dati
+(tabella di configurazione applicativa, chiave `benchmark_max_enti`; valore predefinito
+6). Il sistemista può modificarlo senza rilasci applicativi. In assenza del parametro
+l'applicazione adotta automaticamente il valore predefinito.
+
+## 3.6 Registri di attività
 
 Il pannello espone i registri utili al monitoraggio:
 
@@ -43,7 +66,7 @@ Il pannello espone i registri utili al monitoraggio:
 I registri supportano le attività di controllo e l'individuazione tempestiva di eventuali
 problemi.
 
-## 3.5 Riservatezza
+## 3.7 Riservatezza
 
 - La consultazione di statistiche e registri è riservata ai profili amministrativi.
 - Le modifiche allo stato delle schede sono anch'esse riservate agli amministratori.
