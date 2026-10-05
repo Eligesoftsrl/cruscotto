@@ -8,10 +8,10 @@ import { Badge } from "@/components/ui/badge";
 export const FeatureFlagsPanel = () => {
   const { flags } = useAdminState();
 
-  // Le schede del Conto Annuale hanno una sezione dedicata ("Schede"): qui
+  // Le schede (Conto Annuale + SIPrO) hanno una sezione dedicata ("Schede"): qui
   // gestiamo solo le altre funzionalità (Navigazione, Sistema, ...).
   const generalFlags = useMemo(
-    () => flags.filter((f) => f.category !== "Schede Conto Annuale"),
+    () => flags.filter((f) => !f.category.startsWith("Schede ")),
     [flags],
   );
 

@@ -1,3 +1,4 @@
+import { useLatestYear } from "@/hooks/useLatestYear";
 import { useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -51,6 +52,7 @@ import {
 } from "@/pages/reportWizardSteps";
 
 const RapportoNarrativo = () => {
+  const annoLabel = useLatestYear();
   const { profile } = useAuth();
   const navigate = useNavigate();
 
@@ -166,7 +168,7 @@ const RapportoNarrativo = () => {
             <h1 className="text-2xl font-bold text-foreground mt-2">{reportTitle}</h1>
             <div className="flex gap-4 mt-2 text-xs text-muted-foreground">
               <span>{orgLabel}</span>
-              <span>Anno 2023</span>
+              <span>Anno {annoLabel}</span>
               <span>Formato: {audienceProfile?.label}</span>
             </div>
           </div>

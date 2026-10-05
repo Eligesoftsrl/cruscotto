@@ -18,3 +18,11 @@ export const useBenchmarkCriticita = (cfs: string[]) =>
     queryFn: () => svc.fetchBenchmarkCriticita(cfs),
     enabled: cfs.length > 0,
   });
+
+export const useBenchmarkMaxEnti = () =>
+  useQuery({
+    queryKey: ["sipro-bench", "max-enti"],
+    queryFn: svc.fetchBenchmarkMaxEnti,
+    staleTime: Infinity,
+    retry: false,
+  });

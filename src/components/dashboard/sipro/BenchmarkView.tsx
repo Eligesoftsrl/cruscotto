@@ -6,13 +6,13 @@ import {
 } from "recharts";
 import { Users } from "lucide-react";
 import {
-  useBenchmarkFiltri, useBenchmarkScore, useBenchmarkCriticita,
+  useBenchmarkFiltri, useBenchmarkScore, useBenchmarkCriticita, useBenchmarkMaxEnti,
 } from "@/hooks/useSchedaSiproBenchmark";
 import { LoadingSpinner, ErrorBox, PIE_COLORS, TOOLTIP_STYLE } from "./_shared";
 
-// Numero massimo di enti confrontabili. NOTA: valore di default lato frontend,
-// predisposto per essere pilotato in futuro dal Pannello di Amministrazione.
-const MAX_ENTI = 6;
+// Numero massimo di enti confrontabili: default 6, sovrascrivibile dalla
+// configurazione applicativa (Pannello Admin, chiave benchmark_max_enti).
+const DEFAULT_MAX_ENTI = 6;
 
 // 6 assi del radar (mappatura cliente) sui campi reali della RPC sipro_benchmark_score
 const RADAR_ASSI = [
@@ -32,6 +32,7 @@ const shortName = (s: string) => (s || "").replace(/^COMUNE DI\s+/i, "").trim();
 
 export const BenchmarkView = () => {
   const filtri = useBenchmarkFiltri();
+  const { data: maxEnti = DEFAULT_MAX_ENTI } = useBenchmarkMaxEnti();
   const [regione, setRegione] = useState<string>("");
   const [selected, setSelected] = useState<string[]>([]);
   const [ambito, setAmbito] = useState<"processo" | "uo">("processo");
@@ -61,7 +62,7 @@ export const BenchmarkView = () => {
   const toggle = (cf: string) => {
     setSelected((prev) => {
       if (prev.includes(cf)) return prev.filter((x) => x !== cf);
-      if (prev.length >= MAX_ENTI) return prev;
+      if (prev.length >= maxEnti) return prev;
       return [...prev, cf];
     });
   };
@@ -132,13 +133,13 @@ export const BenchmarkView = () => {
             </select>
           </div>
           <span className="text-[11px] text-muted-foreground ml-auto">
-            Selezionati {selected.length}/{MAX_ENTI} · Nota: è possibile selezionare massimo {MAX_ENTI} enti
+            Selezionati {selected.length}/{maxEnti} · Nota: è possibile selezionare massimo {maxEnti} enti
           </span>
         </div>
         <div className="max-h-[180px] overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
           {entiFiltrati.map((e) => {
             const checked = selected.includes(e.codice_fiscale);
-            const disabled = !checked && selected.length >= MAX_ENTI;
+            const disabled = !checked && selected.length >= maxEnti;
             return (
               <label
                 key={e.codice_fiscale}

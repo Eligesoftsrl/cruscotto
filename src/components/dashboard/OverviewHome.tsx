@@ -1,3 +1,4 @@
+import { useLatestYear } from "@/hooks/useLatestYear";
 import { useState, useMemo } from "react";
 import {
   Users,
@@ -114,6 +115,7 @@ const DeltaIcon = ({ type }: { type?: string }) => {
 };
 
 export const OverviewHome = () => {
+  const annoLabel = useLatestYear();
   const { profile } = useAuth();
   const isDfp = profile?.role === "dfp";
   const [dfpFilters, setDfpFilters] = useState<DfpOverviewFilterValues>(DFP_FILTER_DEFAULTS);
@@ -181,7 +183,7 @@ export const OverviewHome = () => {
       <div>
         <h1 className="text-xl font-bold text-foreground">Analisi d'Insieme</h1>
         <p className="text-[12px] text-muted-foreground mt-0.5">
-          Panoramica sintetica dello stato del personale · Dati al 31/12/2023{filterLabel}
+          Panoramica sintetica dello stato del personale · Dati al 31/12/{annoLabel}{filterLabel}
         </p>
       </div>
 
@@ -248,7 +250,7 @@ export const OverviewHome = () => {
             Trend Personale in Servizio
           </h3>
           <p className="text-[10.5px] text-muted-foreground mb-4">
-            Serie storica 2012–2023 (valori in migliaia)
+            Serie storica 2012–{annoLabel} (valori in migliaia)
           </p>
           <ResponsiveContainer width="100%" height={240}>
             <LineChart data={filteredSerie}>
@@ -290,7 +292,7 @@ export const OverviewHome = () => {
           <h3 className="text-[13px] font-semibold text-foreground mb-1">
             Personale per Macrocategoria
           </h3>
-          <p className="text-[10.5px] text-muted-foreground mb-4">Distribuzione al 2023</p>
+          <p className="text-[10.5px] text-muted-foreground mb-4">Distribuzione al {annoLabel}</p>
           <ResponsiveContainer width="100%" height={240}>
             <BarChart data={filteredMacro} layout="vertical" margin={{ left: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />

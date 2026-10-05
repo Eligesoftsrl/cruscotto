@@ -1,3 +1,4 @@
+import { useLatestYear } from "@/hooks/useLatestYear";
 import {
   Users,
   Calendar,
@@ -37,6 +38,7 @@ export const DashboardSidebar = ({
   collapsed,
   onToggleCollapse,
 }: DashboardSidebarProps) => {
+  const annoLabel = useLatestYear();
   return (
     <aside
       className={`relative flex flex-col border-r border-sidebar-border transition-all duration-300 ${
@@ -79,8 +81,8 @@ export const DashboardSidebar = ({
       {/* Footer */}
       {!collapsed && (
         <div className="border-t border-sidebar-border p-4">
-          <p className="text-[10px] text-sidebar-foreground/40">Fonte: Conto Annuale 2023</p>
-          <p className="text-[10px] text-sidebar-foreground/40">Serie storica 2016–2023</p>
+          <p className="text-[10px] text-sidebar-foreground/40">Fonte: Conto Annuale {annoLabel}</p>
+          <p className="text-[10px] text-sidebar-foreground/40">Serie storica 2016–{annoLabel}</p>
         </div>
       )}
 

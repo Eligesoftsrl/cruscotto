@@ -1,3 +1,4 @@
+import { useLatestYear } from "@/hooks/useLatestYear";
 /**
  * Passi del wizard "Rapporto Narrativo" + costanti condivise.
  * Estratti da RapportoNarrativo.tsx per ridurne la dimensione (refactor strutturale,
@@ -603,6 +604,7 @@ export function StepPreview({
   orgLabel: string;
   reportTitle: string;
 }) {
+  const annoLabel = useLatestYear();
   return (
     <div>
       <TagStep>Passo 4 di 4</TagStep>
@@ -624,7 +626,7 @@ export function StepPreview({
               {audienceProfile.icon} {audienceProfile.label}
             </span>
             <span>Ente: {orgLabel}</span>
-            <span>Anno 2023</span>
+            <span>Anno {annoLabel}</span>
             <span>{selectedSections.length} sezioni</span>
           </div>
         </div>

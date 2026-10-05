@@ -28,7 +28,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { resetOnboardingTour } from "./OnboardingTour";
 import { GlossaryDialog } from "./GlossaryDialog";
 import { useAdminState } from "@/services/admin/adminStore";
-import { CA_INDICATOR_FLAG } from "@/config/schedeFlags";
+import { CA_INDICATOR_FLAG, SIPRO_INDICATOR_FLAG } from "@/config/schedeFlags";
 
 /* ── NavState ── */
 export interface NavState {
@@ -284,11 +284,13 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
   // Feature flag disattivati -> nasconde le relative schede reali del Conto Annuale.
   const disabledFlags = new Set(flags.filter((f) => !f.enabled).map((f) => f.key));
   const visibleSources = operationalSources.map((src) => {
-    if (src.id !== "conto-annuale") return src;
+    const flagMap =
+      src.id === "conto-annuale" ? CA_INDICATOR_FLAG : src.id === "sipro" ? SIPRO_INDICATOR_FLAG : null;
+    if (!flagMap) return src;
     return {
       ...src,
       indicators: src.indicators.filter((ind) => {
-        const key = CA_INDICATOR_FLAG[ind.id];
+        const key = flagMap[ind.id];
         return !key || !disabledFlags.has(key);
       }),
     };
