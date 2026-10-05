@@ -1,4 +1,3 @@
-import { SiproIndicatorSection } from "@/components/dashboard/sections/SiproIndicatorSection";
 import { BenchmarkView } from "@/components/dashboard/sipro/BenchmarkView";
 // Sezione "Organizzazione" — nuove viste su RPC reali sipro_* (service + hook + component)
 import { OrganigrammaUoView } from "@/components/dashboard/sipro/OrganigrammaUoView";
@@ -30,8 +29,6 @@ const AreeContrattualiView = () => <MinervaCatalogoView tipo="area" titolo="Elen
 // Riuso: S22 (semplificazione) e S20 (lavoro agile) condividono layout con S17 e S19
 const SemplificazioneProcessiView = () => <CriticitaProcessiView title="Semplificazione dei processi" />;
 const LavoroAgileView = () => <DigitalizzazioneFasiView title="Lavoro agile nelle fasi dei processi" />;
-
-const siproIndicatorIds: string[] = [];
 
 const chartMap: Record<string, React.FC> = {
   "sipro-organigramma": OrganigrammaUoView,
@@ -71,14 +68,6 @@ export const SiproContentRouter = ({ indicator }: { indicator: string }) => {
     return (
       <div className="p-4 flex-1 space-y-4">
         <ChartComponent />
-      </div>
-    );
-  }
-
-  if (siproIndicatorIds.includes(indicator)) {
-    return (
-      <div className="p-4 flex-1">
-        <SiproIndicatorSection indicatorId={indicator} />
       </div>
     );
   }

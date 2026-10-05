@@ -63,10 +63,10 @@ const Pill = ({
 };
 
 export const FilterPills = ({ lockGenere = false }: { lockGenere?: boolean } = {}) => {
-  const { filters, setFilter, resetFilters, activeCount } = useFilters();
+  const { filters, setFilter, resetFilters, activeCount, latestYear } = useFilters();
   const { profile } = useAuth();
   const isEnteHr = profile?.role === "ente_hr";
-  const anno = Number(filters.anno) || 2023;
+  const anno = Number(filters.anno) || Number(latestYear) || 2023;
 
   const anniQ = useQuery({ queryKey: ["mvf", "anni"], queryFn: fetchAnni });
   const compartiQ = useQuery({ queryKey: ["mvf", "comparti", anno], queryFn: () => fetchComparti(anno) });
@@ -91,10 +91,10 @@ export const FilterPills = ({ lockGenere = false }: { lockGenere?: boolean } = {
   return (
     <div className="bg-card border-b px-5 py-2 flex items-center gap-2 flex-wrap">
       {/* Anno */}
-      <Pill label="Anno" value={filters.anno} display={filters.anno} active={filters.anno !== "2023"}
-        options={(anniQ.data ?? [2023]).map((y) => ({ value: String(y), label: String(y) }))}
+      <Pill label="Anno" value={filters.anno} display={filters.anno || "—"} active={!!latestYear && filters.anno !== latestYear}
+        options={(anniQ.data ?? (latestYear ? [Number(latestYear)] : [])).map((y) => ({ value: String(y), label: String(y) }))}
         onChange={(v) => { setFilter("anno", v); setFilter("comparto", ALL_COMP); setFilter("macrocategoria", ALL_F); setFilter("categoria", ALL_F); }}
-        onClear={() => setFilter("anno", "2023")} />
+        onClear={() => setFilter("anno", latestYear)} />
 
       {/* Genere (ombreggiato e bloccato nelle schede in cui non è utilizzato,
           mantenendo il valore eventualmente selezionato altrove) */}
@@ -144,7 +144,7 @@ export const FilterPills = ({ lockGenere = false }: { lockGenere?: boolean } = {
       )}
 
       <div className="ml-auto flex items-center gap-2">
-        <span className="text-[10.5px] text-muted-foreground/60">Dati al 31/12/{filters.anno}</span>
+        <span className="text-[10.5px] text-muted-foreground/60">Dati al 31/12/{filters.anno || latestYear}</span>
         <button className="px-3 py-[5px] bg-primary text-primary-foreground rounded text-[11px] font-semibold flex items-center gap-1.5 hover:opacity-90 transition-opacity">
           <Download className="h-3 w-3" /> Esporta
         </button>
