@@ -6,14 +6,19 @@ import { StatoOrganizzazioneView } from "@/components/dashboard/sipro/StatoOrgan
 import { ProvvedimentiView } from "@/components/dashboard/sipro/ProvvedimentiView";
 import { DotazioneUoView } from "@/components/dashboard/sipro/DotazioneUoView";
 import { CriticitaUoView } from "@/components/dashboard/sipro/CriticitaUoView";
-import { ProcessiDistribuzioneChart } from "@/components/dashboard/charts/ProcessiDistribuzioneChart";
-import { ProcessiDettaglioTable } from "@/components/dashboard/charts/ProcessiDettaglioTable";
-import { TempiPicchiChart } from "@/components/dashboard/charts/TempiPicchiChart";
-import { CoinvolgimentoUoChart } from "@/components/dashboard/charts/CoinvolgimentoUoChart";
-import { DigitalizzazioneFasiChart } from "@/components/dashboard/charts/DigitalizzazioneFasiChart";
-import { CriticitaProcessiChart } from "@/components/dashboard/charts/CriticitaProcessiChart";
+// Sezione "Processi" (S15-S23) — nuove viste su RPC reali sipro_*
+import { MappaturaProcessiView } from "@/components/dashboard/sipro/MappaturaProcessiView";
+import { FasiProcessiView } from "@/components/dashboard/sipro/FasiProcessiView";
+import { CriticitaProcessiView } from "@/components/dashboard/sipro/CriticitaProcessiView";
+import { DigitalizzazioneFasiView } from "@/components/dashboard/sipro/DigitalizzazioneFasiView";
+import { OutsourcingFasiView } from "@/components/dashboard/sipro/OutsourcingFasiView";
+import { TempiPicchiView } from "@/components/dashboard/sipro/TempiPicchiView";
 import { ProfiliRuoloCatalogoChart } from "@/components/dashboard/charts/ProfiliRuoloCatalogoChart";
 import { ProfiliRuoloProcessoChart } from "@/components/dashboard/charts/ProfiliRuoloProcessoChart";
+
+// Riuso: S22 (semplificazione) e S20 (lavoro agile) condividono layout con S17 e S19
+const SemplificazioneProcessiView = () => <CriticitaProcessiView title="Semplificazione dei processi" />;
+const LavoroAgileView = () => <DigitalizzazioneFasiView title="Lavoro agile nelle fasi dei processi" />;
 
 const siproIndicatorIds = [
   "sipro-fte",
@@ -32,14 +37,14 @@ const chartMap: Record<string, React.FC> = {
   "sipro-provvedimenti": ProvvedimentiView,
   "sipro-dotazione-uo": DotazioneUoView,
   "sipro-criticita-uo": CriticitaUoView,
-  "sipro-mappatura-processi": ProcessiDistribuzioneChart,
-  "sipro-fasi-processi": ProcessiDettaglioTable,
-  "sipro-tempi-picchi": TempiPicchiChart,
-  "sipro-criticita-processi": CriticitaProcessiChart,
-  "sipro-digitalizzazione": DigitalizzazioneFasiChart,
-  "sipro-lavoro-agile": DigitalizzazioneFasiChart,
-  "sipro-outsourcing": CoinvolgimentoUoChart,
-  "sipro-semplificazione": CriticitaProcessiChart,
+  "sipro-mappatura-processi": MappaturaProcessiView,
+  "sipro-fasi-processi": FasiProcessiView,
+  "sipro-tempi-picchi": TempiPicchiView,
+  "sipro-criticita-processi": CriticitaProcessiView,
+  "sipro-digitalizzazione": DigitalizzazioneFasiView,
+  "sipro-lavoro-agile": LavoroAgileView,
+  "sipro-outsourcing": OutsourcingFasiView,
+  "sipro-semplificazione": SemplificazioneProcessiView,
   "sipro-catalogo-profili": ProfiliRuoloCatalogoChart,
   "sipro-profili-processo": ProfiliRuoloProcessoChart,
 };
