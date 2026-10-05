@@ -39,7 +39,7 @@ export const StatoOrganizzazioneView = () => {
             <KpiBox label="Formalizzate" value={head?.formalizzate ?? 0} />
             <KpiBox label="In inserimento" value={head?.in_inserimento ?? 0} />
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="space-y-6">
             <div className="bg-card border rounded-xl p-5">
               <p className="text-xs font-semibold text-muted-foreground mb-3">Distribuzione per stato</p>
               <ResponsiveContainer width="100%" height={260}>

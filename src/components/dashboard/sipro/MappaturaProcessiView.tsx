@@ -26,7 +26,7 @@ export const MappaturaProcessiView = () => {
       {error ? <ErrorBox error={error} /> : loading ? <LoadingSpinner /> : (
         <div className="bg-card border rounded-xl p-5 space-y-2">
           <h3 className="text-[15px] font-bold text-foreground">Mappatura dei processi per funzione e tipologia</h3>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+          <div className="space-y-6 pt-2">
             <div>
               <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Processi per funzione</p>
               <ResponsiveContainer width="100%" height={280}>
@@ -45,7 +45,7 @@ export const MappaturaProcessiView = () => {
                 <BarChart data={byTipologia} layout="vertical" margin={{ top: 5, right: 40, left: 10, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border))" />
                   <XAxis type="number" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" allowDecimals={false} />
-                  <YAxis type="category" dataKey="name" tick={{ fontSize: 9 }} stroke="hsl(var(--muted-foreground))" width={200} />
+                  <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" width={340} />
                   <Tooltip contentStyle={TOOLTIP_STYLE} />
                   <Bar dataKey="value" name="N° processi" radius={[0, 4, 4, 0]} maxBarSize={26}>
                     {byTipologia.map((_, i) => <Cell key={i} fill={BAR_COLOR} />)}

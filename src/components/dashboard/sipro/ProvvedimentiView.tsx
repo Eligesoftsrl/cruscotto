@@ -43,7 +43,7 @@ export const ProvvedimentiView = () => {
             <KpiBox label="Provvedimenti totali" value={head?.provvedimenti_totali ?? 0} />
             <KpiBox label="Enti coinvolti" value={head?.enti_coinvolti ?? 0} />
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="space-y-6">
             <div className="bg-card border rounded-xl p-5">
               <p className="text-xs font-semibold text-muted-foreground mb-3">Provvedimenti per mese di adozione</p>
               <ResponsiveContainer width="100%" height={280}>

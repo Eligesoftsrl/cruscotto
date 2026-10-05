@@ -35,7 +35,7 @@ export const CriticitaUoView = () => {
           <h3 className="text-[15px] font-bold text-foreground">
             Elenco delle criticità segnalate e frequenza per Macro-criticità
           </h3>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+          <div className="space-y-6 pt-2">
             <div>
               <div className="overflow-auto rounded-md border">
                 <table className="w-full text-[12px]">
@@ -72,7 +72,7 @@ export const CriticitaUoView = () => {
                   <BarChart data={macro} layout="vertical" margin={{ top: 5, right: 40, left: 10, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border))" />
                     <XAxis type="number" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" allowDecimals={false} />
-                    <YAxis type="category" dataKey="name" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" width={160} />
+                    <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" width={320} />
                     <Tooltip contentStyle={TOOLTIP_STYLE} />
                     <Bar dataKey="value" name="Occorrenze" radius={[0, 4, 4, 0]} maxBarSize={30}>
                       {macro.map((_, i) => <Cell key={i} fill={BAR_COLOR} />)}

@@ -136,31 +136,55 @@ const contoAnnualeIndicators = [
   { id: "analisi-genere", label: "Analisi per genere" },
 ];
 
-const siproIndicators = [
-  { id: "sipro-benchmark-dfp", label: "🏛️ Benchmark DFP (Multi-Ente)" },
-  { id: "sipro-organigramma", label: "Organigramma UO" },
-  { id: "sipro-stato-org", label: "Stato Organizzazione" },
-  { id: "sipro-provvedimenti", label: "Provvedimenti Organizzativi" },
-  { id: "sipro-fte", label: "FTE Programmati vs Assegnati" },
-  { id: "sipro-copertura", label: "Copertura Profili di Ruolo" },
-  { id: "sipro-dotazione-uo", label: "Dotazione Risorse UO" },
-  { id: "sipro-catalogo-profili", label: "Catalogo Profili di Ruolo" },
-  { id: "sipro-fabbisogno", label: "Fabbisogno per Profilo" },
-  { id: "sipro-famiglie", label: "Famiglie Professionali" },
-  { id: "sipro-profili-minerva", label: "Profili Professionali Minerva" },
-  { id: "sipro-ambiti-ruolo", label: "Ambiti e Profili di Ruolo" },
-  { id: "sipro-aree-contrattuali", label: "Aree Contrattuali" },
-  { id: "sipro-evoluzione-profili", label: "Evoluzione Profili" },
-  { id: "sipro-mappatura-processi", label: "Mappatura Processi" },
-  { id: "sipro-fasi-processi", label: "Fasi dei Processi" },
-  { id: "sipro-criticita-processi", label: "Criticità Processi" },
-  { id: "sipro-criticita-uo", label: "Criticità UO" },
-  { id: "sipro-digitalizzazione", label: "Digitalizzazione Fasi" },
-  { id: "sipro-lavoro-agile", label: "Lavoro Agile Processi" },
-  { id: "sipro-outsourcing", label: "Outsourcing Fasi" },
-  { id: "sipro-semplificazione", label: "Semplificazione Processi" },
-  { id: "sipro-tempi-picchi", label: "Tempi e Picchi" },
+// Schede SIPRO raggruppate per tipologia (come i file di mappatura Excel),
+// ordinate alfabeticamente all'interno di ciascun gruppo. Gli id restano invariati.
+const siproGroups: { label: string; items: { id: string; label: string }[] }[] = [
+  {
+    label: "Benchmark",
+    items: [
+      { id: "sipro-benchmark-dfp", label: "Benchmark DFP (Multi-Ente)" },
+    ],
+  },
+  {
+    label: "Organizzazione",
+    items: [
+      { id: "sipro-criticita-uo", label: "Criticità UO" },
+      { id: "sipro-dotazione-uo", label: "Dotazione Risorse UO" },
+      { id: "sipro-organigramma", label: "Organigramma UO" },
+      { id: "sipro-provvedimenti", label: "Provvedimenti Organizzativi" },
+      { id: "sipro-stato-org", label: "Stato Organizzazione" },
+    ],
+  },
+  {
+    label: "Processi",
+    items: [
+      { id: "sipro-criticita-processi", label: "Criticità Processi" },
+      { id: "sipro-digitalizzazione", label: "Digitalizzazione Fasi" },
+      { id: "sipro-fasi-processi", label: "Fasi dei Processi" },
+      { id: "sipro-lavoro-agile", label: "Lavoro Agile Processi" },
+      { id: "sipro-mappatura-processi", label: "Mappatura Processi" },
+      { id: "sipro-outsourcing", label: "Outsourcing Fasi" },
+      { id: "sipro-semplificazione", label: "Semplificazione Processi" },
+      { id: "sipro-tempi-picchi", label: "Tempi e Picchi" },
+    ],
+  },
+  {
+    label: "Profili e Cataloghi",
+    items: [
+      { id: "sipro-ambiti-ruolo", label: "Ambiti e Profili di Ruolo" },
+      { id: "sipro-aree-contrattuali", label: "Aree Contrattuali" },
+      { id: "sipro-catalogo-profili", label: "Catalogo Profili di Ruolo" },
+      { id: "sipro-copertura", label: "Copertura Profili di Ruolo" },
+      { id: "sipro-evoluzione-profili", label: "Evoluzione Profili" },
+      { id: "sipro-fabbisogno", label: "Fabbisogno per Profilo" },
+      { id: "sipro-famiglie", label: "Famiglie Professionali" },
+      { id: "sipro-fte", label: "FTE Programmati vs Assegnati" },
+      { id: "sipro-profili-minerva", label: "Profili Professionali Minerva" },
+    ],
+  },
 ];
+// Lista piatta (necessaria per source.indicators, default e filtro feature-flag)
+const siproIndicators = siproGroups.flatMap((g) => g.items);
 
 const operationalSourcesAll = [
   {
@@ -483,43 +507,64 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
                 {!hasInd && <span className="ml-auto text-[9px] opacity-40 italic">soon</span>}
               </button>
 
-              {hasInd && isExp && (
-                <div
-                  className="ml-8 border-l"
-                  style={{ borderColor: "hsl(var(--sidebar-border))" }}
-                >
-                  {src.indicators.map((ind) => {
-                    const isActive =
-                      nav.level === "operational" &&
-                      nav.source === src.id &&
-                      nav.indicator === ind.id;
-                    return (
-                      <button
-                        key={ind.id}
-                        onClick={() =>
-                          onNavigate({ level: "operational", source: src.id, indicator: ind.id })
-                        }
-                        className="flex items-center gap-2 w-full pl-4 pr-3 py-[6px] text-[11px] transition-all hover:bg-white/[0.04]"
+              {hasInd && isExp && (() => {
+                const renderItem = (ind: { id: string; label: string }) => {
+                  const isActive =
+                    nav.level === "operational" &&
+                    nav.source === src.id &&
+                    nav.indicator === ind.id;
+                  return (
+                    <button
+                      key={ind.id}
+                      onClick={() =>
+                        onNavigate({ level: "operational", source: src.id, indicator: ind.id })
+                      }
+                      className="flex items-center gap-2 w-full pl-4 pr-3 py-[6px] text-[11px] transition-all hover:bg-white/[0.04]"
+                      style={{
+                        color: isActive ? "#fff" : "hsl(210 15% 55%)",
+                        background: isActive ? "hsl(var(--primary) / 0.15)" : undefined,
+                        borderLeft: isActive
+                          ? "2px solid hsl(var(--primary))"
+                          : "2px solid transparent",
+                      }}
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
                         style={{
-                          color: isActive ? "#fff" : "hsl(210 15% 55%)",
-                          background: isActive ? "hsl(var(--primary) / 0.15)" : undefined,
-                          borderLeft: isActive
-                            ? "2px solid hsl(var(--primary))"
-                            : "2px solid transparent",
+                          background: isActive ? "hsl(var(--primary))" : "hsl(210 20% 35%)",
                         }}
-                      >
-                        <span
-                          className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                          style={{
-                            background: isActive ? "hsl(var(--primary))" : "hsl(210 20% 35%)",
-                          }}
-                        />
-                        <span className={isActive ? "font-semibold" : ""}>{ind.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
+                      />
+                      <span className={isActive ? "font-semibold" : ""}>{ind.label}</span>
+                    </button>
+                  );
+                };
+                return (
+                  <div
+                    className="ml-8 border-l"
+                    style={{ borderColor: "hsl(var(--sidebar-border))" }}
+                  >
+                    {src.id === "sipro"
+                      ? siproGroups.map((group) => {
+                          const items = group.items.filter((gi) =>
+                            src.indicators.some((si) => si.id === gi.id),
+                          );
+                          if (items.length === 0) return null;
+                          return (
+                            <div key={group.label}>
+                              <div
+                                className="pl-4 pr-3 pt-2.5 pb-1 text-[9px] font-semibold uppercase tracking-wider"
+                                style={{ color: "hsl(210 20% 45%)" }}
+                              >
+                                {group.label}
+                              </div>
+                              {items.map(renderItem)}
+                            </div>
+                          );
+                        })
+                      : src.indicators.map(renderItem)}
+                  </div>
+                );
+              })()}
             </div>
           );
         })}
