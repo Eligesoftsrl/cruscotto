@@ -2,7 +2,7 @@ import { useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useDigitalizzazioneFasi, useFasiRiepilogo } from "@/hooks/useSchedaSiproProcessi";
-import { LoadingSpinner, ErrorBox, Pager, PIE_COLORS, TOOLTIP_STYLE } from "./_shared";
+import { LoadingSpinner, ErrorBox, Pager, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
 
 const PER_PAGE = 20;
 
@@ -13,7 +13,7 @@ const Semicircle = ({ title, data }: { title: string; data: { name: string; valu
       <p className="text-xs font-semibold text-muted-foreground text-center mb-2">{title}</p>
       <ResponsiveContainer width="100%" height={220}>
         <PieChart>
-          <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="72%" innerRadius={45} outerRadius={85} startAngle={180} endAngle={0} paddingAngle={2} label={({ value }) => `${value}`} labelLine={false}>
+          <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="72%" innerRadius={45} outerRadius={85} startAngle={180} endAngle={0} paddingAngle={2} label={pieValueLabel} labelLine={false}>
             {data.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
           </Pie>
           <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(v: number) => [`${v} (${tot ? ((v / tot) * 100).toFixed(0) : 0}%)`, ""]} />

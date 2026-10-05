@@ -5,7 +5,7 @@ import {
 } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useProcessiDistribuzione } from "@/hooks/useSchedaSiproProcessi";
-import { LoadingSpinner, ErrorBox, BAR_COLOR, PIE_COLORS, TOOLTIP_STYLE } from "./_shared";
+import { LoadingSpinner, ErrorBox, BAR_COLOR, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
 
 /** S15 - Mappatura Processi: semicerchio per funzione + barre per tipologia. */
 export const MappaturaProcessiView = () => {
@@ -31,7 +31,7 @@ export const MappaturaProcessiView = () => {
               <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Processi per funzione</p>
               <ResponsiveContainer width="100%" height={280}>
                 <PieChart>
-                  <Pie data={byFunzione} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={55} outerRadius={100} paddingAngle={2} label={({ value }) => `${value}`} labelLine={false}>
+                  <Pie data={byFunzione} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={55} outerRadius={100} paddingAngle={2} label={pieValueLabel} labelLine={false}>
                     {byFunzione.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
                   </Pie>
                   <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(v: number) => [`${v} (${totFunz ? ((v / totFunz) * 100).toFixed(0) : 0}%)`, ""]} />

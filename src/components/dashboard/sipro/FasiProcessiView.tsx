@@ -2,7 +2,7 @@ import { useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useProcessi, useProcessiDistribuzione } from "@/hooks/useSchedaSiproProcessi";
-import { LoadingSpinner, ErrorBox, Pager, PIE_COLORS, TOOLTIP_STYLE } from "./_shared";
+import { LoadingSpinner, ErrorBox, Pager, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
 
 const PER_PAGE = 20;
 
@@ -63,7 +63,7 @@ export const FasiProcessiView = () => {
             <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Obiettivi strategici</p>
             <ResponsiveContainer width="100%" height={260}>
               <PieChart>
-                <Pie data={byObiettivo} dataKey="value" nameKey="name" cx="50%" cy="62%" innerRadius={55} outerRadius={105} startAngle={180} endAngle={0} paddingAngle={2} label={({ value }) => `${value}`} labelLine={false}>
+                <Pie data={byObiettivo} dataKey="value" nameKey="name" cx="50%" cy="62%" innerRadius={55} outerRadius={105} startAngle={180} endAngle={0} paddingAngle={2} label={pieValueLabel} labelLine={false}>
                   {byObiettivo.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
                 </Pie>
                 <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(v: number) => [`${v} (${totObj ? ((v / totObj) * 100).toFixed(0) : 0}%)`, ""]} />

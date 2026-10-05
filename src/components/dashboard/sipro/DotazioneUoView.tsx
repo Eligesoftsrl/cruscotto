@@ -39,7 +39,7 @@ export const DotazioneUoView = () => {
           <h3 className="text-[15px] font-bold text-foreground">
             Dotazione Organica e personale in servizio per ogni Unità Organizzativa (valore FTE)
           </h3>
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 2xl:grid-cols-2 gap-6">
             <div className="overflow-auto">
               <table className="w-full text-[12px] border-collapse">
                 <thead>

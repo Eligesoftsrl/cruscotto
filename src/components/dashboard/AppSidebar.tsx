@@ -277,6 +277,7 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
   const navigate = useNavigate();
   const [expandedPillar, setExpandedPillar] = useState<string | null>(null);
   const [expandedSource, setExpandedSource] = useState<string | null>(null);
+  const [openSiproGroups, setOpenSiproGroups] = useState<Record<string, boolean>>({});
 
   const isExec = nav.level === "executive";
 
@@ -549,15 +550,30 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
                             src.indicators.some((si) => si.id === gi.id),
                           );
                           if (items.length === 0) return null;
+                          const groupOpen =
+                            openSiproGroups[group.label] ??
+                            items.some((i) => i.id === nav.indicator);
                           return (
                             <div key={group.label}>
-                              <div
-                                className="pl-4 pr-3 pt-2.5 pb-1 text-[9px] font-semibold uppercase tracking-wider"
+                              <button
+                                onClick={() =>
+                                  setOpenSiproGroups((prev) => ({
+                                    ...prev,
+                                    [group.label]: !groupOpen,
+                                  }))
+                                }
+                                className="flex items-center gap-1.5 w-full pl-3 pr-3 pt-2.5 pb-1 text-[9px] font-semibold uppercase tracking-wider transition-colors hover:text-foreground"
                                 style={{ color: "hsl(210 20% 45%)" }}
                               >
-                                {group.label}
-                              </div>
-                              {items.map(renderItem)}
+                                {groupOpen ? (
+                                  <ChevronDown className="h-3 w-3 flex-shrink-0" />
+                                ) : (
+                                  <ChevronRight className="h-3 w-3 flex-shrink-0" />
+                                )}
+                                <span>{group.label}</span>
+                                <span className="ml-auto opacity-60">{items.length}</span>
+                              </button>
+                              {groupOpen && items.map(renderItem)}
                             </div>
                           );
                         })

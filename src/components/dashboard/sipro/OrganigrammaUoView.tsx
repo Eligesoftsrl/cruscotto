@@ -5,7 +5,7 @@ import {
 } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useUoDistribuzione } from "@/hooks/useSchedaSiproOrganizzazione";
-import { LoadingSpinner, ErrorBox, BAR_COLOR, PIE_COLORS, TOOLTIP_STYLE } from "./_shared";
+import { LoadingSpinner, ErrorBox, BAR_COLOR, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
 
 /** 02 - Organigramma UO: barre per livello gerarchico + donut per responsabilita. */
 export const OrganigrammaUoView = () => {
@@ -52,7 +52,7 @@ export const OrganigrammaUoView = () => {
               <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Per livello di responsabilità</p>
               <ResponsiveContainer width="100%" height={280}>
                 <PieChart>
-                  <Pie data={byResp} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={50} outerRadius={100} paddingAngle={2} label={({ value }) => `${value}`} labelLine={false}>
+                  <Pie data={byResp} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={50} outerRadius={100} paddingAngle={2} label={pieValueLabel} labelLine={false}>
                     {byResp.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
                   </Pie>
                   <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(v: number) => [`${v} (${totalResp ? ((v / totalResp) * 100).toFixed(0) : 0}%)`, ""]} />

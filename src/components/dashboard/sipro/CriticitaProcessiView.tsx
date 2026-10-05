@@ -29,7 +29,7 @@ export const CriticitaProcessiView = ({ title = "Criticità e semplificazione de
       {lista.error ? <ErrorBox error={lista.error} /> : lista.isLoading ? <LoadingSpinner /> : (
         <div className="bg-card border rounded-xl p-5 space-y-2">
           <h3 className="text-[15px] font-bold text-foreground">{title}</h3>
-          <div className="space-y-6 pt-2">
+          <div className="grid grid-cols-1 2xl:grid-cols-2 gap-6 pt-2">
             <div>
               <div className="overflow-auto rounded-md border">
                 <table className="w-full text-[12px]">

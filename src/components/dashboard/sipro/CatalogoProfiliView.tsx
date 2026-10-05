@@ -5,7 +5,7 @@ import {
 } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useCatalogoRiepilogo, useCatalogoDistribuzione, useCatalogoProfili } from "@/hooks/useSchedaSiproProfili";
-import { LoadingSpinner, ErrorBox, KpiBox, Pager, BAR_COLOR, PIE_COLORS, TOOLTIP_STYLE } from "./_shared";
+import { LoadingSpinner, ErrorBox, KpiBox, Pager, BAR_COLOR, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
 
 const PER_PAGE = 20;
 const fmt = (n: number | null | undefined) =>
@@ -47,7 +47,7 @@ export const CatalogoProfiliView = () => {
               <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Profili per origine</p>
               <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
-                  <Pie data={byOrigine} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={55} outerRadius={100} paddingAngle={2} label={({ value }) => `${value}`} labelLine={false}>
+                  <Pie data={byOrigine} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={55} outerRadius={100} paddingAngle={2} label={pieValueLabel} labelLine={false}>
                     {byOrigine.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
                   </Pie>
                   <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(v: number) => [`${v} (${totOrig ? ((v / totOrig) * 100).toFixed(0) : 0}%)`, ""]} />

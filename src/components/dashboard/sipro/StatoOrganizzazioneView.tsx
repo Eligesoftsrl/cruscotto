@@ -4,7 +4,7 @@ import {
 } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useOrganizzazioniStati, useOrganizzazioni } from "@/hooks/useSchedaSiproOrganizzazione";
-import { LoadingSpinner, ErrorBox, KpiBox, Pager, PIE_COLORS, TOOLTIP_STYLE } from "./_shared";
+import { LoadingSpinner, ErrorBox, KpiBox, Pager, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
 
 const PER_PAGE = 20;
 
@@ -39,12 +39,12 @@ export const StatoOrganizzazioneView = () => {
             <KpiBox label="Formalizzate" value={head?.formalizzate ?? 0} />
             <KpiBox label="In inserimento" value={head?.in_inserimento ?? 0} />
           </div>
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 2xl:grid-cols-2 gap-6">
             <div className="bg-card border rounded-xl p-5">
               <p className="text-xs font-semibold text-muted-foreground mb-3">Distribuzione per stato</p>
               <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
-                  <Pie data={byStato} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={50} outerRadius={95} paddingAngle={2} label={({ value }) => `${value}`} labelLine={false}>
+                  <Pie data={byStato} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={50} outerRadius={95} paddingAngle={2} label={pieValueLabel} labelLine={false}>
                     {byStato.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
                   </Pie>
                   <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(v: number) => [`${v} (${totale ? ((v / totale) * 100).toFixed(0) : 0}%)`, ""]} />

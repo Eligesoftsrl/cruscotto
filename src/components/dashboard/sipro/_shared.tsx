@@ -13,6 +13,31 @@ export const TOOLTIP_STYLE = {
   fontSize: 12,
 } as const;
 
+// Etichetta valore per torte/ciambelle: numero posizionato ALL'ESTERNO dell'arco
+// con colore ad alto contrasto (leggibile su qualsiasi colore di fetta).
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const pieValueLabel = (props: any) => {
+  const { cx, cy, midAngle, outerRadius, value } = props;
+  if (value == null || value === 0) return null;
+  const RAD = Math.PI / 180;
+  const r = outerRadius + 16;
+  const x = cx + r * Math.cos(-midAngle * RAD);
+  const y = cy + r * Math.sin(-midAngle * RAD);
+  return (
+    <text
+      x={x}
+      y={y}
+      fill="hsl(var(--foreground))"
+      fontSize={11}
+      fontWeight={700}
+      textAnchor={x > cx ? "start" : "end"}
+      dominantBaseline="central"
+    >
+      {value}
+    </text>
+  );
+};
+
 export const LoadingSpinner = () => (
   <div className="flex items-center justify-center h-64">
     <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
