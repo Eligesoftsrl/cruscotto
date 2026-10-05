@@ -218,3 +218,16 @@ export const SCHEDE_SECTIONS: SezioneDef[] = [
     schede: [],
   },
 ];
+
+/**
+ * Mappa ID indicatore (usato nella URL `?indicator=...` della Vista Tecnica)
+ * -> etichetta della scheda. Serve al tracker di utilizzo per registrare gli
+ * eventi con la STESSA label mostrata in «Schede più consultate», così da
+ * correlare correttamente consultazioni ↔ scheda.
+ */
+export const SCHEDA_LABEL_BY_INDICATOR: Record<string, string> = SCHEDE_SECTIONS.flatMap(
+  (sec) => sec.schede,
+).reduce<Record<string, string>>((acc, s) => {
+  acc[s.indicatorId] = s.label;
+  return acc;
+}, {});
