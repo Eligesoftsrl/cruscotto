@@ -1,8 +1,11 @@
 import { SiproIndicatorSection } from "@/components/dashboard/sections/SiproIndicatorSection";
 import { SiproBenchmarkView } from "@/components/dashboard/sections/SiproBenchmarkView";
-import { UoDistributionChart } from "@/components/dashboard/charts/UoDistributionChart";
-import { FteDotazioneChart } from "@/components/dashboard/charts/FteDotazioneChart";
-import { CriticitaUoChart } from "@/components/dashboard/charts/CriticitaUoChart";
+// Sezione "Organizzazione" — nuove viste su RPC reali sipro_* (service + hook + component)
+import { OrganigrammaUoView } from "@/components/dashboard/sipro/OrganigrammaUoView";
+import { StatoOrganizzazioneView } from "@/components/dashboard/sipro/StatoOrganizzazioneView";
+import { ProvvedimentiView } from "@/components/dashboard/sipro/ProvvedimentiView";
+import { DotazioneUoView } from "@/components/dashboard/sipro/DotazioneUoView";
+import { CriticitaUoView } from "@/components/dashboard/sipro/CriticitaUoView";
 import { ProcessiDistribuzioneChart } from "@/components/dashboard/charts/ProcessiDistribuzioneChart";
 import { ProcessiDettaglioTable } from "@/components/dashboard/charts/ProcessiDettaglioTable";
 import { TempiPicchiChart } from "@/components/dashboard/charts/TempiPicchiChart";
@@ -13,8 +16,6 @@ import { ProfiliRuoloCatalogoChart } from "@/components/dashboard/charts/Profili
 import { ProfiliRuoloProcessoChart } from "@/components/dashboard/charts/ProfiliRuoloProcessoChart";
 
 const siproIndicatorIds = [
-  "sipro-stato-org",
-  "sipro-provvedimenti",
   "sipro-fte",
   "sipro-copertura",
   "sipro-fabbisogno",
@@ -26,9 +27,11 @@ const siproIndicatorIds = [
 ];
 
 const chartMap: Record<string, React.FC> = {
-  "sipro-organigramma": UoDistributionChart,
-  "sipro-dotazione-uo": FteDotazioneChart,
-  "sipro-criticita-uo": CriticitaUoChart,
+  "sipro-organigramma": OrganigrammaUoView,
+  "sipro-stato-org": StatoOrganizzazioneView,
+  "sipro-provvedimenti": ProvvedimentiView,
+  "sipro-dotazione-uo": DotazioneUoView,
+  "sipro-criticita-uo": CriticitaUoView,
   "sipro-mappatura-processi": ProcessiDistribuzioneChart,
   "sipro-fasi-processi": ProcessiDettaglioTable,
   "sipro-tempi-picchi": TempiPicchiChart,
