@@ -193,7 +193,6 @@ export const SCHEDE_SECTIONS: SezioneDef[] = [
       { indicatorId: "sipro-fte", flagKey: "sipro_fte", label: "FTE Programmati vs Assegnati", description: "Confronto FTE programmati/assegnati", icon: Briefcase },
       { indicatorId: "sipro-copertura", flagKey: "sipro_copertura", label: "Copertura Profili di Ruolo", description: "Classi di copertura", icon: UserCheck },
       { indicatorId: "sipro-catalogo-profili", flagKey: "sipro_catalogo_profili", label: "Catalogo Profili di Ruolo", description: "Catalogo profili", icon: BookOpen },
-      { indicatorId: "sipro-fabbisogno", flagKey: "sipro_fabbisogno", label: "Fabbisogno per Profilo", description: "Fabbisogno (dati non ancora caricati)", icon: UserPlus },
       { indicatorId: "sipro-famiglie", flagKey: "sipro_famiglie", label: "Famiglie Professionali", description: "Catalogo famiglie (Minerva)", icon: Users },
       { indicatorId: "sipro-profili-minerva", flagKey: "sipro_profili_minerva", label: "Profili Professionali Minerva", description: "Catalogo profili (Minerva)", icon: FileText },
       { indicatorId: "sipro-ambiti-ruolo", flagKey: "sipro_ambiti_ruolo", label: "Ambiti e Profili di Ruolo", description: "Catalogo ambiti (Minerva)", icon: FolderOpen },

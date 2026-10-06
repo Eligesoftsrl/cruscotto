@@ -18,7 +18,6 @@ import { CoperturaView } from "@/components/dashboard/sipro/CoperturaView";
 import { CatalogoProfiliView } from "@/components/dashboard/sipro/CatalogoProfiliView";
 import { EvoluzioneProfiliView } from "@/components/dashboard/sipro/EvoluzioneProfiliView";
 import { MinervaCatalogoView } from "@/components/dashboard/sipro/MinervaCatalogoView";
-import { FabbisognoView } from "@/components/dashboard/sipro/FabbisognoView";
 
 // Cataloghi Minerva (globali, senza filtro ente/regione)
 const FamiglieView = () => <MinervaCatalogoView tipo="famiglia" titolo="Elenco famiglie professionali" kpiLabel="Famiglie professionali" colonnaLabel="Famiglia professionale" />;
@@ -47,7 +46,6 @@ const chartMap: Record<string, React.FC> = {
   "sipro-fte": FteView,
   "sipro-copertura": CoperturaView,
   "sipro-catalogo-profili": CatalogoProfiliView,
-  "sipro-fabbisogno": FabbisognoView,
   "sipro-famiglie": FamiglieView,
   "sipro-profili-minerva": ProfiliMinervaView,
   "sipro-ambiti-ruolo": AmbitiRuoloView,

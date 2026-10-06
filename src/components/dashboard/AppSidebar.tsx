@@ -176,7 +176,6 @@ const siproGroups: { label: string; items: { id: string; label: string }[] }[] =
       { id: "sipro-catalogo-profili", label: "Catalogo Profili di Ruolo" },
       { id: "sipro-copertura", label: "Copertura Profili di Ruolo" },
       { id: "sipro-evoluzione-profili", label: "Evoluzione Profili" },
-      { id: "sipro-fabbisogno", label: "Fabbisogno per Profilo" },
       { id: "sipro-famiglie", label: "Famiglie Professionali" },
       { id: "sipro-fte", label: "FTE Programmati vs Assegnati" },
       { id: "sipro-profili-minerva", label: "Profili Professionali Minerva" },

@@ -144,7 +144,6 @@ export const DEFAULT_FEATURE_FLAGS: FeatureFlag[] = [
   { key: "sipro_fte", label: "FTE Programmati vs Assegnati", description: "SIPrO — Profili e Cataloghi", category: "Schede SIPrO — Profili e Cataloghi", enabled: true, updatedAt: "" },
   { key: "sipro_copertura", label: "Copertura Profili di Ruolo", description: "SIPrO — Profili e Cataloghi", category: "Schede SIPrO — Profili e Cataloghi", enabled: true, updatedAt: "" },
   { key: "sipro_catalogo_profili", label: "Catalogo Profili di Ruolo", description: "SIPrO — Profili e Cataloghi", category: "Schede SIPrO — Profili e Cataloghi", enabled: true, updatedAt: "" },
-  { key: "sipro_fabbisogno", label: "Fabbisogno per Profilo", description: "SIPrO — Profili e Cataloghi", category: "Schede SIPrO — Profili e Cataloghi", enabled: true, updatedAt: "" },
   { key: "sipro_famiglie", label: "Famiglie Professionali", description: "SIPrO — Profili e Cataloghi", category: "Schede SIPrO — Profili e Cataloghi", enabled: true, updatedAt: "" },
   { key: "sipro_profili_minerva", label: "Profili Professionali Minerva", description: "SIPrO — Profili e Cataloghi", category: "Schede SIPrO — Profili e Cataloghi", enabled: true, updatedAt: "" },
   { key: "sipro_ambiti_ruolo", label: "Ambiti e Profili di Ruolo", description: "SIPrO — Profili e Cataloghi", category: "Schede SIPrO — Profili e Cataloghi", enabled: true, updatedAt: "" },

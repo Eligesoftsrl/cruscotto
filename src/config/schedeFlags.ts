@@ -40,7 +40,6 @@ export const SIPRO_INDICATOR_FLAG: Record<string, string> = {
   "sipro-fte": "sipro_fte",
   "sipro-copertura": "sipro_copertura",
   "sipro-catalogo-profili": "sipro_catalogo_profili",
-  "sipro-fabbisogno": "sipro_fabbisogno",
   "sipro-famiglie": "sipro_famiglie",
   "sipro-profili-minerva": "sipro_profili_minerva",
   "sipro-ambiti-ruolo": "sipro_ambiti_ruolo",
