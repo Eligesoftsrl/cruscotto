@@ -2,7 +2,10 @@ import { useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useProcessi, useProcessiDistribuzione } from "@/hooks/useSchedaSiproProcessi";
+import { fetchProcessi } from "@/services/sipro/processiService";
+import { useRegisterExport } from "@/lib/exportRegistry";
 import { LoadingSpinner, ErrorBox, Pager, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
+import { RankedBarChart } from "@/components/dashboard/_shared/charts";
 
 const PER_PAGE = 20;
 
@@ -19,6 +22,18 @@ export const FasiProcessiView = () => {
   const totalPages = Math.max(1, Math.ceil(totalRighe / PER_PAGE));
   const byObiettivo = (obiettivo.data ?? []).map((r) => ({ name: r.voce, value: r.numero }));
   const totObj = byObiettivo.reduce((s, d) => s + d.value, 0);
+
+  useRegisterExport(
+    async () => {
+      const all = await fetchProcessi(scope, 100000, 0);
+      return [{
+        title: "Fasi dei Processi",
+        headers: ["Processo", "Funzione", "Tipologia", "Obiettivo", "Rilevanza", "Semplificazione", "N° criticità"],
+        rows: all.map((r) => [r.processo, r.funzione, r.tipologia, r.obiettivo, r.rilevanza, r.semplificazione, r.numero_criticita]),
+      }];
+    },
+    [scope.codiceFiscale, scope.regione],
+  );
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
 
@@ -61,15 +76,7 @@ export const FasiProcessiView = () => {
           </div>
           <div className="bg-card border rounded-xl p-5">
             <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Obiettivi strategici</p>
-            <ResponsiveContainer width="100%" height={260}>
-              <PieChart>
-                <Pie data={byObiettivo} dataKey="value" nameKey="name" cx="50%" cy="62%" innerRadius={55} outerRadius={105} startAngle={180} endAngle={0} paddingAngle={2} label={pieValueLabel} labelLine={false}>
-                  {byObiettivo.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
-                </Pie>
-                <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(v: number) => [`${v} (${totObj ? ((v / totObj) * 100).toFixed(0) : 0}%)`, ""]} />
-                <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
-              </PieChart>
-            </ResponsiveContainer>
+            <RankedBarChart data={byObiettivo} multicolor />
           </div>
         </div>
       )}

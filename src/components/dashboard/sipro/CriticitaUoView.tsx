@@ -4,6 +4,8 @@ import {
 } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useCriticita, useCriticitaDistribuzione } from "@/hooks/useSchedaSiproOrganizzazione";
+import { fetchCriticita } from "@/services/sipro/organizzazioneService";
+import { useRegisterExport } from "@/lib/exportRegistry";
 import { LoadingSpinner, ErrorBox, Pager, BAR_COLOR, TOOLTIP_STYLE } from "./_shared";
 
 const PER_PAGE = 20;
@@ -20,6 +22,18 @@ export const CriticitaUoView = () => {
   const totalRighe = rows[0]?.totale_righe ?? 0;
   const totalPages = Math.max(1, Math.ceil(totalRighe / PER_PAGE));
   const macro = (distrib.data ?? []).map((r) => ({ name: r.categoria, value: r.occorrenze }));
+
+  useRegisterExport(
+    async () => {
+      const all = await fetchCriticita(scope, 100000, 0);
+      return [{
+        title: "Criticità UO",
+        headers: ["Unità Organizzativa", "Criticità", "Macro Criticità"],
+        rows: all.map((r) => [r.oggetto, r.criticita, r.categoria]),
+      }];
+    },
+    [scope.codiceFiscale, scope.regione],
+  );
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
 

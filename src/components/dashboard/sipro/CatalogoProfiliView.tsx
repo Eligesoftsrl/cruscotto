@@ -5,7 +5,10 @@ import {
 } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useCatalogoRiepilogo, useCatalogoDistribuzione, useCatalogoProfili } from "@/hooks/useSchedaSiproProfili";
+import { fetchCatalogoProfili } from "@/services/sipro/profiliService";
+import { useRegisterExport } from "@/lib/exportRegistry";
 import { LoadingSpinner, ErrorBox, KpiBox, Pager, BAR_COLOR, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
+import { StackedCompositionBar } from "@/components/dashboard/_shared/charts";
 
 const PER_PAGE = 20;
 const fmt = (n: number | null | undefined) =>
@@ -31,6 +34,21 @@ export const CatalogoProfiliView = () => {
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
 
+  useRegisterExport(
+    async () => {
+      const all = await fetchCatalogoProfili(scope, 100000, 0);
+      return [{
+        title: "Catalogo Profili di Ruolo",
+        headers: ["Profilo", "Famiglia", "Ambito", "Area", "Origine", "FTE programmati", "FTE assegnati"],
+        rows: all.map((row) => [
+          row.profilo, row.famiglia ?? "—", row.ambito ?? "—", row.area_contrattuale ?? "—",
+          row.origine ?? "—", row.fte_programmati ?? "—", row.fte_assegnati ?? "—",
+        ]),
+      }];
+    },
+    [scope.codiceFiscale, scope.regione],
+  );
+
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={resetAndSet} />
@@ -45,15 +63,7 @@ export const CatalogoProfiliView = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-card border rounded-xl p-5">
               <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Profili per origine</p>
-              <ResponsiveContainer width="100%" height={260}>
-                <PieChart>
-                  <Pie data={byOrigine} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={55} outerRadius={100} paddingAngle={2} label={pieValueLabel} labelLine={false}>
-                    {byOrigine.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
-                  </Pie>
-                  <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(v: number) => [`${v} (${totOrig ? ((v / totOrig) * 100).toFixed(0) : 0}%)`, ""]} />
-                  <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
-                </PieChart>
-              </ResponsiveContainer>
+              <StackedCompositionBar data={byOrigine} />
             </div>
             <div className="bg-card border rounded-xl p-5">
               <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Profili per famiglia professionale</p>

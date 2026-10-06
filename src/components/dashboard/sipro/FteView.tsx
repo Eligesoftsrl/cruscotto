@@ -4,6 +4,8 @@ import {
 } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useFteRiepilogo, useFteProfili, useFte } from "@/hooks/useSchedaSiproProfili";
+import { fetchFte } from "@/services/sipro/profiliService";
+import { useRegisterExport } from "@/lib/exportRegistry";
 import { LoadingSpinner, ErrorBox, KpiBox, Pager, TOOLTIP_STYLE } from "./_shared";
 
 const PER_PAGE = 20;
@@ -31,6 +33,18 @@ export const FteView = () => {
   const totalPages = Math.max(1, Math.ceil(totalRighe / PER_PAGE));
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
+
+  useRegisterExport(
+    async () => {
+      const all = await fetchFte(scope, 100000, 0);
+      return [{
+        title: "FTE Programmati vs Assegnati",
+        headers: ["Ente", "Profilo", "FTE programmati", "FTE assegnati"],
+        rows: all.map((row) => [row.ente, row.profilo, row.fte_programmati ?? "—", row.fte_assegnati ?? "—"]),
+      }];
+    },
+    [scope.codiceFiscale, scope.regione],
+  );
 
   return (
     <div className="space-y-4">

@@ -4,6 +4,8 @@ import {
 } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useCoinvolgimentoUo } from "@/hooks/useSchedaSiproProcessi";
+import { fetchCoinvolgimentoUo } from "@/services/sipro/processiService";
+import { useRegisterExport } from "@/lib/exportRegistry";
 import { LoadingSpinner, ErrorBox, Pager, TOOLTIP_STYLE } from "./_shared";
 
 const PER_PAGE = 20;
@@ -33,6 +35,18 @@ export const OutsourcingFasiView = () => {
   }));
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
+
+  useRegisterExport(
+    async () => {
+      const all = await fetchCoinvolgimentoUo(scope, 100000, 0);
+      return [{
+        title: "Outsourcing Fasi",
+        headers: ["Processo", "N° UO", "Coinvolge altre amm."],
+        rows: all.map((r) => [r.processo, r.numero_uo, coinvolge(r.altre_amministrazioni) ? "Sì" : "No"]),
+      }];
+    },
+    [scope.codiceFiscale, scope.regione],
+  );
 
   return (
     <div className="space-y-4">

@@ -55,6 +55,7 @@ import { useAdminState } from "@/services/admin/adminStore";
 import { CA_INDICATOR_FLAG } from "@/config/schedeFlags";
 import { SCHEDA_LABEL_BY_INDICATOR } from "@/config/schedeCatalog";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
+import { useExportProvider } from "@/lib/exportRegistry";
 
 interface OperationalContentProps {
   source: string;
@@ -72,6 +73,7 @@ export const OperationalContent = ({
   const { flags } = useAdminState();
   const caExportRef = useRef<HTMLDivElement>(null);
   const siproExportRef = useRef<HTMLDivElement>(null);
+  const siproExportProvider = useExportProvider();
   const isFlagOff = (key?: string) =>
     key ? !(flags.find((f) => f.key === key)?.enabled ?? true) : false;
 
@@ -104,6 +106,7 @@ export const OperationalContent = ({
           <div className="flex justify-end px-4 pt-4">
             <TableExport
               targetRef={siproExportRef}
+              fetchTables={siproExportProvider ?? undefined}
               filename={`sipro_${indicator}`}
               title={siproLabel}
               variant="default"

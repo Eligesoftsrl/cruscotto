@@ -4,6 +4,8 @@ import {
 } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useSemplificazioneProcessi, useCriticitaDistribuzioneProcesso } from "@/hooks/useSchedaSiproProcessi";
+import { fetchSemplificazioneProcessi } from "@/services/sipro/processiService";
+import { useRegisterExport } from "@/lib/exportRegistry";
 import { LoadingSpinner, ErrorBox, Pager, BAR_COLOR, TOOLTIP_STYLE } from "./_shared";
 
 const PER_PAGE = 20;
@@ -20,6 +22,18 @@ export const CriticitaProcessiView = ({ title = "Criticità e semplificazione de
   const totalRighe = rows[0]?.totale_righe ?? 0;
   const totalPages = Math.max(1, Math.ceil(totalRighe / PER_PAGE));
   const macro = (distrib.data ?? []).map((r) => ({ name: r.categoria, value: r.occorrenze }));
+
+  useRegisterExport(
+    async () => {
+      const all = await fetchSemplificazioneProcessi(scope, 100000, 0);
+      return [{
+        title,
+        headers: ["Processo", "N° fasi", "N° criticità", "Semplificato"],
+        rows: all.map((r) => [r.processo, r.numero_fasi, r.numero_criticita, r.semplificazione || "—"]),
+      }];
+    },
+    [scope.codiceFiscale, scope.regione, title],
+  );
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
 

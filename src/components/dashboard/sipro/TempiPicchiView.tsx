@@ -5,6 +5,8 @@ import {
 } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useTempiPicchi, usePicchiDistribuzione } from "@/hooks/useSchedaSiproProcessi";
+import { fetchTempiPicchi } from "@/services/sipro/processiService";
+import { useRegisterExport } from "@/lib/exportRegistry";
 import { LoadingSpinner, ErrorBox, Pager, BAR_COLOR, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
 
 const PER_PAGE = 20;
@@ -53,6 +55,18 @@ export const TempiPicchiView = () => {
   const totPres = presidioData.reduce((s, d) => s + d.value, 0);
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
+
+  useRegisterExport(
+    async () => {
+      const all = await fetchTempiPicchi(scope, 100000, 0);
+      return [{
+        title: "Tempi e Picchi",
+        headers: ["Processo", "Tempo previsto", "Tempo effettivo"],
+        rows: all.map((r) => [r.processo, r.previsto ?? "—", r.effettivo ?? "—"]),
+      }];
+    },
+    [scope.codiceFiscale, scope.regione],
+  );
 
   return (
     <div className="space-y-4">

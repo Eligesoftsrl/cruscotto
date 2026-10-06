@@ -4,6 +4,8 @@ import {
 } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useDotazioneUo, useDotazioneUoRiepilogo } from "@/hooks/useSchedaSiproOrganizzazione";
+import { fetchDotazioneUo } from "@/services/sipro/organizzazioneService";
+import { useRegisterExport } from "@/lib/exportRegistry";
 import { LoadingSpinner, ErrorBox, Pager, TOOLTIP_STYLE } from "./_shared";
 
 const PER_PAGE = 20;
@@ -24,6 +26,18 @@ export const DotazioneUoView = () => {
   const rie = riepilogo.data;
 
   const chartData = rows.map((r) => ({ uo: r.uo, dotazione: r.dotazione, servizio: r.servizio_ti }));
+
+  useRegisterExport(
+    async () => {
+      const all = await fetchDotazioneUo(scope, 100000, 0);
+      return [{
+        title: "Dotazione Risorse UO",
+        headers: ["Unità Organizzativa", "FTE dotazione", "FTE servizio", "GAP"],
+        rows: all.map((r) => [r.uo, r.dotazione, r.servizio_ti, r.gap_ti]),
+      }];
+    },
+    [scope.codiceFiscale, scope.regione],
+  );
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
 

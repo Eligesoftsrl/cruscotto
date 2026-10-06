@@ -22,6 +22,11 @@ interface TableExportProps {
   data?: ExportTable[];
   /** Modalità DOM: riferimento al contenitore da cui estrarre le <table>. */
   targetRef?: React.RefObject<HTMLElement>;
+  /**
+   * Provider asincrono "full-data": se presente, ha priorità sull'estrazione
+   * DOM/targetRef (usato per le tabelle paginate lato server).
+   */
+  fetchTables?: () => Promise<ExportTable[]>;
   /** Variante grafica del pulsante. */
   variant?: "compact" | "default";
   className?: string;
@@ -49,13 +54,14 @@ export function TableExport({
   title,
   data,
   targetRef,
+  fetchTables,
   variant = "compact",
   className = "",
 }: TableExportProps) {
   const [busy, setBusy] = useState<ExportFormat | null>(null);
   const anchorRef = useRef<HTMLSpanElement>(null);
 
-  const resolveTables = (): ExportTable[] => {
+  const resolveTablesFromDom = (): ExportTable[] => {
     if (data && data.length) return data;
     if (targetRef?.current) return extractTablesIn(targetRef.current, title ?? filename);
     // AUTO: cerca il contenitore-tabella più vicino risalendo gli antenati.
@@ -68,10 +74,11 @@ export function TableExport({
   };
 
   const handle = async (format: ExportFormat) => {
-    const tables = resolveTables();
-    if (!tables.length) return;
     try {
       setBusy(format);
+      // Priorità al provider full-data; fallback all'estrazione dal DOM.
+      const tables = fetchTables ? await fetchTables() : resolveTablesFromDom();
+      if (!tables.length) return;
       await exportTables(format, tables, filename, title);
     } catch (err) {
       console.error("[TableExport] esportazione fallita", err);
