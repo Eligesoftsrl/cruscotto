@@ -1,5 +1,7 @@
-import { useState, useMemo, useCallback } from "react";
-import { ChevronLeft, ChevronRight, Download } from "lucide-react";
+import { useState, useMemo } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
+import type { ExportTable } from "@/lib/tableExport";
 
 interface Column<T> {
   key: string;
@@ -41,24 +43,16 @@ export function PaginatedTable<T extends Record<string, any>>({
   const alignClass = (a?: string) =>
     a === "right" ? "text-right" : a === "center" ? "text-center" : "text-left";
 
-  const handleExport = useCallback(() => {
-    const bom = "\uFEFF";
-    const headers = columns.map((c) => c.header);
-    const rows = data.map((row) => columns.map((c) => String(row[c.key] ?? "")));
-    const csv =
-      bom +
-      [
-        headers.join(";"),
-        ...rows.map((r) => r.map((cell) => `"${cell.replace(/"/g, '""')}"`).join(";")),
-      ].join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${exportFilename}_${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-  }, [data, columns, exportFilename]);
+  const exportData = useMemo<ExportTable[]>(
+    () => [
+      {
+        title: caption || exportFilename,
+        headers: columns.map((c) => c.header),
+        rows: data.map((row) => columns.map((c) => String(row[c.key] ?? ""))),
+      },
+    ],
+    [data, columns, caption, exportFilename],
+  );
 
   return (
     <div className="space-y-2">
@@ -99,14 +93,7 @@ export function PaginatedTable<T extends Record<string, any>>({
         </span>
         <div className="flex items-center gap-2">
           {exportable && data.length > 0 && (
-            <button
-              onClick={handleExport}
-              className="inline-flex items-center gap-1 px-2 py-1 text-[10px] font-medium rounded border border-border hover:bg-muted transition-colors"
-              title="Esporta CSV"
-            >
-              <Download className="h-3 w-3" />
-              CSV
-            </button>
+            <TableExport data={exportData} filename={exportFilename} title={caption || exportFilename} />
           )}
           {totalPages > 1 && (
             <div className="flex items-center gap-1">
