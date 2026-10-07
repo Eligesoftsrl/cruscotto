@@ -7,7 +7,7 @@ import { useFteRiepilogo, useFteCopertura } from "@/hooks/useSchedaSiproProfili"
 import { LoadingSpinner, ErrorBox, KpiBox } from "./_shared";
 
 const fmt = (n: number | null | undefined) =>
-  typeof n === "number" ? n.toLocaleString("it-IT", { maximumFractionDigits: 2 }) : "—";
+  (typeof n === "number" && Number.isFinite(n) ? n : 0).toLocaleString("it-IT", { maximumFractionDigits: 2 });
 
 const CLASSE_COLORS: Record<string, string> = {
   "Ottimale": "hsl(152, 55%, 42%)",

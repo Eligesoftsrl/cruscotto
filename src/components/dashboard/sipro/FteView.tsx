@@ -12,7 +12,7 @@ const PER_PAGE = 20;
 const COLOR_PROGR = "hsl(210, 64%, 45%)";
 const COLOR_ASSEG = "hsl(175, 55%, 42%)";
 const fmt = (n: number | null | undefined) =>
-  typeof n === "number" ? n.toLocaleString("it-IT", { maximumFractionDigits: 2 }) : "—";
+  (typeof n === "number" && Number.isFinite(n) ? n : 0).toLocaleString("it-IT", { maximumFractionDigits: 2 });
 
 /** S05 - FTE Programmati vs Assegnati: KPI + barre per profilo + tabella per ente/profilo. */
 export const FteView = () => {
@@ -40,7 +40,7 @@ export const FteView = () => {
       return [{
         title: "FTE Programmati vs Assegnati",
         headers: ["Ente", "Profilo", "FTE programmati", "FTE assegnati"],
-        rows: all.map((row) => [row.ente, row.profilo, row.fte_programmati ?? "—", row.fte_assegnati ?? "—"]),
+        rows: all.map((row) => [row.ente, row.profilo, row.fte_programmati ?? 0, row.fte_assegnati ?? 0]),
       }];
     },
     [scope.codiceFiscale, scope.regione],

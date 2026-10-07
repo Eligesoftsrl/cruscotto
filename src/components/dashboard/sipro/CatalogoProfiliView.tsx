@@ -12,7 +12,7 @@ import { StackedCompositionBar } from "@/components/dashboard/_shared/charts";
 
 const PER_PAGE = 20;
 const fmt = (n: number | null | undefined) =>
-  typeof n === "number" ? n.toLocaleString("it-IT", { maximumFractionDigits: 2 }) : "—";
+  (typeof n === "number" && Number.isFinite(n) ? n : 0).toLocaleString("it-IT", { maximumFractionDigits: 2 });
 
 /** S08 - Catalogo Profili di Ruolo: KPI + donut origine + barre famiglia + tabella profili. */
 export const CatalogoProfiliView = () => {
@@ -42,7 +42,7 @@ export const CatalogoProfiliView = () => {
         headers: ["Profilo", "Famiglia", "Ambito", "Area", "Origine", "FTE programmati", "FTE assegnati"],
         rows: all.map((row) => [
           row.profilo, row.famiglia ?? "—", row.ambito ?? "—", row.area_contrattuale ?? "—",
-          row.origine ?? "—", row.fte_programmati ?? "—", row.fte_assegnati ?? "—",
+          row.origine ?? "—", row.fte_programmati ?? 0, row.fte_assegnati ?? 0,
         ]),
       }];
     },

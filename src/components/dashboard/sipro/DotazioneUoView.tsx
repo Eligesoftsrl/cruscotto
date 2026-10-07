@@ -12,9 +12,9 @@ const PER_PAGE = 20;
 const COLOR_DOTAZIONE = "hsl(175, 55%, 42%)";
 const COLOR_SERVIZIO = "hsl(35, 75%, 42%)";
 
-// Formattatori null-safe: alcuni valori (dotazione/servizio/gap) possono essere NULL.
+// Formattatore null-safe: i valori NULL dal DB sono trattati come 0.
 const fx = (n: number | null | undefined, d = 1) =>
-  typeof n === "number" && Number.isFinite(n) ? n.toFixed(d) : "—";
+  (typeof n === "number" && Number.isFinite(n) ? n : 0).toFixed(d);
 
 /** 07 - Dotazione Risorse UO: tabella UO + riga totale (riepilogo) + grafico dotazione vs servizio. */
 export const DotazioneUoView = () => {
@@ -37,7 +37,7 @@ export const DotazioneUoView = () => {
       return [{
         title: "Dotazione Risorse UO",
         headers: ["Unità Organizzativa", "FTE dotazione", "FTE servizio", "GAP"],
-        rows: all.map((r) => [r.uo, r.dotazione, r.servizio_ti, r.gap_ti]),
+        rows: all.map((r) => [r.uo, r.dotazione ?? 0, r.servizio_ti ?? 0, r.gap_ti ?? 0]),
       }];
     },
     [scope.codiceFiscale, scope.regione],
