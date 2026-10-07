@@ -1,3 +1,4 @@
+import { RankedBarChart } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
@@ -27,15 +28,7 @@ export const EvoluzioneProfiliView = () => {
           <div className="bg-card border rounded-xl p-5">
             <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Distribuzione profili di ruolo per origine</p>
             {origine.isLoading ? <LoadingSpinner /> : (
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={65} outerRadius={115} paddingAngle={2} label={pieValueLabel} labelLine={false}>
-                    {data.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
-                  </Pie>
-                  <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(v: number) => [`${v} (${tot ? ((v / tot) * 100).toFixed(0) : 0}%)`, ""]} />
-                  <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
-                </PieChart>
-              </ResponsiveContainer>
+              <RankedBarChart data={data} multicolor />
             )}
           </div>
         </div>

@@ -1,3 +1,4 @@
+import { RankedBarChart } from "@/components/dashboard/_shared/charts";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -147,23 +148,7 @@ export const AssuntiCausaleContent = () => {
 
         <div className="rounded-lg border bg-card p-5">
           <h4 className="mb-3 text-sm font-semibold text-foreground">Composizione per causale</h4>
-          <ResponsiveContainer width="100%" height={360}>
-            <PieChart>
-              <Pie data={causaliRows} dataKey="tutti" nameKey="descrizione"
-                cx="50%" cy="45%" innerRadius={60} outerRadius={100} paddingAngle={1}
-                label={(e: { percentuale?: number }) => (e.percentuale != null ? `${n1(e.percentuale)}%` : "")}
-                labelLine={false}>
-                {causaliRows.map((_, i) => (
-                  <Cell key={i} fill={CAUSALE_COLORS[i % CAUSALE_COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip formatter={(v: number, _n, item) => [
-                `${nf.format(Number(v))} (${n1((item?.payload as { percentuale?: number })?.percentuale)}%)`,
-                (item?.payload as { descrizione?: string })?.descrizione ?? "",
-              ]} />
-              <Legend wrapperStyle={{ fontSize: 10 }} formatter={(v) => (v.length > 34 ? `${v.slice(0, 34)}\u2026` : v)} />
-            </PieChart>
-          </ResponsiveContainer>
+          <RankedBarChart data={causaliRows.map((r) => ({ name: r.descrizione, value: r.tutti }))} multicolor />
         </div>
       </div>
 

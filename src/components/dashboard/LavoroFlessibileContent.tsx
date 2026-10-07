@@ -1,3 +1,4 @@
+import { StackedCompositionBar } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchEnti } from "@/services/ca/filtriService";
@@ -135,16 +136,7 @@ export const LavoroFlessibileContent = () => {
         {/* Donut genere */}
         <div className="rounded-lg border bg-card p-5">
           <h4 className="mb-3 text-sm font-semibold text-foreground">Distribuzione per genere</h4>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie data={donutData} dataKey="value" nameKey="name" innerRadius={55} outerRadius={90} paddingAngle={2}>
-                <Cell fill={DONNE} />
-                <Cell fill={UOMINI} />
-              </Pie>
-              <Tooltip formatter={(v: number, name) => [`${n1(Number(v))}%`, name]} />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          <StackedCompositionBar data={donutData} />
         </div>
       </div>
     </div>

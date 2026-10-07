@@ -1,3 +1,4 @@
+import { StackedCompositionBar } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
 import {
   PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer,
@@ -42,15 +43,7 @@ export const StatoOrganizzazioneView = () => {
           <div className="grid grid-cols-1 2xl:grid-cols-2 gap-6">
             <div className="bg-card border rounded-xl p-5">
               <p className="text-xs font-semibold text-muted-foreground mb-3">Distribuzione per stato</p>
-              <ResponsiveContainer width="100%" height={260}>
-                <PieChart>
-                  <Pie data={byStato} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={50} outerRadius={95} paddingAngle={2} label={pieValueLabel} labelLine={false}>
-                    {byStato.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
-                  </Pie>
-                  <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(v: number) => [`${v} (${totale ? ((v / totale) * 100).toFixed(0) : 0}%)`, ""]} />
-                  <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
-                </PieChart>
-              </ResponsiveContainer>
+              <StackedCompositionBar data={byStato} />
             </div>
             <div className="bg-card border rounded-xl p-5">
               <p className="text-xs font-semibold text-muted-foreground mb-3">Dettaglio enti</p>

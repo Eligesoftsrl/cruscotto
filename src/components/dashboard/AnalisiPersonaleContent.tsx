@@ -1,3 +1,4 @@
+import { RankedBarChart } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchEnti } from "@/services/ca/filtriService";
@@ -128,15 +129,7 @@ export const AnalisiPersonaleContent = () => {
         {/* Distribuzione per titolo di studio */}
         <div className="rounded-lg border bg-card p-5">
           <h4 className="mb-3 text-sm font-semibold text-foreground">Distribuzione per titolo di studio</h4>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie data={titRows} dataKey="valore" nameKey="titolo_studio" innerRadius={55} outerRadius={95} paddingAngle={2}>
-                {titRows.map((_, i) => <Cell key={i} fill={PALETTE[i % PALETTE.length]} />)}
-              </Pie>
-              <Tooltip formatter={(v: number, name) => [nf.format(Number(v)), name]} />
-              <Legend wrapperStyle={{ fontSize: 10 }} />
-            </PieChart>
-          </ResponsiveContainer>
+          <RankedBarChart data={titRows.map((r) => ({ name: r.titolo_studio, value: r.valore }))} multicolor />
         </div>
       </div>
 

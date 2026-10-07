@@ -1,3 +1,4 @@
+import { RankedBarChart } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList,
@@ -50,15 +51,7 @@ export const OrganigrammaUoView = () => {
             </div>
             <div>
               <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Per livello di responsabilità</p>
-              <ResponsiveContainer width="100%" height={280}>
-                <PieChart>
-                  <Pie data={byResp} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={50} outerRadius={100} paddingAngle={2} label={pieValueLabel} labelLine={false}>
-                    {byResp.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
-                  </Pie>
-                  <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(v: number) => [`${v} (${totalResp ? ((v / totalResp) * 100).toFixed(0) : 0}%)`, ""]} />
-                  <Legend verticalAlign="bottom" iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
-                </PieChart>
-              </ResponsiveContainer>
+              <RankedBarChart data={byResp} multicolor />
             </div>
           </div>
         </div>
