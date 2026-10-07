@@ -1,3 +1,4 @@
+import { useIstituzione } from "@/hooks/useIstituzione";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -69,8 +70,7 @@ export const AnalisiEtaContent = () => {
   const enteScope = useEnteScope();
   const [serieGenere, setSerieGenere] = useState<Genere>("T");
   const [benchDim, setBenchDim] = useState<BenchDimensione>("comparto");
-  const [enteTerm, setEnteTerm] = useState("");
-  const [ente, setEnte] = useState<{ codice: string; descrizione: string } | null>(null);
+  const { enteTerm, setEnteTerm, ente, setEnte } = useIstituzione();
 
   const anno = Number(filters.anno) || 2023;
   const entiQ = useQuery({
@@ -110,7 +110,7 @@ export const AnalisiEtaContent = () => {
           {ente ? <>Amministrazione: <span className="text-primary">{ente.descrizione}</span></> : enteScope.label ? <>Amministrazione: <span className="text-primary">{enteScope.label}</span></> : "Totale PA"} · Conto Annuale RGS · Anno {filtri.anno}
         </p>
         {enteScope.control}
-        <div className="relative w-[320px] max-w-full" style={{ display: isDfp ? undefined : "none" }}>
+        <div className="relative w-[320px] max-w-full" style={{ display: "none" }}>
           <input
             value={ente ? ente.descrizione : enteTerm}
             onChange={(e) => { setEnte(null); setEnteTerm(e.target.value); }}

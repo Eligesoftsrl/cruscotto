@@ -1,3 +1,4 @@
+import { useIstituzione } from "@/hooks/useIstituzione";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchEnti } from "@/services/ca/filtriService";
@@ -28,8 +29,7 @@ export const ProgressioniContent = () => {
   const { profile } = useAuth();
   const isDfp = profile?.role === "dfp";
   const enteScope = useEnteScope();
-  const [enteTerm, setEnteTerm] = useState("");
-  const [ente, setEnte] = useState<{ codice: string; descrizione: string } | null>(null);
+  const { enteTerm, setEnteTerm, ente, setEnte } = useIstituzione();
 
   const anno = Number(filters.anno) || 2023;
   const entiQ = useQuery({
@@ -67,7 +67,7 @@ export const ProgressioniContent = () => {
           {ente ? <>Amministrazione: <span className="text-primary">{ente.descrizione}</span></> : enteScope.label ? <>Amministrazione: <span className="text-primary">{enteScope.label}</span></> : "Totale PA"} · Conto Annuale RGS · Anno {filtri.anno}
         </p>
         {enteScope.control}
-        <div className="relative w-[320px] max-w-full" style={{ display: isDfp ? undefined : "none" }}>
+        <div className="relative w-[320px] max-w-full" style={{ display: "none" }}>
           <input value={ente ? ente.descrizione : enteTerm}
             onChange={(e) => { setEnte(null); setEnteTerm(e.target.value); }}
             placeholder="Cerca un ente (es. Roma Capitale)…"

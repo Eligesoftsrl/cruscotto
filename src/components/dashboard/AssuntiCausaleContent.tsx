@@ -1,3 +1,4 @@
+import { useIstituzione } from "@/hooks/useIstituzione";
 import { RankedBarChart } from "@/components/dashboard/_shared/charts";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { useState } from "react";
@@ -50,8 +51,7 @@ export const AssuntiCausaleContent = () => {
   const { profile } = useAuth();
   const isDfp = profile?.role === "dfp";
   const enteScope = useEnteScope();
-  const [enteTerm, setEnteTerm] = useState("");
-  const [ente, setEnte] = useState<{ codice: string; descrizione: string } | null>(null);
+  const { enteTerm, setEnteTerm, ente, setEnte } = useIstituzione();
 
   const anno = Number(filters.anno) || 2023;
   const entiQ = useQuery({
@@ -93,7 +93,7 @@ export const AssuntiCausaleContent = () => {
           {ente ? <>Amministrazione: <span className="text-primary">{ente.descrizione}</span></> : enteScope.label ? <>Amministrazione: <span className="text-primary">{enteScope.label}</span></> : "Totale PA"} · Conto Annuale RGS · Anno {filtri.anno}
         </p>
         {enteScope.control}
-        <div className="relative w-[320px] max-w-full" style={{ display: isDfp ? undefined : "none" }}>
+        <div className="relative w-[320px] max-w-full" style={{ display: "none" }}>
           <input
             value={ente ? ente.descrizione : enteTerm}
             onChange={(e) => { setEnte(null); setEnteTerm(e.target.value); }}

@@ -4,8 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useFilters } from "@/contexts/FilterContext";
 import { useAuth } from "@/contexts/AuthContext";
 import {
-  fetchAnni, fetchComparti, fetchRegioni, fetchMacrocategorie, fetchCategorie,
+  fetchAnni, fetchComparti, fetchRegioni, fetchMacrocategorie, fetchCategorie, searchEnti,
 } from "@/services/ca/filtriService";
+import { useIstituzione } from "@/hooks/useIstituzione";
 
 interface Opt { value: string; label: string }
 
@@ -66,7 +67,15 @@ export const FilterPills = ({ lockGenere = false }: { lockGenere?: boolean } = {
   const { filters, setFilter, resetFilters, activeCount, latestYear } = useFilters();
   const { profile } = useAuth();
   const isEnteHr = profile?.role === "ente_hr";
+  const isDfp = profile?.role === "dfp";
+  const { ente, enteTerm, setEnte, setEnteTerm } = useIstituzione();
   const anno = Number(filters.anno) || Number(latestYear) || 2023;
+
+  const entiQ = useQuery({
+    queryKey: ["enti-search", anno, enteTerm],
+    queryFn: () => searchEnti(anno, enteTerm),
+    enabled: isDfp && enteTerm.trim().length >= 2,
+  });
 
   const anniQ = useQuery({ queryKey: ["mvf", "anni"], queryFn: fetchAnni });
   const compartiQ = useQuery({ queryKey: ["mvf", "comparti", anno], queryFn: () => fetchComparti(anno) });
@@ -144,7 +153,38 @@ export const FilterPills = ({ lockGenere = false }: { lockGenere?: boolean } = {
       )}
 
       <div className="ml-auto flex items-center gap-2">
-        <span className="text-[10.5px] text-muted-foreground/60">Dati al 31/12/{filters.anno || latestYear}</span>
+        {isDfp && (
+          <div className="relative w-[300px] max-w-[46vw]">
+            <input
+              value={ente ? ente.descrizione : enteTerm}
+              onChange={(e) => { setEnte(null); setEnteTerm(e.target.value); }}
+              placeholder="Cerca un ente (es. Roma Capitale)…"
+              aria-label="Cerca ente per denominazione o codice fiscale"
+              className="w-full rounded-md border border-input bg-background px-3 py-1.5 text-[12px] outline-none focus:ring-1 focus:ring-ring"
+            />
+            {ente && (
+              <button
+                onClick={() => { setEnte(null); setEnteTerm(""); }}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-muted-foreground hover:text-destructive"
+                aria-label="Azzera ente"
+              >✕</button>
+            )}
+            {!ente && (entiQ.data?.length ?? 0) > 0 && (
+              <div className="absolute z-50 mt-1 w-full max-h-[260px] overflow-y-auto rounded-lg border bg-card shadow-lg">
+                {entiQ.data!.map((o) => (
+                  <button
+                    key={o.codice}
+                    onClick={() => { setEnte({ codice: o.codice, descrizione: o.descrizione }); setEnteTerm(""); }}
+                    className="block w-full text-left px-3 py-1.5 text-[11px] text-foreground hover:bg-muted"
+                  >
+                    {o.descrizione} <span className="text-muted-foreground">({o.codice})</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+        <span className="text-[10.5px] text-muted-foreground/60 whitespace-nowrap">Dati al 31/12/{filters.anno || latestYear}</span>
       </div>
     </div>
   );
