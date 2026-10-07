@@ -1,3 +1,4 @@
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchEnti } from "@/services/ca/filtriService";
@@ -136,7 +137,10 @@ export const TassoTurnoverContent = () => {
 
       {/* Tabella serie storica */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Serie storica turnover</h4>
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <h4 className="text-sm font-semibold text-foreground">Serie storica turnover</h4>
+          <TableExport filename="turnover_serie_storica" title="Serie storica turnover" />
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>

@@ -3,7 +3,7 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recha
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useProcessi, useProcessiDistribuzione } from "@/hooks/useSchedaSiproProcessi";
 import { fetchProcessi } from "@/services/sipro/processiService";
-import { useRegisterExport } from "@/lib/exportRegistry";
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { LoadingSpinner, ErrorBox, Pager, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
 import { RankedBarChart } from "@/components/dashboard/_shared/charts";
 
@@ -23,17 +23,14 @@ export const FasiProcessiView = () => {
   const byObiettivo = (obiettivo.data ?? []).map((r) => ({ name: r.voce, value: r.numero }));
   const totObj = byObiettivo.reduce((s, d) => s + d.value, 0);
 
-  useRegisterExport(
-    async () => {
+  const exportTables = async () => {
       const all = await fetchProcessi(scope, 100000, 0);
       return [{
         title: "Fasi dei Processi",
         headers: ["Processo", "Funzione", "Tipologia", "Obiettivo", "Rilevanza", "Semplificazione", "N° criticità"],
         rows: all.map((r) => [r.processo, r.funzione, r.tipologia, r.obiettivo, r.rilevanza, r.semplificazione, r.numero_criticita]),
       }];
-    },
-    [scope.codiceFiscale, scope.regione],
-  );
+  };
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
 
@@ -43,6 +40,9 @@ export const FasiProcessiView = () => {
       {lista.error ? <ErrorBox error={lista.error} /> : lista.isLoading ? <LoadingSpinner /> : (
         <div className="space-y-4">
           <div className="bg-card border rounded-xl p-5">
+            <div className="mb-2 flex items-center justify-end">
+              <TableExport fetchTables={exportTables} filename="sipro_fasi_processi" title="Fasi dei Processi" />
+            </div>
             <p className="text-xs font-semibold text-muted-foreground mb-3">Elenco processi censiti</p>
             <div className="overflow-auto rounded-md border">
               <table className="w-full text-[12px]">

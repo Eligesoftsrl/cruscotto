@@ -5,7 +5,7 @@ import {
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useDotazioneUo, useDotazioneUoRiepilogo } from "@/hooks/useSchedaSiproOrganizzazione";
 import { fetchDotazioneUo } from "@/services/sipro/organizzazioneService";
-import { useRegisterExport } from "@/lib/exportRegistry";
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { LoadingSpinner, ErrorBox, Pager, TOOLTIP_STYLE } from "./_shared";
 
 const PER_PAGE = 20;
@@ -31,17 +31,14 @@ export const DotazioneUoView = () => {
 
   const chartData = rows.map((r) => ({ uo: r.uo, dotazione: r.dotazione, servizio: r.servizio_ti }));
 
-  useRegisterExport(
-    async () => {
+  const exportTables = async () => {
       const all = await fetchDotazioneUo(scope, 100000, 0);
       return [{
         title: "Dotazione Risorse UO",
         headers: ["Unità Organizzativa", "FTE dotazione", "FTE servizio", "GAP"],
         rows: all.map((r) => [r.uo, r.dotazione ?? 0, r.servizio_ti ?? 0, r.gap_ti ?? 0]),
       }];
-    },
-    [scope.codiceFiscale, scope.regione],
-  );
+  };
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
 
@@ -54,6 +51,9 @@ export const DotazioneUoView = () => {
         <LoadingSpinner />
       ) : (
         <div className="bg-card border rounded-xl p-5 space-y-3">
+          <div className="mb-2 flex items-center justify-end">
+            <TableExport fetchTables={exportTables} filename="sipro_dotazione_uo" title="Dotazione Risorse UO" />
+          </div>
           <h3 className="text-[15px] font-bold text-foreground">
             Dotazione Organica e personale in servizio per ogni Unità Organizzativa (valore FTE)
           </h3>

@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { FilterPills } from "@/components/dashboard/FilterPills";
 import { KpiStrip } from "@/components/dashboard/KpiStrip";
 import { PyramidChart } from "@/components/dashboard/PyramidChart";
@@ -53,9 +52,6 @@ import { NdMode } from "./NdMode";
 import { BottomUpNav } from "./BottomUpNav";
 import { useAdminState } from "@/services/admin/adminStore";
 import { CA_INDICATOR_FLAG } from "@/config/schedeFlags";
-import { SCHEDA_LABEL_BY_INDICATOR } from "@/config/schedeCatalog";
-import { TableExport } from "@/components/dashboard/_shared/TableExport";
-import { useExportProvider } from "@/lib/exportRegistry";
 
 interface OperationalContentProps {
   source: string;
@@ -71,9 +67,6 @@ export const OperationalContent = ({
   onGoSynthetic,
 }: OperationalContentProps) => {
   const { flags } = useAdminState();
-  const caExportRef = useRef<HTMLDivElement>(null);
-  const siproExportRef = useRef<HTMLDivElement>(null);
-  const siproExportProvider = useExportProvider();
   const isFlagOff = (key?: string) =>
     key ? !(flags.find((f) => f.key === key)?.enabled ?? true) : false;
 
@@ -99,21 +92,9 @@ export const OperationalContent = ({
 
   // SIPrO
   if (source === "sipro" && indicator) {
-    const siproLabel = SCHEDA_LABEL_BY_INDICATOR[indicator] ?? "SIPrO";
     return (
       <>
-        <div ref={siproExportRef} className="flex-1">
-          <div className="flex justify-end px-4 pt-4">
-            <TableExport
-              targetRef={siproExportRef}
-              fetchTables={siproExportProvider ?? undefined}
-              filename={`sipro_${indicator}`}
-              title={siproLabel}
-              variant="default"
-            />
-          </div>
-          <SiproContentRouter indicator={indicator} />
-        </div>
+        <SiproContentRouter indicator={indicator} />
         {bottomUpNav}
       </>
     );
@@ -128,21 +109,10 @@ export const OperationalContent = ({
   if (source === "conto-annuale" && indicator) {
     // Genere ombreggiato/bloccato nelle schede in cui non è utilizzato.
     const lockGenere = ["progressioni", "lavoro-flessibile", "lavoro-agile", "analisi-genere"].includes(indicator);
-    const caLabel = SCHEDA_LABEL_BY_INDICATOR[indicator] ?? "Conto Annuale";
     const wrap = (children: React.ReactNode) => (
       <>
         <FilterPills lockGenere={lockGenere} />
-        <div ref={caExportRef} className="p-4 flex-1">
-          <div className="mb-3 flex justify-end">
-            <TableExport
-              targetRef={caExportRef}
-              filename={`conto_annuale_${indicator}`}
-              title={caLabel}
-              variant="default"
-            />
-          </div>
-          {children}
-        </div>
+        <div className="p-4 flex-1">{children}</div>
         {bottomUpNav}
       </>
     );

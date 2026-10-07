@@ -5,7 +5,7 @@ import {
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useCoinvolgimentoUo } from "@/hooks/useSchedaSiproProcessi";
 import { fetchCoinvolgimentoUo } from "@/services/sipro/processiService";
-import { useRegisterExport } from "@/lib/exportRegistry";
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { LoadingSpinner, ErrorBox, Pager, TOOLTIP_STYLE } from "./_shared";
 
 const PER_PAGE = 20;
@@ -36,23 +36,23 @@ export const OutsourcingFasiView = () => {
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
 
-  useRegisterExport(
-    async () => {
+  const exportTables = async () => {
       const all = await fetchCoinvolgimentoUo(scope, 100000, 0);
       return [{
         title: "Outsourcing Fasi",
         headers: ["Processo", "N° UO", "Coinvolge altre amm."],
         rows: all.map((r) => [r.processo, r.numero_uo, coinvolge(r.altre_amministrazioni) ? "Sì" : "No"]),
       }];
-    },
-    [scope.codiceFiscale, scope.regione],
-  );
+  };
 
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={resetAndSet} />
       {dett.error ? <ErrorBox error={dett.error} /> : dett.isLoading ? <LoadingSpinner /> : (
         <div className="bg-card border rounded-xl p-5 space-y-2">
+          <div className="mb-2 flex items-center justify-end">
+            <TableExport fetchTables={exportTables} filename="sipro_outsourcing_fasi" title="Outsourcing Fasi" />
+          </div>
           <h3 className="text-[15px] font-bold text-foreground">Coinvolgimento delle Unità Organizzative per processo</h3>
           <div className="grid grid-cols-1 2xl:grid-cols-2 gap-6 pt-2">
             <div>

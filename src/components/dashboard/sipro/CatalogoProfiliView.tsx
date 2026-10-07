@@ -6,7 +6,7 @@ import {
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useCatalogoRiepilogo, useCatalogoDistribuzione, useCatalogoProfili } from "@/hooks/useSchedaSiproProfili";
 import { fetchCatalogoProfili } from "@/services/sipro/profiliService";
-import { useRegisterExport } from "@/lib/exportRegistry";
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { LoadingSpinner, ErrorBox, KpiBox, Pager, BAR_COLOR, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
 import { StackedCompositionBar } from "@/components/dashboard/_shared/charts";
 
@@ -34,8 +34,7 @@ export const CatalogoProfiliView = () => {
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
 
-  useRegisterExport(
-    async () => {
+  const exportTables = async () => {
       const all = await fetchCatalogoProfili(scope, 100000, 0);
       return [{
         title: "Catalogo Profili di Ruolo",
@@ -45,9 +44,7 @@ export const CatalogoProfiliView = () => {
           row.origine ?? "—", row.fte_programmati ?? 0, row.fte_assegnati ?? 0,
         ]),
       }];
-    },
-    [scope.codiceFiscale, scope.regione],
-  );
+  };
 
   return (
     <div className="space-y-4">
@@ -82,6 +79,9 @@ export const CatalogoProfiliView = () => {
             </div>
           </div>
           <div className="bg-card border rounded-xl p-5">
+            <div className="mb-2 flex items-center justify-end">
+              <TableExport fetchTables={exportTables} filename="sipro_catalogo_profili" title="Catalogo Profili di Ruolo" />
+            </div>
             <p className="text-xs font-semibold text-muted-foreground mb-3">Catalogo profili di ruolo</p>
             {tabella.isLoading ? <LoadingSpinner /> : (
               <>

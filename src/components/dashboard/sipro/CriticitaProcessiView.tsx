@@ -5,7 +5,7 @@ import {
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useSemplificazioneProcessi, useCriticitaDistribuzioneProcesso } from "@/hooks/useSchedaSiproProcessi";
 import { fetchSemplificazioneProcessi } from "@/services/sipro/processiService";
-import { useRegisterExport } from "@/lib/exportRegistry";
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { LoadingSpinner, ErrorBox, Pager, BAR_COLOR, TOOLTIP_STYLE } from "./_shared";
 
 const PER_PAGE = 20;
@@ -23,17 +23,14 @@ export const CriticitaProcessiView = ({ title = "Criticità e semplificazione de
   const totalPages = Math.max(1, Math.ceil(totalRighe / PER_PAGE));
   const macro = (distrib.data ?? []).map((r) => ({ name: r.categoria, value: r.occorrenze }));
 
-  useRegisterExport(
-    async () => {
+  const exportTables = async () => {
       const all = await fetchSemplificazioneProcessi(scope, 100000, 0);
       return [{
         title,
         headers: ["Processo", "N° fasi", "N° criticità", "Semplificato"],
         rows: all.map((r) => [r.processo, r.numero_fasi, r.numero_criticita, r.semplificazione || "—"]),
       }];
-    },
-    [scope.codiceFiscale, scope.regione, title],
-  );
+  };
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
 
@@ -42,6 +39,9 @@ export const CriticitaProcessiView = ({ title = "Criticità e semplificazione de
       <SiproScopeBar value={scope} onChange={resetAndSet} />
       {lista.error ? <ErrorBox error={lista.error} /> : lista.isLoading ? <LoadingSpinner /> : (
         <div className="bg-card border rounded-xl p-5 space-y-2">
+          <div className="mb-2 flex items-center justify-end">
+            <TableExport fetchTables={exportTables} filename="sipro_criticita_processi" title={title} />
+          </div>
           <h3 className="text-[15px] font-bold text-foreground">{title}</h3>
           <div className="grid grid-cols-1 2xl:grid-cols-2 gap-6 pt-2">
             <div>

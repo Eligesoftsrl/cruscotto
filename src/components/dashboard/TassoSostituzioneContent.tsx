@@ -1,3 +1,4 @@
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchEnti } from "@/services/ca/filtriService";
@@ -141,7 +142,10 @@ export const TassoSostituzioneContent = () => {
 
       {/* Tabella dettaglio */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Dettaglio tasso di sostituzione</h4>
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <h4 className="text-sm font-semibold text-foreground">Dettaglio tasso di sostituzione</h4>
+          <TableExport filename="tasso_sostituzione_dettaglio" title="Dettaglio tasso di sostituzione" />
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>

@@ -1,3 +1,4 @@
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { useEffect, useMemo, useState } from "react";
 import {
   RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar,
@@ -211,7 +212,10 @@ export const BenchmarkView = () => {
           {/* S01.03 Ranking criticità */}
           <div className="bg-card border rounded-xl p-5">
             <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
-              <h3 className="text-[15px] font-bold text-foreground">Ranking criticità del cluster</h3>
+              <div className="flex items-center gap-2">
+                <h3 className="text-[15px] font-bold text-foreground">Ranking criticità del cluster</h3>
+                <TableExport filename="sipro_benchmark_criticita" title="Ranking criticità del cluster" />
+              </div>
               <div className="inline-flex rounded-md border overflow-hidden text-[12px]">
                 {(["processo", "uo"] as const).map((a) => (
                   <button

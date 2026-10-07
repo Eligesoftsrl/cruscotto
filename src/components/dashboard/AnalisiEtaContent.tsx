@@ -1,3 +1,4 @@
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchEnti } from "@/services/ca/filtriService";
@@ -223,7 +224,10 @@ export const AnalisiEtaContent = () => {
         </div>
 
         <div className="rounded-lg border bg-card p-5">
-          <h4 className="mb-3 text-sm font-semibold text-foreground">Analisi per genere e fascia d'età</h4>
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <h4 className="text-sm font-semibold text-foreground">Analisi per genere e fascia d'età</h4>
+            <TableExport filename="analisi_eta_genere_fascia" title="Analisi per genere e fascia d'età" />
+          </div>
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>

@@ -6,7 +6,7 @@ import {
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useTempiPicchi, usePicchiDistribuzione } from "@/hooks/useSchedaSiproProcessi";
 import { fetchTempiPicchi } from "@/services/sipro/processiService";
-import { useRegisterExport } from "@/lib/exportRegistry";
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { LoadingSpinner, ErrorBox, Pager, BAR_COLOR, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
 
 const PER_PAGE = 20;
@@ -56,17 +56,14 @@ export const TempiPicchiView = () => {
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
 
-  useRegisterExport(
-    async () => {
+  const exportTables = async () => {
       const all = await fetchTempiPicchi(scope, 100000, 0);
       return [{
         title: "Tempi e Picchi",
         headers: ["Processo", "Tempo previsto", "Tempo effettivo"],
         rows: all.map((r) => [r.processo, r.previsto ?? "—", r.effettivo ?? "—"]),
       }];
-    },
-    [scope.codiceFiscale, scope.regione],
-  );
+  };
 
   return (
     <div className="space-y-4">
@@ -89,6 +86,9 @@ export const TempiPicchiView = () => {
           </div>
 
           <div className="bg-card border rounded-xl p-5">
+            <div className="mb-2 flex items-center justify-end">
+              <TableExport fetchTables={exportTables} filename="sipro_tempi_picchi" title="Tempi e Picchi" />
+            </div>
             <p className="text-xs font-semibold text-muted-foreground mb-3">Dettaglio tempi per processo</p>
             <div className="overflow-auto rounded-md border">
               <table className="w-full text-[12px]">

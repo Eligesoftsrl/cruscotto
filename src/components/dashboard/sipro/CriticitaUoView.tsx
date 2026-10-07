@@ -5,7 +5,7 @@ import {
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useCriticita, useCriticitaDistribuzione } from "@/hooks/useSchedaSiproOrganizzazione";
 import { fetchCriticita } from "@/services/sipro/organizzazioneService";
-import { useRegisterExport } from "@/lib/exportRegistry";
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { LoadingSpinner, ErrorBox, Pager, BAR_COLOR, TOOLTIP_STYLE } from "./_shared";
 
 const PER_PAGE = 20;
@@ -23,17 +23,14 @@ export const CriticitaUoView = () => {
   const totalPages = Math.max(1, Math.ceil(totalRighe / PER_PAGE));
   const macro = (distrib.data ?? []).map((r) => ({ name: r.categoria, value: r.occorrenze }));
 
-  useRegisterExport(
-    async () => {
+  const exportTables = async () => {
       const all = await fetchCriticita(scope, 100000, 0);
       return [{
         title: "Criticità UO",
         headers: ["Unità Organizzativa", "Criticità", "Macro Criticità"],
         rows: all.map((r) => [r.oggetto, r.criticita, r.categoria]),
       }];
-    },
-    [scope.codiceFiscale, scope.regione],
-  );
+  };
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
 
@@ -46,6 +43,9 @@ export const CriticitaUoView = () => {
         <LoadingSpinner />
       ) : (
         <div className="bg-card border rounded-xl p-5 space-y-2">
+          <div className="mb-2 flex items-center justify-end">
+            <TableExport fetchTables={exportTables} filename="sipro_criticita_uo" title="Criticità UO" />
+          </div>
           <h3 className="text-[15px] font-bold text-foreground">
             Elenco delle criticità segnalate e frequenza per Macro-criticità
           </h3>

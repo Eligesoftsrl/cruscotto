@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Download, X, ChevronDown, RotateCcw } from "lucide-react";
+import { X, ChevronDown, RotateCcw } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useFilters } from "@/contexts/FilterContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -145,9 +145,6 @@ export const FilterPills = ({ lockGenere = false }: { lockGenere?: boolean } = {
 
       <div className="ml-auto flex items-center gap-2">
         <span className="text-[10.5px] text-muted-foreground/60">Dati al 31/12/{filters.anno || latestYear}</span>
-        <button className="px-3 py-[5px] bg-primary text-primary-foreground rounded text-[11px] font-semibold flex items-center gap-1.5 hover:opacity-90 transition-opacity">
-          <Download className="h-3 w-3" /> Esporta
-        </button>
       </div>
     </div>
   );

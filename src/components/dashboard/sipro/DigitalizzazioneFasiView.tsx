@@ -3,7 +3,7 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recha
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useDigitalizzazioneFasi, useFasiRiepilogo } from "@/hooks/useSchedaSiproProcessi";
 import { fetchFasiRiepilogo } from "@/services/sipro/processiService";
-import { useRegisterExport } from "@/lib/exportRegistry";
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { LoadingSpinner, ErrorBox, Pager, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
 
 const PER_PAGE = 20;
@@ -46,17 +46,14 @@ export const DigitalizzazioneFasiView = ({ title = "Livello di digitalizzazione,
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
 
-  useRegisterExport(
-    async () => {
+  const exportTables = async () => {
       const all = await fetchFasiRiepilogo(scope, 100000, 0);
       return [{
         title,
         headers: ["Processo", "N° fasi", "Fasi esternalizzate", "Fasi in lavoro agile", "Livello prevalente"],
         rows: all.map((r) => [r.processo, r.numero_fasi, r.fasi_esternalizzate, r.fasi_agile, r.digitale_prevalente ?? "—"]),
       }];
-    },
-    [scope.codiceFiscale, scope.regione, title],
-  );
+  };
 
   return (
     <div className="space-y-4">
@@ -72,6 +69,9 @@ export const DigitalizzazioneFasiView = ({ title = "Livello di digitalizzazione,
             </div>
           </div>
           <div className="bg-card border rounded-xl p-5">
+            <div className="mb-2 flex items-center justify-end">
+              <TableExport fetchTables={exportTables} filename="sipro_digitalizzazione_fasi" title={title} />
+            </div>
             <p className="text-xs font-semibold text-muted-foreground mb-3">Dettaglio per processo</p>
             {riepilogo.isLoading ? <LoadingSpinner /> : (
               <>

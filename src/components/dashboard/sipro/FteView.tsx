@@ -5,7 +5,7 @@ import {
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useFteRiepilogo, useFteProfili, useFte } from "@/hooks/useSchedaSiproProfili";
 import { fetchFte } from "@/services/sipro/profiliService";
-import { useRegisterExport } from "@/lib/exportRegistry";
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { LoadingSpinner, ErrorBox, KpiBox, Pager, TOOLTIP_STYLE } from "./_shared";
 
 const PER_PAGE = 20;
@@ -34,17 +34,14 @@ export const FteView = () => {
 
   const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
 
-  useRegisterExport(
-    async () => {
+  const exportTables = async () => {
       const all = await fetchFte(scope, 100000, 0);
       return [{
         title: "FTE Programmati vs Assegnati",
         headers: ["Ente", "Profilo", "FTE programmati", "FTE assegnati"],
         rows: all.map((row) => [row.ente, row.profilo, row.fte_programmati ?? 0, row.fte_assegnati ?? 0]),
       }];
-    },
-    [scope.codiceFiscale, scope.regione],
-  );
+  };
 
   return (
     <div className="space-y-4">
@@ -73,6 +70,9 @@ export const FteView = () => {
             </div>
           </div>
           <div className="bg-card border rounded-xl p-5">
+            <div className="mb-2 flex items-center justify-end">
+              <TableExport fetchTables={exportTables} filename="sipro_fte" title="FTE Programmati vs Assegnati" />
+            </div>
             <p className="text-xs font-semibold text-muted-foreground mb-3">Dettaglio FTE per ente e profilo</p>
             {tabella.isLoading ? <LoadingSpinner /> : (
               <>

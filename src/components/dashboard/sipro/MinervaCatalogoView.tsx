@@ -1,3 +1,4 @@
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { useMemo } from "react";
 import { useMinerva } from "@/hooks/useSchedaSiproProfili";
 import { LoadingSpinner, ErrorBox, KpiBox } from "./_shared";
@@ -44,7 +45,10 @@ export const MinervaCatalogoView = ({ tipo, titolo, kpiLabel, colonnaLabel }: Pr
             <KpiBox label="Voci elencate" value={items.length} />
           </div>
           <div className="bg-card border rounded-xl p-5">
-            <p className="text-xs font-semibold text-muted-foreground mb-3">{titolo}</p>
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <p className="text-xs font-semibold text-muted-foreground">{titolo}</p>
+              <TableExport filename="minerva_catalogo" title={titolo} />
+            </div>
             <div className="overflow-auto rounded-md border max-h-[520px]">
               <table className="w-full text-[12px]">
                 <thead className="sticky top-0">
