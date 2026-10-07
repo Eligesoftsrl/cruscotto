@@ -12,6 +12,10 @@ const PER_PAGE = 20;
 const COLOR_DOTAZIONE = "hsl(175, 55%, 42%)";
 const COLOR_SERVIZIO = "hsl(35, 75%, 42%)";
 
+// Formattatori null-safe: alcuni valori (dotazione/servizio/gap) possono essere NULL.
+const fx = (n: number | null | undefined, d = 1) =>
+  typeof n === "number" && Number.isFinite(n) ? n.toFixed(d) : "—";
+
 /** 07 - Dotazione Risorse UO: tabella UO + riga totale (riepilogo) + grafico dotazione vs servizio. */
 export const DotazioneUoView = () => {
   const [scope, setScope] = useState<SiproScope>({ codiceFiscale: null, regione: null });
@@ -68,10 +72,10 @@ export const DotazioneUoView = () => {
                   {rows.map((r) => (
                     <tr key={r.uo_id} className="border-b border-border hover:bg-muted/40 transition-colors">
                       <td className="px-2 py-1.5 text-foreground">{r.uo}</td>
-                      <td className="px-2 py-1.5 text-right tabular-nums">{r.dotazione.toFixed(1)}</td>
-                      <td className="px-2 py-1.5 text-right tabular-nums">{r.servizio_ti.toFixed(1)}</td>
-                      <td className={`px-2 py-1.5 text-right tabular-nums font-semibold ${r.gap_ti < 0 ? "text-destructive" : r.gap_ti > 0 ? "text-emerald-600" : "text-muted-foreground"}`}>
-                        {r.gap_ti.toFixed(2)}
+                      <td className="px-2 py-1.5 text-right tabular-nums">{fx(r.dotazione)}</td>
+                      <td className="px-2 py-1.5 text-right tabular-nums">{fx(r.servizio_ti)}</td>
+                      <td className={`px-2 py-1.5 text-right tabular-nums font-semibold ${(r.gap_ti ?? 0) < 0 ? "text-destructive" : (r.gap_ti ?? 0) > 0 ? "text-emerald-600" : "text-muted-foreground"}`}>
+                        {fx(r.gap_ti, 2)}
                       </td>
                     </tr>
                   ))}
@@ -80,9 +84,9 @@ export const DotazioneUoView = () => {
                   <tfoot>
                     <tr className="border-t-2 border-foreground/30 font-bold text-foreground">
                       <td className="px-2 py-1.5 text-right">Totale ({rie.copertura_ti_pct?.toFixed(1) ?? "-"}% cop.):</td>
-                      <td className="px-2 py-1.5 text-right tabular-nums">{rie.dotazione.toFixed(2)}</td>
-                      <td className="px-2 py-1.5 text-right tabular-nums">{rie.servizio_ti.toFixed(2)}</td>
-                      <td className="px-2 py-1.5 text-right tabular-nums">{rie.gap_ti.toFixed(2)}</td>
+                      <td className="px-2 py-1.5 text-right tabular-nums">{fx(rie.dotazione, 2)}</td>
+                      <td className="px-2 py-1.5 text-right tabular-nums">{fx(rie.servizio_ti, 2)}</td>
+                      <td className="px-2 py-1.5 text-right tabular-nums">{fx(rie.gap_ti, 2)}</td>
                     </tr>
                   </tfoot>
                 )}
@@ -96,7 +100,7 @@ export const DotazioneUoView = () => {
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                   <XAxis dataKey="uo" tick={{ fontSize: 9 }} stroke="hsl(var(--muted-foreground))" interval={0} angle={-45} textAnchor="end" height={90} />
                   <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
-                  <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(v: number, n: string) => [v.toFixed(1), n]} />
+                  <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(v: number, n: string) => [fx(v), n]} />
                   <Bar dataKey="dotazione" name="FTE in dotazione" fill={COLOR_DOTAZIONE} radius={[2, 2, 0, 0]} maxBarSize={18} />
                   <Bar dataKey="servizio" name="FTE in servizio" fill={COLOR_SERVIZIO} radius={[2, 2, 0, 0]} maxBarSize={18} />
                   <Legend verticalAlign="bottom" iconType="square" iconSize={10} wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
