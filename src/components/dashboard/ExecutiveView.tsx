@@ -28,6 +28,9 @@ import {
   trendData,
 } from "./executive/executiveData";
 import { useD1Calculations } from "@/hooks/useD1Calculations";
+import { useExecScore, useExecScoreFiltri } from "@/hooks/useExecScore";
+import { codiceIndice } from "@/services/exec/execScoreService";
+import { EXEC_SCORE_PILLARS, badgeColor } from "./executive/score/execScoreConfig";
 
 /* ── Dimension grouping config — 6 Pillar ── */
 const dimensionGroups = [
@@ -92,11 +95,39 @@ export const ExecutiveView = ({
 
   const { data: d1Data } = useD1Calculations(d1Filters);
 
+  /* D2: indici di sintesi reali (RPC fa_ca_exec_d2_indicatori_score, score [0-100]) */
+  const { filtri: execFiltri } = useExecScoreFiltri();
+  const { data: d2Rows } = useExecScore("D2", execFiltri);
+
   /* Merge dynamic D1 data into static indices */
   const allIndices = useMemo(() => {
-    if (!d1Data) return executiveIndicesStatic;
+    const realScore = new Map((d2Rows ?? []).map((r) => [codiceIndice(r.id), r]));
+    const withExec = (list: typeof executiveIndicesStatic) =>
+      list.map((idx) => {
+        const cfg = EXEC_SCORE_PILLARS[idx.pillar];
+        const r = cfg && realScore.get(idx.id);
+        if (!r) return idx;
+        const score = r.score ?? 0;
+        return {
+          ...idx,
+          label: r.nome ?? idx.label,
+          value: score / 100,
+          prev: (score - (r.var_score ?? 0)) / 100,
+          subIndicators: (cfg.componenti[idx.id] ?? []).map((c) => ({
+            key: c,
+            value: (realScore.get(c)?.score ?? 0) / 100,
+            color: badgeColor(realScore.get(c)?.badge),
+          })),
+          assessment: {
+            level: r.badge ?? "N/D",
+            color: badgeColor(r.badge),
+            text: r.interpretazione?.split("\n")[0]?.replace(/^•\s*/, "") ?? "",
+          },
+        };
+      });
+    if (!d1Data) return withExec(executiveIndicesStatic);
     const d1Ids = ["IAC", "IIMP/R", "ICPR", "ICVC", "IACU"] as const;
-    return executiveIndicesStatic.map((idx) => {
+    return withExec(executiveIndicesStatic).map((idx) => {
       if (
         d1Ids.includes(idx.id as (typeof d1Ids)[number]) &&
         d1Data[idx.id as keyof typeof d1Data]
@@ -114,7 +145,7 @@ export const ExecutiveView = ({
       }
       return idx;
     });
-  }, [d1Data]);
+  }, [d1Data, d2Rows]);
 
   /* Executive view shows ONLY executive-level indicators per pillar (as per methodology docs) */
   const executiveIndices = allIndices.filter((idx) => idx.indicatorLevel === "executive");

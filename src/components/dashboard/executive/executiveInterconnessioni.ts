@@ -17,7 +17,7 @@ export interface IndicatorInterconnections {
   bridgeNote?: string; // nota "indicatore ponte" se presente
 }
 
-const PILLAR_LABELS: Record<string, string> = {
+export const PILLAR_LABELS: Record<string, string> = {
   D1: "Classificazione professioni",
   D2: "Programmazione fabbisogno",
   D3: "Recruiting",

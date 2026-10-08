@@ -43,7 +43,7 @@ export const GaugeArc = ({
         className="font-bold"
         style={{ fontSize: size * 0.2, fill: "hsl(var(--foreground))" }}
       >
-        {value.toFixed(2).replace(".", ",")}
+        {Math.round((value ?? 0) * 100)}
       </text>
     </svg>
   );
@@ -74,7 +74,7 @@ export const SubIndicatorBar = ({
       <span
         className={`text-sm font-bold w-10 text-right ${isLow ? "text-[hsl(var(--chart-orange))]" : "text-foreground"}`}
       >
-        {value.toFixed(2).replace(".", ",")}
+        {Math.round((value ?? 0) * 100)}
       </span>
     </div>
   );
@@ -349,9 +349,9 @@ export const ExecutiveKpiCard = ({
             <div className="flex items-center gap-2 shrink-0 ml-3">
               <div className="text-right">
                 <span className="text-3xl font-bold text-foreground">
-                  {idx.value.toFixed(2).replace(".", ",")}
+                  {Math.round((idx.value ?? 0) * 100)}
                 </span>
-                <div className="text-xs text-muted-foreground">Score [0-1]</div>
+                <div className="text-xs text-muted-foreground">Score [0-100]</div>
               </div>
               <GaugeArc value={idx.value} color={idx.color} size={64} />
             </div>
@@ -441,9 +441,9 @@ export const ExecutiveKpiCard = ({
           <div className="flex items-center gap-3 shrink-0 ml-3">
             <div className="text-right">
               <span className="text-4xl font-bold text-foreground">
-                {idx.value.toFixed(2).replace(".", ",")}
+                {Math.round((idx.value ?? 0) * 100)}
               </span>
-              <div className="text-xs text-muted-foreground">Score [0-1]</div>
+              <div className="text-xs text-muted-foreground">Score [0-100]</div>
             </div>
             <GaugeArc value={idx.value} color={idx.color} size={80} />
           </div>

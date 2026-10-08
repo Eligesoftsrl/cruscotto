@@ -62,7 +62,15 @@ const Pill = ({
   );
 };
 
-export const FilterPills = ({ lockGenere = false }: { lockGenere?: boolean } = {}) => {
+export const FilterPills = ({
+  lockGenere = false,
+  variant = "full",
+}: {
+  lockGenere?: boolean;
+  /** "executive": solo Anno · Regione · Comparto (genere e macro/categoria non esposti). */
+  variant?: "full" | "executive";
+} = {}) => {
+  const isExec = variant === "executive";
   const { filters, setFilter, resetFilters, activeCount, latestYear } = useFilters();
   const { profile } = useAuth();
   const isEnteHr = profile?.role === "ente_hr";
@@ -98,11 +106,11 @@ export const FilterPills = ({ lockGenere = false }: { lockGenere?: boolean } = {
 
       {/* Genere (ombreggiato e bloccato nelle schede in cui non è utilizzato,
           mantenendo il valore eventualmente selezionato altrove) */}
-      <Pill label="Genere" value={filters.genere} display={filters.genere}
+      {!isExec && <Pill label="Genere" value={filters.genere} display={filters.genere}
         active={filters.genere !== "Tutti"} disabled={lockGenere}
         title={lockGenere ? "Filtro non utilizzato in questa scheda" : undefined}
         options={[{ value: "Tutti", label: "Tutti" }, { value: "Uomini", label: "Uomini" }, { value: "Donne", label: "Donne" }]}
-        onChange={(v) => setFilter("genere", v)} onClear={() => setFilter("genere", "Tutti")} />
+        onChange={(v) => setFilter("genere", v)} onClear={() => setFilter("genere", "Tutti")} />}
 
       {!isEnteHr && (
         <>
@@ -118,6 +126,8 @@ export const FilterPills = ({ lockGenere = false }: { lockGenere?: boolean } = {
         </>
       )}
 
+      {!isExec && (
+        <>
       {/* Separatore tra i filtri di contesto e la cascata Macrocategoria/Categoria */}
       <div className="w-px h-5 bg-border" />
 
@@ -133,6 +143,9 @@ export const FilterPills = ({ lockGenere = false }: { lockGenere?: boolean } = {
         active={filters.categoria !== ALL_F} disabled={!macroChiave}
         options={opt(categorieQ.data, "Tutte", ALL_F)}
         onChange={(v) => setFilter("categoria", v)} onClear={() => setFilter("categoria", ALL_F)} />
+
+        </>
+      )}
 
       {activeCount > 0 && (
         <>

@@ -16,6 +16,21 @@ svolgere o da verificare.
 ## 🟢 In corso
 
 - Consolidamento e verifica dei dati delle analisi già disponibili.
+- **Vista Sintetica con score reali (D2 completata, D5 · D4 · D6 a seguire)**: la pagina
+  D2 · Programmazione fabbisogno legge i dati reali (RPC `fa_ca_exec_d2_indicatori_score`).
+  Lo score è espresso da 0 a 100, senza il simbolo "%". La pagina mostra:
+  - una panoramica a barre;
+  - l'indice di sintesi IGF (2 card per riga);
+  - gli indici intermedi IRS, IDP_Norm, PTI, IRG_Norm (3 card per riga).
+
+  Ogni card mostra il badge (Basso · Moderato · Buono · Eccellente) e la variazione
+  rispetto all'anno precedente. Contiene anche tre pannelli apribili:
+  - **Scomposizione formula**: calcolo dell'indice e normalizzazione dello score;
+  - **Scheda metodologica**;
+  - **Trend storico**.
+
+  I filtri disponibili sono Anno, Regione, Comparto e il perimetro dell'ente.
+  Anche la card IGF della Vista Executive usa i dati reali.
 
 ## 🟡 Da fare
 

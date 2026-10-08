@@ -5,6 +5,8 @@ import { AppSidebar, type NavState } from "@/components/dashboard/AppSidebar";
 import { TopBar } from "@/components/dashboard/TopBar";
 import { ExecutiveView } from "@/components/dashboard/ExecutiveView";
 import { SyntheticPillarView } from "@/components/dashboard/SyntheticPillarView";
+import { ExecScorePillarView } from "@/components/dashboard/executive/score/ExecScorePillarView";
+import { isExecScorePillar } from "@/components/dashboard/executive/score/execScoreConfig";
 import { NdMode } from "@/components/dashboard/NdMode";
 import { OperationalContent } from "@/components/dashboard/OperationalContent";
 import { GuidedJourney } from "@/components/dashboard/GuidedJourney";
@@ -103,6 +105,16 @@ const Index = () => {
     }
 
     if (nav.level === "synthetic") {
+      if (nav.pillar && isExecScorePillar(nav.pillar)) {
+        // Pillar alimentati dalle RPC fa_ca_exec_<dx>_indicatori_score (score [0-100])
+        return (
+          <ExecScorePillarView
+            pillar={nav.pillar}
+            selectedIndicator={nav.indicator}
+            onGoExecutive={() => setNav({ level: "executive" })}
+          />
+        );
+      }
       if (nav.pillar) {
         const view = (
           <SyntheticPillarView
