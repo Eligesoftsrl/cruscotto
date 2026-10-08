@@ -9,7 +9,7 @@ svolgere o da verificare.
 > Modalità di aggiornamento: spostare le voci tra le sezioni (Da fare → In corso → Da
 > testare → Completato) e aggiornare la data seguente.
 >
-> **Ultimo aggiornamento:** 05/10/2026
+> **Ultimo aggiornamento:** 07/10/2026
 
 ---
 
@@ -36,9 +36,11 @@ svolgere o da verificare.
 - Ricezione dell'avviso di aggiornamento e ricarica alla nuova versione.
 - Coerenza dei dati al variare dei filtri.
 
-## 📦 Prossima release (in preparazione) — completamento SIPrO e migliorie Amministrazione
+## 📦 Release in rilascio — SIPrO completo, esportazioni, nuovi grafici e migliorie
 
-Release in fase di verifica, in rilascio a breve. Attività realizzate:
+Nuova versione in distribuzione. Oltre al completamento del modulo SIPrO, introduce
+l'esportazione dei dati, la revisione dei grafici e diverse migliorie dell'area di
+amministrazione e dei filtri. Attività realizzate:
 
 **Completamento del modulo SIPrO (dati reali)**
 
@@ -67,9 +69,37 @@ Release in fase di verifica, in rilascio a breve. Attività realizzate:
   modificabile dal sistemista senza nuovi rilasci.
 - Pulizia del codice: rimossi i componenti e i servizi dimostrativi non più utilizzati.
 
+**Esportazione dei dati (nuovo)**
+
+- Ogni tabella (Conto Annuale e SIPrO) dispone di un pulsante **«Esporta»** in alto a destra
+  del riquadro, con tre formati: **CSV**, **Excel (.xlsx)** e **PDF**.
+- Per le schede SIPrO con elenchi lunghi (paginati), l'esportazione produce **tutti i dati**
+  e non solo la pagina visualizzata.
+
+**Revisione dei grafici (nuovo)**
+
+- Sostituiti i grafici a **torta/ciambella** di SIPrO e Conto Annuale con rappresentazioni
+  più leggibili: **barre orizzontali ordinate** (con valore e percentuale in evidenza) dove
+  gli elementi sono molti, e **barre 100% impilate** per le composizioni (es. genere, stato,
+  presidio).
+
+**Ricerca ente e perimetro (nuovo)**
+
+- Rimosso il campo di ricerca ente per l'**amministratore** (poco chiaro); l'amministratore
+  vede il dato aggregato. Resta il selettore degli **enti assegnati** per gli utenti abilitati
+  (perimetro definito dall'accesso).
+- Rimossa la voce di menù **«Fabbisogno per Profilo»** (scheda non più prevista).
+
+**Correzioni e robustezza (nuovo)**
+
+- Valori mancanti (NULL) ora gestiti come **0** nelle schede interessate (Dotazione UO, FTE,
+  Copertura, Catalogo), evitando errori di visualizzazione.
+- Rimosso un pulsante «Esporta» non funzionante presente in alto nel Conto Annuale.
+
 **Nota per il sistemista:** per rendere persistenti i nuovi parametri è previsto un breve
-script SQL (tabella di configurazione `app_config` e nuove chiavi delle schede SIPrO nella
-tabella dei feature flag), fornito a corredo del rilascio.
+script SQL (tabella di configurazione `app_config` — fornita in `docs/sql/app_config.sql` —
+e nuove chiavi delle schede SIPrO nella tabella dei feature flag), da applicare a corredo del
+rilascio.
 
 ## 📦 Rilascio del 25/09/2026 — attività completate
 

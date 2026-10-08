@@ -51,6 +51,9 @@ Gli utenti abilitati a più enti dispongono di un selettore per scegliere l'ente
 visualizzare; la scelta viene mantenuta nel passaggio tra le schede. Per gli utenti
 abilitati a un solo ente i dati mostrati sono già quelli del proprio ente.
 
+L'utente amministratore visualizza il dato **aggregato** dell'insieme degli enti (non è
+prevista una ricerca del singolo ente).
+
 ## 1.6 Lettura dei dati
 
 - Il passaggio del puntatore sui grafici mostra i valori di dettaglio.
@@ -59,8 +62,15 @@ abilitati a un solo ente i dati mostrati sono già quelli del proprio ente.
 
 ## 1.7 Esportazione
 
-Ove disponibile, la funzione di **esportazione** consente di scaricare i dati della vista
-in un file tabellare riutilizzabile in un foglio di calcolo.
+Ogni tabella dispone, in alto a destra del proprio riquadro, di un pulsante **«Esporta»**
+che consente di scaricare i dati in tre formati:
+
+- **CSV** — per l'apertura in qualsiasi foglio di calcolo;
+- **Excel (.xlsx)** — un foglio per ciascuna tabella, con intestazioni e larghezze colonne;
+- **PDF** — documento pronto per la stampa o la condivisione.
+
+L'esportazione riporta **tutti i dati** della tabella (non solo la porzione eventualmente
+visualizzata a schermo).
 
 ## 1.8 Aggiornamenti dell'applicazione
 
