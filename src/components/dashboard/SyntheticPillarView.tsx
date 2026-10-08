@@ -234,20 +234,19 @@ export const SyntheticPillarView = ({
           <p className="text-sm text-muted-foreground mt-0.5">{meta.description}</p>
         </div>
         <button
-          onClick={() => setShowMethodology((v) => !v)}
-          className={`ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-semibold transition-all ${
-            showMethodology
-              ? "bg-primary text-primary-foreground"
-              : "bg-muted text-muted-foreground hover:bg-muted/80"
-          }`}
+          type="button"
+          disabled
+          aria-disabled="true"
+          title="Quadro Sinottico non disponibile"
+          className="ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-semibold bg-muted text-muted-foreground/50 cursor-not-allowed opacity-60"
         >
           <FileText className="h-4 w-4" />
           Quadro Sinottico
         </button>
       </div>
 
-      {/* ── Methodology Sheet ── */}
-      {showMethodology && <QuadroSinotticoView pillar={pillar} />}
+      {/* ── Methodology Sheet (disattivata) ── */}
+      {false && showMethodology && <QuadroSinotticoView pillar={pillar} />}
 
       {/* ── Summary Bar Chart with highlight ── */}
       {barData.length > 1 && (
@@ -502,10 +501,6 @@ export const SyntheticPillarView = ({
                       width: `${pct}%`,
                       background: isGood ? meta.color : "hsl(var(--chart-orange))",
                     }}
-                  />
-                  <div
-                    className="absolute top-0 bottom-0 w-0.5"
-                    style={{ left: `${tgtPct}%`, background: "hsl(var(--foreground))" }}
                   />
                 </div>
               </div>

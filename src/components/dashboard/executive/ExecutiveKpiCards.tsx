@@ -107,10 +107,6 @@ export const BulletBar = ({
           background: isGood ? "hsl(var(--chart-blue))" : "hsl(var(--chart-orange))",
         }}
       />
-      <div
-        className="absolute top-0 bottom-0 w-0.5"
-        style={{ left: `${tPct}%`, background: "hsl(var(--foreground))" }}
-      />
     </div>
   );
 };
