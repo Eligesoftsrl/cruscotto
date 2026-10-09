@@ -59,6 +59,15 @@ prevista una ricerca del singolo ente).
 - Il passaggio del puntatore sui grafici mostra i valori di dettaglio.
 - Ove presente, il **glossario** riporta il significato dei termini e degli indicatori.
 - Alcune schede propongono **percorsi guidati** per la lettura dei dati in sequenza.
+- Nella **Vista Sintetica** dei pillar D2, D4, D5 e D6, ogni indice ha uno **score da 0 a 100**
+  (senza "%"), un giudizio (Basso · Moderato · Buono · Eccellente) e la variazione in punti
+  rispetto all'anno precedente.
+- Dentro ogni card si possono aprire tre pannelli:
+  - **Scomposizione formula**: come si calcola l'indice e come diventa score;
+  - **Scheda metodologica**;
+  - **Trend storico**.
+- Gli indici marcati **"Dati mock-up"** riportano valori dimostrativi: la loro fonte non è ancora collegata.
+
 
 ## 1.7 Esportazione
 

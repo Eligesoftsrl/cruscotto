@@ -16,7 +16,7 @@ svolgere o da verificare.
 ## 🟢 In corso
 
 - Consolidamento e verifica dei dati delle analisi già disponibili.
-- **Vista Sintetica con score reali (D2, D5 e D4 completate, D6 a seguire)**: la pagina
+- **Vista Sintetica con score reali (D2, D5, D4 e D6 completate; D1 e D3 ancora mock-up)**: la pagina
   D2 · Programmazione fabbisogno legge i dati reali (RPC `fa_ca_exec_d2_indicatori_score`).
   Lo score è espresso da 0 a 100, senza il simbolo "%". La pagina mostra:
   - una panoramica a barre;
@@ -45,6 +45,15 @@ svolgere o da verificare.
     IEF_Norm, ICQ e ICEC. Il disclaimer compare anche nella Vista Executive.
 
   Gli indici intermedi sono raggruppati in tre griglie: componenti CGC, ISCP e IESF.
+- **D6 · Capacity building e performance** (RPC `fa_ca_exec_d6_indicatori_score`):
+  - 16 indici reali in 4 gruppi: organico e ricambio, qualificazione, parità di genere,
+    flessibilità e lavoro agile;
+  - comprende i **nuovi indici RTG, RRG e IRIC**;
+  - la scomposizione mostra i passaggi di normalizzazione di ogni famiglia di scala.
+
+  I valori fuori scala della D6 in Vista Executive sono risolti.
+  Il dettaglio completo e la checklist di verifica sono in
+  [7. Vista Sintetica · Indici con score](07-Vista-Sintetica-Indici-Score).
 
 ## 🟡 Da fare
 

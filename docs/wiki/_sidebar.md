@@ -7,3 +7,4 @@
 - [4. Architettura tecnica](04-Architettura-Tecnica)
 - [5. Glossario](05-Glossario)
 - [6. Stato e attività](06-Stato-e-Roadmap)
+- [7. Vista Sintetica · Indici con score](07-Vista-Sintetica-Indici-Score)

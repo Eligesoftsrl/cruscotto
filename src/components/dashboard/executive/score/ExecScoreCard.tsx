@@ -43,6 +43,7 @@ import {
   fmtScore,
   type ExecScorePillarConfig,
 } from "./execScoreConfig";
+import { normalizationSteps } from "./execScoreNormalization";
 
 /* ── Gauge semicircolare su scala [0-100] ── */
 const ScoreGauge = ({ score, color, size = 72 }: { score: number; color: string; size?: number }) => {
@@ -191,28 +192,9 @@ export const ExecScoreCard = ({
     parte1.push({ label: `${d.componente}${d.anno ? ` (${d.anno})` : ""}`, value: fmtNum(d.valore) }),
   );
 
-  /* ── Parte 2 · normalizzazione dello score ── */
-  const parte2: { label: string; value: string }[] = [];
+  /* ── Parte 2 · normalizzazione dello score (per famiglia di scala) ── */
   const famiglia = row?.famiglia_score ?? "";
-  if (row?.descrizione_score || famiglia)
-    parte2.push({ label: "Famiglia di scala", value: row?.descrizione_score || famiglia });
-  if (/target/i.test(famiglia) || row?.soglia_score != null) {
-    const v1 = row?.valore_1 ?? null;
-    const v2 = row?.valore_2 ?? null;
-    if (v1 != null && v2) parte2.push({ label: "Valore grezzo (componente 1 / componente 2)", value: fmtNum(v1 / v2, 3) });
-    if (row?.soglia_score != null)
-      parte2.push({
-        label: "Target",
-        value: `${fmtNum(row.soglia_score)}${row.unita_soglia ? ` ${row.unita_soglia}` : ""}`,
-      });
-  } else if (!isComposito && /diretto/i.test(famiglia)) {
-    parte2.push({ label: "Normalizzazione", value: `Non necessaria: score = ${code} × 100` });
-  }
-  if (isComposito) {
-    componenti.forEach((c) => parte2.push({ label: `Score ${c}`, value: fmtScore(rows.get(c)?.score) }));
-    (config.extraScoreSteps?.[code]?.(rows, fmtNum) ?? []).forEach((s) => parte2.push(s));
-  }
-  if (row?.formula_score) parte2.push({ label: "Calcolo score", value: row.formula_score });
+  const parte2 = normalizationSteps(code, row, rows, config);
 
   /* ── Interconnessioni: dall'API (escluso il pillar corrente), motivazioni dalla mappa statica ── */
   const staticIc = interconnessioni[code];

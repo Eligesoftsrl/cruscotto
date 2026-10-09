@@ -15,6 +15,7 @@ un glossario e una sezione di monitoraggio delle attività.
 4. [Architettura tecnica](04-Architettura-Tecnica) — struttura del codice e lavoro svolto
 5. [Glossario](05-Glossario) — terminologia ricorrente
 6. [Stato e attività](06-Stato-e-Roadmap) — stato di avanzamento e attività in corso
+7. [Vista Sintetica · Indici con score](07-Vista-Sintetica-Indici-Score) — rapporto di realizzazione e verifica degli indici D2 · D4 · D5 · D6
 
 ## In sintesi
 

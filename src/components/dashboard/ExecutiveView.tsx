@@ -29,23 +29,23 @@ import {
 } from "./executive/executiveData";
 import { useD1Calculations } from "@/hooks/useD1Calculations";
 import { useExecScoreMulti, useExecScoreFiltri } from "@/hooks/useExecScore";
-import { EXEC_SCORE_PILLARS, badgeColor, resolveExecCode } from "./executive/score/execScoreConfig";
+import {
+  EXEC_SCORE_PILLARS,
+  badgeColor,
+  fmtIndex,
+  resolveExecCode,
+} from "./executive/score/execScoreConfig";
+
+import { PILLAR_COLORS, PILLAR_LABELS } from "./executive/executiveInterconnessioni";
 
 const EXEC_PILLARS = Object.keys(EXEC_SCORE_PILLARS);
 
-/** Frase di lettura coerente con lo score: le righe di "interpretazione" vanno da valori bassi ad alti. */
-const pickInterpretazione = (txt: string | null, score: number) => {
-  const lines = (txt ?? "")
-    .split("\n")
-    .map((l) => l.replace(/^•\s*/, "").trim())
-    .filter(Boolean);
-  if (!lines.length) return "";
-  const i = Math.min(
-    lines.length - 1,
-    Math.floor((Math.max(0, Math.min(99, score)) / 100) * lines.length),
-  );
-  return lines[i];
-};
+/** Testo di lettura della card Executive: valore dell'indice e score restituiti dall'API. */
+const letturaScore = (
+  r: { valore: number | null; dominio: string | null; descrizione_score: string | null },
+  score: number,
+) =>
+  `Indice ${fmtIndex(r.valore)}${r.dominio ? ` (dominio ${r.dominio})` : ""} → score ${Math.round(score)} su 100${r.descrizione_score ? ` · ${r.descrizione_score}` : ""}.`;
 
 /* ── Dimension grouping config — 6 Pillar ── */
 const dimensionGroups = [
@@ -118,8 +118,8 @@ export const ExecutiveView = ({
   const allIndices = useMemo(() => {
     // chiave = id RPC completo (es. "D5.DPI_Norm"): evita collisioni tra pillar
     const realScore = new Map(execRows.map((r) => [r.id, r]));
-    const withExec = (list: typeof executiveIndicesStatic) =>
-      list
+    const withExec = (list: typeof executiveIndicesStatic): typeof executiveIndicesStatic => {
+      const mapped = list
         .filter((idx) => !EXEC_SCORE_PILLARS[idx.pillar]?.ritirati?.includes(idx.id))
         .map((idx) => {
           const cfg = EXEC_SCORE_PILLARS[idx.pillar];
@@ -140,10 +140,48 @@ export const ExecutiveView = ({
             assessment: {
               level: r.badge ?? "N/D",
               color: badgeColor(r.badge),
-              text: pickInterpretazione(r.interpretazione, score),
+              text: letturaScore(r, score),
             },
           };
         });
+      // Indici reali restituiti dalla RPC ma assenti dai dati statici (es. D6: RTG, RRG, IRIC)
+      const known = new Set(mapped.map((i) => `${i.pillar}.${resolveExecCode(i.pillar, i.id)}`));
+      const extras = EXEC_PILLARS.flatMap((p) => {
+        const cfg = EXEC_SCORE_PILLARS[p];
+        return [...cfg.sintetici, ...cfg.intermedi]
+          .filter(
+            (c) => !cfg.mock?.includes(c) && !known.has(`${p}.${c}`) && realScore.has(`${p}.${c}`),
+          )
+          .map((c) => {
+            const r = realScore.get(`${p}.${c}`)!;
+            const score = r.score ?? 0;
+            return {
+              id: c,
+              label: r.nome ?? c,
+              pillar: p,
+              indicatorLevel: "executive" as const,
+              dynamic: true,
+              value: score / 100,
+              prev: (score - (r.var_score ?? 0)) / 100,
+              color: PILLAR_COLORS[p] ?? cfg.color,
+              fonte: cfg.fonte[c] ?? "Fonte: Conto Annuale",
+              formula: r.formula?.split("\n")[0] ?? "",
+              subIndicators: [],
+              assessment: {
+                level: r.badge ?? "N/D",
+                color: badgeColor(r.badge),
+                text: letturaScore(r, score),
+              },
+              interconnections: {
+                connections: (r.interconnessioni ?? [])
+                  .filter((x) => x !== p)
+                  .map((x) => ({ pillar: x, label: PILLAR_LABELS[x] ?? x, reason: "" })),
+              },
+            };
+          });
+      });
+      return [...mapped, ...extras];
+    };
     if (!d1Data) return withExec(executiveIndicesStatic);
     const d1Ids = ["IAC", "IIMP/R", "ICPR", "ICVC", "IACU"] as const;
     return withExec(executiveIndicesStatic).map((idx) => {
