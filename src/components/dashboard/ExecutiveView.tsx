@@ -28,9 +28,18 @@ import {
   trendData,
 } from "./executive/executiveData";
 import { useD1Calculations } from "@/hooks/useD1Calculations";
-import { useExecScore, useExecScoreFiltri } from "@/hooks/useExecScore";
-import { codiceIndice } from "@/services/exec/execScoreService";
-import { EXEC_SCORE_PILLARS, badgeColor } from "./executive/score/execScoreConfig";
+import { useExecScoreMulti, useExecScoreFiltri } from "@/hooks/useExecScore";
+import { EXEC_SCORE_PILLARS, badgeColor, resolveExecCode } from "./executive/score/execScoreConfig";
+
+const EXEC_PILLARS = Object.keys(EXEC_SCORE_PILLARS);
+
+/** Frase di lettura coerente con lo score: le righe di "interpretazione" vanno da valori bassi ad alti. */
+const pickInterpretazione = (txt: string | null, score: number) => {
+  const lines = (txt ?? "").split("\n").map((l) => l.replace(/^•\s*/, "").trim()).filter(Boolean);
+  if (!lines.length) return "";
+  const i = Math.min(lines.length - 1, Math.floor((Math.max(0, Math.min(99, score)) / 100) * lines.length));
+  return lines[i];
+};
 
 /* ── Dimension grouping config — 6 Pillar ── */
 const dimensionGroups = [
@@ -95,17 +104,18 @@ export const ExecutiveView = ({
 
   const { data: d1Data } = useD1Calculations(d1Filters);
 
-  /* D2: indici di sintesi reali (RPC fa_ca_exec_d2_indicatori_score, score [0-100]) */
+  /* Pillar con score reali (RPC fa_ca_exec_<dx>_indicatori_score, score [0-100]) */
   const { filtri: execFiltri } = useExecScoreFiltri();
-  const { data: d2Rows } = useExecScore("D2", execFiltri);
+  const execRows = useExecScoreMulti(EXEC_PILLARS, execFiltri);
 
   /* Merge dynamic D1 data into static indices */
   const allIndices = useMemo(() => {
-    const realScore = new Map((d2Rows ?? []).map((r) => [codiceIndice(r.id), r]));
+    // chiave = id RPC completo (es. "D5.DPI_Norm"): evita collisioni tra pillar
+    const realScore = new Map(execRows.map((r) => [r.id, r]));
     const withExec = (list: typeof executiveIndicesStatic) =>
       list.map((idx) => {
         const cfg = EXEC_SCORE_PILLARS[idx.pillar];
-        const r = cfg && realScore.get(idx.id);
+        const r = cfg && realScore.get(`${idx.pillar}.${resolveExecCode(idx.pillar, idx.id)}`);
         if (!r) return idx;
         const score = r.score ?? 0;
         return {
@@ -115,13 +125,13 @@ export const ExecutiveView = ({
           prev: (score - (r.var_score ?? 0)) / 100,
           subIndicators: (cfg.componenti[idx.id] ?? []).map((c) => ({
             key: c,
-            value: (realScore.get(c)?.score ?? 0) / 100,
-            color: badgeColor(realScore.get(c)?.badge),
+            value: (realScore.get(`${idx.pillar}.${c}`)?.score ?? 0) / 100,
+            color: badgeColor(realScore.get(`${idx.pillar}.${c}`)?.badge),
           })),
           assessment: {
             level: r.badge ?? "N/D",
             color: badgeColor(r.badge),
-            text: r.interpretazione?.split("\n")[0]?.replace(/^•\s*/, "") ?? "",
+            text: pickInterpretazione(r.interpretazione, score),
           },
         };
       });
@@ -145,7 +155,7 @@ export const ExecutiveView = ({
       }
       return idx;
     });
-  }, [d1Data, d2Rows]);
+  }, [d1Data, execRows]);
 
   /* Executive view shows ONLY executive-level indicators per pillar (as per methodology docs) */
   const executiveIndices = allIndices.filter((idx) => idx.indicatorLevel === "executive");

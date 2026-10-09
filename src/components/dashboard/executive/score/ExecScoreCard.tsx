@@ -193,7 +193,7 @@ export const ExecScoreCard = ({
   const famiglia = row?.famiglia_score ?? "";
   if (row?.descrizione_score || famiglia)
     parte2.push({ label: "Famiglia di scala", value: row?.descrizione_score || famiglia });
-  if (/target/i.test(famiglia)) {
+  if (/target/i.test(famiglia) || row?.soglia_score != null) {
     const v1 = row?.valore_1 ?? null;
     const v2 = row?.valore_2 ?? null;
     if (v1 != null && v2) parte2.push({ label: "Valore grezzo (componente 1 / componente 2)", value: fmtNum(v1 / v2, 3) });

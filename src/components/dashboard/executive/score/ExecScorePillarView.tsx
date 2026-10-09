@@ -26,7 +26,7 @@ import { codiceIndice, type ExecScoreRow } from "@/services/exec/execScoreServic
 import { FilterPills } from "../../FilterPills";
 import { BottomUpNav } from "../../BottomUpNav";
 import { ExecScoreCard } from "./ExecScoreCard";
-import { EXEC_SCORE_PILLARS, badgeColor, fmtScore } from "./execScoreConfig";
+import { EXEC_SCORE_PILLARS, badgeColor, fmtScore, resolveExecCode } from "./execScoreConfig";
 
 interface Props {
   pillar: string;
@@ -34,7 +34,8 @@ interface Props {
   onGoExecutive?: () => void;
 }
 
-export const ExecScorePillarView = ({ pillar, selectedIndicator, onGoExecutive }: Props) => {
+export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, onGoExecutive }: Props) => {
+  const selectedIndicator = resolveExecCode(pillar, selectedRaw);
   const config = EXEC_SCORE_PILLARS[pillar];
   const { filtri, enteScope, ente } = useExecScoreFiltri();
   const [highlight, setHighlight] = useState<string | null>(selectedIndicator ?? null);

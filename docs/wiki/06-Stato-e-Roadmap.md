@@ -16,7 +16,7 @@ svolgere o da verificare.
 ## 🟢 In corso
 
 - Consolidamento e verifica dei dati delle analisi già disponibili.
-- **Vista Sintetica con score reali (D2 completata, D5 · D4 · D6 a seguire)**: la pagina
+- **Vista Sintetica con score reali (D2 e D5 completate, D4 · D6 a seguire)**: la pagina
   D2 · Programmazione fabbisogno legge i dati reali (RPC `fa_ca_exec_d2_indicatori_score`).
   Lo score è espresso da 0 a 100, senza il simbolo "%". La pagina mostra:
   - una panoramica a barre;
@@ -31,6 +31,13 @@ svolgere o da verificare.
 
   I filtri disponibili sono Anno, Regione, Comparto e il perimetro dell'ente.
   Anche la card IGF della Vista Executive usa i dati reali.
+- **D5 · Rewarding e carriera** (RPC `fa_ca_exec_d5_indicatori_score`) usa la stessa
+  pagina della D2:
+  - l'indice di sintesi IDC;
+  - gli indici intermedi DPI_Norm e ICS_Norm.
+
+  La scomposizione di DPI_Norm mostra anche il valore grezzo e il target
+  (passaggi per dipendente). Anche la card IDC della Vista Executive usa i dati reali.
 
 ## 🟡 Da fare
 

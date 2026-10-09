@@ -26,6 +26,8 @@ export interface ExecScorePillarConfig {
   intermedi: string[];
   componenti: Record<string, string[]>;
   fonte: Record<string, string>;
+  /** Alias degli id usati da sidebar/vista Executive (es. "DPI_Norm_D5" -> "DPI_Norm"). */
+  alias?: Record<string, string>;
   /** Passaggi extra (Parte 2) calcolati nel frontend dalle righe della risposta. */
   extraScoreSteps?: Record<
     string,
@@ -64,7 +66,26 @@ export const EXEC_SCORE_PILLARS: Record<string, ExecScorePillarConfig> = {
       },
     },
   },
+  D5: {
+    pillar: "D5",
+    label: "Rewarding e carriera",
+    description: "Dinamicità delle progressioni di carriera e crescita stipendiale",
+    color: "hsl(var(--chart-purple))",
+    sintetici: ["IDC"],
+    intermedi: ["DPI_Norm", "ICS_Norm"],
+    componenti: { IDC: ["DPI_Norm", "ICS_Norm"] },
+    alias: { DPI_Norm_D5: "DPI_Norm" },
+    fonte: {
+      IDC: "Fonte: Conto Annuale · Indice composito D5",
+      DPI_Norm: "Fonte: Conto Annuale · Passaggi orizzontali e verticali",
+      ICS_Norm: "Fonte: Conto Annuale · Personale per categoria",
+    },
+  },
 };
+
+/** Codice RPC dell'indice a partire dall'id usato in sidebar / Executive. */
+export const resolveExecCode = (pillar: string, id?: string | null) =>
+  id ? (EXEC_SCORE_PILLARS[pillar]?.alias?.[id] ?? id) : id ?? undefined;
 
 export const isExecScorePillar = (pillar?: string) => !!pillar && pillar in EXEC_SCORE_PILLARS;
 

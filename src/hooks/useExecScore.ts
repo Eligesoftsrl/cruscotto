@@ -22,6 +22,18 @@ export function useExecScore(pillar: string, f: ExecScoreFiltri, enabled = true)
   });
 }
 
+/** Righe score di piu pillar insieme (vista Executive). */
+export function useExecScoreMulti(pillars: string[], f: ExecScoreFiltri, enabled = true) {
+  const results = useQueries({
+    queries: pillars.map((p) => ({
+      queryKey: key(p, f),
+      queryFn: () => fetchExecIndicatoriScore(p, f),
+      enabled: enabled && Number.isFinite(f.anno) && f.anno > 0,
+    })),
+  });
+  return results.flatMap((r) => r.data ?? []);
+}
+
 /**
  * Trend storico: anni da mv_filtri (tipo=anno), una chiamata per anno con i
  * filtri invariati (anni successivi a quello selezionato esclusi).
