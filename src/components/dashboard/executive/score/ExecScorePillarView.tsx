@@ -203,7 +203,7 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator, onGoExecutive }
             {config.sintetici.length > 0 && (
               <section className="space-y-3">
                 <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">Indice di sintesi</h2>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start" data-testid="exec-score-grid-sintetici">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-0" data-testid="exec-score-grid-sintetici">
                   {config.sintetici.map((c) => (
                     <ExecScoreCard key={c} {...cardProps(c)} variant="sintetico" />
                   ))}
@@ -216,7 +216,7 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator, onGoExecutive }
               <section className="space-y-3">
                 <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">Indici intermedi</h2>
                 <div
-                  className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 items-start"
+                  className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-0"
                   data-testid="exec-score-grid-intermedi"
                 >
                   {config.intermedi.map((c) => (

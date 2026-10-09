@@ -8,6 +8,9 @@
  *  Parte 2 normalizzazione dello score) · barre componenti (solo compositi) ·
  *  scheda metodologica · interconnessioni · trend storico.
  * Nessun simbolo "%": lo score e un punteggio [0-100].
+ * Layout: la card usa CSS subgrid (8 righe: header, badge, formula, componenti,
+ * scomposizione, metodologia, trend, interconnessioni) per allineare le sezioni
+ * tra card della stessa riga della griglia.
  */
 import React, { useState } from "react";
 import {
@@ -224,7 +227,7 @@ export const ExecScoreCard = ({
     <div
       id={`synth-card-${code}`}
       data-testid={`exec-score-card-${code}`}
-      className={`tableau-card border-t-2 flex flex-col transition-shadow scroll-mt-24 ${
+      className={`tableau-card border-t-2 grid grid-rows-subgrid row-span-8 gap-0 mb-4 transition-shadow scroll-mt-24 ${
         highlighted ? "ring-2 ring-primary shadow-md" : ""
       }`}
       style={{ borderTopColor: bColor }}
@@ -299,7 +302,7 @@ export const ExecScoreCard = ({
       </div>
 
       {/* Riquadro formula */}
-      {row?.formula && (
+      {row?.formula ? (
         <div className="mx-4 mb-3 px-3 py-2 rounded border border-border/50 bg-muted/30">
           <code className="text-xs text-muted-foreground font-mono leading-snug whitespace-pre-line block">
             {row.formula}
@@ -308,10 +311,12 @@ export const ExecScoreCard = ({
             → score {code} = punteggio [0-100] ({famiglia || "normalizzazione"})
           </div>
         </div>
+      ) : (
+        <div />
       )}
 
       {/* Barre dei componenti (solo compositi) - score [0-100] */}
-      {isComposito && (
+      {isComposito ? (
         <div className="px-4 pb-3 space-y-1">
           {componenti.map((c) => {
             const r = rows.get(c);
@@ -327,6 +332,8 @@ export const ExecScoreCard = ({
             );
           })}
         </div>
+      ) : (
+        <div />
       )}
 
       {/* Scomposizione formula (pannello che si apre dentro la card) */}
@@ -359,10 +366,12 @@ export const ExecScoreCard = ({
       </Section>
 
       {/* Scheda metodologica */}
-      {row && (
+      {row ? (
         <Section icon={Info} title="Scheda metodologica" testId={`exec-score-metodo-toggle-${code}`}>
           <MetodologiaTabs row={row} />
         </Section>
+      ) : (
+        <div />
       )}
 
       {/* Trend storico */}
@@ -398,7 +407,7 @@ export const ExecScoreCard = ({
       </Section>
 
       {/* Interconnessioni */}
-      {icPillars.length > 0 && (
+      {icPillars.length > 0 ? (
         <div className="mx-4 mt-1 mb-4">
           <div className="flex items-center gap-1.5 mb-2">
             <Link2 className="h-3.5 w-3.5 text-muted-foreground" />
@@ -442,8 +451,9 @@ export const ExecScoreCard = ({
             <p className="mt-1.5 text-xs text-primary/80 italic leading-snug">{staticIc.bridgeNote}</p>
           )}
         </div>
+      ) : (
+        <div />
       )}
-      <div className="mt-auto" />
     </div>
   );
 };
