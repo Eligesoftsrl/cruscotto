@@ -227,6 +227,8 @@ export interface ExecutiveIndex {
   dynamic?: boolean;
   indicatorLevel?: IndicatorLevel;
   isPlaceholder?: boolean;
+  /** Indice con dati dimostrativi (mock): mostra il disclaimer "Dati mock-up". */
+  isMock?: boolean;
   formulaBreakdown?: FormulaBreakdown;
   context?: ContextInfo;
   metodologia?: {
@@ -341,6 +343,14 @@ export const ExecutiveKpiCard = ({
                 {idx.isPlaceholder && (
                   <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-muted text-muted-foreground border border-dashed border-border">
                     Placeholder
+                  </span>
+                )}
+                {idx.isMock && (
+                  <span
+                    title="Dati dimostrativi (mock-up): fonte non ancora collegata"
+                    className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-dashed border-amber-400"
+                  >
+                    Dati mock-up
                   </span>
                 )}
               </div>

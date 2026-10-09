@@ -85,8 +85,7 @@ export const syntheticIndicators: Record<string, { id: string; label: string }[]
   ],
   D4: [
     { id: "CGC", label: "Capacità di gestione delle competenze (Executive)" },
-    { id: "TCF", label: "Tasso di copertura formativa" },
-    { id: "IFM_Norm", label: "Intensità formativa media" },
+    { id: "TCF", label: "Intensità formativa normalizzata" },
     { id: "DPI_Norm", label: "Dinamicità del personale interna" },
     { id: "CQT", label: "Coerenza qualifiche e titoli di studio" },
     { id: "ISCP", label: "Sviluppo capitale professionale (Executive)" },

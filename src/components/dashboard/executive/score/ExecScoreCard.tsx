@@ -151,6 +151,8 @@ export interface ExecScoreCardProps {
   anno: number;
   highlighted?: boolean;
   variant?: "sintetico" | "intermedio";
+  /** Dati mock-up (fonte non collegata): disclaimer a vista, niente trend storico. */
+  isMock?: boolean;
 }
 
 export const ExecScoreCard = ({
@@ -162,6 +164,7 @@ export const ExecScoreCard = ({
   anno,
   highlighted = false,
   variant = "intermedio",
+  isMock = false,
 }: ExecScoreCardProps) => {
   const pillar = config.pillar;
   const pillarColor = config.color;
@@ -251,9 +254,22 @@ export const ExecScoreCard = ({
                   Indice di sintesi
                 </span>
               )}
+              {isMock && (
+                <span
+                  data-testid={`exec-score-mock-${code}`}
+                  title="Dati dimostrativi: la fonte non è ancora collegata"
+                  className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-dashed border-amber-400"
+                >
+                  Dati mock-up
+                </span>
+              )}
             </div>
             <p className="text-sm font-medium text-foreground leading-tight">{row?.nome ?? code}</p>
-            <p className="text-xs text-muted-foreground/70 mt-1">{config.fonte[code] ?? "Fonte: Conto Annuale"}</p>
+            <p className="text-xs text-muted-foreground/70 mt-1">
+              {isMock
+                ? "Dati dimostrativi · fonte non ancora collegata"
+                : (config.fonte[code] ?? "Fonte: Conto Annuale")}
+            </p>
           </div>
           <div className="flex flex-col items-end shrink-0">
             <div className="flex items-center gap-2">
@@ -376,9 +392,11 @@ export const ExecScoreCard = ({
 
       {/* Trend storico */}
       <Section icon={LineChartIcon} title={`Trend storico · ${code}`} testId={`exec-score-trend-toggle-${code}`}>
-        <div className="h-[160px] px-1" data-testid={`exec-score-trend-${code}`}>
-          {trend.length === 0 ? (
-            <p className="text-xs text-muted-foreground px-3">Nessun dato storico disponibile.</p>
+        <div className={`${isMock || trend.length === 0 ? "" : "h-[160px]"} px-1`} data-testid={`exec-score-trend-${code}`}>
+          {isMock || trend.length === 0 ? (
+            <p className="text-xs text-muted-foreground px-3">
+              {isMock ? "Trend non disponibile per i dati mock-up." : "Nessun dato storico disponibile."}
+            </p>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={trend} margin={{ left: -10, right: 10, top: 5, bottom: 0 }}>

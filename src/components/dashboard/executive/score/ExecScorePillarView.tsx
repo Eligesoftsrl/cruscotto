@@ -27,6 +27,7 @@ import { FilterPills } from "../../FilterPills";
 import { BottomUpNav } from "../../BottomUpNav";
 import { ExecScoreCard } from "./ExecScoreCard";
 import { EXEC_SCORE_PILLARS, badgeColor, fmtScore, resolveExecCode } from "./execScoreConfig";
+import { mockRows } from "./execScoreMock";
 
 interface Props {
   pillar: string;
@@ -44,12 +45,14 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
   const q = useExecScore(pillar, filtri);
   const trendQ = useExecScoreTrend(pillar, filtri);
 
-  /* Righe indicizzate per codice senza prefisso (es. "IRS") */
+  /* Righe indicizzate per codice senza prefisso (es. "IRS"); i mock-up non sovrascrivono i dati reali */
+  const mockSet = useMemo(() => new Set(config?.mock ?? []), [config]);
   const rows = useMemo(() => {
     const m = new Map<string, ExecScoreRow>();
+    mockRows(pillar, config?.mock ?? [], anno).forEach((r) => m.set(codiceIndice(r.id), r));
     (q.data ?? []).forEach((r) => m.set(codiceIndice(r.id), r));
     return m;
-  }, [q.data]);
+  }, [q.data, pillar, config, anno]);
 
   const trendByCode = useMemo(() => {
     const m = new Map<string, { anno: number; score: number | null; valore: number | null; unita: string | null }[]>();
@@ -81,7 +84,10 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
     nome: rows.get(c)?.nome ?? c,
     score: Math.round(rows.get(c)?.score ?? 0),
     badge: rows.get(c)?.badge ?? null,
+    mock: mockSet.has(c),
   }));
+  const hasMock = barData.some((d) => d.mock);
+  const gruppi = config.gruppiIntermedi ?? [{ titolo: "Indici intermedi", codici: config.intermedi }];
 
   const goTo = (code: string) => {
     setHighlight(code);
@@ -96,6 +102,7 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
     config,
     anno,
     highlighted: highlight === code,
+    isMock: mockSet.has(code),
   });
 
   const perimetro = ente?.descrizione ?? enteScope.label ?? "Totale PA";
@@ -159,7 +166,7 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
                 )}
               </div>
               <div className="tableau-card-body">
-                <div style={{ height: Math.max(180, barData.length * 40) }}>
+                <div style={{ height: Math.max(180, barData.length * 36) }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={barData} layout="vertical" margin={{ left: 10, right: 30 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--tableau-grid))" horizontal={false} />
@@ -168,12 +175,13 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
                         type="category"
                         dataKey="id"
                         tick={{ fontSize: 13, fill: "hsl(var(--foreground))", fontWeight: 700 }}
-                        width={80}
+                        tickFormatter={(id: string) => (mockSet.has(id) ? `${id} *` : id)}
+                        width={90}
                       />
                       <Tooltip
                         contentStyle={{ fontSize: 13, background: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }}
                         formatter={(v: number, _n: string, item: { payload?: { badge: string | null } }) => [
-                          `${fmtScore(v)}${item?.payload?.badge ? ` · ${item.payload.badge}` : ""}`,
+                          `${fmtScore(v)}${item?.payload?.badge ? ` · ${item.payload.badge}` : ""}${mockSet.has((item?.payload as { id?: string })?.id ?? "") ? " · dati mock-up" : ""}`,
                           "Score",
                         ]}
                         labelFormatter={(label: string) => barData.find((d) => d.id === label)?.nome || label}
@@ -188,7 +196,9 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
                           <Cell
                             key={d.id}
                             fill={badgeColor(d.badge)}
-                            fillOpacity={!highlight || highlight === d.id ? 1 : 0.25}
+                            fillOpacity={(!highlight || highlight === d.id ? 1 : 0.25) * (d.mock ? 0.45 : 1)}
+                            stroke={d.mock ? badgeColor(d.badge) : undefined}
+                            strokeDasharray={d.mock ? "4 2" : undefined}
                             cursor="pointer"
                             onClick={() => goTo(d.id)}
                           />
@@ -197,6 +207,11 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
+                {hasMock && (
+                  <p className="text-xs text-muted-foreground mt-2" data-testid="exec-score-mock-note">
+                    * Dati mock-up: valori dimostrativi, fonte non ancora collegata.
+                  </p>
+                )}
               </div>
             </div>
 
@@ -212,20 +227,27 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
               </section>
             )}
 
-            {/* Indici intermedi: 3 card per riga */}
-            {config.intermedi.length > 0 && (
-              <section className="space-y-3">
-                <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">Indici intermedi</h2>
+            {/* Indici intermedi: 3 card per riga (uno o piu gruppi) */}
+            {gruppi.map((g, gi) => (
+              <section key={g.titolo} className="space-y-3">
+                <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">
+                  {g.titolo}
+                  {g.codici.every((c) => mockSet.has(c)) && (
+                    <span className="ml-2 text-[10px] font-semibold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-dashed border-amber-400 align-middle">
+                      Dati mock-up
+                    </span>
+                  )}
+                </h2>
                 <div
                   className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-0"
-                  data-testid="exec-score-grid-intermedi"
+                  data-testid={gi === 0 ? "exec-score-grid-intermedi" : `exec-score-grid-intermedi-${gi}`}
                 >
-                  {config.intermedi.map((c) => (
+                  {g.codici.map((c) => (
                     <ExecScoreCard key={c} {...cardProps(c)} variant="intermedio" />
                   ))}
                 </div>
               </section>
-            )}
+            ))}
           </>
         )}
 

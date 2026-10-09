@@ -35,9 +35,15 @@ const EXEC_PILLARS = Object.keys(EXEC_SCORE_PILLARS);
 
 /** Frase di lettura coerente con lo score: le righe di "interpretazione" vanno da valori bassi ad alti. */
 const pickInterpretazione = (txt: string | null, score: number) => {
-  const lines = (txt ?? "").split("\n").map((l) => l.replace(/^•\s*/, "").trim()).filter(Boolean);
+  const lines = (txt ?? "")
+    .split("\n")
+    .map((l) => l.replace(/^•\s*/, "").trim())
+    .filter(Boolean);
   if (!lines.length) return "";
-  const i = Math.min(lines.length - 1, Math.floor((Math.max(0, Math.min(99, score)) / 100) * lines.length));
+  const i = Math.min(
+    lines.length - 1,
+    Math.floor((Math.max(0, Math.min(99, score)) / 100) * lines.length),
+  );
   return lines[i];
 };
 
@@ -113,28 +119,31 @@ export const ExecutiveView = ({
     // chiave = id RPC completo (es. "D5.DPI_Norm"): evita collisioni tra pillar
     const realScore = new Map(execRows.map((r) => [r.id, r]));
     const withExec = (list: typeof executiveIndicesStatic) =>
-      list.map((idx) => {
-        const cfg = EXEC_SCORE_PILLARS[idx.pillar];
-        const r = cfg && realScore.get(`${idx.pillar}.${resolveExecCode(idx.pillar, idx.id)}`);
-        if (!r) return idx;
-        const score = r.score ?? 0;
-        return {
-          ...idx,
-          label: r.nome ?? idx.label,
-          value: score / 100,
-          prev: (score - (r.var_score ?? 0)) / 100,
-          subIndicators: (cfg.componenti[idx.id] ?? []).map((c) => ({
-            key: c,
-            value: (realScore.get(`${idx.pillar}.${c}`)?.score ?? 0) / 100,
-            color: badgeColor(realScore.get(`${idx.pillar}.${c}`)?.badge),
-          })),
-          assessment: {
-            level: r.badge ?? "N/D",
-            color: badgeColor(r.badge),
-            text: pickInterpretazione(r.interpretazione, score),
-          },
-        };
-      });
+      list
+        .filter((idx) => !EXEC_SCORE_PILLARS[idx.pillar]?.ritirati?.includes(idx.id))
+        .map((idx) => {
+          const cfg = EXEC_SCORE_PILLARS[idx.pillar];
+          if (cfg?.mock?.includes(idx.id)) return { ...idx, isMock: true };
+          const r = cfg && realScore.get(`${idx.pillar}.${resolveExecCode(idx.pillar, idx.id)}`);
+          if (!r) return idx;
+          const score = r.score ?? 0;
+          return {
+            ...idx,
+            label: r.nome ?? idx.label,
+            value: score / 100,
+            prev: (score - (r.var_score ?? 0)) / 100,
+            subIndicators: (cfg.componenti[idx.id] ?? []).map((c) => ({
+              key: c,
+              value: (realScore.get(`${idx.pillar}.${c}`)?.score ?? 0) / 100,
+              color: badgeColor(realScore.get(`${idx.pillar}.${c}`)?.badge),
+            })),
+            assessment: {
+              level: r.badge ?? "N/D",
+              color: badgeColor(r.badge),
+              text: pickInterpretazione(r.interpretazione, score),
+            },
+          };
+        });
     if (!d1Data) return withExec(executiveIndicesStatic);
     const d1Ids = ["IAC", "IIMP/R", "ICPR", "ICVC", "IACU"] as const;
     return withExec(executiveIndicesStatic).map((idx) => {

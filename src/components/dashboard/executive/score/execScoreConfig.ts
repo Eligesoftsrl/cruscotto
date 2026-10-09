@@ -28,6 +28,15 @@ export interface ExecScorePillarConfig {
   fonte: Record<string, string>;
   /** Alias degli id usati da sidebar/vista Executive (es. "DPI_Norm_D5" -> "DPI_Norm"). */
   alias?: Record<string, string>;
+  /**
+   * Indici con DATI MOCK-UP (fonte non ancora collegata): letti da executiveData,
+   * mostrati con disclaimer. Devono comparire anche in sintetici/intermedi.
+   */
+  mock?: string[];
+  /** Indici ritirati (stato_score = excluded): nascosti anche in Vista Executive. */
+  ritirati?: string[];
+  /** Raggruppamento opzionale degli intermedi (una griglia da 3 per gruppo). */
+  gruppiIntermedi?: { titolo: string; codici: string[] }[];
   /** Passaggi extra (Parte 2) calcolati nel frontend dalle righe della risposta. */
   extraScoreSteps?: Record<
     string,
@@ -66,6 +75,33 @@ export const EXEC_SCORE_PILLARS: Record<string, ExecScorePillarConfig> = {
       },
     },
   },
+  D4: {
+    pillar: "D4",
+    label: "Sviluppo professionale",
+    description: "Copertura formativa, competenze digitali, efficacia Syllabus e diversificazione percorsi",
+    color: "hsl(var(--chart-orange))",
+    sintetici: ["CGC", "ISCP", "IESF"],
+    intermedi: ["ICF_Norm", "DPI_Norm", "CQT", "ISTP_Norm", "IDFP", "ICRP", "IEF_Norm", "ICQ", "ICEC"],
+    gruppiIntermedi: [
+      { titolo: "Componenti CGC · Gestione delle competenze", codici: ["ICF_Norm", "DPI_Norm", "CQT"] },
+      { titolo: "Componenti ISCP · Minerva", codici: ["ISTP_Norm", "IDFP", "ICRP"] },
+      { titolo: "Componenti IESF · Syllabus", codici: ["IEF_Norm", "ICQ", "ICEC"] },
+    ],
+    componenti: {
+      CGC: ["ICF_Norm", "DPI_Norm", "CQT"],
+      ISCP: ["ISTP_Norm", "IDFP", "ICRP"],
+      IESF: ["IEF_Norm", "ICQ", "ICEC"],
+    },
+    mock: ["ISCP", "IESF", "ISTP_Norm", "IDFP", "ICRP", "IEF_Norm", "ICQ", "ICEC"],
+    alias: { TCF: "ICF_Norm" },
+    ritirati: ["IFM_Norm"],
+    fonte: {
+      CGC: "Fonte: Conto Annuale · Indice composito D4",
+      ICF_Norm: "Fonte: Conto Annuale · Giornate di formazione",
+      DPI_Norm: "Fonte: Conto Annuale · Passaggi orizzontali e verticali",
+      CQT: "Fonte: Conto Annuale · Titoli di studio e categorie",
+    },
+  },
   D5: {
     pillar: "D5",
     label: "Rewarding e carriera",
@@ -86,6 +122,10 @@ export const EXEC_SCORE_PILLARS: Record<string, ExecScorePillarConfig> = {
 /** Codice RPC dell'indice a partire dall'id usato in sidebar / Executive. */
 export const resolveExecCode = (pillar: string, id?: string | null) =>
   id ? (EXEC_SCORE_PILLARS[pillar]?.alias?.[id] ?? id) : id ?? undefined;
+
+/** Badge da lk_intervalli_badge (usato solo per i dati mock-up, l'API restituisce gia il badge). */
+export const badgeFromScore = (score: number) =>
+  score < 25 ? "Basso" : score < 50 ? "Moderato" : score < 75 ? "Buono" : "Eccellente";
 
 export const isExecScorePillar = (pillar?: string) => !!pillar && pillar in EXEC_SCORE_PILLARS;
 
