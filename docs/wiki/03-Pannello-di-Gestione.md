@@ -26,6 +26,25 @@ L'operazione ha effetto immediato sull'esperienza degli utenti:
 Questa funzione permette di rendere disponibili le schede in modo graduale, ad esempio
 durante le fasi di lavorazione o di verifica dei dati.
 
+**Indici della Vista Sintetica.** Accanto alle sezioni Conto Annuale e SIPrO ci sono
+quattro sezioni nuove: «Indici D2», «Indici D4», «Indici D5» e «Indici D6». Ogni indice si
+attiva o disattiva singolarmente, per un totale di 36 indici, mock-up compresi. Sono
+disponibili anche i comandi «Attiva tutte» e «Disattiva tutte».
+
+Un indice disattivato:
+- scompare dal menu laterale;
+- scompare dalla pagina del pillar, sia dalla card sia dalla panoramica;
+- scompare dalla Vista Executive;
+- con un collegamento diretto mostra l'avviso «indice disattivato dall'amministratore».
+
+Le chiavi hanno il formato `exec_<pillar>_<codice>`, per esempio `exec_d2_igf`.
+
+> **Prerequisito database.** Perché l'attivazione o la disattivazione resti salvata, la
+> chiave deve esistere nella tabella `feature_flags`. Lo script
+> `docs/sql/feature_flags_sipro_indici.sql` inserisce le 22 chiavi SIPrO e le 36 chiavi
+> degli indici. È idempotente e non modifica lo stato già impostato.
+> Senza lo script, la modifica vale solo fino al ricaricamento della pagina.
+
 ## 3.3 Statistiche d'uso
 
 È disponibile una sezione con statistiche sull'utilizzo delle funzionalità, presentate in
@@ -33,8 +52,16 @@ forma grafica (ad esempio grafici a barre e a torta). Le statistiche offrono un 
 sintetico dell'adozione delle diverse schede.
 
 Il grafico **«Schede più consultate»** si basa sul tracciamento delle consultazioni: a ogni
-apertura di una scheda (sia del Conto Annuale sia del SIPrO) viene registrato un evento con
-l'etichetta della scheda stessa. Il grafico mostra quindi le schede effettivamente più
+apertura di una scheda (Conto Annuale, SIPrO o indice della Vista Sintetica) viene
+registrato un evento con l'etichetta della scheda stessa.
+
+Per gli indici, per esempio «D2 · IGF — Governo strategico del fabbisogno», si conta una
+consultazione quando:
+- l'indice viene aperto dal menu o dalla Vista Executive;
+- in pagina si apre uno dei pannelli della card (Scomposizione, Scheda metodologica,
+  Trend) o si clicca la barra in panoramica.
+
+Ogni indice viene conteggiato una sola volta per visita. Il grafico mostra quindi le schede effettivamente più
 utilizzate. Nota: il conteggio parte dalle consultazioni successive all'attivazione del
 tracciamento; una base dati appena popolata potrà risultare inizialmente vuota e si
 riempirà con l'uso dell'applicazione.

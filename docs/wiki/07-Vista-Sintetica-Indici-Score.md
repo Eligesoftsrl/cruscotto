@@ -189,6 +189,23 @@ Tutte le famiglie chiudono con **"Calcolo score" = `formula_score`** e con **Sco
    - ISCP e IESF siano segnalati come mock-up;
    - IFM_Norm non compaia.
 8. Entrare con un utente **ente** (Keycloak) e verificare che i valori riguardino solo l'ente o gli enti del proprio perimetro.
+9. **Pannello Admin → Schede → Indici D2**: disattivare un indice, per esempio PTI, e verificare che:
+   - sparisca dal menu e dalla pagina D2;
+   - con il link diretto compaia l'avviso «indice disattivato».
+
+   Disattivare IGF e verificare che sparisca dalla Vista Executive. Ricaricare la pagina e
+   verificare che lo stato resti salvato: serve lo script SQL del §9.
+10. Aprire alcuni pannelli delle card e verificare che gli indici compaiano in «Schede più consultate».
+
+## 9. Prerequisito database per il Pannello Admin
+
+Lo script `docs/sql/feature_flags_sipro_indici.sql` va eseguito una volta sul database. Inserisce:
+- le 22 chiavi delle schede **SIPrO**;
+- le 36 chiavi degli **indici**.
+
+Sullo staging queste chiavi oggi non esistono, quindi attivazioni e disattivazioni non restano
+salvate dopo il ricaricamento della pagina. Lo script è idempotente
+(`on conflict do nothing`).
 
 ---
 
@@ -200,6 +217,7 @@ Tutte le famiglie chiudono con **"Calcolo score" = `formula_score`** e con **Sco
 | **R1.1 · Allineamento** | Card della stessa riga allineate con CSS subgrid, così box di lunghezza diversa non si sfalsano più. |
 | **R2 · D5** | IDC, DPI_Norm, ICS_Norm reali. Alias `DPI_Norm_D5`. IDC reale in Vista Executive. Frase di lettura coerente con lo score. |
 | **R3 · D4** | CGC, ICF_Norm, DPI_Norm, CQT reali. 8 indici mantenuti come **mock-up** con disclaimer. IFM_Norm ritirato. Intermedi raggruppati per composito (CGC · ISCP · IESF). Alias `TCF` → `ICF_Norm`. |
+| **R5 · Pannello Admin** | Nuove sezioni «Indici D2/D4/D5/D6» in Pannello → Schede, per attivare o disattivare ognuno dei 36 indici (singolarmente o tutti insieme). Un indice disattivato sparisce da menu, pagina del pillar e Vista Executive. Gli indici entrano in «Schede più consultate» (apertura da menu/Executive, apertura dei pannelli della card, click in panoramica). Script `docs/sql/feature_flags_sipro_indici.sql` con le 58 chiavi mancanti (SIPrO + indici). |
 | **R4 · D6** | 16 indici reali in 4 gruppi tematici, compresi i **nuovi RTG, RRG e IRIC** (aggiunti anche al menu e alla Vista Executive). Passaggi di normalizzazione per tutte le famiglie di scala (§4). Alias `IRG_genere` → `IRG`. Risolti i valori fuori scala della D6 in Executive (per esempio ISG = 151). |
 
 ### Dove si trova il codice

@@ -14,8 +14,14 @@ import {
   Briefcase,
   Laptop,
   UserCheck,
+  Target,
+  Star,
+  BarChart2,
+  Gauge,
   type LucideIcon,
 } from "lucide-react";
+import { EXEC_ADMIN_PILLARS, EXEC_INDICI } from "./execIndiciCatalog";
+import { EXEC_SCORE_PILLARS } from "@/components/dashboard/executive/score/execScoreConfig";
 
 /**
  * Catalogo delle SCHEDE gestibili dal Pannello Admin (attiva/disattiva),
@@ -200,6 +206,24 @@ export const SCHEDE_SECTIONS: SezioneDef[] = [
       { indicatorId: "sipro-evoluzione-profili", flagKey: "sipro_evoluzione_profili", label: "Evoluzione Profili", description: "Evoluzione profili di ruolo", icon: ArrowUpRight },
     ],
   },
+  // --- Indici della Vista Sintetica (uno per pillar con score [0-100]) ---
+  ...EXEC_ADMIN_PILLARS.map<SezioneDef>((p) => {
+    const PILLAR_ICON: Record<string, LucideIcon> = { D2: Target, D4: GraduationCap, D5: Star, D6: BarChart2 };
+    return {
+      id: `exec-${p.toLowerCase()}`,
+      label: `Indici ${p} — ${EXEC_SCORE_PILLARS[p].label}`,
+      description: "Vista Sintetica · indici con score [0-100] (anche in Vista Executive)",
+      icon: PILLAR_ICON[p] ?? Gauge,
+      available: true,
+      schede: EXEC_INDICI.filter((i) => i.pillar === p).map((i) => ({
+        indicatorId: i.sidebarId,
+        flagKey: i.flagKey,
+        label: i.label,
+        description: i.description,
+        icon: i.sintetico ? Gauge : (PILLAR_ICON[p] ?? Gauge),
+      })),
+    };
+  }),
   {
     id: "syllabus",
     label: "Syllabus",

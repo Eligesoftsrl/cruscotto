@@ -87,16 +87,25 @@ const Section = ({
   children,
   testId,
   defaultOpen = false,
+  onOpen,
 }: {
   icon: React.ElementType;
   title: string;
   children: React.ReactNode;
   testId: string;
   defaultOpen?: boolean;
+  onOpen?: () => void;
 }) => {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <Collapsible open={open} onOpenChange={setOpen} className="mx-4 mb-2">
+    <Collapsible
+      open={open}
+      onOpenChange={(v) => {
+        setOpen(v);
+        if (v) onOpen?.();
+      }}
+      className="mx-4 mb-2"
+    >
       <CollapsibleTrigger
         data-testid={testId}
         className="flex items-center gap-1.5 w-full px-3 py-2 rounded border border-border/40 bg-muted/20 hover:bg-muted/40 transition-colors text-left"
@@ -154,6 +163,8 @@ export interface ExecScoreCardProps {
   variant?: "sintetico" | "intermedio";
   /** Dati mock-up (fonte non collegata): disclaimer a vista, niente trend storico. */
   isMock?: boolean;
+  /** Consultazione della card (apertura di un pannello): usata per «Schede più consultate». */
+  onInteract?: (code: string) => void;
 }
 
 export const ExecScoreCard = ({
@@ -166,7 +177,9 @@ export const ExecScoreCard = ({
   highlighted = false,
   variant = "intermedio",
   isMock = false,
+  onInteract,
 }: ExecScoreCardProps) => {
+  const track = () => onInteract?.(code);
   const pillar = config.pillar;
   const pillarColor = config.color;
   const score = row?.score ?? 0;
@@ -335,7 +348,7 @@ export const ExecScoreCard = ({
       )}
 
       {/* Scomposizione formula (pannello che si apre dentro la card) */}
-      <Section icon={Calculator} title="Scomposizione formula" testId={`exec-score-breakdown-toggle-${code}`}>
+      <Section icon={Calculator} title="Scomposizione formula" testId={`exec-score-breakdown-toggle-${code}`} onOpen={track}>
         <div className="px-3 py-3 rounded border border-primary/20 bg-primary/5 space-y-3" data-testid={`exec-score-breakdown-${code}`}>
           <div>
             <div className="text-[11px] font-bold text-primary uppercase tracking-wider mb-1">
@@ -365,7 +378,7 @@ export const ExecScoreCard = ({
 
       {/* Scheda metodologica */}
       {row ? (
-        <Section icon={Info} title="Scheda metodologica" testId={`exec-score-metodo-toggle-${code}`}>
+        <Section icon={Info} title="Scheda metodologica" testId={`exec-score-metodo-toggle-${code}`} onOpen={track}>
           <MetodologiaTabs row={row} />
         </Section>
       ) : (
@@ -373,7 +386,7 @@ export const ExecScoreCard = ({
       )}
 
       {/* Trend storico */}
-      <Section icon={LineChartIcon} title={`Trend storico · ${code}`} testId={`exec-score-trend-toggle-${code}`}>
+      <Section icon={LineChartIcon} title={`Trend storico · ${code}`} testId={`exec-score-trend-toggle-${code}`} onOpen={track}>
         <div className={`${isMock || trend.length === 0 ? "" : "h-[160px]"} px-1`} data-testid={`exec-score-trend-${code}`}>
           {isMock || trend.length === 0 ? (
             <p className="text-xs text-muted-foreground px-3">

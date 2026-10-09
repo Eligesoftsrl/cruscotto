@@ -1,4 +1,6 @@
 import type { FeatureFlag } from "./types";
+import { EXEC_INDICI } from "@/config/execIndiciCatalog";
+import { EXEC_SCORE_PILLARS } from "@/components/dashboard/executive/score/execScoreConfig";
 
 /**
  * Catalogo delle funzionalità del sistema gestibili dall'Admin (on/off).
@@ -149,6 +151,15 @@ export const DEFAULT_FEATURE_FLAGS: FeatureFlag[] = [
   { key: "sipro_ambiti_ruolo", label: "Ambiti e Profili di Ruolo", description: "SIPrO — Profili e Cataloghi", category: "Schede SIPrO — Profili e Cataloghi", enabled: true, updatedAt: "" },
   { key: "sipro_aree_contrattuali", label: "Aree Contrattuali", description: "SIPrO — Profili e Cataloghi", category: "Schede SIPrO — Profili e Cataloghi", enabled: true, updatedAt: "" },
   { key: "sipro_evoluzione_profili", label: "Evoluzione Profili", description: "SIPrO — Profili e Cataloghi", category: "Schede SIPrO — Profili e Cataloghi", enabled: true, updatedAt: "" },
+  // --- Indici Vista Sintetica (score [0-100]) ---
+  ...EXEC_INDICI.map<FeatureFlag>((i) => ({
+    key: i.flagKey,
+    label: i.label,
+    description: i.description,
+    category: `Schede Indici — ${i.pillar} ${EXEC_SCORE_PILLARS[i.pillar]?.label ?? ""}`.trim(),
+    enabled: true,
+    updatedAt: "",
+  })),
   {
     key: "export_dati",
     label: "Export Dati",

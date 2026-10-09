@@ -29,6 +29,7 @@ import { resetOnboardingTour } from "./OnboardingTour";
 import { GlossaryDialog } from "./GlossaryDialog";
 import { useAdminState } from "@/services/admin/adminStore";
 import { CA_INDICATOR_FLAG, SIPRO_INDICATOR_FLAG } from "@/config/schedeFlags";
+import { EXEC_FLAG_BY_SIDEBAR } from "@/config/execIndiciCatalog";
 
 /* ── NavState ── */
 export interface NavState {
@@ -381,7 +382,11 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
           const PIcon = p.icon;
           const isExp = expandedPillar === p.id;
           const isPillarActive = nav.level === "synthetic" && nav.pillar === p.id;
-          const indicators = syntheticIndicators[p.id] || [];
+          // Indici disattivati dall'Admin (Pannello → Schede → Indici Dx) nascosti.
+          const indicators = (syntheticIndicators[p.id] || []).filter((ind) => {
+            const key = EXEC_FLAG_BY_SIDEBAR[`${p.id}.${ind.id}`];
+            return !key || !disabledFlags.has(key);
+          });
 
           return (
             <div key={p.id}>

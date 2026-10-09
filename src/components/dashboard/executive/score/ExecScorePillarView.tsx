@@ -9,8 +9,11 @@
  *  - Indici intermedi: 3 card per riga
  * Score in scala [0-100], senza simbolo "%".
  */
-import { useEffect, useMemo, useState } from "react";
-import { FileText, AlertCircle, Loader2 } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FileText, AlertCircle, Loader2, Power } from "lucide-react";
+import { useAdminState } from "@/services/admin/adminStore";
+import { logEvento } from "@/services/admin/logger";
+import { EXEC_FLAG_BY_CODE, EXEC_LABEL_BY_CODE } from "@/config/execIndiciCatalog";
 import {
   BarChart,
   Bar,
@@ -41,6 +44,30 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
   const { filtri, enteScope, ente } = useExecScoreFiltri();
   const [highlight, setHighlight] = useState<string | null>(selectedIndicator ?? null);
   const anno = filtri.anno;
+
+  /* Feature flag per indice (Pannello Admin → Schede → Indici Dx) */
+  const { flags } = useAdminState();
+  const isOn = useCallback(
+    (c: string) => {
+      const k = EXEC_FLAG_BY_CODE[`${pillar}.${c}`];
+      return !k || (flags.find((f) => f.key === k)?.enabled ?? true);
+    },
+    [flags, pillar],
+  );
+
+  /* «Schede più consultate»: una consultazione per indice per visita della pagina
+     (apertura di un pannello o click in panoramica). L'indice aperto da link
+     diretto e gia tracciato da UsageTracker (parametro ?indicator). */
+  const tracked = useRef(new Set<string>(selectedIndicator ? [selectedIndicator] : []));
+  const trackIndice = useCallback(
+    (c: string) => {
+      if (tracked.current.has(c)) return;
+      tracked.current.add(c);
+      const label = EXEC_LABEL_BY_CODE[`${pillar}.${c}`];
+      if (label) logEvento("navigazione", label, { scheda: label, indicator: c, pillar, origine: "vista-sintetica" });
+    },
+    [pillar],
+  );
 
   const q = useExecScore(pillar, filtri);
   const trendQ = useExecScoreTrend(pillar, filtri);
@@ -78,7 +105,9 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
 
   if (!config) return null;
 
-  const ordered = [...config.sintetici, ...config.intermedi];
+  const sintetici = config.sintetici.filter(isOn);
+  const ordered = [...sintetici, ...config.intermedi.filter(isOn)];
+  const selectedOff = !!selectedIndicator && !isOn(selectedIndicator);
   const barData = ordered.map((c) => ({
     id: c,
     nome: rows.get(c)?.nome ?? c,
@@ -87,10 +116,13 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
     mock: mockSet.has(c),
   }));
   const hasMock = barData.some((d) => d.mock);
-  const gruppi = config.gruppiIntermedi ?? [{ titolo: "Indici intermedi", codici: config.intermedi }];
+  const gruppi = (config.gruppiIntermedi ?? [{ titolo: "Indici intermedi", codici: config.intermedi }])
+    .map((g) => ({ ...g, codici: g.codici.filter(isOn) }))
+    .filter((g) => g.codici.length > 0);
 
   const goTo = (code: string) => {
     setHighlight(code);
+    trackIndice(code);
     document.getElementById(`synth-card-${code}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
@@ -103,6 +135,7 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
     anno,
     highlighted: highlight === code,
     isMock: mockSet.has(code),
+    onInteract: trackIndice,
   });
 
   const perimetro = ente?.descrizione ?? enteScope.label ?? "Totale PA";
@@ -153,7 +186,20 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
           </div>
         )}
 
-        {q.isSuccess && (
+        {selectedOff && (
+          <div className="tableau-card p-4 flex items-center gap-2 text-sm text-muted-foreground" data-testid="exec-score-indice-off">
+            <Power className="h-4 w-4" />
+            L'indice <b className="text-foreground">{selectedIndicator}</b> è stato disattivato dall'amministratore nel
+            Pannello di gestione.
+          </div>
+        )}
+        {q.isSuccess && ordered.length === 0 && (
+          <div className="tableau-card p-6 text-sm text-muted-foreground" data-testid="exec-score-all-off">
+            Tutti gli indici del pillar {pillar} sono disattivati dall'amministratore.
+          </div>
+        )}
+
+        {q.isSuccess && ordered.length > 0 && (
           <>
             {/* Panoramica */}
             <div className="tableau-card" data-testid="exec-score-panoramica">
@@ -216,11 +262,11 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
             </div>
 
             {/* Indici di sintesi: 2 card per riga */}
-            {config.sintetici.length > 0 && (
+            {sintetici.length > 0 && (
               <section className="space-y-3">
                 <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">Indice di sintesi</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-0" data-testid="exec-score-grid-sintetici">
-                  {config.sintetici.map((c) => (
+                  {sintetici.map((c) => (
                     <ExecScoreCard key={c} {...cardProps(c)} variant="sintetico" />
                   ))}
                 </div>

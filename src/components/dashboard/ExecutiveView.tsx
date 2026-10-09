@@ -38,6 +38,9 @@ import {
 
 import { PILLAR_COLORS, PILLAR_LABELS } from "./executive/executiveInterconnessioni";
 
+import { useAdminState } from "@/services/admin/adminStore";
+import { EXEC_FLAG_BY_CODE } from "@/config/execIndiciCatalog";
+
 const EXEC_PILLARS = Object.keys(EXEC_SCORE_PILLARS);
 
 /** Testo di lettura della card Executive: valore dell'indice e score restituiti dall'API. */
@@ -109,6 +112,13 @@ export const ExecutiveView = ({
   );
 
   const { data: d1Data } = useD1Calculations(d1Filters);
+
+  /* Indici disattivati dall'Admin (Pannello → Schede → Indici Dx) esclusi dalla Vista Executive */
+  const { flags: adminFlags } = useAdminState();
+  const isIndiceOn = (pillar: string, id: string) => {
+    const k = EXEC_FLAG_BY_CODE[`${pillar}.${resolveExecCode(pillar, id)}`];
+    return !k || (adminFlags.find((f) => f.key === k)?.enabled ?? true);
+  };
 
   /* Pillar con score reali (RPC fa_ca_exec_<dx>_indicatori_score, score [0-100]) */
   const { filtri: execFiltri } = useExecScoreFiltri();
@@ -205,7 +215,9 @@ export const ExecutiveView = ({
   }, [d1Data, execRows]);
 
   /* Executive view shows ONLY executive-level indicators per pillar (as per methodology docs) */
-  const executiveIndices = allIndices.filter((idx) => idx.indicatorLevel === "executive");
+  const executiveIndices = allIndices.filter(
+    (idx) => idx.indicatorLevel === "executive" && isIndiceOn(idx.pillar, idx.id),
+  );
 
   /* Group indices by dimension */
   const groupedIndices = dimensionGroups
