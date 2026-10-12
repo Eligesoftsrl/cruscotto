@@ -229,6 +229,8 @@ export interface ExecutiveIndex {
   isPlaceholder?: boolean;
   /** Indice con dati dimostrativi (mock): mostra il disclaimer "Dati mock-up". */
   isMock?: boolean;
+  /** Codice mostrato a video se diverso dall'id di navigazione (es. id "TCF" → codice RPC "ICF_Norm"). */
+  displayId?: string;
   formulaBreakdown?: FormulaBreakdown;
   context?: ContextInfo;
   metodologia?: {
@@ -293,11 +295,14 @@ export const ExecutiveKpiCard = ({
   idx,
   onDrillDown,
   variant = "executive",
+  sintesi = false,
   ...rest
 }: {
   idx: ExecutiveIndex;
   onDrillDown?: (pillar: string, indicatorId?: string) => void;
   variant?: "executive" | "synthetic";
+  /** Indice di sintesi (Vista Executive): badge dedicato e riquadro "Composto da". */
+  sintesi?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>) => {
   const [open, setOpen] = useState(false);
   const [drillNum, setDrillNum] = useState(false);
@@ -333,7 +338,7 @@ export const ExecutiveKpiCard = ({
           <div className="flex justify-between items-start">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-lg font-bold text-foreground">{idx.id}</span>
+                <span className="text-lg font-bold text-foreground">{idx.displayId ?? idx.id}</span>
                 <span
                   className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded"
                   style={{ background: `${idx.color}20`, color: idx.color }}
@@ -345,6 +350,14 @@ export const ExecutiveKpiCard = ({
                     Placeholder
                   </span>
                 )}
+                {sintesi && (
+                  <span
+                    className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded text-white"
+                    style={{ background: idx.color }}
+                  >
+                    Indice di sintesi
+                  </span>
+                )}
                 {idx.isMock && (
                   <span
                     title="Dati dimostrativi (mock-up): fonte non ancora collegata"
@@ -354,16 +367,20 @@ export const ExecutiveKpiCard = ({
                   </span>
                 )}
               </div>
-              <p className="text-sm text-muted-foreground leading-tight">{idx.label}</p>
+              <p
+                className={`leading-tight ${sintesi ? "text-base font-medium text-foreground" : "text-sm text-muted-foreground"}`}
+              >
+                {idx.label}
+              </p>
             </div>
             <div className="flex items-center gap-2 shrink-0 ml-3">
               <div className="text-right">
-                <span className="text-3xl font-bold text-foreground">
+                <span className={`${sintesi ? "text-4xl" : "text-3xl"} font-bold text-foreground`}>
                   {Math.round((idx.value ?? 0) * 100)}
                 </span>
                 <div className="text-xs text-muted-foreground">Score [0-100]</div>
               </div>
-              <GaugeArc value={idx.value} color={idx.color} size={64} />
+              <GaugeArc value={idx.value} color={idx.color} size={sintesi ? 80 : 64} />
             </div>
           </div>
         </div>
@@ -380,6 +397,35 @@ export const ExecutiveKpiCard = ({
             {idx.assessment.text}
           </p>
         </div>
+
+        {/* Composto da (solo indice di sintesi) */}
+        {sintesi && idx.subIndicators.length > 0 && (
+          <div
+            className="mx-4 mb-3 px-3 py-2.5 rounded bg-muted/30"
+            data-testid={`exec-composto-${idx.id}`}
+          >
+            <div className="text-[11px] font-bold text-muted-foreground uppercase tracking-[0.12em] mb-1.5">
+              Composto da
+            </div>
+            {idx.subIndicators.map((s) => (
+              <div key={s.key} className="flex items-center gap-3 py-0.5">
+                <span className="text-xs font-semibold text-foreground w-20 shrink-0">{s.key}</span>
+                <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: `${Math.min(100, Math.round((s.value ?? 0) * 100))}%`,
+                      background: idx.color,
+                    }}
+                  />
+                </div>
+                <span className="text-xs font-bold w-8 text-right tabular-nums text-foreground">
+                  {Math.round((s.value ?? 0) * 100)}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Interconnessioni (compatte) */}
         {idx.interconnections && idx.interconnections.connections.length > 0 && (

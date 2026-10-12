@@ -59,7 +59,10 @@
    I parametri vuoti non vengono inviati.
 8. **Trend storico:** una chiamata per ogni anno disponibile in `mv_filtri`, fino all'anno selezionato, con gli stessi filtri.
 9. **Dati mock-up:** badge "Dati mock-up" e riga "fonte non ancora collegata" in ogni card. Nella panoramica le barre sono tratteggiate e marcate con un asterisco. Non c'è trend storico. Il badge compare anche nella Vista Executive.
-10. **Vista Executive:** le card dei pillar collegati mostrano lo score reale. La frase di lettura riporta valore dell'indice, dominio, score e famiglia di scala.
+10. **Vista Executive:** le card dei pillar collegati mostrano lo score reale.
+    - La frase di lettura riporta valore dell'indice, dominio e score, più la formula per i compositi o la famiglia di scala per gli altri.
+    - Le dimensioni con indice di sintesi (D2, D4, D5) seguono la gerarchia: prima la riga da 2 card con la sintesi, poi le righe da 3 card con i componenti.
+    - Il pulsante «Percorso guidato» non è più presente.
 
 ---
 
@@ -217,6 +220,7 @@ salvate dopo il ricaricamento della pagina. Lo script è idempotente
 | **R1.1 · Allineamento** | Card della stessa riga allineate con CSS subgrid, così box di lunghezza diversa non si sfalsano più. |
 | **R2 · D5** | IDC, DPI_Norm, ICS_Norm reali. Alias `DPI_Norm_D5`. IDC reale in Vista Executive. Frase di lettura coerente con lo score. |
 | **R3 · D4** | CGC, ICF_Norm, DPI_Norm, CQT reali. 8 indici mantenuti come **mock-up** con disclaimer. IFM_Norm ritirato. Intermedi raggruppati per composito (CGC · ISCP · IESF). Alias `TCF` → `ICF_Norm`. |
+| **R6 · Vista Executive gerarchica** | Su richiesta del cliente, D2, D5 e D4 nella Vista Executive mostrano prima l'**indice di sintesi** (riga da 2 card: sintesi con badge «Indice di sintesi», riquadro «Composto da» e box «Come leggere questa dimensione») e subito dopo gli **indici componenti** (righe da 3 card). Interconnessioni prese dall'API, codici mostrati come nella RPC (ICF_Norm, DPI_Norm, IRG). Tolto il pulsante «Percorso guidato» da tutte le dimensioni della Vista Executive. |
 | **R5 · Pannello Admin** | Nuove sezioni «Indici D2/D4/D5/D6» in Pannello → Schede, per attivare o disattivare ognuno dei 36 indici (singolarmente o tutti insieme). Un indice disattivato sparisce da menu, pagina del pillar e Vista Executive. Gli indici entrano in «Schede più consultate» (apertura da menu/Executive, apertura dei pannelli della card, click in panoramica). Script `docs/sql/feature_flags_sipro_indici.sql` con le 58 chiavi mancanti (SIPrO + indici). |
 | **R4 · D6** | 16 indici reali in 4 gruppi tematici, compresi i **nuovi RTG, RRG e IRIC** (aggiunti anche al menu e alla Vista Executive). Passaggi di normalizzazione per tutte le famiglie di scala (§4). Alias `IRG_genere` → `IRG`. Risolti i valori fuori scala della D6 in Executive (per esempio ISG = 151). |
 

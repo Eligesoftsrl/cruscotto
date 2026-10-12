@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
-import { Target, Activity, Award, BarChart3, Layers, Route } from "lucide-react";
-import { pillarToJourney } from "@/data/guidedJourneys";
+import { Target, Activity, Award, BarChart3, Layers } from "lucide-react";
 import {
   RadarChart,
   PolarGrid,
@@ -43,12 +42,25 @@ import { EXEC_FLAG_BY_CODE } from "@/config/execIndiciCatalog";
 
 const EXEC_PILLARS = Object.keys(EXEC_SCORE_PILLARS);
 
-/** Testo di lettura della card Executive: valore dell'indice e score restituiti dall'API. */
+/**
+ * Testo di lettura della card Executive (valori restituiti dall'API):
+ * "Indice 0,57 (dominio [0;1]) → score 54 su 100 · <formula del composito | famiglia di scala>."
+ */
 const letturaScore = (
-  r: { valore: number | null; dominio: string | null; descrizione_score: string | null },
+  r: {
+    valore: number | null;
+    dominio: string | null;
+    famiglia_score: string | null;
+    formula: string | null;
+  },
   score: number,
-) =>
-  `Indice ${fmtIndex(r.valore)}${r.dominio ? ` (dominio ${r.dominio})` : ""} → score ${Math.round(score)} su 100${r.descrizione_score ? ` · ${r.descrizione_score}` : ""}.`;
+  composito = false,
+) => {
+  const coda = composito
+    ? (r.formula?.split("\n")[0]?.replace(/^[^=]*=\s*/, "") ?? "")
+    : (r.famiglia_score ?? "");
+  return `Indice ${fmtIndex(r.valore)}${r.dominio ? ` (dominio ${r.dominio})` : ""} → score ${Math.round(score)} su 100${coda ? ` · ${coda.replace(/\.$/, "")}` : ""}.`;
+};
 
 /* ── Dimension grouping config — 6 Pillar ── */
 const dimensionGroups = [
@@ -92,10 +104,8 @@ const dimensionGroups = [
 
 export const ExecutiveView = ({
   onDrillDown,
-  onStartJourney,
 }: {
   onDrillDown?: (pillar: string, indicatorId?: string) => void;
-  onStartJourney?: (journeyId: string) => void;
 }) => {
   const { profile } = useAuth();
   const { filters } = useFilters();
@@ -137,9 +147,27 @@ export const ExecutiveView = ({
           const r = cfg && realScore.get(`${idx.pillar}.${resolveExecCode(idx.pillar, idx.id)}`);
           if (!r) return idx;
           const score = r.score ?? 0;
+          const code = resolveExecCode(idx.pillar, idx.id) as string;
+          // Interconnessioni dall'API (escluso il pillar corrente), motivazioni dai dati statici
+          const reasons = new Map(
+            (idx.interconnections?.connections ?? []).map((c) => [c.pillar, c]),
+          );
+          const apiConn = (r.interconnessioni ?? []).filter((x) => x !== idx.pillar);
           return {
             ...idx,
+            displayId: code,
             label: r.nome ?? idx.label,
+            ...(apiConn.length
+              ? {
+                  interconnections: {
+                    ...(idx.interconnections ?? {}),
+                    connections: apiConn.map(
+                      (x) =>
+                        reasons.get(x) ?? { pillar: x, label: PILLAR_LABELS[x] ?? x, reason: "" },
+                    ),
+                  },
+                }
+              : {}),
             value: score / 100,
             prev: (score - (r.var_score ?? 0)) / 100,
             subIndicators: (cfg.componenti[idx.id] ?? []).map((c) => ({
@@ -150,7 +178,7 @@ export const ExecutiveView = ({
             assessment: {
               level: r.badge ?? "N/D",
               color: badgeColor(r.badge),
-              text: letturaScore(r, score),
+              text: letturaScore(r, score, (cfg.componenti[idx.id] ?? []).length > 0),
             },
           };
         });
@@ -219,13 +247,44 @@ export const ExecutiveView = ({
     (idx) => idx.indicatorLevel === "executive" && isIndiceOn(idx.pillar, idx.id),
   );
 
+  /*
+   * Pillar gerarchici (con indice di sintesi, es. D2 · D4 · D5): nella Vista Executive
+   * si mostrano l'indice di sintesi (riga da 2 card) e, subito dopo, gli indici
+   * componenti (righe da 3 card), nell'ordine della configurazione del pillar.
+   */
+  const hierarchy = (pillar: string) => {
+    const cfg = EXEC_SCORE_PILLARS[pillar];
+    if (!cfg || cfg.sintetici.length === 0) return null;
+    const byCode = new Map(
+      allIndices
+        .filter((i) => i.pillar === pillar)
+        .map((i) => [resolveExecCode(pillar, i.id) as string, i]),
+    );
+    const pick = (codes: string[]) =>
+      codes
+        .map((c) => byCode.get(c))
+        .filter((i): i is (typeof allIndices)[number] => !!i && isIndiceOn(pillar, i.id));
+    const sintesi = pick(cfg.sintetici);
+    const componenti = pick(
+      cfg.gruppiIntermedi ? cfg.gruppiIntermedi.flatMap((g) => g.codici) : cfg.intermedi,
+    );
+    return sintesi.length + componenti.length > 0 ? { sintesi, componenti } : null;
+  };
+
   /* Group indices by dimension */
   const groupedIndices = dimensionGroups
-    .map((group) => ({
-      ...group,
-      indices: executiveIndices.filter((idx) => group.pillars.includes(idx.pillar)),
-    }))
+    .map((group) => {
+      const h = hierarchy(group.id);
+      return {
+        ...group,
+        hierarchy: h,
+        indices: h
+          ? [...h.sintesi, ...h.componenti]
+          : executiveIndices.filter((idx) => group.pillars.includes(idx.pillar)),
+      };
+    })
     .filter((g) => g.indices.length > 0);
+  const totaleIndicatori = groupedIndices.reduce((n, g) => n + g.indices.length, 0);
 
   return (
     <div className="p-6 space-y-6 flex-1">
@@ -238,7 +297,7 @@ export const ExecutiveView = ({
               <span className="px-1.5 py-0.5 rounded text-xs font-bold bg-primary text-primary-foreground">
                 EX
               </span>
-              {executiveIndices.length} Indicatori · 6 Pillar · Anno {filters.anno}
+              {totaleIndicatori} Indicatori · 6 Pillar · Anno {filters.anno}
               {filters.comparto !== "Tutti" && (
                 <span className="text-primary font-semibold">· {filters.comparto}</span>
               )}
@@ -277,19 +336,6 @@ export const ExecutiveView = ({
               </div>
               <span className="text-sm font-bold text-foreground tracking-wide">{group.label}</span>
               <span className="ml-auto flex items-center gap-2">
-                {pillarToJourney[group.id] && onStartJourney && (
-                  <button
-                    onClick={() => onStartJourney(pillarToJourney[group.id])}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-colors hover:opacity-80"
-                    style={{
-                      background: `hsl(var(${group.colorVar}))`,
-                      color: "hsl(var(--primary-foreground))",
-                    }}
-                  >
-                    <Route className="h-3.5 w-3.5" />
-                    Percorso guidato
-                  </button>
-                )}
                 <span
                   className="text-xs font-bold px-2.5 py-0.5 rounded-full"
                   style={{
@@ -302,25 +348,97 @@ export const ExecutiveView = ({
               </span>
             </div>
             {/* Cards inside group */}
-            <div
-              className={`p-4 grid gap-4 bg-card ${
-                group.indices.length === 1
-                  ? "grid-cols-1 max-w-2xl"
-                  : group.indices.length === 2
-                    ? "grid-cols-1 md:grid-cols-2"
-                    : "grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
-              }`}
-            >
-              {group.indices.map((idx, ii) => (
-                <ExecutiveKpiCard
-                  key={idx.id}
-                  idx={idx}
-                  variant="executive"
-                  onDrillDown={(pillar) => onDrillDown?.(pillar, idx.id)}
-                  {...(gi === 0 && ii === 0 ? { "data-tour": "kpi-card" } : {})}
-                />
-              ))}
-            </div>
+            {group.hierarchy ? (
+              <div className="p-4 bg-card space-y-4" data-testid={`exec-hier-${group.id}`}>
+                {group.hierarchy.sintesi.length > 0 && (
+                  <div>
+                    <h3 className="text-[11px] font-bold text-muted-foreground uppercase tracking-[0.12em] mb-2">
+                      Indice di sintesi
+                    </h3>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      {group.hierarchy.sintesi.map((idx, ii) => (
+                        <ExecutiveKpiCard
+                          key={idx.id}
+                          idx={idx}
+                          variant="executive"
+                          sintesi
+                          onDrillDown={(pillar) => onDrillDown?.(pillar, idx.id)}
+                          {...(gi === 0 && ii === 0 ? { "data-tour": "kpi-card" } : {})}
+                        />
+                      ))}
+                      {group.hierarchy.sintesi.length % 2 === 1 && (
+                        <div
+                          className="rounded-lg border border-dashed border-border p-5 text-sm text-muted-foreground space-y-2"
+                          data-testid={`exec-hier-legend-${group.id}`}
+                        >
+                          <p className="font-semibold text-foreground">
+                            Come leggere questa dimensione
+                          </p>
+                          <p>
+                            {group.hierarchy.sintesi.length === 1 ? (
+                              <>
+                                La card a sinistra è l'
+                                <b className="text-foreground">indice di sintesi</b>: il suo score
+                                combina gli score degli indici componenti, riportati sotto e
+                                riepilogati nel riquadro "Composto da".
+                              </>
+                            ) : (
+                              <>
+                                Le card qui sopra sono gli{" "}
+                                <b className="text-foreground">indici di sintesi</b>: lo score di
+                                ciascuno combina gli score dei propri indici componenti, riportati
+                                sotto e riepilogati nel riquadro "Composto da".
+                              </>
+                            )}
+                          </p>
+                          <p>
+                            Gli indici componenti sono disposti su righe da tre, come nelle altre
+                            dimensioni.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+                {group.hierarchy.componenti.length > 0 && (
+                  <div>
+                    <h3 className="text-[11px] font-bold text-muted-foreground uppercase tracking-[0.12em] mb-2">
+                      Indici componenti
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                      {group.hierarchy.componenti.map((idx) => (
+                        <ExecutiveKpiCard
+                          key={idx.id}
+                          idx={idx}
+                          variant="executive"
+                          onDrillDown={(pillar) => onDrillDown?.(pillar, idx.id)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div
+                className={`p-4 grid gap-4 bg-card ${
+                  group.indices.length === 1
+                    ? "grid-cols-1 max-w-2xl"
+                    : group.indices.length === 2
+                      ? "grid-cols-1 md:grid-cols-2"
+                      : "grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
+                }`}
+              >
+                {group.indices.map((idx, ii) => (
+                  <ExecutiveKpiCard
+                    key={idx.id}
+                    idx={idx}
+                    variant="executive"
+                    onDrillDown={(pillar) => onDrillDown?.(pillar, idx.id)}
+                    {...(gi === 0 && ii === 0 ? { "data-tour": "kpi-card" } : {})}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>

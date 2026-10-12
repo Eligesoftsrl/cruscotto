@@ -99,7 +99,6 @@ const Index = () => {
           onDrillDown={(pillar, indicatorId) =>
             setNav({ level: "synthetic", pillar, indicator: indicatorId })
           }
-          onStartJourney={(journeyId) => setNav({ level: "guided", journeyId })}
         />
       );
     }
