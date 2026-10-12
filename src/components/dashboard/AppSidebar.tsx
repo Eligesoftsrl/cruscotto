@@ -244,7 +244,8 @@ const operationalSourcesAll = [
     label: "KPI Riforma PA",
     icon: Activity,
     indicators: [
-      { id: "kpi-success-rate", label: "KPI Success Rate" },
+      // Per ora resta solo la scheda KPI Abilitanti (mappatura kpi-riforma_3):
+      // «KPI Success Rate» e «Benchmark» sono nascoste (componenti mantenuti nel codice).
       { id: "kpi-abilitanti", label: "KPI Abilitanti (Blocchi)" },
     ],
   },

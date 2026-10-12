@@ -54,6 +54,9 @@ svolgere o da verificare.
   I valori fuori scala della D6 in Vista Executive sono risolti.
   Il dettaglio completo e la checklist di verifica sono in
   [7. Vista Sintetica · Indici con score](07-Vista-Sintetica-Indici-Score).
+- **KPI Riforma PA**: per ora resta solo «KPI Abilitanti e di Successo», con dati reali
+  (`kpi_filtri`, `kpi_scheda`), filtro Anno e righe che si aprono con Tipo di sintesi e
+  Formula. Gli indici compositi sono stati eliminati.
 - **Pannello Admin · indici**: ognuno dei 36 indici della Vista Sintetica si attiva o
   disattiva da Pannello → Schede, e gli indici compaiono in «Schede più consultate».
   Va eseguito lo script `docs/sql/feature_flags_sipro_indici.sql`: senza le chiavi nel

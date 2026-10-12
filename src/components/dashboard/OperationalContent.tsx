@@ -41,9 +41,7 @@ import { SyllabusCorsiSection } from "@/components/dashboard/sections/syllabus/S
 import { SyllabusDiscentiSection } from "@/components/dashboard/sections/syllabus/SyllabusDiscentiSection";
 import { SyllabusAssessmentSection } from "@/components/dashboard/sections/syllabus/SyllabusAssessmentSection";
 import { SyllabusGapFormazioneSection } from "@/components/dashboard/sections/syllabus/SyllabusGapFormazioneSection";
-import { KpiSuccessRateSection } from "@/components/dashboard/sections/kpi/KpiSuccessRateSection";
 import { KpiAbilitantiSection } from "@/components/dashboard/sections/kpi/KpiAbilitantiSection";
-import { KpiBenchmarkSection } from "@/components/dashboard/sections/kpi/KpiBenchmarkSection";
 import { LpDistribuzioneSection } from "@/components/dashboard/sections/lavoropubblico/LpDistribuzioneSection";
 import { LpDotazioneSection } from "@/components/dashboard/sections/lavoropubblico/LpDotazioneSection";
 import { Info, Construction } from "lucide-react";
@@ -252,15 +250,10 @@ export const OperationalContent = ({
   }
 
   // KPI Riforma PA
+  // Per ora resta solo la scheda «KPI Abilitanti e di Successo» (mappatura kpi-riforma_3):
+  // ogni link della sezione (anche i vecchi kpi-success-rate / kpi-benchmark) porta qui.
   if (source === "kpi-riforma") {
-    switch (indicator) {
-      case "kpi-success-rate":
-        return <KpiSuccessRateSection />;
-      case "kpi-abilitanti":
-        return <KpiAbilitantiSection />;
-      case "kpi-benchmark":
-        return <KpiBenchmarkSection />;
-    }
+    return <KpiAbilitantiSection />;
   }
 
   // Lavoro Pubblico — placeholder N/D
