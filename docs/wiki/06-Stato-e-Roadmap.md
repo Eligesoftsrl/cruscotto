@@ -57,6 +57,8 @@ svolgere o da verificare.
 - **KPI Riforma PA**: per ora resta solo «KPI Abilitanti e di Successo», con dati reali
   (`kpi_filtri`, `kpi_scheda`), filtro Anno e righe che si aprono con Tipo di sintesi e
   Formula. Gli indici compositi sono stati eliminati.
+  Ci sono anche la ricerca per codice o nome e l'export di tutti i KPI dell'anno in
+  CSV, Excel o PDF.
 - **Pannello Admin · indici**: ognuno dei 36 indici della Vista Sintetica si attiva o
   disattiva da Pannello → Schede, e gli indici compaiono in «Schede più consultate».
   Va eseguito lo script `docs/sql/feature_flags_sipro_indici.sql`: senza le chiavi nel

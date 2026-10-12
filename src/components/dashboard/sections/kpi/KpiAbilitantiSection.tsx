@@ -12,9 +12,14 @@
  *  - Accordion (dati già in memoria, nessuna chiamata): Tipo di sintesi e Formula
  *    (formula_catalogo, testo a capo libero senza troncamento).
  *  - Sezione «Indici compositi» eliminata.
+ *  - Ricerca per codice o parola del nome (filtra le righe; le card senza risultati si nascondono).
+ *  - Export CSV / Excel / PDF di TUTTI i KPI dell'anno scelto (indipendente dalla ricerca).
  */
 import { useMemo, useState } from "react";
-import { Minus, Plus, RotateCcw, Loader2, AlertCircle, Calendar } from "lucide-react";
+import { Minus, Plus, RotateCcw, Loader2, AlertCircle, Calendar, Search, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { TableExport } from "@/components/dashboard/_shared/TableExport";
+import type { ExportTable } from "@/lib/tableExport";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useKpiFiltri, useKpiScheda } from "@/hooks/useKpiRiforma";
 import type { KpiSchedaRow } from "@/services/kpi/kpiRiformaService";
@@ -45,6 +50,13 @@ const sentenceCase = (s: string) => {
   const t = s.trim().toLowerCase();
   return t ? t[0].toUpperCase() + t.slice(1) : t;
 };
+
+/** Normalizza per la ricerca: minuscolo, senza accenti. */
+const norm = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 
 const fmtValore = (v: number | null) =>
   (v ?? 0).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -105,6 +117,7 @@ export const KpiAbilitantiSection = () => {
   const filtriQ = useKpiFiltri();
   const [annoSel, setAnnoSel] = useState<number | null>(null);
   const [aperti, setAperti] = useState<Set<string>>(new Set());
+  const [cerca, setCerca] = useState("");
 
   const annoDefault = filtriQ.data?.anno_predefinito ?? null;
   const anno = annoSel ?? annoDefault;
@@ -123,10 +136,59 @@ export const KpiAbilitantiSection = () => {
       return n;
     });
 
+  /* Ricerca: ogni parola deve comparire nel codice o nel nome del KPI */
+  const termini = norm(cerca.trim()).split(/\s+/).filter(Boolean);
+  const righe = useMemo(() => {
+    const all = schedaQ.data ?? [];
+    if (!termini.length) return all;
+    // Codice KPI completo (es. "D6.1"): se esiste, mostra solo quel KPI (non D6.10…D6.19)
+    if (termini.length === 1 && /^d\d+\.\d+$/.test(termini[0])) {
+      const esatto = all.filter((r) => norm(r.kpi) === termini[0]);
+      if (esatto.length) return esatto;
+    }
+    return all.filter((r) => {
+      const testo = norm(`${r.kpi} ${cleanText(r.nome)}`);
+      return termini.every((t) => testo.includes(t));
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [schedaQ.data, termini.join(" ")]);
+
+  /* Export: tutti i KPI dell'anno scelto (non solo quelli filtrati) */
+  const exportData = useMemo<ExportTable[]>(
+    () => [
+      {
+        title: `KPI Riforma PA ${anno ?? ""}`.trim(),
+        headers: [
+          "Anno",
+          "Dimensione",
+          "Descrizione dimensione",
+          "KPI",
+          "Nome",
+          "Unità",
+          "Valore",
+          "Tipo di sintesi",
+          "Formula",
+        ],
+        rows: (schedaQ.data ?? []).map((r) => [
+          r.anno,
+          r.dimensione,
+          sentenceCase(cleanText(r.descrizione_dimensione)),
+          r.kpi,
+          cleanText(r.nome),
+          r.unita ?? "",
+          r.valore ?? 0,
+          cleanText(r.tipo_sintesi),
+          cleanText(r.formula_catalogo),
+        ]),
+      },
+    ],
+    [schedaQ.data, anno],
+  );
+
   /* Raggruppamento per dimensione, mantenendo l'ordine del DB */
   const blocks = useMemo<DimBlock[]>(() => {
     const map = new Map<string, DimBlock>();
-    (schedaQ.data ?? []).forEach((r) => {
+    righe.forEach((r) => {
       const b = map.get(r.dimensione) ?? {
         dim: r.dimensione,
         nome: sentenceCase(cleanText(r.descrizione_dimensione) || r.dimensione),
@@ -137,7 +199,7 @@ export const KpiAbilitantiSection = () => {
       map.set(r.dimensione, b);
     });
     return [...map.values()].sort((a, b) => a.dim.localeCompare(b.dim, "it", { numeric: true }));
-  }, [schedaQ.data]);
+  }, [righe]);
 
   return (
     <div className="flex-1 flex flex-col" data-testid="kpi-abilitanti-section">
@@ -176,11 +238,49 @@ export const KpiAbilitantiSection = () => {
             <RotateCcw className="h-3.5 w-3.5" /> Reimposta
           </button>
         )}
+        <div className="relative ml-auto w-full sm:w-[340px]">
+          <Search className="h-4 w-4 text-muted-foreground absolute left-2.5 top-1/2 -translate-y-1/2" aria-hidden="true" />
+          <Input
+            value={cerca}
+            onChange={(e) => setCerca(e.target.value)}
+            placeholder="Cerca KPI per codice o nome (es. D6.1, donne)"
+            aria-label="Cerca KPI per codice o nome"
+            className="h-8 pl-8 pr-8 text-sm"
+            data-testid="kpi-search"
+          />
+          {cerca && (
+            <button
+              type="button"
+              onClick={() => setCerca("")}
+              aria-label="Cancella ricerca"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              data-testid="kpi-search-clear"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+        {termini.length > 0 && schedaQ.isSuccess && (
+          <span className="text-xs text-muted-foreground" data-testid="kpi-search-count">
+            {righe.length} di {schedaQ.data?.length ?? 0} KPI
+          </span>
+        )}
       </div>
 
       <div className="p-4 space-y-4">
         <div className="tableau-card">
-          <div className="tableau-card-header">KPI Abilitanti e di Successo per Dimensione (Metodologia Ufficiale)</div>
+          <div className="tableau-card-header flex items-center justify-between gap-2">
+            <span>KPI Abilitanti e di Successo per Dimensione (Metodologia Ufficiale)</span>
+            {schedaQ.isSuccess && (schedaQ.data?.length ?? 0) > 0 && (
+              <span data-testid="kpi-export">
+                <TableExport
+                  filename={`kpi-riforma-pa-${anno ?? ""}`}
+                  title={`KPI Abilitanti e di Successo — anno ${anno ?? ""}`}
+                  data={exportData}
+                />
+              </span>
+            )}
+          </div>
           <div className="p-4">
             {(filtriQ.isLoading || schedaQ.isLoading) && (
               <div className="py-10 flex items-center justify-center gap-2 text-sm text-muted-foreground">
@@ -195,7 +295,11 @@ export const KpiAbilitantiSection = () => {
               </div>
             )}
             {schedaQ.isSuccess && blocks.length === 0 && (
-              <p className="py-6 text-sm text-muted-foreground text-center">Nessun KPI disponibile per l'anno {anno}.</p>
+              <p className="py-6 text-sm text-muted-foreground text-center" data-testid="kpi-empty">
+                {termini.length > 0
+                  ? `Nessun KPI corrisponde a «${cerca.trim()}».`
+                  : `Nessun KPI disponibile per l'anno ${anno}.`}
+              </p>
             )}
             {blocks.length > 0 && (
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
