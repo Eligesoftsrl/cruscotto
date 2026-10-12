@@ -41,6 +41,8 @@ import { useAdminState } from "@/services/admin/adminStore";
 import { EXEC_FLAG_BY_CODE } from "@/config/execIndiciCatalog";
 
 const EXEC_PILLARS = Object.keys(EXEC_SCORE_PILLARS);
+/** Dimensioni con layout gerarchico (sintesi da 2 + componenti da 3) richiesto dal cliente. */
+const HIERARCHY_PILLARS = ["D2", "D5"];
 
 /**
  * Testo di lettura della card Executive (valori restituiti dall'API):
@@ -254,7 +256,7 @@ export const ExecutiveView = ({
    */
   const hierarchy = (pillar: string) => {
     const cfg = EXEC_SCORE_PILLARS[pillar];
-    if (!cfg || cfg.sintetici.length === 0) return null;
+    if (!HIERARCHY_PILLARS.includes(pillar) || !cfg || cfg.sintetici.length === 0) return null;
     const byCode = new Map(
       allIndices
         .filter((i) => i.pillar === pillar)
