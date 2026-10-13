@@ -1,5 +1,5 @@
 -- ============================================================================
--- feature_flags · seed SCHEDE SIPrO + INDICI della Vista Sintetica (D2·D4·D5·D6)
+-- feature_flags · seed SCHEDE KPI Riforma PA + SIPrO + INDICI Vista Sintetica (D2·D4·D5·D6)
 -- ----------------------------------------------------------------------------
 -- Perché serve: il Pannello Admin attiva o disattiva le schede e gli indici
 -- aggiornando la tabella public.feature_flags (UPDATE ... WHERE key = ...).
@@ -9,7 +9,7 @@
 -- Sullo staging, alla data di questo script, la tabella contiene solo le 17
 -- chiavi di base (Navigazione, Sistema, 12 schede Conto Annuale).
 --
--- Contenuto: 22 schede SIPrO + 36 indici Vista Sintetica = 58 chiavi.
+-- Contenuto: 1 scheda KPI Riforma PA + 22 schede SIPrO + 36 indici Vista Sintetica = 59 chiavi.
 -- Chiavi indici: exec_<pillar>_<codice RPC>, es. exec_d2_igf, exec_d4_icf_norm.
 -- Generato da src/services/admin/featureRegistry.ts (DEFAULT_FEATURE_FLAGS).
 --
@@ -19,6 +19,7 @@
 -- ============================================================================
 
 insert into public.feature_flags (key, label, description, category, enabled) values
+  ('kpi_abilitanti', 'KPI Abilitanti e di Successo', 'KPI Riforma PA — 39 KPI per dimensione (kpi_scheda)', 'Schede KPI Riforma PA', true),
   ('sipro_benchmark', 'Benchmark DFP', 'SIPrO — Benchmark multi-ente', 'Schede SIPrO — Benchmark', true),
   ('sipro_organigramma', 'Organigramma UO', 'SIPrO — Organizzazione', 'Schede SIPrO — Organizzazione', true),
   ('sipro_stato_org', 'Stato Organizzazione', 'SIPrO — Organizzazione', 'Schede SIPrO — Organizzazione', true),

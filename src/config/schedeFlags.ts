@@ -46,3 +46,11 @@ export const SIPRO_INDICATOR_FLAG: Record<string, string> = {
   "sipro-aree-contrattuali": "sipro_aree_contrattuali",
   "sipro-evoluzione-profili": "sipro_evoluzione_profili",
 };
+
+/**
+ * Mappa ID indicatore (sidebar "KPI Riforma PA") -> chiave feature flag.
+ * Per ora la sezione ha solo la scheda «KPI Abilitanti e di Successo».
+ */
+export const KPI_INDICATOR_FLAG: Record<string, string> = {
+  "kpi-abilitanti": "kpi_abilitanti",
+};

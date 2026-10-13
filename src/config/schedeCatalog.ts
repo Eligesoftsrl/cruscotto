@@ -149,6 +149,22 @@ export const SCHEDE_SECTIONS: SezioneDef[] = [
     ],
   },
   {
+    id: "kpi-riforma",
+    label: "KPI Riforma PA",
+    description: "KPI abilitanti e di successo per dimensione (metodologia ufficiale)",
+    icon: Target,
+    available: true,
+    schede: [
+      {
+        indicatorId: "kpi-abilitanti",
+        flagKey: "kpi_abilitanti",
+        label: "KPI Abilitanti e di Successo",
+        description: "39 KPI in 6 dimensioni · filtro Anno · ricerca ed export",
+        icon: Target,
+      },
+    ],
+  },
+  {
     id: "sipro-benchmark",
     label: "SIPrO — Benchmark",
     description: "Confronto multi-ente (radar, barre, ranking criticità)",

@@ -129,6 +129,8 @@ export const DEFAULT_FEATURE_FLAGS: FeatureFlag[] = [
     updatedAt: "",
   },
   // --- Schede SIPrO ---
+  // --- KPI Riforma PA ---
+  { key: "kpi_abilitanti", label: "KPI Abilitanti e di Successo", description: "KPI Riforma PA — 39 KPI per dimensione (kpi_scheda)", category: "Schede KPI Riforma PA", enabled: true, updatedAt: "" },
   { key: "sipro_benchmark", label: "Benchmark DFP", description: "SIPrO — Benchmark multi-ente", category: "Schede SIPrO — Benchmark", enabled: true, updatedAt: "" },
   { key: "sipro_organigramma", label: "Organigramma UO", description: "SIPrO — Organizzazione", category: "Schede SIPrO — Organizzazione", enabled: true, updatedAt: "" },
   { key: "sipro_stato_org", label: "Stato Organizzazione", description: "SIPrO — Organizzazione", category: "Schede SIPrO — Organizzazione", enabled: true, updatedAt: "" },

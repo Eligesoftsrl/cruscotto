@@ -26,6 +26,11 @@ L'operazione ha effetto immediato sull'esperienza degli utenti:
 Questa funzione permette di rendere disponibili le schede in modo graduale, ad esempio
 durante le fasi di lavorazione o di verifica dei dati.
 
+**KPI Riforma PA.** La sezione «KPI Riforma PA» contiene la scheda «KPI Abilitanti e di
+Successo», con chiave `kpi_abilitanti`. Disattivata, sparisce dal menu e, se aperta con un
+link diretto, mostra l'avviso «Funzione disattivata». Anche questa scheda compare in
+«Schede più consultate».
+
 **Indici della Vista Sintetica.** Accanto alle sezioni Conto Annuale e SIPrO ci sono
 quattro sezioni nuove: «Indici D2», «Indici D4», «Indici D5» e «Indici D6». Ogni indice si
 attiva o disattiva singolarmente, per un totale di 36 indici, mock-up compresi. Sono
@@ -41,8 +46,8 @@ Le chiavi hanno il formato `exec_<pillar>_<codice>`, per esempio `exec_d2_igf`.
 
 > **Prerequisito database.** Perché l'attivazione o la disattivazione resti salvata, la
 > chiave deve esistere nella tabella `feature_flags`. Lo script
-> `docs/sql/feature_flags_sipro_indici.sql` inserisce le 22 chiavi SIPrO e le 36 chiavi
-> degli indici. È idempotente e non modifica lo stato già impostato.
+> `docs/sql/feature_flags_sipro_indici.sql` inserisce la chiave KPI Riforma PA, le 22 chiavi
+> SIPrO e le 36 chiavi degli indici. È idempotente e non modifica lo stato già impostato.
 > Senza lo script, la modifica vale solo fino al ricaricamento della pagina.
 
 ## 3.3 Statistiche d'uso

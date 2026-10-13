@@ -49,7 +49,7 @@ import { Info, Construction } from "lucide-react";
 import { NdMode } from "./NdMode";
 import { BottomUpNav } from "./BottomUpNav";
 import { useAdminState } from "@/services/admin/adminStore";
-import { CA_INDICATOR_FLAG } from "@/config/schedeFlags";
+import { CA_INDICATOR_FLAG, KPI_INDICATOR_FLAG } from "@/config/schedeFlags";
 
 interface OperationalContentProps {
   source: string;
@@ -253,6 +253,26 @@ export const OperationalContent = ({
   // Per ora resta solo la scheda «KPI Abilitanti e di Successo» (mappatura kpi-riforma_3):
   // ogni link della sezione (anche i vecchi kpi-success-rate / kpi-benchmark) porta qui.
   if (source === "kpi-riforma") {
+    // Feature flag: scheda disattivata dall'Admin (Pannello → Schede → KPI Riforma PA)
+    if (isFlagOff(KPI_INDICATOR_FLAG["kpi-abilitanti"])) {
+      return (
+        <div className="flex-1 flex items-center justify-center p-8" data-testid="kpi-disattivata">
+          <div className="tableau-card max-w-md w-full">
+            <div className="tableau-card-header flex items-center gap-2">
+              <Construction className="h-4 w-4" />
+              Funzione disattivata
+            </div>
+            <div className="p-8 text-center">
+              <Construction className="h-10 w-10 text-muted-foreground/30 mx-auto mb-4" />
+              <p className="text-[12px] text-muted-foreground leading-relaxed">
+                Questa scheda è stata disattivata dall'amministratore nel Pannello di
+                Amministrazione. Riattivala dalla sezione «Schede» per visualizzarne i dati.
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    }
     return <KpiAbilitantiSection />;
   }
 

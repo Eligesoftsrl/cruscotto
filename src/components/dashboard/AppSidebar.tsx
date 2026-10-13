@@ -28,7 +28,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { resetOnboardingTour } from "./OnboardingTour";
 import { GlossaryDialog } from "./GlossaryDialog";
 import { useAdminState } from "@/services/admin/adminStore";
-import { CA_INDICATOR_FLAG, SIPRO_INDICATOR_FLAG } from "@/config/schedeFlags";
+import { CA_INDICATOR_FLAG, KPI_INDICATOR_FLAG, SIPRO_INDICATOR_FLAG } from "@/config/schedeFlags";
 import { EXEC_FLAG_BY_SIDEBAR } from "@/config/execIndiciCatalog";
 
 /* ── NavState ── */
@@ -288,7 +288,13 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
   const disabledFlags = new Set(flags.filter((f) => !f.enabled).map((f) => f.key));
   const visibleSources = operationalSources.map((src) => {
     const flagMap =
-      src.id === "conto-annuale" ? CA_INDICATOR_FLAG : src.id === "sipro" ? SIPRO_INDICATOR_FLAG : null;
+      src.id === "conto-annuale"
+        ? CA_INDICATOR_FLAG
+        : src.id === "sipro"
+          ? SIPRO_INDICATOR_FLAG
+          : src.id === "kpi-riforma"
+            ? KPI_INDICATOR_FLAG
+            : null;
     if (!flagMap) return src;
     return {
       ...src,
