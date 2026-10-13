@@ -160,7 +160,6 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
             </p>
           </div>
           <div className="ml-auto flex items-center gap-2">
-            {enteScope.control}
             <button
               type="button"
               disabled

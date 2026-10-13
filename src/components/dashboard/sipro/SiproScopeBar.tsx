@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useEnteScope } from "@/hooks/useEnteScope";
 import { fetchSiproEnti } from "@/services/sipro/filtriService";
+import { EnteSelector } from "@/components/dashboard/EnteSelector";
 
 export interface SiproScope {
   codiceFiscale: string | null;
@@ -50,16 +51,12 @@ export const SiproScopeBar = ({ value, onChange }: Props) => {
     [enti, value.regione],
   );
 
-  // ente_hr: ente bloccato (eventuale selettore multi-ente dal perimetro)
+  // ente_hr: ente bloccato al perimetro; scelta ente a destra nella barra filtri
   if (scope.isEnteUser) {
     return (
       <div className="flex flex-wrap items-center gap-3 rounded-lg border bg-card px-4 py-2.5">
-        <label className={labelCls}>Ente</label>
-        {scope.control ?? (
-          <span className="rounded-md border border-input bg-muted px-3 py-1.5 text-[12px] text-foreground font-medium min-w-[220px]">
-            {scope.label ?? "Il tuo ente"}
-          </span>
-        )}
+        <span className={labelCls}>Filtri</span>
+        <EnteSelector className="ml-auto" />
       </div>
     );
   }

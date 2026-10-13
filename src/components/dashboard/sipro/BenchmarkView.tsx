@@ -57,6 +57,16 @@ export const BenchmarkView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enti]);
 
+  // Cambio regione: si tolgono le scelte (anche quelle iniziali di default) che non
+  // appartengono alla regione scelta; «Tutte» mantiene la selezione corrente.
+  const cambiaRegione = (r: string) => {
+    setRegione(r);
+    if (r) {
+      const inRegione = new Set(enti.filter((e) => e.regione === r).map((e) => e.codice_fiscale));
+      setSelected((prev) => prev.filter((cf) => inRegione.has(cf)));
+    }
+  };
+
   const score = useBenchmarkScore(selected);
   const criticita = useBenchmarkCriticita(selected);
 
@@ -126,7 +136,7 @@ export const BenchmarkView = () => {
             <label className="text-[11px] font-semibold text-muted-foreground uppercase">Regione</label>
             <select
               value={regione}
-              onChange={(e) => setRegione(e.target.value)}
+              onChange={(e) => cambiaRegione(e.target.value)}
               className="rounded-md border border-input bg-background px-3 py-1.5 text-[12px] outline-none focus:ring-1 focus:ring-ring cursor-pointer"
             >
               <option value="">Tutte</option>

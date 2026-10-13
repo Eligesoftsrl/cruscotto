@@ -7,7 +7,8 @@
  *   - determina il codice fiscale da applicare come filtro (`p_codice_fiscale`)
  *     a TUTTE le RPC del Conto Annuale;
  *   - risolve la denominazione dell'ente (per l'intestazione della scheda);
- *   - se l'utente è abilitato a più enti, espone un selettore (`control`).
+ *   - se l'utente è abilitato a più enti, espone un selettore (`control`);
+ *     nell'interfaccia si usa <EnteSelector/>, a destra nella barra filtri.
  *
  * Per il DFP (super admin) non c'è perimetro: `codiceFiscale` è null e la
  * selezione dell'ente avviene tramite la ricerca dedicata già presente nelle
@@ -26,11 +27,27 @@ import { fetchEntiDenominazioni } from "@/services/ca/entiService";
 const NO_ENTE = "__no_ente__";
 
 // --- store di modulo per l'ente attivo (CF selezionato) ---
-let selectedCf: string | null = null;
+// Persistito in sessionStorage: la scelta resta anche ricaricando la pagina
+// (sempre validata contro il perimetro enti_cf del token, vedi useEffect sotto).
+const STORAGE_KEY = "cruscotto_ente_cf";
+const readStored = () => {
+  try {
+    return sessionStorage.getItem(STORAGE_KEY);
+  } catch {
+    return null;
+  }
+};
+let selectedCf: string | null = readStored();
 const listeners = new Set<() => void>();
 function setSelectedCf(cf: string | null) {
   if (cf === selectedCf) return;
   selectedCf = cf;
+  try {
+    if (cf) sessionStorage.setItem(STORAGE_KEY, cf);
+    else sessionStorage.removeItem(STORAGE_KEY);
+  } catch {
+    /* storage non disponibile: resta solo in memoria */
+  }
   listeners.forEach((l) => l());
 }
 function subscribe(cb: () => void) {

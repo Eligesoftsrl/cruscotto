@@ -65,7 +65,6 @@ export const AnalisiGenereContent = () => {
         <p className="text-sm font-semibold text-foreground">
           {ente ? <>Amministrazione: <span className="text-primary">{ente.descrizione}</span></> : enteScope.label ? <>Amministrazione: <span className="text-primary">{enteScope.label}</span></> : "Totale PA"} · Conto Annuale RGS · Anno {filtri.anno}
         </p>
-        {enteScope.control}
         <div className="relative w-[320px] max-w-full" style={{ display: "none" }}>
           <input value={ente ? ente.descrizione : enteTerm}
             onChange={(e) => { setEnte(null); setEnteTerm(e.target.value); }}

@@ -38,6 +38,7 @@ import {
 import { PILLAR_COLORS, PILLAR_LABELS } from "./executive/executiveInterconnessioni";
 
 import { useAdminState } from "@/services/admin/adminStore";
+import { EnteSelector } from "./EnteSelector";
 import { EXEC_FLAG_BY_CODE } from "@/config/execIndiciCatalog";
 
 const EXEC_PILLARS = Object.keys(EXEC_SCORE_PILLARS);
@@ -312,6 +313,7 @@ export const ExecutiveView = ({
             </span>
           </p>
         </div>
+        <EnteSelector />
       </div>
 
       {/* ── Dimension-grouped Executive KPI Cards ── */}

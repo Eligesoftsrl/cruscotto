@@ -30,8 +30,12 @@ Ciascun utente visualizza esclusivamente i dati di propria competenza. Tale peri
 viene determinato automaticamente in fase di accesso, sulla base delle abilitazioni
 associate all'utente, e non è modificabile dall'utente stesso.
 
-- Il responsabile abilitato a un solo ente ne visualizza direttamente i dati.
-- Il responsabile abilitato a più enti può alternarli mediante l'apposito selettore.
+- Il responsabile abilitato a un solo ente ne visualizza direttamente i dati. Il nome
+  dell'ente è sempre indicato a destra nella barra dei filtri («Ente»).
+- Il responsabile abilitato a più enti li alterna con il selettore «Ente», sempre a destra
+  nella barra dei filtri di ogni sezione attiva: Conto Annuale, Vista Sintetica,
+  Vista Executive e SIPrO. La scelta vale per tutte le schede e resta valida anche
+  ricaricando la pagina, fino alla chiusura della sessione.
 - L'utente DFP (con o senza privilegi di amministrazione) non è soggetto a limitazioni di
   perimetro e visualizza i dati di tutti gli enti.
 

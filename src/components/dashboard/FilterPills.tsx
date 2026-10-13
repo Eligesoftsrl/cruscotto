@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { EnteSelector } from "./EnteSelector";
 import { X, ChevronDown, RotateCcw } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useFilters } from "@/contexts/FilterContext";
@@ -156,8 +157,9 @@ export const FilterPills = ({
         </>
       )}
 
-      <div className="ml-auto flex items-center gap-2">
+      <div className="ml-auto flex items-center gap-3">
         <span className="text-[10.5px] text-muted-foreground/60 whitespace-nowrap">Dati al 31/12/{filters.anno || latestYear}</span>
+        <EnteSelector />
       </div>
     </div>
   );

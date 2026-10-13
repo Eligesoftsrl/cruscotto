@@ -59,6 +59,10 @@ svolgere o da verificare.
   Formula. Gli indici compositi sono stati eliminati.
   Ci sono anche la ricerca per codice o nome e l'export di tutti i KPI dell'anno in
   CSV, Excel o PDF.
+- **Selettore ente**: per gli utenti di ente il selettore «Ente» è a destra nella barra
+  dei filtri di ogni sezione attiva (prima era nell'intestazione delle singole schede).
+- **Benchmark DFP**: quando si cambia regione, gli enti selezionati che non appartengono
+  alla regione (compresi i 3 proposti all'avvio) vengono tolti dal confronto.
 - **Pannello Admin · indici**: ognuno dei 36 indici della Vista Sintetica si attiva o
   disattiva da Pannello → Schede, e gli indici compaiono in «Schede più consultate».
   Va eseguito lo script `docs/sql/feature_flags_sipro_indici.sql`: senza le chiavi nel
