@@ -270,3 +270,60 @@ export const SCHEDA_LABEL_BY_INDICATOR: Record<string, string> = SCHEDE_SECTIONS
   acc[s.indicatorId] = s.label;
   return acc;
 }, {});
+
+/**
+ * Macro-gruppi del Pannello Admin → Schede (primo livello, chiusi all'apertura):
+ *  - Conto Annuale · SIPrO · Indici Vista Sintetica · KPI Riforma PA
+ *  - le sezioni non ancora disponibili confluiscono in «Altre fonti».
+ * Ogni gruppo ha un interruttore generale che attiva/disattiva tutte le sue schede;
+ * dentro il gruppo ogni sezione ha il proprio interruttore e i singoli toggle.
+ */
+export interface GruppoSchedeDef {
+  id: string;
+  label: string;
+  description: string;
+  icon: LucideIcon;
+  sezioni: SezioneDef[];
+}
+
+const sez = (pred: (s: SezioneDef) => boolean) => SCHEDE_SECTIONS.filter(pred);
+const GROUPED = (s: SezioneDef) =>
+  s.id === "conto-annuale" || s.id === "kpi-riforma" || s.id.startsWith("sipro-") || s.id.startsWith("exec-");
+
+export const SCHEDE_GRUPPI: GruppoSchedeDef[] = [
+  {
+    id: "g-conto-annuale",
+    label: "Conto Annuale",
+    description: "Schede di analisi del personale (dati RGS)",
+    icon: FileText,
+    sezioni: sez((s) => s.id === "conto-annuale"),
+  },
+  {
+    id: "g-sipro",
+    label: "SIPrO",
+    description: "Benchmark, organizzazione, processi, profili e cataloghi",
+    icon: Users,
+    sezioni: sez((s) => s.id.startsWith("sipro-")),
+  },
+  {
+    id: "g-indici",
+    label: "Indici Vista Sintetica",
+    description: "Indici con score [0-100] dei pillar D2 · D4 · D5 · D6 (anche in Vista Executive)",
+    icon: Gauge,
+    sezioni: sez((s) => s.id.startsWith("exec-")),
+  },
+  {
+    id: "g-kpi",
+    label: "KPI Riforma PA",
+    description: "KPI abilitanti e di successo per dimensione",
+    icon: Target,
+    sezioni: sez((s) => s.id === "kpi-riforma"),
+  },
+  {
+    id: "g-altre",
+    label: "Altre fonti",
+    description: "Sezioni in arrivo",
+    icon: FolderOpen,
+    sezioni: sez((s) => !GROUPED(s)),
+  },
+].filter((g) => g.sezioni.length > 0);

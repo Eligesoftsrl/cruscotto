@@ -26,7 +26,12 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAdminState, toggleFlag, setManyFlags } from "@/services/admin/adminStore";
-import { SCHEDE_SECTIONS, type SezioneDef } from "@/config/schedeCatalog";
+import {
+  SCHEDE_GRUPPI,
+  SCHEDE_SECTIONS,
+  type GruppoSchedeDef,
+  type SezioneDef,
+} from "@/config/schedeCatalog";
 import { tooltipStyle } from "@/components/dashboard/chartTheme";
 
 const COLOR_ON = "hsl(var(--primary))";
@@ -34,7 +39,8 @@ const COLOR_OFF = "hsl(215 16% 65%)";
 
 export const SchedePanel = () => {
   const { flags, eventi } = useAdminState();
-  const [openSection, setOpenSection] = useState<string>("conto-annuale");
+  // Primo livello: macro-gruppi tutti chiusi (Conto Annuale · SIPrO · Indici · KPI)
+  const [openGroup, setOpenGroup] = useState<string>("");
 
   const isOn = (key: string) => flags.find((f) => f.key === key)?.enabled ?? true;
 
@@ -184,16 +190,14 @@ export const SchedePanel = () => {
         </Card>
       </div>
 
-      {/* ── Sezioni ── */}
-      <div className="space-y-3">
-        {SCHEDE_SECTIONS.map((section) => (
-          <SectionCard
-            key={section.id}
-            section={section}
-            isOpen={openSection === section.id}
-            onToggleOpen={() =>
-              setOpenSection((cur) => (cur === section.id ? "" : section.id))
-            }
+      {/* ── Macro-gruppi → sezioni → schede ── */}
+      <div className="space-y-3" data-testid="schede-gruppi">
+        {SCHEDE_GRUPPI.map((g) => (
+          <GroupCard
+            key={g.id}
+            gruppo={g}
+            isOpen={openGroup === g.id}
+            onToggleOpen={() => setOpenGroup((cur) => (cur === g.id ? "" : g.id))}
             isOn={isOn}
           />
         ))}
@@ -219,6 +223,133 @@ const HeroStat = ({
   </div>
 );
 
+/* ── Stato aggregato di un insieme di schede ── */
+const useStato = (keys: string[], isOn: (k: string) => boolean) => {
+  const active = keys.filter(isOn).length;
+  const total = keys.length;
+  return { active, total, allOn: total > 0 && active === total, allOff: active === 0 };
+};
+
+const StatoBadge = ({ active, total }: { active: number; total: number }) => (
+  <Badge
+    variant="outline"
+    className={`text-[10px] ${active > 0 && active < total ? "border-amber-400 text-amber-700" : ""}`}
+  >
+    {active}/{total} attive{active > 0 && active < total ? " · parziale" : ""}
+  </Badge>
+);
+
+/* ── Interruttore generale (gruppo o sezione): attiva/disattiva tutte le schede ── */
+const MasterSwitch = ({
+  keys,
+  allOn,
+  label,
+  testId,
+}: {
+  keys: string[];
+  allOn: boolean;
+  label: string;
+  testId: string;
+}) => (
+  <Switch
+    checked={allOn}
+    onCheckedChange={(v) => setManyFlags(keys, v)}
+    aria-label={`${allOn ? "Disattiva" : "Attiva"} tutte le schede di ${label}`}
+    title={allOn ? "Disattiva tutte" : "Attiva tutte"}
+    data-testid={testId}
+  />
+);
+
+/* ── Primo livello: macro-gruppo ── */
+const GroupCard = ({
+  gruppo,
+  isOpen,
+  onToggleOpen,
+  isOn,
+}: {
+  gruppo: GruppoSchedeDef;
+  isOpen: boolean;
+  onToggleOpen: () => void;
+  isOn: (key: string) => boolean;
+}) => {
+  const [openSection, setOpenSection] = useState<string>("");
+  const GroupIcon = gruppo.icon;
+  const sezioniDisp = gruppo.sezioni.filter((s) => s.available);
+  const keys = sezioniDisp.flatMap((s) => s.schede.map((x) => x.flagKey));
+  const { active, total, allOn } = useStato(keys, isOn);
+  const disabled = sezioniDisp.length === 0;
+  const single = gruppo.sezioni.length === 1 ? gruppo.sezioni[0] : null;
+
+  return (
+    <Card className={disabled ? "opacity-70" : ""} data-testid={`schede-gruppo-${gruppo.id}`}>
+      <div className="flex items-center gap-3 p-4">
+        <button
+          type="button"
+          onClick={onToggleOpen}
+          aria-expanded={isOpen}
+          className="flex min-w-0 flex-1 items-center gap-3 text-left"
+          data-testid={`schede-gruppo-toggle-${gruppo.id}`}
+        >
+          <div
+            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${
+              disabled ? "bg-muted text-muted-foreground" : "bg-primary/10 text-primary"
+            }`}
+          >
+            <GroupIcon className="h-5 w-5" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[15px] font-bold text-foreground">{gruppo.label}</span>
+              {disabled ? (
+                <Badge variant="secondary" className="gap-1 text-[10px]">
+                  <Lock className="h-3 w-3" /> Prossimamente
+                </Badge>
+              ) : (
+                <>
+                  <StatoBadge active={active} total={total} />
+                  {!single && (
+                    <span className="text-[11px] text-muted-foreground">
+                      {gruppo.sezioni.length} sezioni
+                    </span>
+                  )}
+                </>
+              )}
+            </div>
+            <p className="truncate text-xs text-muted-foreground">{gruppo.description}</p>
+          </div>
+          <ChevronDown
+            className={`h-5 w-5 shrink-0 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`}
+          />
+        </button>
+        {!disabled && (
+          <MasterSwitch keys={keys} allOn={allOn} label={gruppo.label} testId={`schede-gruppo-switch-${gruppo.id}`} />
+        )}
+      </div>
+
+      {isOpen && (
+        <CardContent className="border-t pt-4 duration-200 animate-in fade-in-0 slide-in-from-top-1">
+          {single && single.available ? (
+            <SchedeGrid section={single} isOn={isOn} />
+          ) : (
+            <div className="space-y-2">
+              {gruppo.sezioni.map((section) => (
+                <SectionCard
+                  key={section.id}
+                  section={section}
+                  isOpen={openSection === section.id}
+                  onToggleOpen={() => setOpenSection((cur) => (cur === section.id ? "" : section.id))}
+                  isOn={isOn}
+                />
+              ))}
+            </div>
+          )}
+        </CardContent>
+      )}
+    </Card>
+  );
+};
+
+/* ── Secondo livello: sezione dentro il gruppo ── */
 const SectionCard = ({
   section,
   isOpen,
@@ -231,128 +362,136 @@ const SectionCard = ({
   isOn: (key: string) => boolean;
 }) => {
   const SectionIcon = section.icon;
-  const active = section.schede.filter((s) => isOn(s.flagKey)).length;
-  const total = section.schede.length;
-  const allOn = total > 0 && active === total;
-  const allOff = active === 0;
-
+  const keys = section.schede.map((s) => s.flagKey);
+  const { active, total, allOn } = useStato(keys, isOn);
   const disabled = !section.available;
 
   return (
-    <Card className={disabled ? "opacity-70" : ""}>
-      <button
-        type="button"
-        onClick={disabled ? undefined : onToggleOpen}
-        disabled={disabled}
-        className={`flex w-full items-center gap-3 p-4 text-left transition-colors ${
-          disabled ? "cursor-not-allowed" : "hover:bg-muted/40"
-        }`}
-      >
-        <div
-          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${
-            disabled ? "bg-muted text-muted-foreground" : "bg-primary/10 text-primary"
-          }`}
+    <div
+      className={`rounded-xl border ${disabled ? "opacity-70" : "bg-muted/10"}`}
+      data-testid={`schede-sezione-${section.id}`}
+    >
+      <div className="flex items-center gap-3 px-3 py-2.5">
+        <button
+          type="button"
+          onClick={disabled ? undefined : onToggleOpen}
+          disabled={disabled}
+          aria-expanded={isOpen}
+          className={`flex min-w-0 flex-1 items-center gap-3 text-left ${disabled ? "cursor-not-allowed" : ""}`}
+          data-testid={`schede-sezione-toggle-${section.id}`}
         >
-          <SectionIcon className="h-5 w-5" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-foreground">{section.label}</span>
-            {disabled ? (
-              <Badge variant="secondary" className="gap-1 text-[10px]">
-                <Lock className="h-3 w-3" /> Prossimamente
-              </Badge>
-            ) : (
-              <Badge variant="outline" className="text-[10px]">
-                {active}/{total} attive
-              </Badge>
-            )}
-          </div>
-          <p className="truncate text-xs text-muted-foreground">{section.description}</p>
-        </div>
-        {!disabled && (
-          <ChevronDown
-            className={`h-5 w-5 shrink-0 text-muted-foreground transition-transform ${
-              isOpen ? "rotate-180" : ""
+          <div
+            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+              disabled ? "bg-muted text-muted-foreground" : "bg-primary/10 text-primary"
             }`}
-          />
-        )}
-      </button>
-
-      {!disabled && isOpen && (
-        <CardContent className="border-t pt-4 duration-200 animate-in fade-in-0 slide-in-from-top-1">
-          {/* Azioni rapide */}
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-            <p className="text-xs text-muted-foreground">
-              {active} di {total} schede attive in questa sezione
-            </p>
-            <div className="flex gap-2">
-              <Button
-                size="sm"
-                variant="outline"
-                className="h-7 gap-1.5 text-xs"
-                disabled={allOn}
-                onClick={() => setManyFlags(section.schede.map((s) => s.flagKey), true)}
-              >
-                <Power className="h-3.5 w-3.5" /> Attiva tutte
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                className="h-7 gap-1.5 text-xs"
-                disabled={allOff}
-                onClick={() => setManyFlags(section.schede.map((s) => s.flagKey), false)}
-              >
-                <CircleSlash className="h-3.5 w-3.5" /> Disattiva tutte
-              </Button>
+          >
+            <SectionIcon className="h-4 w-4" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[13px] font-semibold text-foreground">
+                {/* dentro il gruppo il prefisso «SIPrO — » è superfluo */}
+                {section.label.replace(/^SIPrO\s+—\s+/, "")}
+              </span>
+              {disabled ? (
+                <Badge variant="secondary" className="gap-1 text-[10px]">
+                  <Lock className="h-3 w-3" /> Prossimamente
+                </Badge>
+              ) : (
+                <StatoBadge active={active} total={total} />
+              )}
             </div>
+            <p className="truncate text-[11px] text-muted-foreground">{section.description}</p>
           </div>
-
-          {/* Griglia schede */}
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {section.schede.map((s) => {
-              const on = isOn(s.flagKey);
-              const CardIcon = s.icon;
-              return (
-                <div
-                  key={s.flagKey}
-                  className={`group flex items-start gap-3 rounded-xl border p-3 transition-all ${
-                    on
-                      ? "border-primary/30 bg-primary/[0.04]"
-                      : "border-border bg-muted/30"
-                  }`}
-                >
-                  <div
-                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors ${
-                      on ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"
-                    }`}
-                  >
-                    <CardIcon className="h-4 w-4" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1.5">
-                      <span className="truncate text-[13px] font-semibold text-foreground">
-                        {s.label}
-                      </span>
-                      {on ? (
-                        <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-primary" />
-                      ) : null}
-                    </div>
-                    <p className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-muted-foreground">
-                      {s.description}
-                    </p>
-                  </div>
-                  <Switch
-                    checked={on}
-                    onCheckedChange={(v) => toggleFlag(s.flagKey, v)}
-                    aria-label={`Attiva/disattiva ${s.label}`}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </CardContent>
+          {!disabled && (
+            <ChevronDown
+              className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`}
+            />
+          )}
+        </button>
+        {!disabled && (
+          <MasterSwitch keys={keys} allOn={allOn} label={section.label} testId={`schede-sezione-switch-${section.id}`} />
+        )}
+      </div>
+      {!disabled && isOpen && (
+        <div className="border-t px-3 py-3 duration-200 animate-in fade-in-0 slide-in-from-top-1">
+          <SchedeGrid section={section} isOn={isOn} />
+        </div>
       )}
-    </Card>
+    </div>
+  );
+};
+
+/* ── Terzo livello: griglia dei toggle delle singole schede ── */
+const SchedeGrid = ({ section, isOn }: { section: SezioneDef; isOn: (key: string) => boolean }) => {
+  const keys = section.schede.map((s) => s.flagKey);
+  const { active, total, allOn, allOff } = useStato(keys, isOn);
+  return (
+    <>
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <p className="text-xs text-muted-foreground">
+          {active} di {total} schede attive in questa sezione
+        </p>
+        <div className="flex gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-7 gap-1.5 text-xs"
+            disabled={allOn}
+            onClick={() => setManyFlags(keys, true)}
+          >
+            <Power className="h-3.5 w-3.5" /> Attiva tutte
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-7 gap-1.5 text-xs"
+            disabled={allOff}
+            onClick={() => setManyFlags(keys, false)}
+          >
+            <CircleSlash className="h-3.5 w-3.5" /> Disattiva tutte
+          </Button>
+        </div>
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        {section.schede.map((s) => {
+          const on = isOn(s.flagKey);
+          const CardIcon = s.icon;
+          return (
+            <div
+              key={s.flagKey}
+              className={`group flex items-start gap-3 rounded-xl border p-3 transition-all ${
+                on ? "border-primary/30 bg-primary/[0.04]" : "border-border bg-muted/30"
+              }`}
+            >
+              <div
+                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors ${
+                  on ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"
+                }`}
+              >
+                <CardIcon className="h-4 w-4" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5">
+                  <span className="truncate text-[13px] font-semibold text-foreground" title={s.label}>
+                    {s.label}
+                  </span>
+                  {on ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-primary" /> : null}
+                </div>
+                <p className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-muted-foreground">
+                  {s.description}
+                </p>
+              </div>
+              <Switch
+                checked={on}
+                onCheckedChange={(v) => toggleFlag(s.flagKey, v)}
+                aria-label={`Attiva/disattiva ${s.label}`}
+                data-testid={`scheda-switch-${s.flagKey}`}
+              />
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 };

@@ -16,6 +16,19 @@ di utente non visualizzano né possono raggiungere questa area.
 
 ## 3.2 Gestione delle schede
 
+Le schede sono organizzate su tre livelli, per evitare di scorrere a lungo la pagina:
+
+1. **Macro-gruppi**, chiusi all'apertura: **Conto Annuale**, **SIPrO**, **Indici Vista
+   Sintetica**, **KPI Riforma PA** e «Altre fonti» (sezioni in arrivo). Ogni gruppo indica
+   le schede attive, per esempio «14/22 attive · parziale». L'**interruttore generale** del
+   gruppo attiva o disattiva in un colpo tutte le sue schede.
+2. **Sezioni** del gruppo: SIPrO → Benchmark · Organizzazione · Processi · Profili e
+   Cataloghi; Indici → D2 · D4 · D5 · D6. Anche ogni sezione ha il proprio interruttore
+   generale. Conto Annuale e KPI Riforma PA hanno una sola sezione, quindi mostrano
+   subito le schede.
+3. **Schede**: i singoli interruttori, con i comandi «Attiva tutte» e «Disattiva tutte»
+   della sezione.
+
 Il pannello consente di **attivare o disattivare le singole schede** dell'applicazione.
 L'operazione ha effetto immediato sull'esperienza degli utenti:
 
