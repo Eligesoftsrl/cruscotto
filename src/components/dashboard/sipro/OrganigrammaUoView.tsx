@@ -1,3 +1,4 @@
+import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { RankedBarChart } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
 import {
@@ -10,7 +11,9 @@ import { LoadingSpinner, ErrorBox, BAR_COLOR, PIE_COLORS, TOOLTIP_STYLE, pieValu
 
 /** 02 - Organigramma UO: barre per livello gerarchico + donut per responsabilita. */
 export const OrganigrammaUoView = () => {
-  const [scope, setScope] = useState<SiproScope>({ codiceFiscale: null, regione: null });
+  // Utente di ente: ente e regione bloccati al perimetro (useSiproAccesso)
+  const initialScope = useSiproInitialScope();
+  const [scope, setScope] = useState<SiproScope>(initialScope);
   const livello = useUoDistribuzione(scope, "livello");
   const resp = useUoDistribuzione(scope, "responsabilita");
 

@@ -1,3 +1,4 @@
+import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { RankedBarChart } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
 import {
@@ -10,7 +11,9 @@ import { LoadingSpinner, ErrorBox, BAR_COLOR, PIE_COLORS, TOOLTIP_STYLE, pieValu
 
 /** S15 - Mappatura Processi: semicerchio per funzione + barre per tipologia. */
 export const MappaturaProcessiView = () => {
-  const [scope, setScope] = useState<SiproScope>({ codiceFiscale: null, regione: null });
+  // Utente di ente: ente e regione bloccati al perimetro (useSiproAccesso)
+  const initialScope = useSiproInitialScope();
+  const [scope, setScope] = useState<SiproScope>(initialScope);
   const funzione = useProcessiDistribuzione(scope, "funzione");
   const tipologia = useProcessiDistribuzione(scope, "tipologia");
 

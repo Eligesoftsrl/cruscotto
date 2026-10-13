@@ -1,3 +1,4 @@
+import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { useState } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
@@ -16,7 +17,9 @@ const fmt = (n: number | null | undefined) =>
 
 /** S05 - FTE Programmati vs Assegnati: KPI + barre per profilo + tabella per ente/profilo. */
 export const FteView = () => {
-  const [scope, setScope] = useState<SiproScope>({ codiceFiscale: null, regione: null });
+  // Utente di ente: ente e regione bloccati al perimetro (useSiproAccesso)
+  const initialScope = useSiproInitialScope();
+  const [scope, setScope] = useState<SiproScope>(initialScope);
   const [page, setPage] = useState(0);
 
   const riepilogo = useFteRiepilogo(scope);

@@ -1,3 +1,4 @@
+import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { useState } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
@@ -18,7 +19,9 @@ const fx = (n: number | null | undefined, d = 1) =>
 
 /** 07 - Dotazione Risorse UO: tabella UO + riga totale (riepilogo) + grafico dotazione vs servizio. */
 export const DotazioneUoView = () => {
-  const [scope, setScope] = useState<SiproScope>({ codiceFiscale: null, regione: null });
+  // Utente di ente: ente e regione bloccati al perimetro (useSiproAccesso)
+  const initialScope = useSiproInitialScope();
+  const [scope, setScope] = useState<SiproScope>(initialScope);
   const [page, setPage] = useState(0);
 
   const dett = useDotazioneUo(scope, PER_PAGE, page * PER_PAGE);

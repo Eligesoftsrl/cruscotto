@@ -1,3 +1,4 @@
+import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { useState } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList, Legend, ResponsiveContainer,
@@ -19,7 +20,9 @@ const coinvolge = (v: string) => {
 
 /** S21 - Outsourcing Fasi: coinvolgimento UO per processo (tabella + barre, colore per altre amministrazioni). */
 export const OutsourcingFasiView = () => {
-  const [scope, setScope] = useState<SiproScope>({ codiceFiscale: null, regione: null });
+  // Utente di ente: ente e regione bloccati al perimetro (useSiproAccesso)
+  const initialScope = useSiproInitialScope();
+  const [scope, setScope] = useState<SiproScope>(initialScope);
   const [page, setPage] = useState(0);
 
   const dett = useCoinvolgimentoUo(scope, PER_PAGE, page * PER_PAGE);

@@ -1,3 +1,4 @@
+import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { useState } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LabelList, ResponsiveContainer,
@@ -16,7 +17,9 @@ const fmtMese = (iso: string) => {
 
 /** 04 - Provvedimenti Organizzativi: KPI + barre per mese + timeline paginata. */
 export const ProvvedimentiView = () => {
-  const [scope, setScope] = useState<SiproScope>({ codiceFiscale: null, regione: null });
+  // Utente di ente: ente e regione bloccati al perimetro (useSiproAccesso)
+  const initialScope = useSiproInitialScope();
+  const [scope, setScope] = useState<SiproScope>(initialScope);
   const [page, setPage] = useState(0);
 
   const andamento = useProvvedimentiAndamento(scope);

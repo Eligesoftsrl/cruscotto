@@ -1,3 +1,4 @@
+import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { useState } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList, ResponsiveContainer,
@@ -32,7 +33,9 @@ const CoperturaTooltip = ({ active, payload }: { active?: boolean; payload?: Tip
 
 /** S06 - Copertura Profili di Ruolo: 3 KPI + barre percentuale di copertura per classe. */
 export const CoperturaView = () => {
-  const [scope, setScope] = useState<SiproScope>({ codiceFiscale: null, regione: null });
+  // Utente di ente: ente e regione bloccati al perimetro (useSiproAccesso)
+  const initialScope = useSiproInitialScope();
+  const [scope, setScope] = useState<SiproScope>(initialScope);
   const riepilogo = useFteRiepilogo(scope);
   const copertura = useFteCopertura(scope);
 

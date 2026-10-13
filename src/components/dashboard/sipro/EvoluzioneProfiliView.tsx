@@ -1,3 +1,4 @@
+import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { RankedBarChart } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -7,7 +8,9 @@ import { LoadingSpinner, ErrorBox, KpiBox, PIE_COLORS, TOOLTIP_STYLE, pieValueLa
 
 /** S14 - Evoluzione Profili: KPI (totali/attivi/eliminati) + donut per origine. */
 export const EvoluzioneProfiliView = () => {
-  const [scope, setScope] = useState<SiproScope>({ codiceFiscale: null, regione: null });
+  // Utente di ente: ente e regione bloccati al perimetro (useSiproAccesso)
+  const initialScope = useSiproInitialScope();
+  const [scope, setScope] = useState<SiproScope>(initialScope);
   const riepilogo = useCatalogoRiepilogo(scope);
   const origine = useCatalogoDistribuzione(scope, "origine");
 

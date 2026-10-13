@@ -10,6 +10,7 @@ import {
   useBenchmarkFiltri, useBenchmarkScore, useBenchmarkCriticita, useBenchmarkMaxEnti,
 } from "@/hooks/useSchedaSiproBenchmark";
 import { LoadingSpinner, ErrorBox, PIE_COLORS, TOOLTIP_STYLE } from "./_shared";
+import { useSiproAccesso } from "@/hooks/useSiproAccesso";
 
 // Numero massimo di enti confrontabili: default 6, sovrascrivibile dalla
 // configurazione applicativa (Pannello Admin, chiave benchmark_max_enti).
@@ -34,12 +35,19 @@ const shortName = (s: string) => (s || "").replace(/^COMUNE DI\s+/i, "").trim();
 export const BenchmarkView = () => {
   const filtri = useBenchmarkFiltri();
   const { data: maxEnti = DEFAULT_MAX_ENTI } = useBenchmarkMaxEnti();
-  const [regione, setRegione] = useState<string>("");
+  // Utente di ente: regione bloccata a quella dell'ente, confronto solo tra enti della regione
+  const { ente: enteSipro } = useSiproAccesso();
+  const regioneBloccata = enteSipro?.regione ?? null;
+  const [regione, setRegione] = useState<string>(regioneBloccata ?? "");
   const [selected, setSelected] = useState<string[]>([]);
   const [ambito, setAmbito] = useState<"processo" | "uo">("processo");
   const [asseBar, setAsseBar] = useState<string>("dotazione_uo");
 
-  const enti = filtri.data ?? [];
+  const entiAll = filtri.data ?? [];
+  const enti = useMemo(
+    () => (regioneBloccata ? entiAll.filter((e) => e.regione === regioneBloccata) : entiAll),
+    [entiAll, regioneBloccata],
+  );
   const regioni = useMemo(
     () => Array.from(new Set(enti.map((e) => e.regione).filter(Boolean))).sort() as string[],
     [enti],
@@ -52,7 +60,10 @@ export const BenchmarkView = () => {
   // selezione di default: primi 3 enti disponibili
   useEffect(() => {
     if (enti.length > 0 && selected.length === 0) {
-      setSelected(enti.slice(0, Math.min(3, enti.length)).map((e) => e.codice_fiscale));
+      // utente di ente: il proprio ente è sempre tra i primi selezionati
+      const own = enteSipro ? enti.filter((e) => e.codice_fiscale === enteSipro.codiceFiscale) : [];
+      const altri = enti.filter((e) => !own.includes(e));
+      setSelected([...own, ...altri].slice(0, Math.min(3, enti.length)).map((e) => e.codice_fiscale));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enti]);
@@ -137,9 +148,11 @@ export const BenchmarkView = () => {
             <select
               value={regione}
               onChange={(e) => cambiaRegione(e.target.value)}
+              disabled={!!regioneBloccata}
+              title={regioneBloccata ? "Regione dell'ente: non modificabile" : undefined}
               className="rounded-md border border-input bg-background px-3 py-1.5 text-[12px] outline-none focus:ring-1 focus:ring-ring cursor-pointer"
             >
-              <option value="">Tutte</option>
+              {!regioneBloccata && <option value="">Tutte</option>}
               {regioni.map((r) => <option key={r} value={r}>{r}</option>)}
             </select>
           </div>

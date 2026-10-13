@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useEnteScope } from "@/hooks/useEnteScope";
 import { fetchSiproEnti } from "@/services/sipro/filtriService";
 import { EnteSelector } from "@/components/dashboard/EnteSelector";
+import { useSiproAccesso } from "@/hooks/useSiproAccesso";
+import { Lock } from "lucide-react";
 
 export interface SiproScope {
   codiceFiscale: string | null;
@@ -26,14 +28,18 @@ const selectCls =
  */
 export const SiproScopeBar = ({ value, onChange }: Props) => {
   const scope = useEnteScope();
+  const { ente: enteSipro } = useSiproAccesso();
 
-  // ente_hr: blocca il CF al perimetro del token
+  // ente_hr: ente (CF del token) e sua regione applicati e bloccati
   useEffect(() => {
-    if (scope.isEnteUser && value.codiceFiscale !== scope.codiceFiscale) {
-      onChange({ codiceFiscale: scope.codiceFiscale, regione: null });
+    if (!scope.isEnteUser) return;
+    const cf = enteSipro?.codiceFiscale ?? scope.codiceFiscale;
+    const regione = enteSipro?.regione ?? null;
+    if (value.codiceFiscale !== cf || value.regione !== regione) {
+      onChange({ codiceFiscale: cf, regione });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scope.isEnteUser, scope.codiceFiscale]);
+  }, [scope.isEnteUser, scope.codiceFiscale, enteSipro?.codiceFiscale]);
 
   const { data: enti = [] } = useQuery({
     queryKey: ["sipro-enti"],
@@ -54,8 +60,19 @@ export const SiproScopeBar = ({ value, onChange }: Props) => {
   // ente_hr: ente bloccato al perimetro; scelta ente a destra nella barra filtri
   if (scope.isEnteUser) {
     return (
-      <div className="flex flex-wrap items-center gap-3 rounded-lg border bg-card px-4 py-2.5">
+      <div className="flex flex-wrap items-center gap-3 rounded-lg border bg-card px-4 py-2.5" data-testid="sipro-scope-ente">
         <span className={labelCls}>Filtri</span>
+        {enteSipro?.regione && (
+          <span
+            className="inline-flex items-center gap-1.5 rounded-md border border-input bg-muted px-3 py-1.5 text-[12px] text-foreground"
+            title="Regione dell'ente: non modificabile"
+            data-testid="sipro-regione-bloccata"
+          >
+            <span className={labelCls}>Regione</span>
+            <span className="font-medium">{enteSipro.regione}</span>
+            <Lock className="h-3 w-3 text-muted-foreground" aria-hidden="true" />
+          </span>
+        )}
         <EnteSelector className="ml-auto" />
       </div>
     );

@@ -1,3 +1,4 @@
+import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { useState } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList,
@@ -16,7 +17,9 @@ const fmt = (n: number | null | undefined) =>
 
 /** S08 - Catalogo Profili di Ruolo: KPI + donut origine + barre famiglia + tabella profili. */
 export const CatalogoProfiliView = () => {
-  const [scope, setScope] = useState<SiproScope>({ codiceFiscale: null, regione: null });
+  // Utente di ente: ente e regione bloccati al perimetro (useSiproAccesso)
+  const initialScope = useSiproInitialScope();
+  const [scope, setScope] = useState<SiproScope>(initialScope);
   const [page, setPage] = useState(0);
 
   const riepilogo = useCatalogoRiepilogo(scope);

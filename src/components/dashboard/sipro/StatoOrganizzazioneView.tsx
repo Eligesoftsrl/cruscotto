@@ -1,3 +1,4 @@
+import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { StackedCompositionBar } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
 import {
@@ -11,7 +12,9 @@ const PER_PAGE = 20;
 
 /** 03 - Stato Organizzazione: KPI + donut per stato + elenco enti paginato. */
 export const StatoOrganizzazioneView = () => {
-  const [scope, setScope] = useState<SiproScope>({ codiceFiscale: null, regione: null });
+  // Utente di ente: ente e regione bloccati al perimetro (useSiproAccesso)
+  const initialScope = useSiproInitialScope();
+  const [scope, setScope] = useState<SiproScope>(initialScope);
   const [page, setPage] = useState(0);
 
   const stati = useOrganizzazioniStati(scope);

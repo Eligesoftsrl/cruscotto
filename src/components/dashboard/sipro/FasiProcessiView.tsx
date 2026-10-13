@@ -1,3 +1,4 @@
+import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
@@ -11,7 +12,9 @@ const PER_PAGE = 20;
 
 /** S16 - Fasi dei Processi: elenco processi censiti + semicerchio obiettivi strategici. */
 export const FasiProcessiView = () => {
-  const [scope, setScope] = useState<SiproScope>({ codiceFiscale: null, regione: null });
+  // Utente di ente: ente e regione bloccati al perimetro (useSiproAccesso)
+  const initialScope = useSiproInitialScope();
+  const [scope, setScope] = useState<SiproScope>(initialScope);
   const [page, setPage] = useState(0);
 
   const lista = useProcessi(scope, PER_PAGE, page * PER_PAGE);

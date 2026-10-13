@@ -1,4 +1,8 @@
+import { ShieldAlert } from "lucide-react";
 import { BenchmarkView } from "@/components/dashboard/sipro/BenchmarkView";
+import { EnteSelector } from "@/components/dashboard/EnteSelector";
+import { LoadingSpinner, ErrorBox } from "@/components/dashboard/sipro/_shared";
+import { SiproAccessoProvider, useSiproAccessoQuery } from "@/hooks/useSiproAccesso";
 // Sezione "Organizzazione" — nuove viste su RPC reali sipro_* (service + hook + component)
 import { OrganigrammaUoView } from "@/components/dashboard/sipro/OrganigrammaUoView";
 import { StatoOrganizzazioneView } from "@/components/dashboard/sipro/StatoOrganizzazioneView";
@@ -52,7 +56,60 @@ const chartMap: Record<string, React.FC> = {
   "sipro-aree-contrattuali": AreeContrattualiView,
   "sipro-evoluzione-profili": EvoluzioneProfiliView,
 };
+/** Avviso per l'utente di ente non accreditato in SIPrO: nessun dato visibile. */
+const NonAccreditato = ({ accreditati }: { accreditati: number }) => (
+  <div className="p-4 flex-1 space-y-4" data-testid="sipro-non-accreditato">
+    <div className="flex flex-wrap items-center gap-3 rounded-lg border bg-card px-4 py-2.5">
+      <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide">Filtri</span>
+      <EnteSelector className="ml-auto" />
+    </div>
+    <div className="tableau-card max-w-xl mx-auto">
+      <div className="tableau-card-header flex items-center gap-2">
+        <ShieldAlert className="h-4 w-4" /> Ente non accreditato in SIPrO
+      </div>
+      <div className="p-6 text-sm text-muted-foreground leading-relaxed space-y-2">
+        <p>L'ente selezionato non risulta tra gli enti accreditati in SIPrO: i dati di questa sezione non sono disponibili.</p>
+        {accreditati > 0 && (
+          <p>
+            Hai {accreditati === 1 ? "un altro ente accreditato" : `${accreditati} enti accreditati`}: selezionalo dal
+            menu «Ente» in alto a destra.
+          </p>
+        )}
+      </div>
+    </div>
+  </div>
+);
+
 export const SiproContentRouter = ({ indicator }: { indicator: string }) => {
+  const accesso = useSiproAccessoQuery();
+
+  if (accesso.stato === "loading") {
+    return (
+      <div className="p-4 flex-1">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+  if (accesso.stato === "errore") {
+    return (
+      <div className="p-4 flex-1">
+        <ErrorBox error={new Error("impossibile verificare l'accreditamento SIPrO dell'ente")} />
+      </div>
+    );
+  }
+  if (accesso.stato === "non-accreditato") {
+    return <NonAccreditato accreditati={accesso.accreditati.length} />;
+  }
+
+  return (
+    <SiproAccessoProvider value={accesso}>
+      {/* key: al cambio ente le viste ripartono con il nuovo perimetro bloccato */}
+      <SiproRoutes key={accesso.ente?.codiceFiscale ?? "dfp"} indicator={indicator} />
+    </SiproAccessoProvider>
+  );
+};
+
+const SiproRoutes = ({ indicator }: { indicator: string }) => {
   if (indicator === "sipro-benchmark-dfp") {
     return (
       <div className="p-4 flex-1">

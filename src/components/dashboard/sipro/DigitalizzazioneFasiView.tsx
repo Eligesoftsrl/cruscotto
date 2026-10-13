@@ -1,3 +1,4 @@
+import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { StackedCompositionBar } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -21,7 +22,9 @@ const Semicircle = ({ title, data }: { title: string; data: { name: string; valu
 
 /** S19 Digitalizzazione Fasi / S20 Lavoro Agile: 3 semicerchi + tabella riepilogo per processo. */
 export const DigitalizzazioneFasiView = ({ title = "Livello di digitalizzazione, esternalizzazione e lavoro agile delle fasi" }: { title?: string }) => {
-  const [scope, setScope] = useState<SiproScope>({ codiceFiscale: null, regione: null });
+  // Utente di ente: ente e regione bloccati al perimetro (useSiproAccesso)
+  const initialScope = useSiproInitialScope();
+  const [scope, setScope] = useState<SiproScope>(initialScope);
   const [page, setPage] = useState(0);
 
   const digitale = useDigitalizzazioneFasi(scope, "digitale");

@@ -36,6 +36,15 @@ associate all'utente, e non è modificabile dall'utente stesso.
   nella barra dei filtri di ogni sezione attiva: Conto Annuale, Vista Sintetica,
   Vista Executive e SIPrO. La scelta vale per tutte le schede e resta valida anche
   ricaricando la pagina, fino alla chiusura della sessione.
+- **SIPrO, per gli utenti di ente:**
+  - se l'ente selezionato **non è accreditato in SIPrO**, cioè non è presente in
+    `sipro_mv_enti`, nessun dato SIPrO è visibile e compare l'avviso «Ente non
+    accreditato in SIPrO»;
+  - se è accreditato, i filtri **Ente** e **Regione** sono applicati direttamente e
+    bloccati: compare la regione dell'ente con il lucchetto e le altre regioni non sono
+    selezionabili;
+  - nel **Benchmark** la regione è fissata a quella dell'ente e il confronto è possibile
+    solo tra enti della stessa regione.
 - L'utente DFP (con o senza privilegi di amministrazione) non è soggetto a limitazioni di
   perimetro e visualizza i dati di tutti gli enti.
 

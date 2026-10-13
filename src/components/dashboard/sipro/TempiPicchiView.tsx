@@ -1,3 +1,4 @@
+import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { StackedCompositionBar } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
 import {
@@ -34,7 +35,9 @@ const DistribBars = ({ title, data }: { title: string; data: { name: string; val
 
 /** S23 - Tempi e Picchi: tempi previsti vs effettivi + distribuzioni frequenza/intensita/presidio. */
 export const TempiPicchiView = () => {
-  const [scope, setScope] = useState<SiproScope>({ codiceFiscale: null, regione: null });
+  // Utente di ente: ente e regione bloccati al perimetro (useSiproAccesso)
+  const initialScope = useSiproInitialScope();
+  const [scope, setScope] = useState<SiproScope>(initialScope);
   const [page, setPage] = useState(0);
 
   const tabella = useTempiPicchi(scope, PER_PAGE, page * PER_PAGE);
