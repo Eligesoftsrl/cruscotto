@@ -11,94 +11,64 @@ utenti privi delle relative autorizzazioni.
 L'accesso è consentito ai soli profili con privilegi di amministrazione ed è raggiungibile
 dall'apposita voce, disponibile unicamente per gli utenti abilitati. La sola vista globale
 su tutti gli enti (profilo DFP) non è sufficiente: in assenza dei privilegi di
-amministrazione la voce non viene mostrata e l'area non è raggiungibile. Le altre tipologie
-di utente non visualizzano né possono raggiungere questa area.
+amministrazione la voce non viene mostrata e l'area non è raggiungibile.
 
 ## 3.2 Gestione delle schede
 
-Le schede sono organizzate su tre livelli, per evitare di scorrere a lungo la pagina:
+Il pannello consente di **attivare o disattivare** le schede e gli indici del cruscotto.
+Per evitare di scorrere a lungo la pagina, l'area è organizzata su tre livelli:
 
-1. **Macro-gruppi**, chiusi all'apertura: **Conto Annuale**, **SIPrO**, **Indici Vista
-   Sintetica**, **KPI Riforma PA** e «Altre fonti» (sezioni in arrivo). Ogni gruppo indica
-   le schede attive, per esempio «14/22 attive · parziale». L'**interruttore generale** del
-   gruppo attiva o disattiva in un colpo tutte le sue schede.
-2. **Sezioni** del gruppo: SIPrO → Benchmark · Organizzazione · Processi · Profili e
-   Cataloghi; Indici → D2 · D4 · D5 · D6. Anche ogni sezione ha il proprio interruttore
-   generale. Conto Annuale e KPI Riforma PA hanno una sola sezione, quindi mostrano
-   subito le schede.
-3. **Schede**: i singoli interruttori, con i comandi «Attiva tutte» e «Disattiva tutte»
-   della sezione.
+1. **Gruppi**, chiusi all'apertura: **Conto Annuale**, **SIPrO**, **Indici Vista
+   Sintetica**, **KPI Riforma PA** e «Altre fonti» (sezioni in arrivo). Ogni gruppo
+   indica quante schede sono attive, ad esempio «14/22 attive · parziale», e ha un
+   **interruttore generale** che attiva o disattiva in un colpo tutte le sue schede.
+2. **Sezioni** del gruppo: per il SIPrO Benchmark, Organizzazione, Processi, Profili e
+   Cataloghi; per gli indici le dimensioni D2, D4, D5 e D6. Anche ogni sezione ha il
+   proprio interruttore generale. Conto Annuale e KPI Riforma PA hanno una sola sezione e
+   mostrano subito le schede.
+3. **Schede**: i singoli interruttori, con i comandi «Attiva tutte» e «Disattiva tutte».
 
-Il pannello consente di **attivare o disattivare le singole schede** dell'applicazione.
-L'operazione ha effetto immediato sull'esperienza degli utenti:
+Una scheda o un indice disattivato:
 
-- una scheda disattivata non compare nel menù di navigazione;
-- qualora vi si acceda tramite un collegamento diretto, viene mostrato un avviso che ne
-  segnala la temporanea indisponibilità.
+- non compare nel menù di navigazione;
+- per gli indici, scompare anche dalla pagina della dimensione e dalla Vista Executive;
+- se raggiunto con un collegamento diretto, mostra un avviso che ne segnala la temporanea
+  indisponibilità.
 
 Questa funzione permette di rendere disponibili le schede in modo graduale, ad esempio
 durante le fasi di lavorazione o di verifica dei dati.
 
-**KPI Riforma PA.** La sezione «KPI Riforma PA» contiene la scheda «KPI Abilitanti e di
-Successo», con chiave `kpi_abilitanti`. Disattivata, sparisce dal menu e, se aperta con un
-link diretto, mostra l'avviso «Funzione disattivata». Anche questa scheda compare in
-«Schede più consultate».
-
-**Indici della Vista Sintetica.** Accanto alle sezioni Conto Annuale e SIPrO ci sono
-quattro sezioni nuove: «Indici D2», «Indici D4», «Indici D5» e «Indici D6». Ogni indice si
-attiva o disattiva singolarmente, per un totale di 36 indici, mock-up compresi. Sono
-disponibili anche i comandi «Attiva tutte» e «Disattiva tutte».
-
-Un indice disattivato:
-- scompare dal menu laterale;
-- scompare dalla pagina del pillar, sia dalla card sia dalla panoramica;
-- scompare dalla Vista Executive;
-- con un collegamento diretto mostra l'avviso «indice disattivato dall'amministratore».
-
-Le chiavi hanno il formato `exec_<pillar>_<codice>`, per esempio `exec_d2_igf`.
-
-> **Prerequisito database.** Perché l'attivazione o la disattivazione resti salvata, la
-> chiave deve esistere nella tabella `feature_flags`. Lo script
-> `docs/sql/feature_flags_sipro_indici.sql` inserisce la chiave KPI Riforma PA, le 22 chiavi
-> SIPrO e le 36 chiavi degli indici. È idempotente e non modifica lo stato già impostato.
-> Senza lo script, la modifica vale solo fino al ricaricamento della pagina.
+> **Nota.** Perché lo stato di attivazione resti memorizzato in modo permanente per tutte le
+> schede, è necessaria una predisposizione iniziale della base dati a cura del sistemista.
+> Finché non è stata eseguita, le modifiche a SIPrO, indici e KPI valgono solo fino al
+> ricaricamento della pagina.
 
 ## 3.3 Statistiche d'uso
 
 È disponibile una sezione con statistiche sull'utilizzo delle funzionalità, presentate in
-forma grafica (ad esempio grafici a barre e a torta). Le statistiche offrono un quadro
-sintetico dell'adozione delle diverse schede.
+forma grafica, che offre un quadro sintetico dell'adozione delle diverse schede.
 
-Il grafico **«Schede più consultate»** si basa sul tracciamento delle consultazioni: a ogni
-apertura di una scheda (Conto Annuale, SIPrO o indice della Vista Sintetica) viene
-registrato un evento con l'etichetta della scheda stessa.
+Il grafico **«Schede più consultate»** conta le consultazioni di ogni scheda: Conto
+Annuale, SIPrO, KPI Riforma PA e indici della Vista Sintetica. Per gli indici si conta una
+consultazione quando l'indice viene aperto dal menu o dalla Vista Executive, oppure quando
+si apre uno dei pannelli della card o si clicca la sua barra in panoramica; ogni indice è
+conteggiato una sola volta per visita.
 
-Per gli indici, per esempio «D2 · IGF — Governo strategico del fabbisogno», si conta una
-consultazione quando:
-- l'indice viene aperto dal menu o dalla Vista Executive;
-- in pagina si apre uno dei pannelli della card (Scomposizione, Scheda metodologica,
-  Trend) o si clicca la barra in panoramica.
-
-Ogni indice viene conteggiato una sola volta per visita. Il grafico mostra quindi le schede effettivamente più
-utilizzate. Nota: il conteggio parte dalle consultazioni successive all'attivazione del
-tracciamento; una base dati appena popolata potrà risultare inizialmente vuota e si
-riempirà con l'uso dell'applicazione.
+Il conteggio parte dalle consultazioni successive all'attivazione del tracciamento: nei
+primi giorni il grafico potrà risultare poco popolato.
 
 ## 3.4 Protezione della funzionalità «Pannello Admin»
 
 Tra le funzionalità di sistema è presente la voce **«Pannello Admin»**. Per prevenire il
 rischio di perdere l'accesso all'area di amministrazione, questa voce è **protetta** e non
 può essere disattivata dall'interfaccia (l'interruttore è mostrato come bloccato, con
-apposita segnalazione). Un'eventuale disattivazione è riservata al sistemista, da eseguire
-esclusivamente sulla base dati.
+apposita segnalazione). Un'eventuale disattivazione è riservata al sistemista.
 
-## 3.5 Configurazione del confronto tra enti (Benchmark)
+## 3.5 Numero di enti confrontabili nel Benchmark
 
-Il numero massimo di enti confrontabili contemporaneamente nella scheda SIPrO
-«Benchmark» è un parametro di configurazione memorizzato nella base dati
-(tabella di configurazione applicativa, chiave `benchmark_max_enti`; valore predefinito
-6). Il sistemista può modificarlo senza rilasci applicativi. In assenza del parametro
-l'applicazione adotta automaticamente il valore predefinito.
+Il numero massimo di enti confrontabili contemporaneamente nel Benchmark SIPrO è un
+parametro di configurazione (valore predefinito: 6) che il sistemista può modificare senza
+nuovi rilasci dell'applicazione.
 
 ## 3.6 Registri di attività
 
@@ -117,4 +87,4 @@ problemi.
 - Le modifiche allo stato delle schede sono anch'esse riservate agli amministratori.
 - Le informazioni gestite dal pannello non sono raggiungibili dagli utenti ordinari.
 
-[▶ Pagina successiva: Architettura tecnica](04-Architettura-Tecnica)
+[▶ Pagina successiva: Funzionamento e sicurezza](04-Funzionamento-e-Sicurezza)

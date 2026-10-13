@@ -1,6 +1,6 @@
 import sys,re
 # Requisito: pip install python-docx
-# Uso: python3 docs/report/md2docx.py docs/wiki/07-Vista-Sintetica-Indici-Score.md docs/report/Rapporto-Vista-Sintetica-Indici-Score.docx
+# Uso: python3 docs/report/md2docx.py docs/report/Rapporto-Vista-Sintetica-Indici-Score.md docs/report/Rapporto-Vista-Sintetica-Indici-Score.docx
 from docx import Document
 from docx.shared import Pt, RGBColor
 src,dst=sys.argv[1],sys.argv[2]

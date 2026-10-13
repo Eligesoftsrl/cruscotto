@@ -9,183 +9,130 @@ svolgere o da verificare.
 > Modalità di aggiornamento: spostare le voci tra le sezioni (Da fare → In corso → Da
 > testare → Completato) e aggiornare la data seguente.
 >
-> **Ultimo aggiornamento:** 07/10/2026
+> **Ultimo aggiornamento:** 13/10/2026
 
 ---
+
+## 📦 Release in rilascio — Indici con score, KPI Riforma PA e gestione degli enti
+
+**Vista Sintetica con dati reali**
+
+- Le dimensioni **D2 · Programmazione del fabbisogno**, **D4 · Sviluppo professionale**,
+  **D5 · Rewarding e carriera** e **D6 · Capacity building e performance** mostrano i dati
+  reali.
+- Ogni indice ha uno **score da 0 a 100**, senza «%», un **giudizio** (Basso · Moderato ·
+  Buono · Eccellente) e la variazione in punti rispetto all'anno precedente.
+- **Nuova pagina di dimensione**:
+  - panoramica a barre;
+  - indici di sintesi su righe da due e indici componenti su righe da tre, con le card
+    allineate;
+  - pannelli **Scomposizione formula**, **Scheda metodologica** e **Trend storico**.
+- **D6**: 16 indici in quattro gruppi tematici, compresi i nuovi indici sui **tassi di
+  cessazione per genere (RTG)**, sul **ricambio per genere (RRG)** e sulla **dinamica di
+  genere del ricambio (IRIC)**.
+- **D4**: gli indici di Minerva e Syllabus restano con **dati mock-up**, chiaramente
+  segnalati; l'indice di intensità formativa media, non più previsto, è stato rimosso.
+- Filtri della pagina: Anno, Regione, Comparto ed Ente.
+
+**Vista Executive**
+
+- Le card di D2, D4, D5 e D6 mostrano gli score reali; tutte le card riportano lo score in
+  scala 0–100.
+- **D2 e D5** seguono la gerarchia degli indici: riga con l'indice di sintesi e il riquadro
+  «Come leggere questa dimensione», poi gli indici componenti su righe da tre.
+- Rimosso il pulsante «Percorso guidato» dalle dimensioni; rimossi la tacca verticale dello
+  score e il pulsante «Quadro Sinottico», non più previsti.
+
+**KPI Riforma PA**
+
+- La sezione presenta per ora la sola scheda **«KPI Abilitanti e di Successo»**, con dati
+  reali; le schede «KPI Success Rate» e «Benchmark» sono nascoste e la parte «Indici
+  compositi» è stata eliminata.
+- Unico filtro Anno; righe con codice, nome, unità di misura e valore a due decimali;
+  dettaglio con tipo di sintesi e formula.
+- Nuove funzioni di **ricerca** per codice o nome e di **esportazione** di tutti i KPI
+  dell'anno.
+
+**Enti e perimetro**
+
+- Il menu **«Ente»** per gli utenti di ente è ora sempre visibile **a destra nella barra dei
+  filtri** di ogni area attiva; con un solo ente ne mostra il nome. La scelta resta valida
+  anche ricaricando la pagina.
+- **SIPrO**: gli enti non accreditati non vedono i dati SIPrO; per gli enti accreditati
+  Ente e Regione sono applicati e bloccati, senza accesso alle altre regioni.
+- **Benchmark**: al cambio di regione vengono tolti dal confronto gli enti che non vi
+  appartengono, compresi i tre proposti all'avvio; per gli utenti di ente la regione è
+  fissata a quella del proprio ente.
+
+**Pannello di gestione**
+
+- Area **Schede** riorganizzata in gruppi (Conto Annuale, SIPrO, Indici Vista Sintetica,
+  KPI Riforma PA), ciascuno con interruttore generale, sezioni e singole schede.
+- Nuove voci per attivare o disattivare **ciascun indice** e la scheda **KPI Riforma PA**.
+- «Schede più consultate» include ora anche indici e KPI.
+
+**Nota per il sistemista:** è prevista una predisposizione della base dati perché lo stato
+di attivazione di schede SIPrO, indici e KPI resti memorizzato in modo permanente.
 
 ## 🟢 In corso
 
 - Consolidamento e verifica dei dati delle analisi già disponibili.
-- **Vista Sintetica con score reali (D2, D5, D4 e D6 completate; D1 e D3 ancora mock-up)**: la pagina
-  D2 · Programmazione fabbisogno legge i dati reali (RPC `fa_ca_exec_d2_indicatori_score`).
-  Lo score è espresso da 0 a 100, senza il simbolo "%". La pagina mostra:
-  - una panoramica a barre;
-  - l'indice di sintesi IGF (2 card per riga);
-  - gli indici intermedi IRS, IDP_Norm, PTI, IRG_Norm (3 card per riga).
-
-  Ogni card mostra il badge (Basso · Moderato · Buono · Eccellente) e la variazione
-  rispetto all'anno precedente. Contiene anche tre pannelli apribili:
-  - **Scomposizione formula**: calcolo dell'indice e normalizzazione dello score;
-  - **Scheda metodologica**;
-  - **Trend storico**.
-
-  I filtri disponibili sono Anno, Regione, Comparto e il perimetro dell'ente.
-  Anche la card IGF della Vista Executive usa i dati reali.
-- **D5 · Rewarding e carriera** (RPC `fa_ca_exec_d5_indicatori_score`) usa la stessa
-  pagina della D2:
-  - l'indice di sintesi IDC;
-  - gli indici intermedi DPI_Norm e ICS_Norm.
-
-  La scomposizione di DPI_Norm mostra anche il valore grezzo e il target
-  (passaggi per dipendente). Anche la card IDC della Vista Executive usa i dati reali.
-- **D4 · Sviluppo professionale** (RPC `fa_ca_exec_d4_indicatori_score`):
-  - dati reali: CGC, ICF_Norm (alias TCF), DPI_Norm e CQT;
-  - IFM_Norm è stato ritirato (stato_score = excluded) ed è nascosto ovunque;
-  - restano **dati mock-up**, con disclaimer a vista: ISCP, IESF, ISTP_Norm, IDFP, ICRP,
-    IEF_Norm, ICQ e ICEC. Il disclaimer compare anche nella Vista Executive.
-
-  Gli indici intermedi sono raggruppati in tre griglie: componenti CGC, ISCP e IESF.
-- **D6 · Capacity building e performance** (RPC `fa_ca_exec_d6_indicatori_score`):
-  - 16 indici reali in 4 gruppi: organico e ricambio, qualificazione, parità di genere,
-    flessibilità e lavoro agile;
-  - comprende i **nuovi indici RTG, RRG e IRIC**;
-  - la scomposizione mostra i passaggi di normalizzazione di ogni famiglia di scala.
-
-  I valori fuori scala della D6 in Vista Executive sono risolti.
-  Il dettaglio completo e la checklist di verifica sono in
-  [7. Vista Sintetica · Indici con score](07-Vista-Sintetica-Indici-Score).
-- **KPI Riforma PA**: per ora resta solo «KPI Abilitanti e di Successo», con dati reali
-  (`kpi_filtri`, `kpi_scheda`), filtro Anno e righe che si aprono con Tipo di sintesi e
-  Formula. Gli indici compositi sono stati eliminati.
-  Ci sono anche la ricerca per codice o nome e l'export di tutti i KPI dell'anno in
-  CSV, Excel o PDF.
-- **Selettore ente**: per gli utenti di ente il selettore «Ente» è a destra nella barra
-  dei filtri di ogni sezione attiva (prima era nell'intestazione delle singole schede).
-- **Benchmark DFP**: quando si cambia regione, gli enti selezionati che non appartengono
-  alla regione (compresi i 3 proposti all'avvio) vengono tolti dal confronto.
-- **Pannello Admin · indici**: ognuno dei 36 indici della Vista Sintetica si attiva o
-  disattiva da Pannello → Schede, e gli indici compaiono in «Schede più consultate».
-  Va eseguito lo script `docs/sql/feature_flags_sipro_indici.sql`: senza le chiavi nel
-  database, le modifiche alle schede SIPrO e agli indici non restano salvate.
+- Verifica con il committente dei valori degli indici delle dimensioni D2, D4, D5 e D6.
 
 ## 🟡 Da fare
 
-- **Selettore dell'ente nella barra superiore**: rendere la scelta dell'ente sempre
-  visibile su tutte le schede, per gli utenti abilitati a più enti.
-- **Indicazione del perimetro**: riportare in ogni pagina un riferimento chiaro all'ente
-  attualmente selezionato.
+- **D1 e D3 con dati reali**, in sostituzione dei dati dimostrativi.
+- **Indici di Minerva e Syllabus (D4)** con dati reali, appena disponibili le fonti.
+- **Gerarchia degli indici in Vista Executive anche per la D4**, se confermata dal
+  committente.
+- **Titolo definitivo** della scheda KPI Abilitanti e di Successo.
 - **Accessibilità**: proseguire l'adeguamento alle linee guida di accessibilità della PA.
-- **Nuove analisi e nuovi dati**: ampliare progressivamente le sezioni con dati definitivi
-  in sostituzione di quelli dimostrativi.
 
 ## 🔵 Da testare / verificare
 
-- Accesso con i diversi profili (amministratore e responsabile di ente).
-- Corretto isolamento dei dati tra enti distinti.
-- Cambio ente per gli utenti abilitati a più enti.
-- Attivazione e disattivazione delle schede dal pannello di gestione.
+- Accesso con i diversi profili (amministratore, utente DFP, responsabile di ente).
+- Corretto isolamento dei dati tra enti distinti, anche nel SIPrO (ente accreditato e non).
+- Cambio ente per gli utenti abilitati a più enti, in tutte le aree.
+- Attivazione e disattivazione di schede e indici dal pannello di gestione, dopo la
+  predisposizione della base dati.
+- Coerenza degli score tra Vista Executive e Vista Sintetica al variare dei filtri.
 - Ricezione dell'avviso di aggiornamento e ricarica alla nuova versione.
-- Coerenza dei dati al variare dei filtri.
 
-## 📦 Release in rilascio — SIPrO completo, esportazioni, nuovi grafici e migliorie
+## 📦 Release precedente — SIPrO completo, esportazioni e nuovi grafici
 
-Nuova versione in distribuzione. Oltre al completamento del modulo SIPrO, introduce
-l'esportazione dei dati, la revisione dei grafici e diverse migliorie dell'area di
-amministrazione e dei filtri. Attività realizzate:
+- **SIPrO con dati reali** in tutte le sezioni: Organizzazione, Processi, Profili e
+  Cataloghi e Benchmark tra enti; impaginazione adattiva e menu SIPrO raggruppato.
+- **Pannello di gestione**: attivazione delle schede estesa al SIPrO, grafico «Schede più
+  consultate» alimentato, voce «Pannello Admin» protetta.
+- **Anno di riferimento automatico**: viene proposto l'ultimo anno disponibile nei dati.
+- **Numero di enti del Benchmark** configurabile senza nuovi rilasci.
+- **Esportazione** di ogni tabella in CSV, Excel e PDF, con tutti i dati.
+- **Grafici più leggibili**: le torte sono state sostituite da barre ordinate e barre
+  impilate.
+- **Ricerca ente** rimossa per l'amministratore, che vede il dato aggregato; rimossa la
+  scheda «Fabbisogno per Profilo».
+- **Correzioni**: valori mancanti mostrati come 0, rimosso un pulsante di esportazione non
+  funzionante.
 
-**Completamento del modulo SIPrO (dati reali)**
+## 📦 Rilascio del 25/09/2026
 
-- Migrate a dati reali tutte e quattro le sezioni SIPrO: **Organizzazione**, **Processi**,
-  **Profili e Cataloghi** e **Benchmark** (confronto multi-ente), in sostituzione dei
-  precedenti dati dimostrativi.
-- Impaginazione adattiva di tabelle e grafici (impilati sugli schermi piccoli, affiancati su
-  quelli ampi), etichette leggibili nei grafici a torta e menù laterale SIPrO raggruppato
-  per categoria con apertura/chiusura "a fisarmonica".
-
-**Area di amministrazione**
-
-- **Gestione schede estesa al SIPrO**: anche le schede SIPrO si possono attivare/disattivare
-  dal pannello, come già per il Conto Annuale.
-- **«Schede più consultate» ora alimentata**: il tracciamento registra la consultazione
-  delle singole schede (Conto Annuale e SIPrO), così il grafico mostra le schede
-  effettivamente più utilizzate.
-- **Voce «Pannello Admin» protetta**: non più disattivabile dall'interfaccia, per evitare la
-  perdita accidentale dell'accesso all'area di amministrazione.
-
-**Configurazione e dati dinamici**
-
-- **Anno di riferimento dinamico**: l'applicazione propone automaticamente l'ultimo anno
-  disponibile nei dati, superando il riferimento fisso all'anno precedente.
-- **Limite enti del Benchmark configurabile da base dati** (parametro `benchmark_max_enti`),
-  modificabile dal sistemista senza nuovi rilasci.
-- Pulizia del codice: rimossi i componenti e i servizi dimostrativi non più utilizzati.
-
-**Esportazione dei dati (nuovo)**
-
-- Ogni tabella (Conto Annuale e SIPrO) dispone di un pulsante **«Esporta»** in alto a destra
-  del riquadro, con tre formati: **CSV**, **Excel (.xlsx)** e **PDF**.
-- Per le schede SIPrO con elenchi lunghi (paginati), l'esportazione produce **tutti i dati**
-  e non solo la pagina visualizzata.
-
-**Revisione dei grafici (nuovo)**
-
-- Sostituiti i grafici a **torta/ciambella** di SIPrO e Conto Annuale con rappresentazioni
-  più leggibili: **barre orizzontali ordinate** (con valore e percentuale in evidenza) dove
-  gli elementi sono molti, e **barre 100% impilate** per le composizioni (es. genere, stato,
-  presidio).
-
-**Ricerca ente e perimetro (nuovo)**
-
-- Rimosso il campo di ricerca ente per l'**amministratore** (poco chiaro); l'amministratore
-  vede il dato aggregato. Resta il selettore degli **enti assegnati** per gli utenti abilitati
-  (perimetro definito dall'accesso).
-- Rimossa la voce di menù **«Fabbisogno per Profilo»** (scheda non più prevista).
-
-**Correzioni e robustezza (nuovo)**
-
-- Valori mancanti (NULL) ora gestiti come **0** nelle schede interessate (Dotazione UO, FTE,
-  Copertura, Catalogo), evitando errori di visualizzazione.
-- Rimosso un pulsante «Esporta» non funzionante presente in alto nel Conto Annuale.
-
-**Nota per il sistemista:** per rendere persistenti i nuovi parametri è previsto un breve
-script SQL (tabella di configurazione `app_config` — fornita in `docs/sql/app_config.sql` —
-e nuove chiavi delle schede SIPrO nella tabella dei feature flag), da applicare a corredo del
-rilascio.
-
-## 📦 Rilascio del 25/09/2026 — attività completate
-
-**Build di riferimento (buildId):** `1790353325754`
-
-Messa in produzione (staging) dello **strato di protezione dei dati (proxy)** e relativa
-messa a punto. Attività svolte e verificate end-to-end:
-
-- **Proxy di sicurezza attivo**: scambio del token di accesso aziendale con un token per la
-  base dati; endpoint dell'area di amministrazione serviti tramite il proxy.
-- **Autenticazione allineata**: risolto lo sfasamento di orario tra i server (i token non
-  vengono più rifiutati); accesso e scambio token funzionanti.
-- **Separazione DFP / Amministratore**: l'utente con sola vista globale (DFP) vede tutti
-  gli enti ma non accede all'amministrazione; l'accesso al pannello richiede un ruolo
-  amministrativo. Regola applicata sia nell'interfaccia sia nel proxy.
-- **Pannello di gestione operativo**: feature flag, statistiche d'uso e registri
-  (accessi/eventi/errori) letti e scritti correttamente.
-- **Font applicativo servito localmente**: rimossa la dipendenza esterna, risolto il blocco
-  dovuto alle policy di sicurezza del browser (CSP).
-- **Icona dell'applicazione (favicon)**: ripristinata l'immagine personalizzata e corretta
-  la gestione della cache, così gli aggiornamenti si propagano correttamente.
-- **Robustezza all'avvio**: le chiamate all'area amministrazione attendono il completamento
-  del login, eliminando gli errori transitori in fase di accesso.
+- Attivato lo **strato di protezione dei dati** tra applicazione e base dati.
+- **Accesso aziendale** stabile e separazione tra utente DFP e amministratore: la vista su
+  tutti gli enti non dà accesso al pannello di gestione.
+- **Pannello di gestione operativo**: attivazione schede, statistiche d'uso e registri.
+- Migliorie di avvio, caratteri e icona dell'applicazione.
 
 ## ✅ Completato
 
 - Interfaccia con schede, grafici, tabelle e filtri dinamici.
 - Accesso tramite credenziali aziendali (single sign-on) con controllo delle
   autorizzazioni.
-- Visualizzazione dei soli dati di competenza (perimetro per ente).
-- Riorganizzazione del codice a livelli (componenti, hook, servizi) con isolamento
-  dell'accesso ai dati in un unico punto.
-- Rimozione dei dati simulati e del codice verboso dalle sezioni principali.
-- Pannello di gestione per l'attivazione delle schede e la consultazione di statistiche e
-  registri.
+- Visualizzazione dei soli dati di competenza (perimetro per ente), con ente sempre
+  indicato nella barra dei filtri.
+- Conto Annuale, SIPrO, indici delle dimensioni D2, D4, D5, D6 e KPI Riforma PA con dati
+  reali.
+- Pannello di gestione per l'attivazione di schede e indici e la consultazione di
+  statistiche e registri.
 - Meccanismo di aggiornamento sicuro delle versioni.
 - Schermata dedicata per gli utenti non abilitati.
 

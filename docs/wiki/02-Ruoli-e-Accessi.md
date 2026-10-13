@@ -13,16 +13,17 @@ utilizza il medesimo accesso degli altri servizi interni.
 
 ## 2.2 Profili
 
-| Profilo (ruoli assegnati) | Vista di tutti gli enti | Accesso all'amministrazione |
+| Profilo | Vista di tutti gli enti | Accesso all'amministrazione |
 |--------|:---:|:---:|
-| **Utente DFP** (ruolo `dfp`) | Sì | No |
-| **Utente DFP + Amministratore** (ruolo `dfp` + ruolo amministrativo) | Sì | Sì |
-| **Responsabile di ente** (ruolo di ente) | Solo gli enti abilitati | No |
-| **Non abilitato** (nessun ruolo previsto) | Nessun accesso: schermata dedicata | No |
+| **Utente DFP** | Sì | No |
+| **Utente DFP con privilegi di amministrazione** | Sì | Sì |
+| **Responsabile di ente** | Solo gli enti abilitati | No |
+| **Non abilitato** | Nessun accesso: schermata dedicata | No |
 
 L'**Utente DFP** dispone della vista globale su tutti gli enti in sola consultazione.
-L'accesso al pannello di amministrazione richiede, in aggiunta, un **ruolo amministrativo**:
-l'utente DFP che ne è privo non visualizza né può raggiungere l'area di gestione.
+L'accesso al pannello di amministrazione richiede, in aggiunta, i **privilegi di
+amministrazione**: l'utente DFP che ne è privo non visualizza né può raggiungere l'area di
+gestione.
 
 ## 2.3 Perimetro dei dati
 
@@ -30,25 +31,30 @@ Ciascun utente visualizza esclusivamente i dati di propria competenza. Tale peri
 viene determinato automaticamente in fase di accesso, sulla base delle abilitazioni
 associate all'utente, e non è modificabile dall'utente stesso.
 
-- Il responsabile abilitato a un solo ente ne visualizza direttamente i dati. Il nome
+- Il responsabile abilitato a **un solo ente** ne visualizza direttamente i dati; il nome
   dell'ente è sempre indicato a destra nella barra dei filtri («Ente»).
-- Il responsabile abilitato a più enti li alterna con il selettore «Ente», sempre a destra
-  nella barra dei filtri di ogni sezione attiva: Conto Annuale, Vista Sintetica,
-  Vista Executive e SIPrO. La scelta vale per tutte le schede e resta valida anche
-  ricaricando la pagina, fino alla chiusura della sessione.
-- **SIPrO, per gli utenti di ente:**
-  - se l'ente selezionato **non è accreditato in SIPrO**, cioè non è presente in
-    `sipro_mv_enti`, nessun dato SIPrO è visibile e compare l'avviso «Ente non
-    accreditato in SIPrO»;
-  - se è accreditato, i filtri **Ente** e **Regione** sono applicati direttamente e
-    bloccati: compare la regione dell'ente con il lucchetto e le altre regioni non sono
-    selezionabili;
-  - nel **Benchmark** la regione è fissata a quella dell'ente e il confronto è possibile
-    solo tra enti della stessa regione.
-- L'utente DFP (con o senza privilegi di amministrazione) non è soggetto a limitazioni di
+- Il responsabile abilitato a **più enti** li alterna con il menu «Ente», sempre a destra
+  nella barra dei filtri di ogni area attiva: Conto Annuale, Vista Sintetica, Vista
+  Executive e SIPrO.
+- L'utente DFP, con o senza privilegi di amministrazione, non è soggetto a limitazioni di
   perimetro e visualizza i dati di tutti gli enti.
 
-## 2.4 Sicurezza degli accessi
+## 2.4 Regole particolari per il SIPrO
+
+Per i responsabili di ente valgono regole aggiuntive:
+
+- se l'ente selezionato **non è accreditato in SIPrO**, nessun dato SIPrO è visibile e
+  compare l'avviso «Ente non accreditato in SIPrO»;
+- se l'ente è accreditato, i filtri **Ente** e **Regione** sono applicati direttamente e
+  bloccati: la regione dell'ente compare con il simbolo del lucchetto e le altre regioni
+  non sono consultabili;
+- nel **Benchmark** la regione è fissata a quella dell'ente e il confronto è possibile solo
+  tra enti della stessa regione.
+
+Per gli utenti DFP il Benchmark propone all'avvio tre enti; quando si sceglie una regione,
+vengono tolti dal confronto gli enti che non vi appartengono.
+
+## 2.5 Sicurezza degli accessi
 
 - La gestione delle autorizzazioni è centralizzata: l'abilitazione o la disabilitazione di
   un utente compete ai referenti degli accessi.
@@ -58,7 +64,6 @@ associate all'utente, e non è modificabile dall'utente stesso.
   gli enti (profilo DFP) non abilita l'accesso all'area di gestione.
 - Gli accessi e le attività principali sono registrati a fini di monitoraggio.
 
-> Per il dettaglio delle soluzioni adottate si rimanda alla
-> [Architettura tecnica](04-Architettura-Tecnica).
+> Per un quadro d'insieme si rimanda a [Funzionamento e sicurezza](04-Funzionamento-e-Sicurezza).
 
 [▶ Pagina successiva: Pannello di gestione](03-Pannello-di-Gestione)
