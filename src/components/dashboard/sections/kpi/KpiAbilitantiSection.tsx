@@ -14,9 +14,10 @@
  *  - Sezione «Indici compositi» eliminata.
  *  - Ricerca per codice o parola del nome (filtra le righe; le card senza risultati si nascondono).
  *  - Export CSV / Excel / PDF di TUTTI i KPI dell'anno scelto (indipendente dalla ricerca).
- *  - Utenti di ente: se l'ente non è CENSITO nella rilevazione dell'anno (RPC kpi_enti)
- *    i KPI non sono mostrati, come per il SIPrO. Il controllo si attiva da solo quando
- *    il backend rilascia kpi_enti; si può spegnere dal flag di sistema "kpi_verifica_enti".
+ *  - Utenti di ente: se l'ente non è tra i PARTECIPANTI (RPC kpi_enti_partecipanti, lista
+ *    di riferimento 2024, indipendente dall'anno scelto) i KPI non sono mostrati, come per
+ *    il SIPrO. Se la verifica non risponde i dati restano visibili; si può spegnere dal
+ *    flag di sistema "kpi_verifica_enti".
  */
 import { useMemo, useState } from "react";
 import { Minus, Plus, RotateCcw, Loader2, AlertCircle, Calendar, Search, X } from "lucide-react";
@@ -156,17 +157,17 @@ export const KpiAbilitantiSection = () => {
   const { flags } = useAdminState();
   const verificaOn = flags.find((f) => f.key === "kpi_verifica_enti")?.enabled ?? true;
   const verifica = scope.isEnteUser && verificaOn;
-  const entiQ = useKpiEntiCensiti(anno, verifica);
+  const entiQ = useKpiEntiCensiti(verifica);
   const censiti = entiQ.data; // undefined = in caricamento · null = controllo non disponibile
-  const accesso: "ok" | "verifica" | "non-censito" | "errore" = !verifica
+  // Se la verifica non risponde si lasciano vedere i dati (scelta di prodotto).
+  const accesso: "ok" | "verifica" | "non-censito" = !verifica || entiQ.isError
     ? "ok"
-    : entiQ.isError
-      ? "errore"
-      : entiQ.isLoading || censiti === undefined
-        ? "verifica"
-        : censiti === null || (scope.codiceFiscale != null && censiti.has(scope.codiceFiscale))
-          ? "ok"
-          : "non-censito";
+    : entiQ.isLoading || censiti === undefined
+      ? "verifica"
+      : censiti === null ||
+          (scope.codiceFiscale != null && censiti.has(scope.codiceFiscale.trim()))
+        ? "ok"
+        : "non-censito";
   const altriCensiti =
     censiti instanceof Set
       ? scope.options.filter((o) => o.cf !== scope.codiceFiscale && censiti.has(o.cf)).length
@@ -332,40 +333,26 @@ export const KpiAbilitantiSection = () => {
           <Loader2 className="h-4 w-4 animate-spin" /> Verifica dell'ente in corso…
         </div>
       )}
-      {(accesso === "non-censito" || accesso === "errore") && (
+      {accesso === "non-censito" && (
         <div className="p-4">
           <div className="tableau-card max-w-xl mx-auto" data-testid="kpi-non-censito">
             <div className="tableau-card-header flex items-center gap-2">
               <ShieldAlert className="h-4 w-4" />
-              {accesso === "errore"
-                ? "Verifica dell'ente non riuscita"
-                : "Ente non censito nella rilevazione KPI"}
+              Ente non partecipante alla rilevazione KPI
             </div>
             <div className="p-6 text-sm text-muted-foreground leading-relaxed space-y-2">
-              {accesso === "errore" ? (
+              <p>
+                L'ente selezionato non risulta tra gli enti partecipanti alla rilevazione KPI
+                Riforma PA: i dati di questa sezione non sono disponibili.
+              </p>
+              {altriCensiti > 0 && (
                 <p>
-                  Non è stato possibile verificare la partecipazione dell'ente alla rilevazione KPI.
-                  Riprova più tardi.
+                  Hai{" "}
+                  {altriCensiti === 1
+                    ? "un altro ente partecipante"
+                    : `${altriCensiti} enti partecipanti`}
+                  : selezionalo dal menu «Ente» in alto.
                 </p>
-              ) : (
-                <>
-                  <p>
-                    L'ente selezionato non risulta tra gli enti censiti nella rilevazione KPI {anno}
-                    : i dati di questa sezione non sono disponibili.
-                  </p>
-                  {altriCensiti > 0 && (
-                    <p>
-                      Hai{" "}
-                      {altriCensiti === 1
-                        ? "un altro ente censito"
-                        : `${altriCensiti} enti censiti`}
-                      : selezionalo dal menu «Ente» in alto a destra.
-                    </p>
-                  )}
-                  {(filtriQ.data?.anni.length ?? 0) > 1 && (
-                    <p>Puoi anche provare con un altro anno.</p>
-                  )}
-                </>
               )}
             </div>
           </div>

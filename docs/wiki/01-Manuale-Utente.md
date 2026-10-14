@@ -112,9 +112,10 @@ disponibili; l'avviso ne dà evidenza.
 L'ente selezionato non partecipa al SIPrO e i relativi dati non sono disponibili. Se si è
 abilitati anche ad altri enti, è possibile selezionarne uno accreditato dal menu «Ente».
 
-**Nella sezione KPI Riforma PA compare «Ente non censito nella rilevazione KPI».**
-L'ente selezionato non ha partecipato alla rilevazione dell'anno scelto. È possibile
-scegliere un altro ente censito dal menu «Ente» o provare un altro anno.
+**Nella sezione KPI Riforma PA compare «Ente non partecipante alla rilevazione KPI».**
+L'ente selezionato non risulta nell'elenco degli enti partecipanti alla rilevazione
+(elenco di riferimento 2024, valido per tutti gli anni). È possibile scegliere un altro
+ente partecipante dal menu «Ente».
 
 **L'accesso non riesce.**
 Verificare l'utilizzo delle corrette credenziali aziendali. Se il problema persiste,

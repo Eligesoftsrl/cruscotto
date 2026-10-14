@@ -8,7 +8,7 @@
  *  - kpi_scheda  (p_anno)         -> 39 righe (una per KPI), gia ordinate dal DB
  *    (D6.2 prima di D6.10). UNA SOLA chiamata alimenta le sei card e tutti gli
  *    accordion; un anno non presente restituisce lista vuota (non errore).
- *  - kpi_enti    (p_anno)         -> enti CENSITI nella rilevazione dell'anno
+ *  - kpi_enti_partecipanti (p_anno=2024) -> enti PARTECIPANTI alla rilevazione (lista di riferimento)
  *    (in arrivo dal backend). Serve a bloccare la scheda agli utenti di ente non
  *    censiti, come per il SIPrO. Finché la RPC non esiste il controllo resta
  *    inattivo e la scheda funziona come oggi (si attiva da sola al rilascio).
@@ -50,31 +50,38 @@ export async function fetchKpiScheda(anno: number): Promise<KpiSchedaRow[]> {
   return (data ?? []) as unknown as KpiSchedaRow[];
 }
 
-/** Risultato del controllo "ente censito": null = RPC kpi_enti non ancora disponibile. */
+/** Risultato del controllo "ente partecipante": null = controllo non disponibile (nessun blocco). */
 export type KpiEntiCensiti = Set<string> | null;
 
-const isMissingFunction = (e: { code?: string; message?: string } | null) =>
-  !!e &&
-  (e.code === "PGRST202" ||
-    e.code === "42883" ||
-    /could not find the function|does not exist/i.test(e.message ?? ""));
+/**
+ * Anno di riferimento della lista enti partecipanti: fornito dal backend come
+ * lista "garantita" (alcuni dati KPI sono espressi solo come totale enti).
+ */
+export const KPI_ANNO_ENTI_PARTECIPANTI = 2024;
 
-export async function fetchKpiEntiCensiti(anno: number): Promise<KpiEntiCensiti> {
-  const { data, error } = await sbUntyped.rpc("kpi_enti", { p_anno: anno });
-  if (error) {
-    if (isMissingFunction(error)) return null; // backend non ancora rilasciato: nessun blocco
-    throw error;
-  }
-  const out = new Set<string>();
-  const add = (v: unknown) => {
-    if (typeof v === "string") out.add(v.trim());
-    else if (v && typeof v === "object") {
-      const o = v as Record<string, unknown>;
-      const cf = o.codice_fiscale ?? o.cfiscale ?? o.cf ?? o.kpi_enti;
-      if (typeof cf === "string") out.add(cf.trim());
-      else if (Array.isArray(cf)) cf.forEach(add);
+export async function fetchKpiEntiCensiti(): Promise<KpiEntiCensiti> {
+  try {
+    const { data, error } = await sbUntyped.rpc("kpi_enti_partecipanti", {
+      p_anno: KPI_ANNO_ENTI_PARTECIPANTI,
+    });
+    if (error) {
+      console.warn("[KPI] verifica enti partecipanti non disponibile:", error.message);
+      return null; // controllo non disponibile: si lasciano vedere i dati
     }
-  };
-  (Array.isArray(data) ? data : [data]).forEach((v) => (Array.isArray(v) ? v.forEach(add) : add(v)));
-  return out;
+    const out = new Set<string>();
+    const add = (v: unknown) => {
+      if (typeof v === "string") out.add(v.trim());
+      else if (v && typeof v === "object") {
+        const o = v as Record<string, unknown>;
+        const cf = o.cf_ente ?? o.codice_fiscale ?? o.cfiscale ?? o.cf;
+        if (typeof cf === "string") out.add(cf.trim());
+        else if (Array.isArray(cf)) cf.forEach(add);
+      }
+    };
+    (Array.isArray(data) ? data : [data]).forEach((v) => (Array.isArray(v) ? v.forEach(add) : add(v)));
+    return out.size > 0 ? out : null; // lista vuota = dato anomalo: nessun blocco
+  } catch (e) {
+    console.warn("[KPI] verifica enti partecipanti fallita:", e);
+    return null;
+  }
 }

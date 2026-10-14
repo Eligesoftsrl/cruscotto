@@ -14,12 +14,12 @@ export function useKpiScheda(anno: number | null, enabled = true) {
   });
 }
 
-/** Enti censiti nella rilevazione dell'anno (null = controllo non ancora disponibile). */
-export function useKpiEntiCensiti(anno: number | null, enabled: boolean) {
+/** Enti partecipanti alla rilevazione KPI (lista fissa di riferimento; null = controllo non disponibile). */
+export function useKpiEntiCensiti(enabled: boolean) {
   return useQuery({
-    queryKey: ["kpi-riforma", "enti", anno],
-    queryFn: () => fetchKpiEntiCensiti(anno as number),
-    enabled: enabled && anno != null,
+    queryKey: ["kpi-riforma", "enti-partecipanti"],
+    queryFn: fetchKpiEntiCensiti,
+    enabled,
     staleTime: 30 * 60_000,
     retry: 1,
   });

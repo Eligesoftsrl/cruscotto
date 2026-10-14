@@ -1,4 +1,4 @@
-# Specifica RPC `kpi_enti` — enti censiti nella rilevazione KPI Riforma PA
+# Specifica RPC `kpi_enti` (SUPERATA: in uso `kpi_enti_partecipanti(p_anno=>2024)`, ritorna righe `{cf_ente}`)
 
 Documento interno per il backend. Il frontend è già pronto: il controllo si attiva
 **da solo** appena la funzione è disponibile, senza nuovi rilasci dell'applicazione.

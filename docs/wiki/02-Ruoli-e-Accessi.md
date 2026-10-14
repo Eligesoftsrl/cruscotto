@@ -58,13 +58,13 @@ vengono tolti dal confronto gli enti che non vi appartengono.
 
 I KPI sono dati aggregati, ma sono riservati agli enti che partecipano alla rilevazione:
 
-- il responsabile di un ente **non censito** nella rilevazione dell'anno scelto non vede i
-  KPI e compare l'avviso «Ente non censito nella rilevazione KPI»;
-- se è abilitato anche ad altri enti censiti, può selezionarne uno dal menu «Ente»,
-  oppure provare un altro anno;
+- il controllo usa l'elenco degli enti partecipanti alla rilevazione 2024, che vale come
+  riferimento per tutti gli anni (alcuni dati sono disponibili solo come totale degli enti);
+- il responsabile di un ente **non partecipante** non vede i KPI e compare l'avviso
+  «Ente non partecipante alla rilevazione KPI»;
+- se è abilitato anche ad altri enti partecipanti, può selezionarne uno dal menu «Ente»;
+- se la verifica non è momentaneamente disponibile, i dati restano visibili;
 - gli utenti DFP non sono soggetti a questa regola.
-
-> La regola entra in funzione non appena è disponibile l'elenco degli enti censiti.
 
 ## 2.6 Sicurezza degli accessi
 
