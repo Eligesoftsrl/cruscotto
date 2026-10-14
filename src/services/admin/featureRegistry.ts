@@ -130,6 +130,7 @@ export const DEFAULT_FEATURE_FLAGS: FeatureFlag[] = [
   },
   // --- Schede SIPrO ---
   // --- KPI Riforma PA ---
+  { key: "kpi_verifica_enti", label: "KPI Riforma · verifica enti censiti", description: "Gli utenti di ente non censiti nella rilevazione dell'anno non vedono i KPI. Si applica quando è disponibile l'elenco degli enti censiti.", category: "Sistema", enabled: true, updatedAt: "" },
   { key: "kpi_abilitanti", label: "KPI Abilitanti e di Successo", description: "KPI Riforma PA — 39 KPI per dimensione (kpi_scheda)", category: "Schede KPI Riforma PA", enabled: true, updatedAt: "" },
   { key: "sipro_benchmark", label: "Benchmark DFP", description: "SIPrO — Benchmark multi-ente", category: "Schede SIPrO — Benchmark", enabled: true, updatedAt: "" },
   { key: "sipro_organigramma", label: "Organigramma UO", description: "SIPrO — Organizzazione", category: "Schede SIPrO — Organizzazione", enabled: true, updatedAt: "" },

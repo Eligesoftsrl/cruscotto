@@ -57,6 +57,8 @@ svolgere o da verificare.
 
 **Enti e perimetro**
 
+- **KPI Riforma PA**: predisposto il blocco per gli enti non censiti nella rilevazione
+  dell'anno, che entrerà in funzione con l'elenco degli enti censiti in arrivo.
 - Il menu **«Ente»** per gli utenti di ente è ora sempre visibile **a destra nella barra dei
   filtri** di ogni area attiva; con un solo ente ne mostra il nome. La scelta resta valida
   anche ricaricando la pagina.

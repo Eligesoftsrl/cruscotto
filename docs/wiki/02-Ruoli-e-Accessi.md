@@ -54,7 +54,19 @@ Per i responsabili di ente valgono regole aggiuntive:
 Per gli utenti DFP il Benchmark propone all'avvio tre enti; quando si sceglie una regione,
 vengono tolti dal confronto gli enti che non vi appartengono.
 
-## 2.5 Sicurezza degli accessi
+## 2.5 Regole particolari per i KPI Riforma PA
+
+I KPI sono dati aggregati, ma sono riservati agli enti che partecipano alla rilevazione:
+
+- il responsabile di un ente **non censito** nella rilevazione dell'anno scelto non vede i
+  KPI e compare l'avviso «Ente non censito nella rilevazione KPI»;
+- se è abilitato anche ad altri enti censiti, può selezionarne uno dal menu «Ente»,
+  oppure provare un altro anno;
+- gli utenti DFP non sono soggetti a questa regola.
+
+> La regola entra in funzione non appena è disponibile l'elenco degli enti censiti.
+
+## 2.6 Sicurezza degli accessi
 
 - La gestione delle autorizzazioni è centralizzata: l'abilitazione o la disabilitazione di
   un utente compete ai referenti degli accessi.

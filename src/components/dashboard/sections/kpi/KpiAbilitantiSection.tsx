@@ -14,14 +14,27 @@
  *  - Sezione «Indici compositi» eliminata.
  *  - Ricerca per codice o parola del nome (filtra le righe; le card senza risultati si nascondono).
  *  - Export CSV / Excel / PDF di TUTTI i KPI dell'anno scelto (indipendente dalla ricerca).
+ *  - Utenti di ente: se l'ente non è CENSITO nella rilevazione dell'anno (RPC kpi_enti)
+ *    i KPI non sono mostrati, come per il SIPrO. Il controllo si attiva da solo quando
+ *    il backend rilascia kpi_enti; si può spegnere dal flag di sistema "kpi_verifica_enti".
  */
 import { useMemo, useState } from "react";
 import { Minus, Plus, RotateCcw, Loader2, AlertCircle, Calendar, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import type { ExportTable } from "@/lib/tableExport";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useKpiFiltri, useKpiScheda } from "@/hooks/useKpiRiforma";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useKpiEntiCensiti, useKpiFiltri, useKpiScheda } from "@/hooks/useKpiRiforma";
+import { useEnteScope } from "@/hooks/useEnteScope";
+import { useAdminState } from "@/services/admin/adminStore";
+import { EnteSelector } from "@/components/dashboard/EnteSelector";
+import { ShieldAlert } from "lucide-react";
 import type { KpiSchedaRow } from "@/services/kpi/kpiRiformaService";
 
 /** Colore statico per dimensione (blu, arancio, verde, rosa, viola, ottanio). */
@@ -68,7 +81,15 @@ interface DimBlock {
   kpis: KpiSchedaRow[];
 }
 
-const KpiRow = ({ k, open, onToggle }: { k: KpiSchedaRow; open: boolean; onToggle: () => void }) => {
+const KpiRow = ({
+  k,
+  open,
+  onToggle,
+}: {
+  k: KpiSchedaRow;
+  open: boolean;
+  onToggle: () => void;
+}) => {
   const panelId = `kpi-acc-${k.kpi.replace(/\W/g, "-")}`;
   return (
     <div data-testid={`kpi-row-${k.kpi}`}>
@@ -79,7 +100,11 @@ const KpiRow = ({ k, open, onToggle }: { k: KpiSchedaRow; open: boolean; onToggl
         aria-controls={panelId}
         className="w-full px-4 py-2 flex items-center gap-3 text-[12px] text-left hover:bg-muted/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
-        <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: NEUTRAL_DOT }} aria-hidden="true" />
+        <span
+          className="w-2 h-2 rounded-full flex-shrink-0"
+          style={{ background: NEUTRAL_DOT }}
+          aria-hidden="true"
+        />
         <span
           className="flex-shrink-0 w-5 h-5 rounded border border-border flex items-center justify-center text-muted-foreground"
           aria-hidden="true"
@@ -96,7 +121,11 @@ const KpiRow = ({ k, open, onToggle }: { k: KpiSchedaRow; open: boolean; onToggl
         </span>
       </button>
       {open && (
-        <div id={panelId} className="px-4 pb-3 pl-[4.25rem] text-[12px] space-y-1.5" data-testid={`kpi-acc-${k.kpi}`}>
+        <div
+          id={panelId}
+          className="px-4 pb-3 pl-[4.25rem] text-[12px] space-y-1.5"
+          data-testid={`kpi-acc-${k.kpi}`}
+        >
           <div className="flex gap-2">
             <span className="text-muted-foreground w-28 flex-shrink-0">Tipo di sintesi</span>
             <span className="text-foreground font-medium">{cleanText(k.tipo_sintesi) || "—"}</span>
@@ -121,7 +150,29 @@ export const KpiAbilitantiSection = () => {
 
   const annoDefault = filtriQ.data?.anno_predefinito ?? null;
   const anno = annoSel ?? annoDefault;
-  const schedaQ = useKpiScheda(anno);
+
+  /* Verifica "ente censito" (solo utenti di ente, flag di sistema attivo) */
+  const scope = useEnteScope();
+  const { flags } = useAdminState();
+  const verificaOn = flags.find((f) => f.key === "kpi_verifica_enti")?.enabled ?? true;
+  const verifica = scope.isEnteUser && verificaOn;
+  const entiQ = useKpiEntiCensiti(anno, verifica);
+  const censiti = entiQ.data; // undefined = in caricamento · null = controllo non disponibile
+  const accesso: "ok" | "verifica" | "non-censito" | "errore" = !verifica
+    ? "ok"
+    : entiQ.isError
+      ? "errore"
+      : entiQ.isLoading || censiti === undefined
+        ? "verifica"
+        : censiti === null || (scope.codiceFiscale != null && censiti.has(scope.codiceFiscale))
+          ? "ok"
+          : "non-censito";
+  const altriCensiti =
+    censiti instanceof Set
+      ? scope.options.filter((o) => o.cf !== scope.codiceFiscale && censiti.has(o.cf)).length
+      : 0;
+
+  const schedaQ = useKpiScheda(anno, accesso === "ok");
 
   const cambiaAnno = (a: number | null) => {
     setAnnoSel(a);
@@ -204,8 +255,13 @@ export const KpiAbilitantiSection = () => {
   return (
     <div className="flex-1 flex flex-col" data-testid="kpi-abilitanti-section">
       {/* Pannello filtri: unica voce Anno */}
-      <div className="px-4 py-2 border-b border-border bg-card flex items-center gap-3 flex-wrap" data-testid="kpi-filtri">
-        <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Filtri</span>
+      <div
+        className="px-4 py-2 border-b border-border bg-card flex items-center gap-3 flex-wrap"
+        data-testid="kpi-filtri"
+      >
+        <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+          Filtri
+        </span>
         <div className="flex items-center gap-2">
           <Calendar className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
           <label htmlFor="kpi-anno" className="text-sm text-muted-foreground">
@@ -239,7 +295,10 @@ export const KpiAbilitantiSection = () => {
           </button>
         )}
         <div className="relative ml-auto w-full sm:w-[340px]">
-          <Search className="h-4 w-4 text-muted-foreground absolute left-2.5 top-1/2 -translate-y-1/2" aria-hidden="true" />
+          <Search
+            className="h-4 w-4 text-muted-foreground absolute left-2.5 top-1/2 -translate-y-1/2"
+            aria-hidden="true"
+          />
           <Input
             value={cerca}
             onChange={(e) => setCerca(e.target.value)}
@@ -265,71 +324,136 @@ export const KpiAbilitantiSection = () => {
             {righe.length} di {schedaQ.data?.length ?? 0} KPI
           </span>
         )}
+        <EnteSelector />
       </div>
 
-      <div className="p-4 space-y-4">
-        <div className="tableau-card">
-          <div className="tableau-card-header flex items-center justify-between gap-2">
-            <span>KPI Abilitanti e di Successo per Dimensione (Metodologia Ufficiale)</span>
-            {schedaQ.isSuccess && (schedaQ.data?.length ?? 0) > 0 && (
-              <span data-testid="kpi-export">
-                <TableExport
-                  filename={`kpi-riforma-pa-${anno ?? ""}`}
-                  title={`KPI Abilitanti e di Successo — anno ${anno ?? ""}`}
-                  data={exportData}
-                />
-              </span>
-            )}
-          </div>
-          <div className="p-4">
-            {(filtriQ.isLoading || schedaQ.isLoading) && (
-              <div className="py-10 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                <Loader2 className="h-4 w-4 animate-spin" /> Caricamento KPI…
-              </div>
-            )}
-            {(filtriQ.isError || schedaQ.isError) && (
-              <div className="py-6 flex items-center gap-2 text-sm text-destructive" data-testid="kpi-error">
-                <AlertCircle className="h-4 w-4" />
-                Impossibile caricare i KPI:{" "}
-                {((filtriQ.error ?? schedaQ.error) as Error)?.message ?? "errore sconosciuto"}
-              </div>
-            )}
-            {schedaQ.isSuccess && blocks.length === 0 && (
-              <p className="py-6 text-sm text-muted-foreground text-center" data-testid="kpi-empty">
-                {termini.length > 0
-                  ? `Nessun KPI corrisponde a «${cerca.trim()}».`
-                  : `Nessun KPI disponibile per l'anno ${anno}.`}
-              </p>
-            )}
-            {blocks.length > 0 && (
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
-                {blocks.map((block) => (
-                  <div
-                    key={block.dim}
-                    className="rounded-lg border border-border overflow-hidden"
-                    data-testid={`kpi-card-${block.dim}`}
-                  >
-                    <div
-                      className="px-4 py-2.5 flex items-center gap-2"
-                      style={{ background: block.color + "15", borderBottom: `2px solid ${block.color}` }}
-                    >
-                      <div className="w-3 h-3 rounded-sm flex-shrink-0" style={{ background: block.color }} />
-                      <span className="text-[13px] font-bold text-foreground">
-                        {block.dim} – {block.nome}
-                      </span>
-                    </div>
-                    <div className="divide-y divide-border/50 max-h-[440px] overflow-y-auto">
-                      {block.kpis.map((k) => (
-                        <KpiRow key={`${k.anno}-${k.kpi}`} k={k} open={aperti.has(k.kpi)} onToggle={() => toggle(k.kpi)} />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+      {accesso === "verifica" && (
+        <div className="p-10 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+          <Loader2 className="h-4 w-4 animate-spin" /> Verifica dell'ente in corso…
+        </div>
+      )}
+      {(accesso === "non-censito" || accesso === "errore") && (
+        <div className="p-4">
+          <div className="tableau-card max-w-xl mx-auto" data-testid="kpi-non-censito">
+            <div className="tableau-card-header flex items-center gap-2">
+              <ShieldAlert className="h-4 w-4" />
+              {accesso === "errore"
+                ? "Verifica dell'ente non riuscita"
+                : "Ente non censito nella rilevazione KPI"}
+            </div>
+            <div className="p-6 text-sm text-muted-foreground leading-relaxed space-y-2">
+              {accesso === "errore" ? (
+                <p>
+                  Non è stato possibile verificare la partecipazione dell'ente alla rilevazione KPI.
+                  Riprova più tardi.
+                </p>
+              ) : (
+                <>
+                  <p>
+                    L'ente selezionato non risulta tra gli enti censiti nella rilevazione KPI {anno}
+                    : i dati di questa sezione non sono disponibili.
+                  </p>
+                  {altriCensiti > 0 && (
+                    <p>
+                      Hai{" "}
+                      {altriCensiti === 1
+                        ? "un altro ente censito"
+                        : `${altriCensiti} enti censiti`}
+                      : selezionalo dal menu «Ente» in alto a destra.
+                    </p>
+                  )}
+                  {(filtriQ.data?.anni.length ?? 0) > 1 && (
+                    <p>Puoi anche provare con un altro anno.</p>
+                  )}
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {accesso === "ok" && (
+        <div className="p-4 space-y-4">
+          <div className="tableau-card">
+            <div className="tableau-card-header flex items-center justify-between gap-2">
+              <span>KPI Abilitanti e di Successo per Dimensione (Metodologia Ufficiale)</span>
+              {schedaQ.isSuccess && (schedaQ.data?.length ?? 0) > 0 && (
+                <span data-testid="kpi-export">
+                  <TableExport
+                    filename={`kpi-riforma-pa-${anno ?? ""}`}
+                    title={`KPI Abilitanti e di Successo — anno ${anno ?? ""}`}
+                    data={exportData}
+                  />
+                </span>
+              )}
+            </div>
+            <div className="p-4">
+              {(filtriQ.isLoading || schedaQ.isLoading) && (
+                <div className="py-10 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                  <Loader2 className="h-4 w-4 animate-spin" /> Caricamento KPI…
+                </div>
+              )}
+              {(filtriQ.isError || schedaQ.isError) && (
+                <div
+                  className="py-6 flex items-center gap-2 text-sm text-destructive"
+                  data-testid="kpi-error"
+                >
+                  <AlertCircle className="h-4 w-4" />
+                  Impossibile caricare i KPI:{" "}
+                  {((filtriQ.error ?? schedaQ.error) as Error)?.message ?? "errore sconosciuto"}
+                </div>
+              )}
+              {schedaQ.isSuccess && blocks.length === 0 && (
+                <p
+                  className="py-6 text-sm text-muted-foreground text-center"
+                  data-testid="kpi-empty"
+                >
+                  {termini.length > 0
+                    ? `Nessun KPI corrisponde a «${cerca.trim()}».`
+                    : `Nessun KPI disponibile per l'anno ${anno}.`}
+                </p>
+              )}
+              {blocks.length > 0 && (
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+                  {blocks.map((block) => (
+                    <div
+                      key={block.dim}
+                      className="rounded-lg border border-border overflow-hidden"
+                      data-testid={`kpi-card-${block.dim}`}
+                    >
+                      <div
+                        className="px-4 py-2.5 flex items-center gap-2"
+                        style={{
+                          background: block.color + "15",
+                          borderBottom: `2px solid ${block.color}`,
+                        }}
+                      >
+                        <div
+                          className="w-3 h-3 rounded-sm flex-shrink-0"
+                          style={{ background: block.color }}
+                        />
+                        <span className="text-[13px] font-bold text-foreground">
+                          {block.dim} – {block.nome}
+                        </span>
+                      </div>
+                      <div className="divide-y divide-border/50 max-h-[440px] overflow-y-auto">
+                        {block.kpis.map((k) => (
+                          <KpiRow
+                            key={`${k.anno}-${k.kpi}`}
+                            k={k}
+                            open={aperti.has(k.kpi)}
+                            onToggle={() => toggle(k.kpi)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
