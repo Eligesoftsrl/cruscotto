@@ -36,6 +36,8 @@ svolgere o da verificare.
 
 **Vista Executive**
 
+- Nuova **barra dei filtri**, identica a quella della Vista Sintetica: Anno, Regione,
+  Comparto ed Ente.
 - Le card di D2, D4, D5 e D6 mostrano gli score reali; tutte le card riportano lo score in
   scala 0–100.
 - **D2 e D5** seguono la gerarchia degli indici: riga con l'indice di sintesi e il riquadro

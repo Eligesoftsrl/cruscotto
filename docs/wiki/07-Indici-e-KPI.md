@@ -23,7 +23,9 @@ esempio «+3 punti vs 2023».
 
 ## 7.2 Vista Executive
 
-È il quadro d'insieme delle sei dimensioni (D1–D6). Per ogni dimensione sono mostrate le
+È il quadro d'insieme delle sei dimensioni (D1–D6). In alto si trovano gli stessi filtri
+della Vista Sintetica: **Anno**, **Regione**, **Comparto** e, per gli utenti di ente,
+l'**Ente** a destra. Modificando i filtri gli score si aggiornano. Per ogni dimensione sono mostrate le
 card dei suoi indici, con score, giudizio, una breve lettura e i collegamenti con le altre
 dimensioni. Il pulsante **«Approfondisci»** porta alla Vista Sintetica della dimensione.
 
