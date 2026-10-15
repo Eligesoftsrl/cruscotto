@@ -18,7 +18,8 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useFilters } from "@/contexts/FilterContext";
 import { ExecutiveKpiCard } from "./executive/ExecutiveKpiCards";
-import { BulletBar } from "./executive/ExecutiveKpiCards";
+import { BulletBar, MockUpBadge } from "./executive/ExecutiveKpiCards";
+import { NdMode } from "./NdMode";
 import { KpiPositioningMatrix } from "./executive/KpiPositioningMatrix";
 import {
   executiveIndicesStatic,
@@ -44,6 +45,17 @@ import { EXEC_FLAG_BY_CODE } from "@/config/execIndiciCatalog";
 const EXEC_PILLARS = Object.keys(EXEC_SCORE_PILLARS);
 /** Dimensioni con layout gerarchico (sintesi da 2 + componenti da 3) richiesto dal cliente. */
 const HIERARCHY_PILLARS = ["D2", "D5"];
+/** Pillar senza fonte dati ufficiale (come in Vista Sintetica: banner dimostrativo + badge mock-up). */
+const DEMO_PILLARS = ["D1", "D3"];
+/** Pillar dimostrativi: stesso banner (e modalità N/D) della Vista Sintetica. */
+const DemoWrap = ({ demo, children }: { demo: boolean; children: React.ReactNode }) =>
+  demo ? <NdMode>{children}</NdMode> : <>{children}</>;
+/** Nota sotto i grafici con dati dimostrativi (stesso testo della Vista Sintetica). */
+const MockUpNote = () => (
+  <p className="text-xs text-muted-foreground mt-2" data-testid="exec-mock-note">
+    * Dati mock-up: valori dimostrativi, fonte non ancora collegata.
+  </p>
+);
 
 /**
  * Testo di lettura della card Executive (valori restituiti dall'API):
@@ -223,9 +235,11 @@ export const ExecutiveView = ({
       });
       return [...mapped, ...extras];
     };
-    if (!d1Data) return withExec(executiveIndicesStatic);
+    const markDemo = (list: typeof executiveIndicesStatic) =>
+      list.map((idx) => (DEMO_PILLARS.includes(idx.pillar) ? { ...idx, isMock: true } : idx));
+    if (!d1Data) return markDemo(withExec(executiveIndicesStatic));
     const d1Ids = ["IAC", "IIMP/R", "ICPR", "ICVC", "IACU"] as const;
-    return withExec(executiveIndicesStatic).map((idx) => {
+    return markDemo(withExec(executiveIndicesStatic)).map((idx) => {
       if (
         d1Ids.includes(idx.id as (typeof d1Ids)[number]) &&
         d1Data[idx.id as keyof typeof d1Data]
@@ -428,6 +442,7 @@ export const ExecutiveView = ({
                   )}
                 </div>
               ) : (
+                <DemoWrap demo={DEMO_PILLARS.includes(group.id)}>
                 <div
                   className={`p-4 grid gap-4 bg-card ${
                     group.indices.length === 1
@@ -447,6 +462,7 @@ export const ExecutiveView = ({
                     />
                   ))}
                 </div>
+                </DemoWrap>
               )}
             </div>
           ))}
@@ -458,6 +474,7 @@ export const ExecutiveView = ({
             <div className="tableau-card-header flex items-center gap-2">
               <BarChart3 className="h-4 w-4" />
               KPI Success Rate per Dimensione
+              <MockUpBadge className="ml-auto" />
             </div>
             <div className="tableau-card-body">
               <div className="h-[280px]">
@@ -492,6 +509,7 @@ export const ExecutiveView = ({
             <div className="tableau-card-header flex items-center gap-2">
               <Target className="h-4 w-4" />
               Confronto Target vs Raggiunto
+              <MockUpBadge className="ml-auto" />
             </div>
             <div className="tableau-card-body space-y-3">
               {kpiSuccessData.map((d) => (
@@ -512,6 +530,8 @@ export const ExecutiveView = ({
           </div>
         </div>
 
+        <MockUpNote />
+
         {/* ── KPI Positioning Matrix ── */}
         <KpiPositioningMatrix />
 
@@ -520,6 +540,7 @@ export const ExecutiveView = ({
           <div className="tableau-card-header flex items-center gap-2">
             <Activity className="h-4 w-4" />
             Trend Storico per Pillar (2019–2023)
+            <MockUpBadge className="ml-auto" />
           </div>
           <div className="tableau-card-body">
             <div className="h-[260px]">
@@ -591,6 +612,7 @@ export const ExecutiveView = ({
           <div className="tableau-card-header flex items-center gap-2">
             <Award className="h-4 w-4" />
             Distribuzione KPI per Stato di Raggiungimento
+            <MockUpBadge className="ml-auto" />
           </div>
           <div className="tableau-card-body">
             <div className="h-[220px]">

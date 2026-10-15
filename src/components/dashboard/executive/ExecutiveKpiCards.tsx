@@ -291,6 +291,17 @@ const MetodologiaPanel = ({
 };
 
 /* ── Executive KPI Card ── */
+/** Badge "Dati mock-up" (stesso stile/testo della Vista Sintetica). */
+export const MockUpBadge = ({ className = "" }: { className?: string }) => (
+  <span
+    title="Dati dimostrativi (mock-up): fonte non ancora collegata"
+    data-testid="mock-up-badge"
+    className={`text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-dashed border-amber-400 ${className}`}
+  >
+    Dati mock-up
+  </span>
+);
+
 export const ExecutiveKpiCard = ({
   idx,
   onDrillDown,
@@ -358,14 +369,7 @@ export const ExecutiveKpiCard = ({
                     Indice di sintesi
                   </span>
                 )}
-                {idx.isMock && (
-                  <span
-                    title="Dati dimostrativi (mock-up): fonte non ancora collegata"
-                    className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-dashed border-amber-400"
-                  >
-                    Dati mock-up
-                  </span>
-                )}
+                {idx.isMock && <MockUpBadge />}
               </div>
               <p
                 className={`leading-tight ${sintesi ? "text-base font-medium text-foreground" : "text-sm text-muted-foreground"}`}

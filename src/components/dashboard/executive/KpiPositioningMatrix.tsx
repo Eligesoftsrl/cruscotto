@@ -11,6 +11,7 @@ import {
   Label,
 } from "recharts";
 import { kpiAbilitantiData } from "./executiveData";
+import { MockUpBadge } from "./ExecutiveKpiCards";
 
 const quadrantColors = {
   topRight: "hsl(var(--chart-green) / 0.08)",
@@ -49,6 +50,7 @@ export const KpiPositioningMatrix = () => {
     <div className="tableau-card">
       <div className="tableau-card-header flex items-center gap-2">
         Matrice di Posizionamento KPI · Strategici vs Abilitanti
+        <MockUpBadge className="ml-auto" />
       </div>
       <div className="tableau-card-body">
         <div className="grid grid-cols-2 gap-0 mb-3 text-[9px] text-muted-foreground text-center">
