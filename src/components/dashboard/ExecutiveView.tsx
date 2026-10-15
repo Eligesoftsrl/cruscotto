@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { Layers } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useFilters } from "@/contexts/FilterContext";
-import { ExecutiveKpiCard } from "./executive/ExecutiveKpiCards";
+import { ExecutiveKpiCard, MockUpBadge } from "./executive/ExecutiveKpiCards";
 import { NdMode } from "./NdMode";
 import { executiveIndicesStatic } from "./executive/executiveData";
 import { useD1Calculations } from "@/hooks/useD1Calculations";
@@ -264,12 +264,19 @@ export const ExecutiveView = ({
   const groupedIndices = dimensionGroups
     .map((group) => {
       const h = hierarchy(group.id);
+      const indices = h
+        ? [...h.sintesi, ...h.componenti]
+        : executiveIndices.filter((idx) => group.pillars.includes(idx.pillar));
+      // Se TUTTI gli indici della dimensione sono mock-up, l'etichetta si mostra una sola
+      // volta a livello di dimensione (banner / header) e non si ripete sulle singole card.
+      const allMock = indices.length > 0 && indices.every((i) => i.isMock);
+      const strip = <T extends { isMock?: boolean }>(l: T[]) =>
+        allMock ? l.map((i) => ({ ...i, isMock: false })) : l;
       return {
         ...group,
-        hierarchy: h,
-        indices: h
-          ? [...h.sintesi, ...h.componenti]
-          : executiveIndices.filter((idx) => group.pillars.includes(idx.pillar)),
+        allMock,
+        hierarchy: h && allMock ? { sintesi: strip(h.sintesi), componenti: strip(h.componenti) } : h,
+        indices: strip(indices),
       };
     })
     .filter((g) => g.indices.length > 0);
@@ -340,6 +347,7 @@ export const ExecutiveView = ({
                     {group.indices.length}{" "}
                     {group.indices.length === 1 ? "indicatore" : "indicatori"}
                   </span>
+                  {group.allMock && !DEMO_PILLARS.includes(group.id) && <MockUpBadge />}
                 </span>
               </div>
               {/* Cards inside group */}

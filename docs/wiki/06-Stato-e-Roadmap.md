@@ -44,8 +44,9 @@ svolgere o da verificare.
   «Come leggere questa dimensione», poi gli indici componenti su righe da tre.
 - Rimosso il pulsante «Percorso guidato» dalle dimensioni; rimossi la tacca verticale dello
   score e il pulsante «Quadro Sinottico», non più previsti.
-- **D1 e D3** non hanno ancora una fonte dati: le card riportano l'etichetta «Dati mock-up» e
-  l'avviso «Dati a scopo dimostrativo», come nella Vista Sintetica.
+- **D1 e D3** non hanno ancora una fonte dati: la dimensione riporta una sola volta l'avviso
+  «Dati a scopo dimostrativo», come nella Vista Sintetica. L'etichetta «Dati mock-up» sulle
+  singole card compare solo quando nella dimensione convivono indici reali e dimostrativi (es. D4).
 - Rimossi i grafici in fondo alla pagina (KPI Success Rate per dimensione, Confronto target
   vs raggiunto, Matrice di posizionamento, Trend storico per pillar, Distribuzione KPI),
   basati su valori dimostrativi.
