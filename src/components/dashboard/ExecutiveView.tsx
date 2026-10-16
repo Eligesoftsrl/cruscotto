@@ -22,7 +22,7 @@ import { EXEC_FLAG_BY_CODE } from "@/config/execIndiciCatalog";
 
 const EXEC_PILLARS = Object.keys(EXEC_SCORE_PILLARS);
 /** Dimensioni con layout gerarchico (sintesi da 2 + componenti da 3) richiesto dal cliente. */
-const HIERARCHY_PILLARS = ["D2", "D5"];
+const HIERARCHY_PILLARS = ["D2", "D4", "D5"];
 /** Pillar senza fonte dati ufficiale (come in Vista Sintetica: banner dimostrativo + badge mock-up). */
 const DEMO_PILLARS = ["D1", "D3"];
 /** Pillar dimostrativi: stesso banner (e modalità N/D) della Vista Sintetica. */
@@ -254,10 +254,24 @@ export const ExecutiveView = ({
         .map((c) => byCode.get(c))
         .filter((i): i is (typeof allIndices)[number] => !!i && isIndiceOn(pillar, i.id));
     const sintesi = pick(cfg.sintetici);
-    const componenti = pick(
-      cfg.gruppiIntermedi ? cfg.gruppiIntermedi.flatMap((g) => g.codici) : cfg.intermedi,
-    );
-    return sintesi.length + componenti.length > 0 ? { sintesi, componenti } : null;
+    // Componenti raggruppati per indice di sintesi (es. D4: CGC · Minerva · Syllabus).
+    // Se tutti gli indici di un gruppo sono mock-up, l'etichetta va sul titolo del gruppo
+    // e non si ripete sulle singole card.
+    const gruppi = (
+      cfg.gruppiIntermedi ?? [{ titolo: "Indici componenti", codici: cfg.intermedi }]
+    )
+      .map((g) => {
+        const items = pick(g.codici);
+        const allMock = items.length > 0 && items.every((i) => i.isMock);
+        return {
+          titolo: g.titolo,
+          allMock,
+          items: allMock ? items.map((i) => ({ ...i, isMock: false })) : items,
+        };
+      })
+      .filter((g) => g.items.length > 0);
+    const componenti = gruppi.flatMap((g) => g.items);
+    return sintesi.length + componenti.length > 0 ? { sintesi, componenti, gruppi } : null;
   };
 
   /* Group indices by dimension */
@@ -275,7 +289,14 @@ export const ExecutiveView = ({
       return {
         ...group,
         allMock,
-        hierarchy: h && allMock ? { sintesi: strip(h.sintesi), componenti: strip(h.componenti) } : h,
+        hierarchy:
+          h && allMock
+            ? {
+                sintesi: strip(h.sintesi),
+                componenti: strip(h.componenti),
+                gruppi: h.gruppi.map((g) => ({ ...g, allMock: false, items: strip(g.items) })),
+              }
+            : h,
         indices: strip(indices),
       };
     })
@@ -346,6 +367,8 @@ export const ExecutiveView = ({
                   >
                     {group.indices.length}{" "}
                     {group.indices.length === 1 ? "indicatore" : "indicatori"}
+                    {(group.hierarchy?.sintesi.length ?? 0) > 1 &&
+                      ` · ${group.hierarchy?.sintesi.length} di sintesi`}
                   </span>
                   {group.allMock && !DEMO_PILLARS.includes(group.id) && <MockUpBadge />}
                 </span>
@@ -356,7 +379,7 @@ export const ExecutiveView = ({
                   {group.hierarchy.sintesi.length > 0 && (
                     <div>
                       <h3 className="text-[11px] font-bold text-muted-foreground uppercase tracking-[0.12em] mb-2">
-                        Indice di sintesi
+                        {group.hierarchy.sintesi.length > 1 ? "Indici di sintesi" : "Indice di sintesi"}
                       </h3>
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         {group.hierarchy.sintesi.map((idx, ii) => (
@@ -395,21 +418,29 @@ export const ExecutiveView = ({
                               )}
                             </p>
                             <p>
-                              Gli indici componenti sono disposti su righe da tre, come nelle altre
-                              dimensioni.
+                              {group.hierarchy.gruppi.length > 1
+                                ? "Sotto, su righe da tre, gli indici componenti raggruppati per indice di sintesi."
+                                : "Gli indici componenti sono disposti su righe da tre, come nelle altre dimensioni."}
                             </p>
+                            {group.hierarchy.sintesi.some((i) => i.isMock) && (
+                              <p className="flex items-center gap-2 flex-wrap">
+                                <MockUpBadge />
+                                <span>fonte non ancora collegata: valori dimostrativi.</span>
+                              </p>
+                            )}
                           </div>
                         )}
                       </div>
                     </div>
                   )}
-                  {group.hierarchy.componenti.length > 0 && (
-                    <div>
-                      <h3 className="text-[11px] font-bold text-muted-foreground uppercase tracking-[0.12em] mb-2">
-                        Indici componenti
+                  {group.hierarchy.gruppi.map((g) => (
+                    <div key={g.titolo} data-testid={`exec-hier-group-${group.id}`}>
+                      <h3 className="text-[11px] font-bold text-muted-foreground uppercase tracking-[0.12em] mb-2 flex items-center gap-2">
+                        {g.titolo}
+                        {g.allMock && <MockUpBadge />}
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                        {group.hierarchy.componenti.map((idx) => (
+                        {g.items.map((idx) => (
                           <ExecutiveKpiCard
                             key={idx.id}
                             idx={idx}
@@ -419,7 +450,7 @@ export const ExecutiveView = ({
                         ))}
                       </div>
                     </div>
-                  )}
+                  ))}
                 </div>
               ) : (
                 <DemoWrap demo={DEMO_PILLARS.includes(group.id)}>

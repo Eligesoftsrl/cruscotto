@@ -40,8 +40,11 @@ svolgere o da verificare.
   Comparto ed Ente.
 - Le card di D2, D4, D5 e D6 mostrano gli score reali; tutte le card riportano lo score in
   scala 0–100.
-- **D2 e D5** seguono la gerarchia degli indici: riga con l'indice di sintesi e il riquadro
+- **D2, D4 e D5** seguono la gerarchia degli indici: riga con l'indice di sintesi e il riquadro
   «Come leggere questa dimensione», poi gli indici componenti su righe da tre.
+- **D4**: tre indici di sintesi (CGC, ISCP, IESF) e, sotto, i 9 componenti raggruppati
+  per indice di sintesi (Gestione delle competenze · Minerva · Syllabus). I gruppi Minerva e
+  Syllabus, interamente dimostrativi, riportano l'etichetta «Dati mock-up» sul titolo.
 - Rimosso il pulsante «Percorso guidato» dalle dimensioni; rimossi la tacca verticale dello
   score e il pulsante «Quadro Sinottico», non più previsti.
 - **D1 e D3** non hanno ancora una fonte dati: la dimensione riporta una sola volta l'avviso
@@ -93,8 +96,6 @@ di attivazione di schede SIPrO, indici e KPI resti memorizzato in modo permanent
 
 - **D1 e D3 con dati reali**, in sostituzione dei dati dimostrativi.
 - **Indici di Minerva e Syllabus (D4)** con dati reali, appena disponibili le fonti.
-- **Gerarchia degli indici in Vista Executive anche per la D4**, se confermata dal
-  committente.
 - **Titolo definitivo** della scheda KPI Abilitanti e di Successo.
 - **Accessibilità**: proseguire l'adeguamento alle linee guida di accessibilità della PA.
 
