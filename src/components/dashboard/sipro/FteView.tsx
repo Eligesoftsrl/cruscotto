@@ -51,14 +51,14 @@ export const FteView = () => {
       <SiproScopeBar value={scope} onChange={resetAndSet} />
       {riepilogo.error ? <ErrorBox error={riepilogo.error} /> : riepilogo.isLoading ? <LoadingSpinner /> : (
         <div className="space-y-4">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <KpiBox label="FTE programmati" value={fmt(r?.fte_programmati)} />
             <KpiBox label="FTE assegnati" value={fmt(r?.fte_assegnati)} />
             <KpiBox label="Scostamento FTE" value={fmt(r?.scostamento_fte)} />
           </div>
           <div className="bg-card border rounded-xl p-5">
             <p className="text-xs font-semibold text-muted-foreground mb-3">FTE programmati e assegnati per profilo</p>
-            <div className="max-h-[560px] overflow-y-auto" tabIndex={0} role="region" aria-label="Tabella scorrevole">
+            <div className="max-h-[560px] overflow-auto" tabIndex={0} role="region" aria-label="Tabella scorrevole">
               <ResponsiveContainer width="100%" height={Math.max(340, chartData.length * 34)}>
                 <BarChart data={chartData} layout="vertical" margin={{ top: 5, right: 30, left: 10, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border))" />
@@ -80,13 +80,13 @@ export const FteView = () => {
             {tabella.isLoading ? <LoadingSpinner /> : (
               <>
                 <div className="overflow-auto rounded-md border">
-                  <table className="w-full text-[12px]">
+                  <table aria-label="FTE per unità organizzativa" className="w-full text-[12px]">
                     <thead>
                       <tr className="border-b bg-muted/40 text-muted-foreground">
-                        <th className="text-left px-3 py-2 font-semibold">Ente</th>
-                        <th className="text-left px-3 py-2 font-semibold">Profilo</th>
-                        <th className="text-right px-3 py-2 font-semibold whitespace-nowrap">FTE progr.</th>
-                        <th className="text-right px-3 py-2 font-semibold whitespace-nowrap">FTE asseg.</th>
+                        <th scope="col" className="text-left px-3 py-2 font-semibold">Ente</th>
+                        <th scope="col" className="text-left px-3 py-2 font-semibold">Profilo</th>
+                        <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">FTE progr.</th>
+                        <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">FTE asseg.</th>
                       </tr>
                     </thead>
                     <tbody>

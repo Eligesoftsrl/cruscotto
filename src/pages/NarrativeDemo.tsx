@@ -265,7 +265,7 @@ export default function NarrativeDemo() {
             <div className="flex items-center gap-2">
               <div className="relative">
                 <Search aria-hidden="true" className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                <Input
+                <Input aria-label="Cerca indicatore"
                   placeholder="Cerca indicatore..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -293,17 +293,17 @@ export default function NarrativeDemo() {
             <table className="w-full text-xs">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left py-2 px-2 font-bold text-muted-foreground">ID</th>
-                  <th className="text-left py-2 px-2 font-bold text-muted-foreground">
+                  <th scope="col" className="text-left py-2 px-2 font-bold text-muted-foreground">ID</th>
+                  <th scope="col" className="text-left py-2 px-2 font-bold text-muted-foreground">
                     Indicatore
                   </th>
-                  <th className="text-left py-2 px-2 font-bold text-muted-foreground">Pillar</th>
-                  <th className="text-left py-2 px-2 font-bold text-muted-foreground">Livello</th>
-                  <th className="text-left py-2 px-2 font-bold text-muted-foreground">Formula</th>
-                  <th className="text-left py-2 px-2 font-bold text-muted-foreground">Fonte</th>
-                  <th className="text-right py-2 px-2 font-bold text-muted-foreground">Valore</th>
-                  <th className="text-center py-2 px-2 font-bold text-muted-foreground">Stato</th>
-                  <th className="text-center py-2 px-2 font-bold text-muted-foreground">
+                  <th scope="col" className="text-left py-2 px-2 font-bold text-muted-foreground">Pillar</th>
+                  <th scope="col" className="text-left py-2 px-2 font-bold text-muted-foreground">Livello</th>
+                  <th scope="col" className="text-left py-2 px-2 font-bold text-muted-foreground">Formula</th>
+                  <th scope="col" className="text-left py-2 px-2 font-bold text-muted-foreground">Fonte</th>
+                  <th scope="col" className="text-right py-2 px-2 font-bold text-muted-foreground">Valore</th>
+                  <th scope="col" className="text-center py-2 px-2 font-bold text-muted-foreground">Stato</th>
+                  <th scope="col" className="text-center py-2 px-2 font-bold text-muted-foreground">
                     Narrativo
                   </th>
                 </tr>

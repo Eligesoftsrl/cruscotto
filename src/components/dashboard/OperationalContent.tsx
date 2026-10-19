@@ -110,7 +110,11 @@ export const OperationalContent = ({
     const wrap = (children: React.ReactNode) => (
       <>
         <FilterPills lockGenere={lockGenere} />
-        <div className="p-4 flex-1">{children}</div>
+        {/* Riflusso (WCAG 1.4.10): a 320 px le colonne e le intestazioni delle card vanno a capo
+            invece di generare scorrimento orizzontale. */}
+        <div className="p-3 sm:p-4 flex-1 min-w-0 [&_.grid>*]:min-w-0 [&_.justify-between]:flex-wrap [&_.justify-between]:gap-y-2">
+          {children}
+        </div>
         {bottomUpNav}
       </>
     );

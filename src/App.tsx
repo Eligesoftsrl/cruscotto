@@ -12,6 +12,7 @@ import { UpdateBanner } from "@/components/UpdateBanner";
 import { logErrore } from "@/services/admin/logger";
 import { Unauthorized } from "@/components/Unauthorized";
 import Login from "./pages/Login";
+import { LiveRegion, LoadingAnnouncer, useDocumentTitle } from "@/lib/a11y/announcer";
 
 // Route lazy-loaded: riducono il bundle iniziale (code-splitting).
 const Welcome = lazy(() => import("./pages/Welcome"));
@@ -62,6 +63,27 @@ const RoutedErrorBoundary = ({ children }: { children: React.ReactNode }) => {
   return <ErrorBoundary resetKey={location.pathname}>{children}</ErrorBoundary>;
 };
 
+/**
+ * Titolo della scheda del browser per le pagine "semplici". La dashboard (/dashboard)
+ * imposta da sé il titolo in base alla sezione aperta (vedi pages/Index.tsx).
+ */
+const ROUTE_TITLES: Record<string, string> = {
+  "/": "Benvenuto",
+  "/login": "Accesso",
+  "/bussola": "Pannello di Governo",
+  "/rapporto": "Rapporto narrativo",
+  "/demo-narrativi": "Demo generatori narrativi",
+  "/admin": "Amministrazione",
+};
+const RouteTitle = () => {
+  const { pathname } = useLocation();
+  const title = pathname.startsWith("/dashboard")
+    ? null
+    : ROUTE_TITLES[pathname] ?? "Pagina non trovata";
+  useDocumentTitle(title, { announce: true });
+  return null;
+};
+
 const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
@@ -69,9 +91,12 @@ const App = () => (
         <Toaster />
         <Sonner />
         <UpdateBanner />
+        <LiveRegion />
+        <LoadingAnnouncer />
         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <AuthProvider>
             <UsageTracker />
+            <RouteTitle />
             <RoutedErrorBoundary>
               <Suspense fallback={<FullscreenSpinner />}>
                 <Routes>

@@ -185,7 +185,7 @@ export function JourneyCreatorWizard({
               <Sparkles aria-hidden="true" className="h-4 w-4 text-[hsl(45,100%,70%)]" />
               <span className="text-sm font-semibold text-white">Nuovo percorso</span>
             </div>
-            <button onClick={onClose} className="p-1.5 rounded-full hover:bg-white/10">
+            <button aria-label="Chiudi" onClick={onClose} className="p-1.5 rounded-full hover:bg-white/10">
               <X aria-hidden="true" className="h-4 w-4 text-white/70" />
             </button>
           </div>
@@ -236,7 +236,7 @@ export function JourneyCreatorWizard({
                 <label className="text-xs font-semibold text-foreground mb-1.5 block">
                   Nome del percorso *
                 </label>
-                <Input
+                <Input aria-label="Nome del percorso"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="es. Analisi rischio organizzativo"
@@ -250,7 +250,7 @@ export function JourneyCreatorWizard({
                   Domanda guida{" "}
                   <span className="text-muted-foreground font-normal">(opzionale)</span>
                 </label>
-                <Input
+                <Input aria-label="Domanda guida (opzionale)"
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
                   placeholder="es. Quanto è resiliente la mia organizzazione?"
@@ -364,7 +364,7 @@ export function JourneyCreatorWizard({
                         )}
                       </div>
                       {steps.length > 1 && (
-                        <button
+                        <button aria-label="Elimina tappa"
                           onClick={(e) => {
                             e.stopPropagation();
                             removeStep(idx);
@@ -385,7 +385,7 @@ export function JourneyCreatorWizard({
                     {isExpanded && (
                       <div className="px-4 pb-4 space-y-3 border-t bg-muted/10">
                         <div className="pt-3">
-                          <Input
+                          <Input aria-label="Nome tappa"
                             value={s.title}
                             onChange={(e) => updateStep(idx, { title: e.target.value })}
                             placeholder={`Nome tappa (es. "Struttura organico")`}
@@ -407,7 +407,7 @@ export function JourneyCreatorWizard({
                           <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1 block">
                             Nota/Commento <span className="font-normal">(opzionale)</span>
                           </label>
-                          <Input
+                          <Input aria-label="Nota o commento della tappa (opzionale)"
                             value={s.insightText}
                             onChange={(e) => updateStep(idx, { insightText: e.target.value })}
                             placeholder="Aggiungi un commento per questa tappa..."

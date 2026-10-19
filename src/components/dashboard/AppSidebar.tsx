@@ -272,6 +272,9 @@ export const operationalSources = operationalSourcesAll.filter(
 interface AppSidebarProps {
   nav: NavState;
   onNavigate: (nav: NavState) => void;
+  /** Schermi stretti / zoom 200%: menu a scomparsa aperto. */
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
 }
 
 /** Titolo (h1) e sottotitolo (h2) della sezione operativa corrente, per gli screen reader. */
@@ -299,7 +302,7 @@ export const navPageTitle = (nav: NavState): string => {
   return "Vista Executive";
 };
 
-export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
+export const AppSidebar = ({ nav, onNavigate, mobileOpen = false, onMobileClose }: AppSidebarProps) => {
   const { profile, signOut } = useAuth();
   const { flags } = useAdminState();
   const navigate = useNavigate();
@@ -358,7 +361,11 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
 
   return (
     <nav
-      className="w-[260px] flex-shrink-0 flex flex-col fixed top-0 left-0 bottom-0 z-50 overflow-y-auto"
+      id="app-sidebar"
+      className={`w-[260px] flex-shrink-0 flex flex-col fixed top-0 left-0 bottom-0 z-50 overflow-y-auto transition-transform lg:translate-x-0 ${mobileOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full invisible lg:visible"}`}
+      onKeyDown={(e) => {
+        if (e.key === "Escape" && mobileOpen) onMobileClose?.();
+      }}
       style={{ background: "hsl(var(--sidebar-bg))" }}
       aria-label="Navigazione principale"
     >
@@ -664,6 +671,7 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
             onClick={signOut}
             className="p-1.5 rounded-md hover:bg-white/10 transition"
             title="Esci"
+            aria-label="Esci"
           >
             <LogOut aria-hidden="true" className="h-4 w-4" style={{ color: "hsl(210 25% 64%)" }} />
           </button>

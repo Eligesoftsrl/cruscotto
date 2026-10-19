@@ -69,7 +69,7 @@ export const SyllabusCorsiSection = () => {
 
   return (
     <div className="p-4 space-y-4">
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div className="tableau-card">
           <div className="p-4 text-center">
             <div className="text-2xl font-bold">{totals.corsi}</div>
@@ -84,7 +84,7 @@ export const SyllabusCorsiSection = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div className="tableau-card">
           <div className="tableau-card-header">Corsi per Categoria Syllabus</div>
           <div className="p-4" style={{ height: 280 }}>

@@ -16,7 +16,7 @@ export const EtaSection = () => {
 
   if (isLoading) return <div className="p-6 text-sm text-muted-foreground">Caricamento dati…</div>;
   if (error)
-    return <div className="p-6 text-sm text-destructive">Errore nel caricamento dei dati.</div>;
+    return <div className="p-6 text-sm text-destructive" role="alert">Errore nel caricamento dei dati.</div>;
 
   return (
     <div className="space-y-6">
@@ -54,22 +54,22 @@ export const EtaSection = () => {
 
       <div className="chart-container overflow-x-auto">
         <h3 className="section-title mb-4">Dettaglio numerico</h3>
-        <table className="w-full text-sm">
+        <table aria-label="Dettaglio numerico" className="w-full text-sm">
           <thead>
             <tr className="border-b">
-              <th className="px-4 py-2.5 text-left text-xs font-semibold text-muted-foreground">
+              <th scope="col" className="px-4 py-2.5 text-left text-xs font-semibold text-muted-foreground">
                 Fascia
               </th>
-              <th className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">
+              <th scope="col" className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">
                 Uomini
               </th>
-              <th className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">
+              <th scope="col" className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">
                 Donne
               </th>
-              <th className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">
+              <th scope="col" className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">
                 Totale
               </th>
-              <th className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">
+              <th scope="col" className="px-4 py-2.5 text-right text-xs font-semibold text-muted-foreground">
                 %
               </th>
             </tr>

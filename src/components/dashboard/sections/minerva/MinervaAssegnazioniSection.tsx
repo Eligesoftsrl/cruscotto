@@ -97,7 +97,7 @@ export const MinervaAssegnazioniSection = () => {
   return (
     <div className="p-4 space-y-4">
       {/* KPI */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="tableau-card">
           <div className="p-4 text-center">
             <div className="text-2xl font-bold text-foreground">{kpis.profiliAssegnati}</div>
@@ -127,7 +127,7 @@ export const MinervaAssegnazioniSection = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {/* Dipendenti per profilo */}
         <div className="tableau-card">
           <div className="tableau-card-header">Dipendenti per Profilo di Ruolo</div>

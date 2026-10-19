@@ -23,7 +23,7 @@ export const EvoluzioneProfiliView = () => {
       <SiproScopeBar value={scope} onChange={setScope} />
       {riepilogo.error ? <ErrorBox error={riepilogo.error} /> : riepilogo.isLoading ? <LoadingSpinner /> : (
         <div className="space-y-4">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <KpiBox label="Profili totali" value={r?.profili_totali ?? 0} />
             <KpiBox label="Attivi" value={r?.attivi ?? "N/D"} />
             <KpiBox label="Eliminati" value={r?.eliminati ?? "N/D"} />

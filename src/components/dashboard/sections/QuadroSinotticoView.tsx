@@ -315,15 +315,15 @@ export const QuadroSinotticoView = ({ pillar }: QuadroSinotticoViewProps) => {
           Indicatori Sintetici · {pillar} — Mappatura
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-[11px]">
+          <table aria-label="Indicatori sintetici" className="w-full text-[11px]">
             <thead>
               <tr className="border-b border-border bg-muted/30">
-                <th className="text-left px-3 py-2 font-bold text-muted-foreground">Codice</th>
-                <th className="text-left px-3 py-2 font-bold text-muted-foreground">
+                <th scope="col" className="text-left px-3 py-2 font-bold text-muted-foreground">Codice</th>
+                <th scope="col" className="text-left px-3 py-2 font-bold text-muted-foreground">
                   Denominazione
                 </th>
-                <th className="text-left px-3 py-2 font-bold text-muted-foreground">Descrizione</th>
-                <th className="text-left px-3 py-2 font-bold text-muted-foreground">Fonte Dati</th>
+                <th scope="col" className="text-left px-3 py-2 font-bold text-muted-foreground">Descrizione</th>
+                <th scope="col" className="text-left px-3 py-2 font-bold text-muted-foreground">Fonte Dati</th>
               </tr>
             </thead>
             <tbody>

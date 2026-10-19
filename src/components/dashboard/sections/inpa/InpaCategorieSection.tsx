@@ -89,7 +89,7 @@ export const InpaCategorieSection = () => {
     <div className="space-y-0">
       <InpaLocalFilters filters={filters} onChange={setFilters} />
       <div className="p-4 space-y-4">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[
             { label: "Tipi Procedura Distinti", value: byTipo.length },
             { label: "Totale Bandi", value: totBandi },

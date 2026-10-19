@@ -1,7 +1,8 @@
+import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Compass, ArrowLeft } from "lucide-react";
 import { FilterProvider } from "@/contexts/FilterContext";
-import { AppSidebar, navSectionHeadings, type NavState } from "@/components/dashboard/AppSidebar";
+import { AppSidebar, navPageTitle, navSectionHeadings, type NavState } from "@/components/dashboard/AppSidebar";
 import { TopBar } from "@/components/dashboard/TopBar";
 import { ExecutiveView } from "@/components/dashboard/ExecutiveView";
 import { SyntheticPillarView } from "@/components/dashboard/SyntheticPillarView";
@@ -14,6 +15,7 @@ import { guidedJourneys } from "@/data/guidedJourneys";
 import { GlobalFilterBar } from "@/components/dashboard/GlobalFilterBar";
 import { NavigationStepper } from "@/components/dashboard/NavigationStepper";
 import { OnboardingTour } from "@/components/dashboard/OnboardingTour";
+import { useDocumentTitle } from "@/lib/a11y/announcer";
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -68,6 +70,30 @@ const Index = () => {
     }
     return { level: "executive" };
   })();
+
+  // Menu laterale a scomparsa sugli schermi stretti (riflusso 320 px / zoom 200%).
+  const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    if (!menuOpen) return;
+    // Porta il focus nel menu e chiudilo con Esc (tastiera).
+    const t = window.setTimeout(() => {
+      document.getElementById("app-sidebar")?.querySelector<HTMLElement>("button, a")?.focus();
+    }, 50);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        document.querySelector<HTMLElement>('[data-testid="mobile-menu-toggle"]')?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
+
+  // Accessibilità: titolo della scheda del browser = sezione aperta (annunciato agli screen reader).
+  useDocumentTitle(navPageTitle(nav), { announce: true });
 
   // Aggiorna l'URL (push in cronologia) preservando i parametri di contesto
   // (bussola / percorsi guidati) usati altrove nella pagina.
@@ -171,12 +197,33 @@ const Index = () => {
           Vai al contenuto principale
         </a>
 
-        <AppSidebar nav={nav} onNavigate={setNav} />
-        <div className="ml-[260px] flex-1 flex flex-col min-h-screen">
-          <TopBar nav={nav} onNavigate={setNav} />
+        <AppSidebar
+          nav={nav}
+          onNavigate={(n) => {
+            setMenuOpen(false);
+            setNav(n);
+          }}
+          mobileOpen={menuOpen}
+          onMobileClose={() => setMenuOpen(false)}
+        />
+        {/* Sfondo del menu a scomparsa (solo schermi stretti / zoom elevato) */}
+        {menuOpen && (
+          <div
+            className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+            aria-hidden="true"
+            onClick={() => setMenuOpen(false)}
+          />
+        )}
+        <div className="lg:ml-[260px] flex-1 flex flex-col min-h-screen min-w-0">
+          <TopBar
+            nav={nav}
+            onNavigate={setNav}
+            onToggleMenu={() => setMenuOpen((o) => !o)}
+            menuOpen={menuOpen}
+          />
           <NavigationStepper nav={nav} onNavigate={setNav} />
           {/* GlobalFilterBar rimosso: i filtri sono ora le sole "pill" in alto (FilterPills) su indicazione committente */}
-          <main id="main-content" className="flex-1 flex flex-col" role="main">
+          <main id="main-content" tabIndex={-1} className="flex-1 flex flex-col min-w-0 outline-none" role="main">
             {renderContent()}
           </main>
         </div>
@@ -186,7 +233,7 @@ const Index = () => {
         {showReturnButton && (
           <button
             onClick={handleReturnToBussola}
-            className="fixed bottom-6 left-[280px] z-50 flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary text-primary-foreground shadow-lg hover:opacity-90 transition-all text-sm font-bold animate-in slide-in-from-bottom-4 duration-300"
+            className="fixed bottom-6 left-6 lg:left-[280px] z-50 flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary text-primary-foreground shadow-lg hover:opacity-90 transition-all text-sm font-bold animate-in slide-in-from-bottom-4 duration-300"
           >
             <ArrowLeft aria-hidden="true" className="h-4 w-4" />
             <Compass aria-hidden="true" className="h-4 w-4" />

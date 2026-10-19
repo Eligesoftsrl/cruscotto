@@ -73,7 +73,7 @@ export const TassoSostituzioneContent = () => {
             placeholder="Cerca un ente (es. Roma Capitale)…"
             className="w-full rounded border bg-background px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-ring" />
           {ente && (
-            <button onClick={() => { setEnte(null); setEnteTerm(""); }}
+            <button type="button" aria-label="Cancella ente selezionato" onClick={() => { setEnte(null); setEnteTerm(""); }}
               className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-muted-foreground hover:text-destructive">✕</button>
           )}
           {!ente && (entiQ.data?.length ?? 0) > 0 && (
@@ -146,14 +146,14 @@ export const TassoSostituzioneContent = () => {
           <TableExport filename="tasso_sostituzione_dettaglio" title="Dettaglio tasso di sostituzione" />
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-xs">
+          <table aria-label="Dettaglio tasso di sostituzione" className="w-full text-xs">
             <thead>
               <tr className="border-b text-left text-muted-foreground">
-                <th className="py-2 pr-2">Anno</th>
-                <th className="py-2 pr-2 text-right">Assunti</th>
-                <th className="py-2 pr-2 text-right">Cessati</th>
-                <th className="py-2 pr-2 text-right">Saldo</th>
-                <th className="py-2 text-right">Tasso sostituzione</th>
+                <th scope="col" className="py-2 pr-2">Anno</th>
+                <th scope="col" className="py-2 pr-2 text-right">Assunti</th>
+                <th scope="col" className="py-2 pr-2 text-right">Cessati</th>
+                <th scope="col" className="py-2 pr-2 text-right">Saldo</th>
+                <th scope="col" className="py-2 text-right">Tasso sostituzione</th>
               </tr>
             </thead>
             <tbody>

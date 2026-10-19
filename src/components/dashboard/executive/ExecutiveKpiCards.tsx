@@ -146,7 +146,7 @@ const DrilldownTable = ({ data }: { data: DrilldownData }) => {
       {data.rows.length > 5 && (
         <div className="relative">
           <Search aria-hidden="true" className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-          <input
+          <input aria-label="Cerca"
             type="text"
             placeholder="Cerca..."
             value={search}
@@ -156,11 +156,11 @@ const DrilldownTable = ({ data }: { data: DrilldownData }) => {
         </div>
       )}
       <div className="max-h-[300px] overflow-auto rounded border border-border">
-        <table className="w-full text-xs">
+        <table aria-label="Dettaglio del calcolo" className="w-full text-xs">
           <thead className="bg-muted/60 sticky top-0">
             <tr>
               {data.columns.map((col) => (
-                <th
+                <th scope="col"
                   key={col.key}
                   className="px-3 py-2 text-left font-semibold text-muted-foreground whitespace-nowrap"
                 >

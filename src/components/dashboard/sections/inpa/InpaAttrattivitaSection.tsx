@@ -118,7 +118,7 @@ export const InpaAttrattivitaSection = () => {
     <div className="space-y-0">
       <InpaLocalFilters filters={filters} onChange={setFilters} />
       <div className="p-4 space-y-4">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[
             {
               label: "Rapporto Medio D/O",
@@ -261,14 +261,14 @@ export const InpaAttrattivitaSection = () => {
           <div className="tableau-card-header">Dettaglio per Regione</div>
           <div className="p-4">
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table aria-label="Dettaglio per regione" className="w-full text-sm">
                 <thead>
                   <tr className="border-b text-left text-muted-foreground text-[11px]">
-                    <th className="py-2 px-3">Regione</th>
-                    <th className="py-2 px-3 text-right">Bandi</th>
-                    <th className="py-2 px-3 text-right">Posti</th>
-                    <th className="py-2 px-3 text-right">Candidature</th>
-                    <th className="py-2 px-3 text-right">Rapporto D/O</th>
+                    <th scope="col" className="py-2 px-3">Regione</th>
+                    <th scope="col" className="py-2 px-3 text-right">Bandi</th>
+                    <th scope="col" className="py-2 px-3 text-right">Posti</th>
+                    <th scope="col" className="py-2 px-3 text-right">Candidature</th>
+                    <th scope="col" className="py-2 px-3 text-right">Rapporto D/O</th>
                   </tr>
                 </thead>
                 <tbody>

@@ -88,8 +88,8 @@ export const NavigationStepper = ({ nav, onNavigate }: NavigationStepperProps) =
   if (steps.length <= 1) return null;
 
   return (
-    <div className="bg-card border-b px-6 py-2.5 sticky top-12 z-30">
-      <nav className="flex items-center gap-1" aria-label="Livello di navigazione">
+    <div className="bg-card border-b px-3 sm:px-6 py-2.5 sticky top-12 z-30">
+      <nav className="flex flex-wrap items-center gap-1" aria-label="Livello di navigazione">
         {steps.map((step, i) => (
           <div key={step.id} className="flex items-center gap-1">
             {i > 0 && (
@@ -118,7 +118,7 @@ export const NavigationStepper = ({ nav, onNavigate }: NavigationStepperProps) =
               >
                 {step.icon}
               </span>
-              <span className="max-w-[200px] truncate">{step.label}</span>
+              <span className="max-w-[140px] sm:max-w-[200px] truncate">{step.label}</span>
             </button>
           </div>
         ))}

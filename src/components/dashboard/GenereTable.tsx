@@ -78,11 +78,11 @@ export const GenereTable = () => {
         </div>
       </div>
       <div className="flex-1 px-4 py-3">
-        <table className="w-full border-collapse text-[11px]">
+        <table aria-label="Distribuzione per genere" className="w-full border-collapse text-[11px]">
           <thead>
             <tr>
               {["Fascia d'età", "Uomini", "Donne", "Totale", "% Donne", "Δ PA"].map((h) => (
-                <th
+                <th scope="col"
                   key={h}
                   className="py-[5px] px-2 text-left text-[10px] text-muted-foreground/70 uppercase tracking-wide font-semibold border-b-2"
                 >

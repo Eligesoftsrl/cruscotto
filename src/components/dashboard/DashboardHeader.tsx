@@ -29,16 +29,16 @@ export const DashboardHeader = ({ activeSection }: DashboardHeaderProps) => {
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2 rounded-lg border bg-background px-3 py-1.5">
           <Search aria-hidden="true" className="h-4 w-4 text-muted-foreground" />
-          <input
+          <input aria-label="Cerca"
             type="text"
             placeholder="Cerca..."
             className="w-40 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           />
         </div>
-        <button className="flex h-9 w-9 items-center justify-center rounded-lg border bg-background hover:bg-secondary transition-colors">
+        <button aria-label="Filtri" className="flex h-9 w-9 items-center justify-center rounded-lg border bg-background hover:bg-secondary transition-colors">
           <Filter aria-hidden="true" className="h-4 w-4 text-muted-foreground" />
         </button>
-        <button className="relative flex h-9 w-9 items-center justify-center rounded-lg border bg-background hover:bg-secondary transition-colors">
+        <button aria-label="Notifiche" className="relative flex h-9 w-9 items-center justify-center rounded-lg border bg-background hover:bg-secondary transition-colors">
           <Bell aria-hidden="true" className="h-4 w-4 text-muted-foreground" />
           <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-accent border-2 border-card" />
         </button>

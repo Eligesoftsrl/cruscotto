@@ -180,7 +180,7 @@ export function CustomJourneyViewer({
           </p>
           <h2 className="text-sm font-bold text-white leading-tight">{journey.title}</h2>
         </div>
-        <button onClick={onBack} className="p-1.5 rounded-full hover:bg-white/10 transition">
+        <button aria-label="Chiudi percorso" onClick={onBack} className="p-1.5 rounded-full hover:bg-white/10 transition">
           <X aria-hidden="true" className="h-4 w-4 text-white/70" />
         </button>
       </div>

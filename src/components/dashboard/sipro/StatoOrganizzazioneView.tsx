@@ -38,7 +38,7 @@ export const StatoOrganizzazioneView = () => {
         <LoadingSpinner />
       ) : (
         <>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <KpiBox label="Organizzazioni totali" value={totale} />
             <KpiBox label="Formalizzate" value={head?.formalizzate ?? 0} />
             <KpiBox label="In inserimento" value={head?.in_inserimento ?? 0} />

@@ -77,7 +77,7 @@ export const AnalisiPersonaleContent = () => {
             placeholder="Cerca un ente (es. Roma Capitale)…"
             className="w-full rounded border bg-background px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-ring" />
           {ente && (
-            <button onClick={() => { setEnte(null); setEnteTerm(""); }}
+            <button type="button" aria-label="Cancella ente selezionato" onClick={() => { setEnte(null); setEnteTerm(""); }}
               className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-muted-foreground hover:text-destructive">✕</button>
           )}
           {!ente && (entiQ.data?.length ?? 0) > 0 && (
@@ -94,7 +94,7 @@ export const AnalisiPersonaleContent = () => {
       </div>
 
       {errored && (
-        <div className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-xs text-destructive">
+        <div role="alert" className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-xs text-destructive">
           Errore nel caricamento dei dati della scheda.
         </div>
       )}

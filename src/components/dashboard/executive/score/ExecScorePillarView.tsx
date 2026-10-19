@@ -179,7 +179,7 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
           </div>
         )}
         {q.isError && (
-          <div className="tableau-card p-6 flex items-center gap-2 text-sm text-destructive" data-testid="exec-score-error">
+          <div role="alert" className="tableau-card p-6 flex items-center gap-2 text-sm text-destructive" data-testid="exec-score-error">
             <AlertCircle aria-hidden="true" className="h-4 w-4" />
             Impossibile caricare gli indicatori {pillar}: {(q.error as Error)?.message ?? "errore sconosciuto"}
           </div>

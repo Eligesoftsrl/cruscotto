@@ -43,7 +43,7 @@ export const EventLogPanel = () => {
         <div className="flex items-center gap-2 flex-wrap">
           <div className="relative flex-1 min-w-[180px] max-w-xs">
             <Search aria-hidden="true" className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
+            <Input aria-label="Cerca azione, sezione o utente"
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder="Cerca azione / sezione / utente…"
@@ -60,7 +60,7 @@ export const EventLogPanel = () => {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-auto">
-          <Table>
+          <Table aria-label="Registro eventi">
             <TableHeader>
               <TableRow>
                 <TableHead>Data / Ora</TableHead>

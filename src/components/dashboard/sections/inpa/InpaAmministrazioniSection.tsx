@@ -102,7 +102,7 @@ export const InpaAmministrazioniSection = () => {
     <div className="space-y-0">
       <InpaLocalFilters filters={filters} onChange={setFilters} />
       <div className="p-4 space-y-4">
-        <div className="grid grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {[
             { label: "PA che Pubblicano su InPA", value: paAttive, sub: `su ${totPa} totali` },
             { label: "% PA Attive", value: `${pctGlobale}%`, sub: "Indicatore di dinamismo" },
@@ -207,12 +207,12 @@ export const InpaAmministrazioniSection = () => {
           <div className="tableau-card-header">Dettaglio PA Attive per Regione</div>
           <div className="p-4">
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table aria-label="Dettaglio PA attive per regione" className="w-full text-sm">
                 <thead>
                   <tr className="border-b text-left text-muted-foreground text-[11px]">
-                    <th className="py-2 px-3">Regione</th>
-                    <th className="py-2 px-3 text-right">PA Attive</th>
-                    <th className="py-2 px-3 text-right">% sul Totale</th>
+                    <th scope="col" className="py-2 px-3">Regione</th>
+                    <th scope="col" className="py-2 px-3 text-right">PA Attive</th>
+                    <th scope="col" className="py-2 px-3 text-right">% sul Totale</th>
                   </tr>
                 </thead>
                 <tbody>

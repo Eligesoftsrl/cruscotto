@@ -256,7 +256,7 @@ export const SyntheticPillarView = ({
             {selectedId && (
               <button
                 onClick={() => setSelectedId(null)}
-                className="text-xs font-semibold text-primary hover:underline"
+                className="text-xs font-semibold text-white underline-offset-2 hover:underline"
               >
                 Mostra tutti
               </button>
@@ -454,7 +454,7 @@ export const SyntheticPillarView = ({
                 isSelected
                   ? "ring-2 ring-primary shadow-md"
                   : isDimmed
-                    ? "opacity-40 hover:opacity-70"
+                    ? "bg-muted/40 hover:shadow-md" /* niente opacità: il testo deve restare leggibile (contrasto AA) */
                     : "hover:shadow-md"
               }`}
               style={{ borderTop: `3px solid ${isGood ? meta.color : "hsl(var(--chart-orange))"}` }}

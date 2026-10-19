@@ -209,6 +209,7 @@ export const PillarExecutiveSummary = ({ journey }: Props) => {
                         </span>
                       </div>
                       <Slider
+                        aria-label={`Simula valore ${kpiId} (percentuale)`}
                         value={[pct]}
                         onValueChange={([v]) => handleSliderChange(kpiId, v)}
                         min={0}

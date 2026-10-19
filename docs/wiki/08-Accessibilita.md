@@ -25,11 +25,32 @@ pagina di accesso): **nessun errore residuo**, grafici esclusi.
 - **Elenchi scorrevoli**: raggiungibili e scorrevoli anche da tastiera.
 - **Testi molto piccoli**: portati a una dimensione minima di 10 px.
 
-## Prossime fasi
+## Fase 1 · Componenti — completata
 
-- **Fase 1 · Componenti**: uso completo da tastiera, etichette di tutti i campi, tabelle
-  con intestazioni dichiarate, titolo della scheda del browser per ogni sezione, annunci
-  di caricamento.
+Verificata con il controllo automatico su 44 pagine (nessun errore residuo, grafici esclusi)
+e con prove di navigazione da tastiera.
+
+- **Titolo della scheda del browser**: riporta sempre la sezione aperta, ad esempio
+  «Conto Annuale · Analisi per età · Cruscotto HR». Il cambio di pagina viene annunciato
+  ai lettori di schermo.
+- **Annunci di caricamento**: quando i dati impiegano più di un istante, il lettore di schermo
+  annuncia «Caricamento dati in corso…» e poi «Dati caricati.». I messaggi di errore vengono
+  letti subito.
+- **Tastiera**:
+  - «Vai al contenuto principale» porta direttamente al contenuto della pagina;
+  - i filtri in alto (Anno, Regione, Comparto…) si aprono con Invio o Freccia giù, si
+    scorrono con le frecce e si chiudono con Esc, tornando al filtro;
+  - le card degli indici si aprono con Invio;
+  - finestre e menu si chiudono con Esc e riportano il cursore al punto di partenza;
+  - ogni elemento selezionato è evidenziato da un contorno ben visibile.
+- **Nomi dei controlli**: tutti i campi di ricerca, i cursori di simulazione e i pulsanti con
+  sola icona (chiudi, elimina, sposta, pagina precedente/successiva) hanno un nome leggibile.
+- **Tabelle**: tutte le intestazioni di colonna sono dichiarate e ogni tabella ha un titolo.
+- **Schermi piccoli e zoom al 200%**: sotto i 1024 px il menu laterale diventa un menu a
+  scomparsa (pulsante «Menu» in alto a sinistra, chiusura con Esc); le card e i filtri vanno a
+  capo e la pagina non scorre in orizzontale fino a 320 px di larghezza.
+
+## Prossime fasi
 - **Fase 2 · Adempimenti**: pagina «Dichiarazione di Accessibilità» secondo il modello AgID
   e canale per le segnalazioni (in attesa dei riferimenti dell'amministrazione responsabile).
 - **Grafici**: fase dedicata (tabella alternativa e descrizione testuale).

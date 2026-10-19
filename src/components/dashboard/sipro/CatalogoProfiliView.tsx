@@ -89,16 +89,16 @@ export const CatalogoProfiliView = () => {
             {tabella.isLoading ? <LoadingSpinner /> : (
               <>
                 <div className="overflow-auto rounded-md border">
-                  <table className="w-full text-[12px]">
+                  <table aria-label="Catalogo dei profili" className="w-full text-[12px]">
                     <thead>
                       <tr className="border-b bg-muted/40 text-muted-foreground">
-                        <th className="text-left px-3 py-2 font-semibold">Profilo</th>
-                        <th className="text-left px-3 py-2 font-semibold">Famiglia</th>
-                        <th className="text-left px-3 py-2 font-semibold">Ambito</th>
-                        <th className="text-left px-3 py-2 font-semibold">Area</th>
-                        <th className="text-left px-3 py-2 font-semibold">Origine</th>
-                        <th className="text-right px-3 py-2 font-semibold whitespace-nowrap">FTE progr.</th>
-                        <th className="text-right px-3 py-2 font-semibold whitespace-nowrap">FTE asseg.</th>
+                        <th scope="col" className="text-left px-3 py-2 font-semibold">Profilo</th>
+                        <th scope="col" className="text-left px-3 py-2 font-semibold">Famiglia</th>
+                        <th scope="col" className="text-left px-3 py-2 font-semibold">Ambito</th>
+                        <th scope="col" className="text-left px-3 py-2 font-semibold">Area</th>
+                        <th scope="col" className="text-left px-3 py-2 font-semibold">Origine</th>
+                        <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">FTE progr.</th>
+                        <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">FTE asseg.</th>
                       </tr>
                     </thead>
                     <tbody>

@@ -110,13 +110,14 @@ export const CessazioniContent = () => {
         </p>
         <div className="relative w-[320px] max-w-full" style={{ display: "none" }}>
           <input
+            aria-label="Cerca un ente"
             value={ente ? ente.descrizione : enteTerm}
             onChange={(e) => { setEnte(null); setEnteTerm(e.target.value); }}
             placeholder="Cerca un ente (es. Roma Capitale)…"
             className="w-full rounded border bg-background px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-ring"
           />
           {ente && (
-            <button onClick={() => { setEnte(null); setEnteTerm(""); }}
+            <button type="button" aria-label="Cancella ente selezionato" onClick={() => { setEnte(null); setEnteTerm(""); }}
               className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-muted-foreground hover:text-destructive">✕</button>
           )}
           {!ente && (entiQ.data?.length ?? 0) > 0 && (
@@ -175,14 +176,14 @@ export const CessazioniContent = () => {
           <TableExport filename="cessazioni_dettaglio_causale" title="Dettaglio cessazioni per causale" />
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-xs">
+          <table aria-label="Dettaglio cessazioni per causale" className="w-full text-xs">
             <thead>
               <tr className="border-b text-left text-muted-foreground">
-                <th className="py-2 pr-2">Causale</th>
-                <th className="py-2 pr-2 text-right">Uomini</th>
-                <th className="py-2 pr-2 text-right">Donne</th>
-                <th className="py-2 pr-2 text-right">Totale</th>
-                <th className="py-2 text-right">% sul totale</th>
+                <th scope="col" className="py-2 pr-2">Causale</th>
+                <th scope="col" className="py-2 pr-2 text-right">Uomini</th>
+                <th scope="col" className="py-2 pr-2 text-right">Donne</th>
+                <th scope="col" className="py-2 pr-2 text-right">Totale</th>
+                <th scope="col" className="py-2 text-right">% sul totale</th>
               </tr>
             </thead>
             <tbody>

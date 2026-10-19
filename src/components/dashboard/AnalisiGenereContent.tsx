@@ -71,7 +71,7 @@ export const AnalisiGenereContent = () => {
             placeholder="Cerca un ente (es. Roma Capitale)…"
             className="w-full rounded border bg-background px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-ring" />
           {ente && (
-            <button onClick={() => { setEnte(null); setEnteTerm(""); }}
+            <button type="button" aria-label="Cancella ente selezionato" onClick={() => { setEnte(null); setEnteTerm(""); }}
               className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-muted-foreground hover:text-destructive">✕</button>
           )}
           {!ente && (entiQ.data?.length ?? 0) > 0 && (
@@ -88,7 +88,7 @@ export const AnalisiGenereContent = () => {
       </div>
 
       {errored && (
-        <div className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-xs text-destructive">
+        <div role="alert" className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-xs text-destructive">
           Errore nel caricamento dei dati della scheda.
         </div>
       )}
@@ -140,15 +140,15 @@ export const AnalisiGenereContent = () => {
           <TableExport filename="analisi_genere_dettaglio_qualifica" title="Dettaglio per qualifica" />
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-xs">
+          <table aria-label="Dettaglio per qualifica" className="w-full text-xs">
             <thead>
               <tr className="border-b text-left text-muted-foreground">
-                <th className="py-2 pr-2">Qualifica</th>
-                <th className="py-2 pr-2 text-right">Uomini</th>
-                <th className="py-2 pr-2 text-right">Donne</th>
-                <th className="py-2 pr-2 text-right">Totale</th>
-                <th className="py-2 pr-2 text-right">% Donne</th>
-                <th className="py-2 text-right">Gap</th>
+                <th scope="col" className="py-2 pr-2">Qualifica</th>
+                <th scope="col" className="py-2 pr-2 text-right">Uomini</th>
+                <th scope="col" className="py-2 pr-2 text-right">Donne</th>
+                <th scope="col" className="py-2 pr-2 text-right">Totale</th>
+                <th scope="col" className="py-2 pr-2 text-right">% Donne</th>
+                <th scope="col" className="py-2 text-right">Gap</th>
               </tr>
             </thead>
             <tbody>

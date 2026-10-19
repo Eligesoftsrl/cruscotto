@@ -55,12 +55,12 @@ export const CriticitaUoView = () => {
           <div className="grid grid-cols-1 2xl:grid-cols-2 gap-6 pt-2">
             <div>
               <div className="overflow-auto rounded-md border">
-                <table className="w-full text-[12px]">
+                <table aria-label="Criticità segnalate per macro-criticità" className="w-full text-[12px]">
                   <thead>
                     <tr className="border-b bg-muted/40">
-                      <th className="text-left px-3 py-2 font-semibold text-muted-foreground">Unità Organizzativa</th>
-                      <th className="text-left px-3 py-2 font-semibold text-muted-foreground">Criticità</th>
-                      <th className="text-left px-3 py-2 font-semibold text-muted-foreground">Macro Criticità</th>
+                      <th scope="col" className="text-left px-3 py-2 font-semibold text-muted-foreground">Unità Organizzativa</th>
+                      <th scope="col" className="text-left px-3 py-2 font-semibold text-muted-foreground">Criticità</th>
+                      <th scope="col" className="text-left px-3 py-2 font-semibold text-muted-foreground">Macro Criticità</th>
                     </tr>
                   </thead>
                   <tbody>

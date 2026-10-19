@@ -101,7 +101,7 @@ export const InpaBandiSection = () => {
     <div className="space-y-0">
       <InpaLocalFilters filters={filters} onChange={setFilters} />
       <div className="p-4 space-y-4">
-        <div className="grid grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {[
             { label: "Totale Bandi", value: bandi.length },
             { label: "Posti Totali", value: bandi.reduce((s, b) => s + (b.num_posti ?? 0), 0) },

@@ -42,7 +42,7 @@ export const ProvvedimentiView = () => {
         <LoadingSpinner />
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <KpiBox label="Provvedimenti totali" value={head?.provvedimenti_totali ?? 0} />
             <KpiBox label="Enti coinvolti" value={head?.enti_coinvolti ?? 0} />
           </div>

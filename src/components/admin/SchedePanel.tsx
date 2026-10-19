@@ -466,7 +466,7 @@ const SchedeGrid = ({ section, isOn }: { section: SezioneDef; isOn: (key: string
             >
               <div
                 className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors ${
-                  on ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"
+                  on ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
                 }`}
               >
                 <CardIcon className="h-4 w-4" />

@@ -103,7 +103,7 @@ export const MinervaCatalogoSection = () => {
   return (
     <div className="p-4 space-y-4">
       {/* KPI Cards */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {[
           { label: "Profili Professionali", value: totPP },
           { label: "Profili di Ruolo", value: totPR },
@@ -118,7 +118,7 @@ export const MinervaCatalogoSection = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {/* Profili per Famiglia Professionale */}
         <div className="tableau-card">
           <div className="tableau-card-header">Profili di Ruolo per Famiglia Professionale</div>
@@ -163,7 +163,7 @@ export const MinervaCatalogoSection = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {/* Profili per Ambito di Ruolo */}
         <div className="tableau-card">
           <div className="tableau-card-header">Profili di Ruolo per Ambito</div>

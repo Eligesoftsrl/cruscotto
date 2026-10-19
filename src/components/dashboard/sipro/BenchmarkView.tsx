@@ -253,13 +253,13 @@ export const BenchmarkView = () => {
             </div>
             {criticita.isLoading ? <LoadingSpinner /> : (
               <div className="overflow-auto rounded-md border">
-                <table className="w-full text-[12px]">
+                <table aria-label="Ranking criticità del cluster" className="w-full text-[12px]">
                   <thead>
                     <tr className="border-b bg-muted/40 text-muted-foreground">
-                      <th className="text-left px-3 py-2 font-semibold">Categoria criticità</th>
-                      <th className="text-right px-3 py-2 font-semibold whitespace-nowrap">Occorrenze</th>
-                      <th className="text-right px-3 py-2 font-semibold whitespace-nowrap">Incidenza</th>
-                      <th className="text-right px-3 py-2 font-semibold whitespace-nowrap">Enti coinvolti</th>
+                      <th scope="col" className="text-left px-3 py-2 font-semibold">Categoria criticità</th>
+                      <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">Occorrenze</th>
+                      <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">Incidenza</th>
+                      <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">Enti coinvolti</th>
                     </tr>
                   </thead>
                   <tbody>

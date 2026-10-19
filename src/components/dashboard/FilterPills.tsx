@@ -21,17 +21,47 @@ const Pill = ({
 }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const listId = `pill-list-${label.replace(/\W+/g, "-").toLowerCase()}`;
   useEffect(() => {
     const h = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
     if (open) document.addEventListener("mousedown", h);
     return () => document.removeEventListener("mousedown", h);
   }, [open]);
+  // Tastiera: all'apertura il focus va sull'opzione selezionata (o sulla prima).
+  useEffect(() => {
+    if (!open) return;
+    const list = ref.current?.querySelector<HTMLElement>(`#${listId}`);
+    (list?.querySelector<HTMLElement>('[aria-selected="true"]') ?? list?.querySelector<HTMLElement>("button"))?.focus();
+  }, [open, listId]);
+  const close = (refocus = true) => {
+    setOpen(false);
+    if (refocus) triggerRef.current?.focus();
+  };
+  const onListKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const items = Array.from(e.currentTarget.querySelectorAll<HTMLElement>("button"));
+    const i = items.indexOf(document.activeElement as HTMLElement);
+    if (e.key === "Escape") { e.preventDefault(); close(); }
+    else if (e.key === "ArrowDown") { e.preventDefault(); items[Math.min(items.length - 1, i + 1)]?.focus(); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); items[Math.max(0, i - 1)]?.focus(); }
+    else if (e.key === "Home") { e.preventDefault(); items[0]?.focus(); }
+    else if (e.key === "End") { e.preventDefault(); items[items.length - 1]?.focus(); }
+    else if (e.key === "Tab") setOpen(false);
+  };
   return (
     <div ref={ref} className="relative">
       <button
+        ref={triggerRef}
+        type="button"
         disabled={disabled}
         title={title}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={open ? listId : undefined}
         onClick={() => setOpen(!open)}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowDown" && !open) { e.preventDefault(); setOpen(true); }
+        }}
         className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] transition-colors disabled:opacity-40 ${
           active ? "border-primary bg-primary/5 text-primary" : "text-muted-foreground hover:border-primary hover:text-primary"
         }`}
@@ -45,11 +75,20 @@ const Pill = ({
         )}
       </button>
       {open && (
-        <div className="absolute top-full left-0 mt-1 z-50 min-w-[200px] bg-card border rounded-lg shadow-lg py-1 max-h-[260px] overflow-y-auto">
+        <div
+          id={listId}
+          role="listbox"
+          aria-label={label}
+          onKeyDown={onListKey}
+          className="absolute top-full left-0 mt-1 z-50 min-w-[200px] bg-card border rounded-lg shadow-lg py-1 max-h-[260px] overflow-y-auto"
+        >
           {options.map((o) => (
             <button
               key={o.value}
-              onClick={() => { onChange(o.value); setOpen(false); }}
+              type="button"
+              role="option"
+              aria-selected={value === o.value}
+              onClick={() => { onChange(o.value); close(); }}
               className={`w-full text-left px-3 py-1.5 text-[11px] transition-colors ${
                 value === o.value ? "bg-primary/10 text-primary font-semibold" : "text-foreground hover:bg-muted"
               }`}

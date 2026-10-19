@@ -262,6 +262,7 @@ const NarrativeKpiCard = ({
                 )}
               </div>
               <Slider
+                aria-label={`Simula valore ${idx.id} (percentuale)`}
                 value={[Math.round((simValue ?? idx.value) * 100)]}
                 onValueChange={([v]) => setSimValue(v / 100)}
                 min={0}
@@ -397,7 +398,7 @@ const ImpactCard = ({
         Perché incide: {impact.reason}
       </p>
 
-      <span className="text-[10px] text-primary font-semibold flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="text-[10px] text-primary font-semibold flex items-center gap-1 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
         Approfondisci <ChevronRight aria-hidden="true" className="h-3 w-3" />
       </span>
     </button>
@@ -421,7 +422,7 @@ const OperativeCorrelationCard = ({
     {corr.relatedKpiId && <InterconnectionBadges indicatorId={corr.relatedKpiId} />}
     <span className="text-[11px] text-muted-foreground leading-snug">{corr.description}</span>
     {corr.drillTarget && (
-      <span className="text-[10px] text-primary font-semibold flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="text-[10px] text-primary font-semibold flex items-center gap-1 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
         Vai al dettaglio <ChevronRight aria-hidden="true" className="h-3 w-3" />
       </span>
     )}

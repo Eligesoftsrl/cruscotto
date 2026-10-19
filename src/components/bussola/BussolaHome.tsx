@@ -180,7 +180,7 @@ const ambitoConfig: Record<
     whatYouGet:
       "Esplora i dati del personale attraverso percorsi tematici guidati: demografia, reclutamento, competenze, carriere.",
     gradient: "from-primary/10 to-primary/5",
-    iconBg: "bg-primary/15 text-primary",
+    iconBg: "bg-primary/10 text-primary",
   },
   plan: {
     icon: Target,

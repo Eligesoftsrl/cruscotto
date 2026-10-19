@@ -75,7 +75,7 @@ export const SyllabusAssessmentSection = () => {
 
   return (
     <div className="p-4 space-y-4">
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div className="tableau-card">
           <div className="p-4 text-center">
             <div className="text-2xl font-bold">{totals.partecipanti.toLocaleString()}</div>
@@ -102,7 +102,7 @@ export const SyllabusAssessmentSection = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div className="tableau-card">
           <div className="tableau-card-header">Distribuzione Esiti Formativi</div>
           <div className="p-4" style={{ height: 300 }}>

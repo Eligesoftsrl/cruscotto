@@ -49,7 +49,7 @@ export const CoperturaView = () => {
       <SiproScopeBar value={scope} onChange={setScope} />
       {riepilogo.error ? <ErrorBox error={riepilogo.error} /> : riepilogo.isLoading ? <LoadingSpinner /> : (
         <div className="space-y-4">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <KpiBox label="Programmati" value={fmt(r?.fte_programmati)} />
             <KpiBox label="Assegnati" value={fmt(r?.fte_assegnati)} />
             <KpiBox label="Scostamento" value={fmt(r?.scostamento_fte)} />

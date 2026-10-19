@@ -57,11 +57,11 @@ export function PaginatedTable<T extends Record<string, any>>({
   return (
     <div className="space-y-2">
       <div className="overflow-x-auto">
-        <table className="w-full text-xs border-collapse">
+        <table className="w-full text-xs border-collapse" aria-label={caption || exportFilename}>
           <thead>
             <tr className="bg-muted/50">
               {columns.map((col) => (
-                <th
+                <th scope="col"
                   key={col.key}
                   className={`px-3 py-2 font-semibold text-muted-foreground border-b border-border whitespace-nowrap ${alignClass(col.align)} ${col.className ?? ""}`}
                 >

@@ -95,12 +95,12 @@ export const TempiPicchiView = () => {
             </div>
             <p className="text-xs font-semibold text-muted-foreground mb-3">Dettaglio tempi per processo</p>
             <div className="overflow-auto rounded-md border">
-              <table className="w-full text-[12px]">
+              <table aria-label="Tempi previsti ed effettivi dei processi" className="w-full text-[12px]">
                 <thead>
                   <tr className="border-b bg-muted/40 text-muted-foreground">
-                    <th className="text-left px-3 py-2 font-semibold">Processo</th>
-                    <th className="text-right px-3 py-2 font-semibold whitespace-nowrap">Tempo previsto</th>
-                    <th className="text-right px-3 py-2 font-semibold whitespace-nowrap">Tempo effettivo</th>
+                    <th scope="col" className="text-left px-3 py-2 font-semibold">Processo</th>
+                    <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">Tempo previsto</th>
+                    <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">Tempo effettivo</th>
                   </tr>
                 </thead>
                 <tbody>

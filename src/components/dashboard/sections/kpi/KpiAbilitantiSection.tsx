@@ -382,6 +382,7 @@ export const KpiAbilitantiSection = () => {
               )}
               {(filtriQ.isError || schedaQ.isError) && (
                 <div
+                  role="alert"
                   className="py-6 flex items-center gap-2 text-sm text-destructive"
                   data-testid="kpi-error"
                 >

@@ -62,13 +62,13 @@ export const DotazioneUoView = () => {
           </h3>
           <div className="grid grid-cols-1 2xl:grid-cols-2 gap-6">
             <div className="overflow-auto">
-              <table className="w-full text-[12px] border-collapse">
+              <table aria-label="Dotazione organica e personale in servizio per unità organizzativa" className="w-full text-[12px] border-collapse">
                 <thead>
                   <tr className="bg-[hsl(210,64%,30%)] text-white">
-                    <th className="text-left px-2 py-1.5 font-semibold">Unità Organizzativa</th>
-                    <th className="text-right px-2 py-1.5 font-semibold whitespace-nowrap">FTE dotazione</th>
-                    <th className="text-right px-2 py-1.5 font-semibold whitespace-nowrap">FTE servizio</th>
-                    <th className="text-right px-2 py-1.5 font-semibold whitespace-nowrap">GAP</th>
+                    <th scope="col" className="text-left px-2 py-1.5 font-semibold">Unità Organizzativa</th>
+                    <th scope="col" className="text-right px-2 py-1.5 font-semibold whitespace-nowrap">FTE dotazione</th>
+                    <th scope="col" className="text-right px-2 py-1.5 font-semibold whitespace-nowrap">FTE servizio</th>
+                    <th scope="col" className="text-right px-2 py-1.5 font-semibold whitespace-nowrap">GAP</th>
                   </tr>
                 </thead>
                 <tbody>

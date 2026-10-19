@@ -54,7 +54,7 @@ export const KpiBox = ({ label, value }: { label: string; value: number | string
 );
 
 export const ErrorBox = ({ error }: { error: unknown }) => (
-  <div className="bg-destructive/10 border border-destructive/30 text-destructive rounded-lg p-4 text-sm">
+  <div role="alert" className="bg-destructive/10 border border-destructive/30 text-destructive rounded-lg p-4 text-sm">
     Errore nel caricamento dei dati: {error instanceof Error ? error.message : "sconosciuto"}
   </div>
 );
@@ -66,11 +66,11 @@ export const Pager = ({
   return (
     <div className="flex items-center justify-between mt-2">
       <div className="flex items-center gap-1">
-        <button onClick={() => onPage(0)} disabled={page === 0} className="px-2 py-1 text-xs rounded border disabled:opacity-40">«</button>
-        <button onClick={() => onPage(Math.max(0, page - 1))} disabled={page === 0} className="px-2 py-1 text-xs rounded border disabled:opacity-40">‹</button>
+        <button type="button" aria-label="Prima pagina" onClick={() => onPage(0)} disabled={page === 0} className="px-2 py-1 text-xs rounded border disabled:opacity-40">«</button>
+        <button type="button" aria-label="Pagina precedente" onClick={() => onPage(Math.max(0, page - 1))} disabled={page === 0} className="px-2 py-1 text-xs rounded border disabled:opacity-40">‹</button>
         <span className="px-2 text-[11px] text-muted-foreground">Pag. {page + 1} di {totalPages}</span>
-        <button onClick={() => onPage(Math.min(totalPages - 1, page + 1))} disabled={page >= totalPages - 1} className="px-2 py-1 text-xs rounded border disabled:opacity-40">›</button>
-        <button onClick={() => onPage(totalPages - 1)} disabled={page >= totalPages - 1} className="px-2 py-1 text-xs rounded border disabled:opacity-40">»</button>
+        <button type="button" aria-label="Pagina successiva" onClick={() => onPage(Math.min(totalPages - 1, page + 1))} disabled={page >= totalPages - 1} className="px-2 py-1 text-xs rounded border disabled:opacity-40">›</button>
+        <button type="button" aria-label="Ultima pagina" onClick={() => onPage(totalPages - 1)} disabled={page >= totalPages - 1} className="px-2 py-1 text-xs rounded border disabled:opacity-40">»</button>
       </div>
       <span className="text-[11px] text-muted-foreground">{total} elementi</span>
     </div>

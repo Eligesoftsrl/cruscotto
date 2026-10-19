@@ -72,14 +72,14 @@ export const DigitalizzazioneFasiView = ({ title = "Livello di digitalizzazione,
             {riepilogo.isLoading ? <LoadingSpinner /> : (
               <>
                 <div className="overflow-auto rounded-md border">
-                  <table className="w-full text-[12px]">
+                  <table aria-label="Digitalizzazione delle fasi" className="w-full text-[12px]">
                     <thead>
                       <tr className="border-b bg-muted/40 text-muted-foreground">
-                        <th className="text-left px-3 py-2 font-semibold">Processo</th>
-                        <th className="text-right px-3 py-2 font-semibold whitespace-nowrap">N° fasi</th>
-                        <th className="text-right px-3 py-2 font-semibold whitespace-nowrap">Fasi esternalizzate</th>
-                        <th className="text-right px-3 py-2 font-semibold whitespace-nowrap">Fasi in lavoro agile</th>
-                        <th className="text-left px-3 py-2 font-semibold whitespace-nowrap">Livello prevalente</th>
+                        <th scope="col" className="text-left px-3 py-2 font-semibold">Processo</th>
+                        <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">N° fasi</th>
+                        <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">Fasi esternalizzate</th>
+                        <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">Fasi in lavoro agile</th>
+                        <th scope="col" className="text-left px-3 py-2 font-semibold whitespace-nowrap">Livello prevalente</th>
                       </tr>
                     </thead>
                     <tbody>

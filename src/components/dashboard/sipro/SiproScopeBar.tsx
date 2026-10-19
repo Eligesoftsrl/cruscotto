@@ -19,7 +19,7 @@ interface Props {
 const labelCls =
   "text-[11px] font-semibold text-muted-foreground whitespace-nowrap uppercase tracking-wide";
 const selectCls =
-  "appearance-none rounded-md border border-input bg-background pl-3 pr-8 py-1.5 text-[12px] text-foreground outline-none focus:ring-1 focus:ring-ring cursor-pointer min-w-[200px]";
+  "appearance-none rounded-md border border-input bg-background pl-3 pr-8 py-1.5 text-[12px] text-foreground outline-none focus:ring-1 focus:ring-ring cursor-pointer min-w-0 w-full sm:w-auto sm:min-w-[200px] max-w-full";
 
 /**
  * Barra filtri SIPRO (sezioni non-benchmark): Regione + Ente (singola selezione,
@@ -81,7 +81,7 @@ export const SiproScopeBar = ({ value, onChange }: Props) => {
   // DFP: Regione + Ente (singola selezione)
   return (
     <div className="flex flex-wrap items-center gap-4 rounded-lg border bg-card px-4 py-2.5">
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2 min-w-0">
         <label className={labelCls}>Regione</label>
         <div className="relative">
           <select
@@ -97,7 +97,7 @@ export const SiproScopeBar = ({ value, onChange }: Props) => {
           </select>
         </div>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2 min-w-0">
         <label className={labelCls}>Ente</label>
         <div className="relative">
           <select

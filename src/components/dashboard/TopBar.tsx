@@ -1,4 +1,4 @@
-import { LogOut, Compass, Home, ShieldCheck, ChevronDown } from "lucide-react";
+import { LogOut, Compass, Home, ShieldCheck, ChevronDown, Menu } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { NavState } from "./AppSidebar";
 import { useAuth } from "@/contexts/AuthContext";
@@ -15,9 +15,12 @@ import headerLogos from "@/assets/header-logos.png";
 interface TopBarProps {
   nav: NavState;
   onNavigate?: (nav: NavState) => void;
+  /** Se presente, mostra il pulsante «Menu» sugli schermi stretti (menu laterale a scomparsa). */
+  onToggleMenu?: () => void;
+  menuOpen?: boolean;
 }
 
-export const TopBar = ({ nav, onNavigate }: TopBarProps) => {
+export const TopBar = ({ nav, onNavigate, onToggleMenu, menuOpen = false }: TopBarProps) => {
   const { profile, signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -86,11 +89,24 @@ export const TopBar = ({ nav, onNavigate }: TopBarProps) => {
       </div>
 
       {/* Row 2: Product bar */}
-      <div className="bg-card border-b flex items-center h-12 px-6">
+      <div className="bg-card border-b flex items-center h-12 px-3 sm:px-6">
+        {onToggleMenu && (
+          <button
+            type="button"
+            onClick={onToggleMenu}
+            aria-expanded={menuOpen}
+            aria-controls="app-sidebar"
+            aria-label={menuOpen ? "Chiudi menu" : "Apri menu"}
+            className="lg:hidden mr-2 p-1.5 rounded hover:bg-muted text-foreground"
+            data-testid="mobile-menu-toggle"
+          >
+            <Menu aria-hidden="true" className="h-5 w-5" />
+          </button>
+        )}
         <div className="flex items-center gap-3 min-w-0">
           <div>
             <div className="text-sm font-bold text-foreground leading-tight">Cruscotto HR</div>
-            <div className="text-[10px] text-muted-foreground leading-tight">
+            <div className="hidden sm:block text-[10px] text-muted-foreground leading-tight">
               Sistema di Monitoraggio HR della Pubblica Amministrazione
             </div>
           </div>
@@ -107,7 +123,7 @@ export const TopBar = ({ nav, onNavigate }: TopBarProps) => {
           />
         </div>
 
-        <div className="w-px h-5 bg-border mx-3" />
+        <div className="w-px h-5 bg-border mx-2 sm:mx-3" />
 
         {!isWelcome && (
           <button
@@ -115,7 +131,7 @@ export const TopBar = ({ nav, onNavigate }: TopBarProps) => {
             className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition mr-2"
           >
             <Home aria-hidden="true" className="h-3.5 w-3.5" />
-            <span className="font-semibold">Home</span>
+            <span className="font-semibold sr-only sm:not-sr-only">Home</span>
           </button>
         )}
 
@@ -125,7 +141,7 @@ export const TopBar = ({ nav, onNavigate }: TopBarProps) => {
             className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition"
           >
             <Compass aria-hidden="true" className="h-3.5 w-3.5" />
-            <span className="font-semibold">Pannello di Governo</span>
+            <span className="font-semibold sr-only sm:not-sr-only">Pannello di Governo</span>
           </button>
         )}
 

@@ -34,7 +34,7 @@ export const AccessLogPanel = () => {
         <div className="flex items-center gap-2 flex-wrap">
           <div className="relative flex-1 min-w-[180px] max-w-xs">
             <Search aria-hidden="true" className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
+            <Input aria-label="Cerca utente, ruolo o esito"
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder="Cerca utente / ruolo / esito…"
@@ -51,7 +51,7 @@ export const AccessLogPanel = () => {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-auto">
-          <Table>
+          <Table aria-label="Registro accessi">
             <TableHeader>
               <TableRow>
                 <TableHead>Data / Ora</TableHead>

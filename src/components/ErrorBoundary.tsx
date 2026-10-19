@@ -60,7 +60,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 
 const DefaultErrorFallback = ({ error, reset }: { error: Error; reset: () => void }) => (
   <div className="min-h-[60vh] w-full flex items-center justify-center p-6">
-    <div className="max-w-md w-full bg-card border rounded-lg shadow-sm p-8 text-center space-y-4">
+    <div role="alert" className="max-w-md w-full bg-card border rounded-lg shadow-sm p-8 text-center space-y-4">
       <div className="mx-auto w-14 h-14 rounded-full bg-destructive/10 flex items-center justify-center">
         <AlertTriangle aria-hidden="true" className="h-7 w-7 text-destructive" />
       </div>

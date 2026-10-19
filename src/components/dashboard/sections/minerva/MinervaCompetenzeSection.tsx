@@ -95,7 +95,7 @@ export const MinervaCompetenzeSection = () => {
   return (
     <div className="p-4 space-y-4">
       {/* KPI */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {compByType.map((t) => (
           <div key={t.name} className="tableau-card">
             <div className="p-4 text-center">
@@ -129,7 +129,7 @@ export const MinervaCompetenzeSection = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {/* Tipologia competenze */}
         <div className="tableau-card">
           <div className="tableau-card-header">Distribuzione per Tipologia (CTP/CTS/CC)</div>

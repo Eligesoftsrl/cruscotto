@@ -113,9 +113,9 @@ export function CommunityJourneys({ onFollowJourney, refreshKey }: CommunityJour
                     <Lock aria-hidden="true" className="h-3 w-3 text-muted-foreground/70" />
                   )}
                 </div>
-                <button
+                <button aria-label="Elimina percorso"
                   onClick={() => handleDelete(j.id)}
-                  className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-destructive/10 text-destructive transition"
+                  className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 p-1 rounded hover:bg-destructive/10 text-destructive transition"
                 >
                   <Trash2 aria-hidden="true" className="h-3.5 w-3.5" />
                 </button>

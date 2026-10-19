@@ -49,13 +49,13 @@ export const CriticitaProcessiView = ({ title = "Criticità e semplificazione de
           <div className="grid grid-cols-1 2xl:grid-cols-2 gap-6 pt-2">
             <div>
               <div className="overflow-auto rounded-md border">
-                <table className="w-full text-[12px]">
+                <table aria-label="Criticità dei processi" className="w-full text-[12px]">
                   <thead>
                     <tr className="border-b bg-muted/40 text-muted-foreground">
-                      <th className="text-left px-3 py-2 font-semibold">Processo</th>
-                      <th className="text-right px-3 py-2 font-semibold whitespace-nowrap">N° fasi</th>
-                      <th className="text-right px-3 py-2 font-semibold whitespace-nowrap">N° criticità</th>
-                      <th className="text-left px-3 py-2 font-semibold">Semplificato</th>
+                      <th scope="col" className="text-left px-3 py-2 font-semibold">Processo</th>
+                      <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">N° fasi</th>
+                      <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">N° criticità</th>
+                      <th scope="col" className="text-left px-3 py-2 font-semibold">Semplificato</th>
                     </tr>
                   </thead>
                   <tbody>

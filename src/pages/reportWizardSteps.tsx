@@ -462,6 +462,7 @@ export function StepCustomize({
         </label>
         <input
           type="text"
+          aria-label="Titolo del rapporto"
           value={reportTitle}
           onChange={(e) => onReportTitleChange(e.target.value)}
           className="w-full max-w-[500px] px-3 py-2 border rounded text-sm font-semibold text-foreground bg-card focus:outline-none focus:ring-2 focus:ring-primary/30"
@@ -480,14 +481,14 @@ export function StepCustomize({
               {/* Section header */}
               <div className="flex items-center gap-3 p-4 border-b bg-muted/30">
                 <div className="flex flex-col gap-0.5">
-                  <button
+                  <button aria-label="Sposta sezione su"
                     onClick={() => onMoveSection(sec.id, -1)}
                     disabled={i === 0}
                     className="text-muted-foreground hover:text-foreground disabled:opacity-20 transition"
                   >
                     <ChevronDown aria-hidden="true" className="h-3 w-3 rotate-180" />
                   </button>
-                  <button
+                  <button aria-label="Sposta sezione giù"
                     onClick={() => onMoveSection(sec.id, 1)}
                     disabled={i === sectionDefs.length - 1}
                     className="text-muted-foreground hover:text-foreground disabled:opacity-20 transition"
@@ -540,7 +541,7 @@ export function StepCustomize({
                   </div>
                   {isEditing ? (
                     <div className="flex gap-2 items-start">
-                      <textarea
+                      <textarea aria-label="Commento al report"
                         autoFocus
                         defaultValue={annotations[sec.id] || ""}
                         onBlur={(e) => {
@@ -550,7 +551,7 @@ export function StepCustomize({
                         className="flex-1 text-xs border rounded p-2 min-h-[60px] bg-background resize-none focus:outline-none focus:ring-1 focus:ring-primary"
                         placeholder="Aggiungi un commento, un'osservazione o un'indicazione operativa..."
                       />
-                      <button
+                      <button aria-label="Chiudi commento"
                         onClick={() => setEditingAnnotation(null)}
                         className="p-1 text-muted-foreground hover:text-foreground"
                       >
@@ -745,16 +746,16 @@ export function SectionRenderer({
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-[hsl(213,50%,20%)] text-white">
-                <th className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
                   Stato
                 </th>
-                <th className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
                   Indicatore
                 </th>
-                <th className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
                   Valore
                 </th>
-                <th className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
                   Target
                 </th>
               </tr>
@@ -789,19 +790,19 @@ export function SectionRenderer({
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-[hsl(213,50%,20%)] text-white">
-                <th className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
                   Stato
                 </th>
-                <th className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
                   Indicatore
                 </th>
-                <th className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
                   Valore
                 </th>
-                <th className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
                   Cluster
                 </th>
-                <th className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
                   Var.
                 </th>
               </tr>

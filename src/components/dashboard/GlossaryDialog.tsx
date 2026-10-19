@@ -310,7 +310,7 @@ const glossary: GlossaryEntry[] = [
 ];
 
 const categoryColors: Record<string, string> = {
-  acronimo: "bg-primary/15 text-primary",
+  acronimo: "bg-primary/10 text-primary",
   indicatore: "bg-accent/50 text-accent-foreground",
   fonte: "bg-secondary text-secondary-foreground",
   concetto: "bg-muted text-muted-foreground",
@@ -360,7 +360,7 @@ export const GlossaryDialog = () => {
         <div className="px-5 py-3 border-b space-y-2.5">
           <div className="relative">
             <Search aria-hidden="true" className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-            <Input
+            <Input aria-label="Cerca termine"
               placeholder="Cerca termine…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
