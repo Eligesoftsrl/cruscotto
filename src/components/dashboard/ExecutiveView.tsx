@@ -352,11 +352,11 @@ export const ExecutiveView = ({
                   className="flex items-center justify-center h-7 w-7 rounded-md"
                   style={{ background: `hsl(var(${group.colorVar}))` }}
                 >
-                  <Layers className="h-3.5 w-3.5 text-white" />
+                  <Layers aria-hidden="true" className="h-3.5 w-3.5 text-white" />
                 </div>
-                <span className="text-sm font-bold text-foreground tracking-wide">
+                <h2 className="text-sm font-bold text-foreground tracking-wide">
                   {group.label}
-                </span>
+                </h2>
                 <span className="ml-auto flex items-center gap-2">
                   <span
                     className="text-xs font-bold px-2.5 py-0.5 rounded-full"

@@ -66,7 +66,7 @@ export const FeatureFlagsPanel = () => {
                           variant="outline"
                           className="gap-1 border-amber-300 text-[10px] text-amber-700"
                         >
-                          <Lock className="h-3 w-3" /> Protetta
+                          <Lock aria-hidden="true" className="h-3 w-3" /> Protetta
                         </Badge>
                       )}
                     </div>

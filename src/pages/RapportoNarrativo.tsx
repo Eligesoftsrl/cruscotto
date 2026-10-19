@@ -205,7 +205,7 @@ const RapportoNarrativo = () => {
       <header className="sticky top-[88px] z-40 bg-[hsl(213,50%,20%)] border-b-[3px] border-primary">
         <div className="flex items-center justify-between px-8 h-[44px]">
           <div className="flex items-center gap-3">
-            <FileText className="h-4 w-4 text-white/70" />
+            <FileText aria-hidden="true" className="h-4 w-4 text-white/70" />
             <span className="text-sm font-bold text-white">Costruisci il tuo Rapporto</span>
             {audience && (
               <span className="text-[10px] font-bold tracking-[.08em] uppercase px-2.5 py-1 rounded border border-white/20 text-white/70 bg-primary/40">
@@ -217,7 +217,7 @@ const RapportoNarrativo = () => {
             onClick={resetWizard}
             className="flex items-center gap-1.5 text-[10px] text-white/50 hover:text-white/90 transition"
           >
-            <RotateCcw className="h-3 w-3" /> Ricomincia
+            <RotateCcw aria-hidden="true" className="h-3 w-3" /> Ricomincia
           </button>
         </div>
 
@@ -246,7 +246,7 @@ const RapportoNarrativo = () => {
                       : "bg-white/10 text-white/50"
                 }`}
               >
-                {i < stepIdx ? <Check className="h-3 w-3" /> : i + 1}
+                {i < stepIdx ? <Check aria-hidden="true" className="h-3 w-3" /> : i + 1}
               </span>
               {s.label}
             </button>
@@ -303,7 +303,7 @@ const RapportoNarrativo = () => {
                 onClick={goPrev}
                 className="flex items-center gap-1.5 px-4 py-2 rounded border text-sm font-medium text-muted-foreground hover:text-foreground transition"
               >
-                <ArrowLeft className="h-4 w-4" /> Indietro
+                <ArrowLeft aria-hidden="true" className="h-4 w-4" /> Indietro
               </button>
             )}
             <span className="text-xs text-muted-foreground">
@@ -320,7 +320,7 @@ const RapportoNarrativo = () => {
                 onClick={handlePrint}
                 className="flex items-center gap-2 px-5 py-2.5 rounded bg-[hsl(213,50%,20%)] text-white text-sm font-bold hover:opacity-90 transition"
               >
-                <Printer className="h-4 w-4" /> Stampa / PDF
+                <Printer aria-hidden="true" className="h-4 w-4" /> Stampa / PDF
               </button>
             )}
             {stepIdx < STEPS.length - 1 && (
@@ -329,7 +329,7 @@ const RapportoNarrativo = () => {
                 disabled={!canNext()}
                 className="flex items-center gap-2 px-5 py-2.5 rounded bg-primary text-primary-foreground text-sm font-bold hover:opacity-90 transition disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                {STEPS[stepIdx + 1]?.label} <ArrowRight className="h-4 w-4" />
+                {STEPS[stepIdx + 1]?.label} <ArrowRight aria-hidden="true" className="h-4 w-4" />
               </button>
             )}
           </div>

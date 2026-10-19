@@ -40,7 +40,7 @@ export const pieValueLabel = (props: any) => {
 
 export const LoadingSpinner = () => (
   <div className="flex items-center justify-center h-64">
-    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+    <Loader2 aria-hidden="true" className="h-6 w-6 animate-spin text-muted-foreground" />
   </div>
 );
 

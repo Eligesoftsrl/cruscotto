@@ -43,7 +43,7 @@ export const DfpOverviewFilters = ({ value, onChange }: Props) => {
         <div className="space-y-1.5">
           <label className="text-xs font-semibold text-primary text-center block">Comparto</label>
           <div className="relative">
-            <select
+            <select aria-label="Comparto"
               value={value.comparto}
               onChange={(e) => onChange({ ...value, comparto: e.target.value })}
               className={selectClass}
@@ -55,7 +55,7 @@ export const DfpOverviewFilters = ({ value, onChange }: Props) => {
                 </option>
               ))}
             </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+            <ChevronDown aria-hidden="true" className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           </div>
         </div>
 
@@ -65,7 +65,7 @@ export const DfpOverviewFilters = ({ value, onChange }: Props) => {
             Area Geografica
           </label>
           <div className="relative">
-            <select
+            <select aria-label="Area geografica"
               value={value.area}
               onChange={(e) => onChange({ ...value, area: e.target.value })}
               className={selectClass}
@@ -77,7 +77,7 @@ export const DfpOverviewFilters = ({ value, onChange }: Props) => {
                 </option>
               ))}
             </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+            <ChevronDown aria-hidden="true" className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           </div>
         </div>
 
@@ -87,7 +87,7 @@ export const DfpOverviewFilters = ({ value, onChange }: Props) => {
             Dimensione PA
           </label>
           <div className="relative">
-            <select
+            <select aria-label="Dimensione PA"
               value={value.dimensione}
               onChange={(e) => onChange({ ...value, dimensione: e.target.value })}
               className={selectClass}
@@ -99,7 +99,7 @@ export const DfpOverviewFilters = ({ value, onChange }: Props) => {
                 </option>
               ))}
             </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+            <ChevronDown aria-hidden="true" className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           </div>
         </div>
       </div>

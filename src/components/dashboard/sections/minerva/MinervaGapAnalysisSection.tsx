@@ -71,9 +71,9 @@ export const MinervaGapAnalysisSection = () => {
           {
             label: "Gap Medio Competenze",
             value: avgGap,
-            color: avgGap > 1 ? "text-red-600" : "text-green-600",
+            color: avgGap > 1 ? "text-red-600" : "text-green-700",
           },
-          { label: "Competenze Critiche (gap>1)", value: totalCritical, color: "text-amber-600" },
+          { label: "Competenze Critiche (gap>1)", value: totalCritical, color: "text-amber-700" },
           {
             label: "Profili con Gap Critico",
             value: gapData.filter((d) => d.critiche > 0).length,

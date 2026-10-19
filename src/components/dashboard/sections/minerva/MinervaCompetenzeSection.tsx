@@ -18,9 +18,10 @@ import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 import { Badge } from "@/components/ui/badge";
 
 const TYPE_COLORS: Record<string, string> = {
-  CTP: "hsl(210,80%,45%)",
-  CTS: "hsl(30,85%,55%)",
-  CC: "hsl(150,60%,40%)",
+  // Tonalità scurite: usate anche come colore del testo (contrasto AA su bianco).
+  CTP: "hsl(210,80%,40%)",
+  CTS: "hsl(30,90%,32%)",
+  CC: "hsl(150,60%,28%)",
 };
 
 export const MinervaCompetenzeSection = () => {
@@ -119,7 +120,7 @@ export const MinervaCompetenzeSection = () => {
         <div className="tableau-card">
           <div className="p-4 text-center">
             <div
-              className={`text-2xl font-bold ${coverageRate >= 80 ? "text-green-600" : coverageRate >= 50 ? "text-amber-600" : "text-red-600"}`}
+              className={`text-2xl font-bold ${coverageRate >= 80 ? "text-green-700" : coverageRate >= 50 ? "text-amber-700" : "text-red-600"}`}
             >
               {coverageRate}%
             </div>
@@ -223,7 +224,7 @@ export const MinervaCompetenzeSection = () => {
                 render: (r: any) => (
                   <span
                     className={
-                      r.mappata === "Sì" ? "text-green-600 font-semibold" : "text-muted-foreground"
+                      r.mappata === "Sì" ? "text-green-700 font-semibold" : "text-muted-foreground"
                     }
                   >
                     {r.mappata}

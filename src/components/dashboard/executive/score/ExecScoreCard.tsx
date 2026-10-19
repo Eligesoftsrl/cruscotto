@@ -112,7 +112,7 @@ const Section = ({
       >
         <Icon className="h-4 w-4 text-primary shrink-0" />
         <span className="text-sm font-semibold text-primary flex-1">{title}</span>
-        <ChevronDown
+        <ChevronDown aria-hidden="true"
           className={`h-4 w-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
         />
       </CollapsibleTrigger>
@@ -423,7 +423,7 @@ export const ExecScoreCard = ({
       {icPillars.length > 0 ? (
         <div className="mx-4 mt-1 mb-4">
           <div className="flex items-center gap-1.5 mb-2">
-            <Link2 className="h-3.5 w-3.5 text-muted-foreground" />
+            <Link2 aria-hidden="true" className="h-3.5 w-3.5 text-muted-foreground" />
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               Interconnessioni
             </span>
@@ -461,7 +461,7 @@ export const ExecScoreCard = ({
             </div>
           </TooltipProvider>
           {staticIc?.bridgeNote && (
-            <p className="mt-1.5 text-xs text-primary/80 italic leading-snug">{staticIc.bridgeNote}</p>
+            <p className="mt-1.5 text-xs text-primary italic leading-snug">{staticIc.bridgeNote}</p>
           )}
         </div>
       ) : (

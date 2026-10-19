@@ -79,7 +79,7 @@ export const GuidedJourney = ({
                 : "bg-muted hover:bg-muted/80 text-muted-foreground"
             }`}
           >
-            <ArrowLeft className="h-4 w-4" /> {embedded ? "Chiudi" : "Executive"}
+            <ArrowLeft aria-hidden="true" className="h-4 w-4" /> {embedded ? "Chiudi" : "Executive"}
           </button>
           <div>
             <h2
@@ -128,14 +128,14 @@ export const GuidedJourney = ({
                   >
                     <span className="flex-shrink-0">
                       {isCompleted ? (
-                        <Check className="h-4 w-4 text-primary" />
+                        <Check aria-hidden="true" className="h-4 w-4 text-primary" />
                       ) : isActive ? (
-                        <CircleDot
+                        <CircleDot aria-hidden="true"
                           className="h-4 w-4"
                           style={{ color: `hsl(var(${journey.colorVar}))` }}
                         />
                       ) : (
-                        <Circle className="h-4 w-4 text-muted-foreground/40" />
+                        <Circle aria-hidden="true" className="h-4 w-4 text-muted-foreground/70" />
                       )}
                     </span>
                     <span
@@ -170,14 +170,14 @@ export const GuidedJourney = ({
                     >
                       <span className="mt-0.5 flex-shrink-0">
                         {isCompleted ? (
-                          <Check className="h-5 w-5 text-primary" />
+                          <Check aria-hidden="true" className="h-5 w-5 text-primary" />
                         ) : isActive ? (
-                          <CircleDot
+                          <CircleDot aria-hidden="true"
                             className="h-5 w-5"
                             style={{ color: `hsl(var(${journey.colorVar}))` }}
                           />
                         ) : (
-                          <Circle className="h-5 w-5 text-muted-foreground/40" />
+                          <Circle aria-hidden="true" className="h-5 w-5 text-muted-foreground/70" />
                         )}
                       </span>
                       <div className="flex flex-col">
@@ -213,14 +213,14 @@ export const GuidedJourney = ({
           disabled={currentStep === 0}
           className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-bold bg-muted text-muted-foreground hover:bg-muted/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
-          <ArrowLeft className="h-4 w-4" /> Precedente
+          <ArrowLeft aria-hidden="true" className="h-4 w-4" /> Precedente
         </button>
         <button
           onClick={() => setCurrentStep((p) => Math.min(steps.length - 1, p + 1))}
           disabled={currentStep === steps.length - 1}
           className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-bold bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
-          Successivo <ArrowRight className="h-4 w-4" />
+          Successivo <ArrowRight aria-hidden="true" className="h-4 w-4" />
         </button>
       </div>
     </div>

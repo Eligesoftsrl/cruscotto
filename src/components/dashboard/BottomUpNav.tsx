@@ -37,7 +37,7 @@ export const BottomUpNav = ({
               }}
               className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-lg text-sm font-semibold text-foreground hover:bg-muted transition-colors"
             >
-              <Layers className="h-4 w-4 text-primary" />
+              <Layers aria-hidden="true" className="h-4 w-4 text-primary" />
               Vista Sintetica · {pillar}
             </button>
           )}
@@ -49,7 +49,7 @@ export const BottomUpNav = ({
               }}
               className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-lg text-sm font-semibold text-foreground hover:bg-muted transition-colors"
             >
-              <Gauge className="h-4 w-4 text-primary" />
+              <Gauge aria-hidden="true" className="h-4 w-4 text-primary" />
               Vista Executive
             </button>
           )}
@@ -67,7 +67,7 @@ export const BottomUpNav = ({
         title="Risali al livello superiore"
         aria-label="Navigazione verso livelli superiori"
       >
-        {open ? <X className="h-5 w-5" /> : <ArrowUp className="h-5 w-5" />}
+        {open ? <X aria-hidden="true" className="h-5 w-5" /> : <ArrowUp aria-hidden="true" className="h-5 w-5" />}
       </button>
     </div>
   );

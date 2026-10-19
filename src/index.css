@@ -28,7 +28,7 @@
     --muted-foreground: 210 18% 22%;
 
     /* Accent: Italia arancione istituzionale */
-    --accent: 24 95% 50%;
+    --accent: 24 95% 38%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 47%;
@@ -49,18 +49,18 @@
 
     /* Chart palette — Tableau 10 inspired, AGID-compatible */
     --chart-blue: 210 100% 40%;
-    --chart-orange: 24 95% 50%;
-    --chart-green: 152 62% 36%;
+    --chart-orange: 24 95% 38%;
+    --chart-green: 152 62% 31%;
     --chart-red: 0 72% 47%;
     --chart-purple: 262 40% 50%;
-    --chart-teal: 187 70% 38%;
+    --chart-teal: 187 70% 32%;
     --chart-gold: 42 87% 48%;
     --chart-pink: 340 65% 55%;
-    --chart-lime: 88 50% 45%;
+    --chart-lime: 88 50% 33%;
     --chart-indigo: 230 60% 52%;
 
     --kpi-up: 0 72% 47%;
-    --kpi-down: 152 62% 36%;
+    --kpi-down: 152 62% 31%;
     --kpi-neutral: 210 10% 44%;
 
     /* Tableau-style card refinements */

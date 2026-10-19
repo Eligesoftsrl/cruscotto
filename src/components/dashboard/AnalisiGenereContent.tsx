@@ -103,7 +103,7 @@ export const AnalisiGenereContent = () => {
 
       {/* Distribuzione genere per qualifica (stacked, max 20) */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Distribuzione genere per qualifica (prime 20)</h4>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Distribuzione genere per qualifica (prime 20)</h3>
         <ResponsiveContainer width="100%" height={Math.max(280, qualRows.length * 24)}>
           <BarChart data={qualRows} layout="vertical" margin={{ left: 10, right: 20 }} stackOffset="none">
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" horizontal={false} />
@@ -119,7 +119,7 @@ export const AnalisiGenereContent = () => {
 
       {/* Piramide demografica per genere */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Piramide demografica per genere</h4>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Piramide demografica per genere</h3>
         <ResponsiveContainer width="100%" height={320}>
           <BarChart data={pirRows} layout="vertical" margin={{ left: 10, right: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" horizontal={false} />
@@ -136,7 +136,7 @@ export const AnalisiGenereContent = () => {
       {/* Dettaglio per qualifica */}
       <div className="rounded-lg border bg-card p-5">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <h4 className="text-sm font-semibold text-foreground">Dettaglio per qualifica</h4>
+          <h3 className="text-sm font-semibold text-foreground">Dettaglio per qualifica</h3>
           <TableExport filename="analisi_genere_dettaglio_qualifica" title="Dettaglio per qualifica" />
         </div>
         <div className="overflow-x-auto">

@@ -84,7 +84,7 @@ export const InpaDomandaOffertaSection = () => {
             <div className="p-4 text-center">
               <div className="text-2xl font-bold text-foreground">{kpi.value}</div>
               <div className="text-[11px] text-muted-foreground mt-1">{kpi.label}</div>
-              <div className="text-[9px] text-muted-foreground/60 mt-0.5">{kpi.sub}</div>
+              <div className="text-[10px] text-muted-foreground/70 mt-0.5">{kpi.sub}</div>
             </div>
           </div>
         ))}
@@ -93,7 +93,7 @@ export const InpaDomandaOffertaSection = () => {
       <div className="tableau-card">
         <div className="tableau-card-header">
           Differenza % (Posti − Candidature) / Posti × 100
-          <span className="ml-2 text-[10px] font-normal text-muted-foreground">
+          <span className="ml-2 text-[10px] font-normal opacity-80">
             Positivo = scarsa attrattività · Negativo = saturazione
           </span>
         </div>
@@ -158,7 +158,7 @@ export const InpaDomandaOffertaSection = () => {
                 align: "right",
                 render: (r: any) => (
                   <span
-                    className={`font-semibold ${r.diffPct > 50 ? "text-amber-600" : r.diffPct < -100 ? "text-red-600" : "text-green-600"}`}
+                    className={`font-semibold ${r.diffPct > 50 ? "text-amber-700" : r.diffPct < -100 ? "text-red-600" : "text-green-700"}`}
                   >
                     {r.diffPct}%
                   </span>

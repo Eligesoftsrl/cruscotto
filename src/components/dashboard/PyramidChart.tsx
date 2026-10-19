@@ -15,7 +15,7 @@ export const PyramidChart = () => {
       <div className="px-4 py-3 border-b flex items-center justify-between">
         <div>
           <div className="text-[13px] font-semibold text-foreground">Piramide per età e genere</div>
-          <div className="text-[10.5px] text-muted-foreground/60 mt-0.5">
+          <div className="text-[10.5px] text-muted-foreground/70 mt-0.5">
             Anno 2023 · distribuzione
           </div>
         </div>
@@ -41,11 +41,11 @@ export const PyramidChart = () => {
 
         {/* Header row */}
         <div className="grid gap-1 mb-1" style={{ gridTemplateColumns: "60px 1fr 50px 1fr 60px" }}>
-          <div className="text-[9px] text-muted-foreground/50 text-center">Uomini</div>
+          <div className="text-[10px] text-muted-foreground/70 text-center">Uomini</div>
           <div />
-          <div className="text-[9px] text-muted-foreground/50 text-center">Fascia</div>
+          <div className="text-[10px] text-muted-foreground/70 text-center">Fascia</div>
           <div />
-          <div className="text-[9px] text-muted-foreground/50 text-center">Donne</div>
+          <div className="text-[10px] text-muted-foreground/70 text-center">Donne</div>
         </div>
 
         {/* Data rows */}
@@ -67,7 +67,7 @@ export const PyramidChart = () => {
                 }}
               />
             </div>
-            <div className="text-[10px] text-muted-foreground/60 text-center whitespace-nowrap">
+            <div className="text-[10px] text-muted-foreground/70 text-center whitespace-nowrap">
               {row.fascia}
             </div>
             <div className="flex justify-start">

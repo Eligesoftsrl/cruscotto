@@ -20,9 +20,9 @@ export const KpiCard = ({
 }: KpiCardProps) => {
   const getTrendIcon = () => {
     if (variation === undefined) return null;
-    if (variation > 0) return <TrendingUp className="h-3.5 w-3.5" />;
-    if (variation < 0) return <TrendingDown className="h-3.5 w-3.5" />;
-    return <Minus className="h-3.5 w-3.5" />;
+    if (variation > 0) return <TrendingUp aria-hidden="true" className="h-3.5 w-3.5" />;
+    if (variation < 0) return <TrendingDown aria-hidden="true" className="h-3.5 w-3.5" />;
+    return <Minus aria-hidden="true" className="h-3.5 w-3.5" />;
   };
 
   const getTrendColor = () => {

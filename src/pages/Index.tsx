@@ -1,7 +1,7 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Compass, ArrowLeft } from "lucide-react";
 import { FilterProvider } from "@/contexts/FilterContext";
-import { AppSidebar, type NavState } from "@/components/dashboard/AppSidebar";
+import { AppSidebar, navSectionHeadings, type NavState } from "@/components/dashboard/AppSidebar";
 import { TopBar } from "@/components/dashboard/TopBar";
 import { ExecutiveView } from "@/components/dashboard/ExecutiveView";
 import { SyntheticPillarView } from "@/components/dashboard/SyntheticPillarView";
@@ -133,13 +133,19 @@ const Index = () => {
     }
 
     if (nav.level === "operational" && nav.source) {
+      // Le sezioni operative non hanno un titolo principale proprio:
+      // h1 visibile solo agli screen reader (accessibilità: un h1 per pagina).
       return (
+        <>
+        <h1 className="sr-only">{navSectionHeadings(nav).h1}</h1>
+        <h2 className="sr-only">{navSectionHeadings(nav).h2}</h2>
         <OperationalContent
           source={nav.source}
           indicator={nav.indicator}
           onGoExecutive={() => setNav({ level: "executive" })}
           onGoSynthetic={(pillar) => setNav({ level: "synthetic", pillar })}
         />
+        </>
       );
     }
 
@@ -182,8 +188,8 @@ const Index = () => {
             onClick={handleReturnToBussola}
             className="fixed bottom-6 left-[280px] z-50 flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary text-primary-foreground shadow-lg hover:opacity-90 transition-all text-sm font-bold animate-in slide-in-from-bottom-4 duration-300"
           >
-            <ArrowLeft className="h-4 w-4" />
-            <Compass className="h-4 w-4" />
+            <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+            <Compass aria-hidden="true" className="h-4 w-4" />
             Torna al Pannello di Governo
           </button>
         )}

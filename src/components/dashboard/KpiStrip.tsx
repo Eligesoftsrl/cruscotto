@@ -108,7 +108,7 @@ export const KpiStrip = () => {
             {/* Mini comparison */}
             <div className="flex justify-between mt-2 pt-2 border-t">
               {kpi.mini.map((m) => (
-                <div key={m.label} className="text-[10px] text-muted-foreground/60">
+                <div key={m.label} className="text-[10px] text-muted-foreground/70">
                   {m.label}{" "}
                   <strong
                     className={m.highlight ? "text-destructive" : "text-muted-foreground"}

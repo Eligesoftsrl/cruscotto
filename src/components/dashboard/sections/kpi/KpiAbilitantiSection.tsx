@@ -110,7 +110,7 @@ const KpiRow = ({
           className="flex-shrink-0 w-5 h-5 rounded border border-border flex items-center justify-center text-muted-foreground"
           aria-hidden="true"
         >
-          {open ? <Minus className="h-3 w-3" /> : <Plus className="h-3 w-3" />}
+          {open ? <Minus aria-hidden="true" className="h-3 w-3" /> : <Plus aria-hidden="true" className="h-3 w-3" />}
         </span>
         <span className="font-mono text-muted-foreground w-12 flex-shrink-0">{k.kpi}</span>
         <span className="flex-1 text-foreground leading-snug">{cleanText(k.nome)}</span>
@@ -292,7 +292,7 @@ export const KpiAbilitantiSection = () => {
             className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
             data-testid="kpi-reimposta"
           >
-            <RotateCcw className="h-3.5 w-3.5" /> Reimposta
+            <RotateCcw aria-hidden="true" className="h-3.5 w-3.5" /> Reimposta
           </button>
         )}
         <div className="relative ml-auto w-full sm:w-[340px]">
@@ -316,7 +316,7 @@ export const KpiAbilitantiSection = () => {
               className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
               data-testid="kpi-search-clear"
             >
-              <X className="h-4 w-4" />
+              <X aria-hidden="true" className="h-4 w-4" />
             </button>
           )}
         </div>
@@ -330,14 +330,14 @@ export const KpiAbilitantiSection = () => {
 
       {accesso === "verifica" && (
         <div className="p-10 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-          <Loader2 className="h-4 w-4 animate-spin" /> Verifica dell'ente in corso…
+          <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" /> Verifica dell'ente in corso…
         </div>
       )}
       {accesso === "non-censito" && (
         <div className="p-4">
           <div className="tableau-card max-w-xl mx-auto" data-testid="kpi-non-censito">
             <div className="tableau-card-header flex items-center gap-2">
-              <ShieldAlert className="h-4 w-4" />
+              <ShieldAlert aria-hidden="true" className="h-4 w-4" />
               Ente non partecipante alla rilevazione KPI
             </div>
             <div className="p-6 text-sm text-muted-foreground leading-relaxed space-y-2">
@@ -377,7 +377,7 @@ export const KpiAbilitantiSection = () => {
             <div className="p-4">
               {(filtriQ.isLoading || schedaQ.isLoading) && (
                 <div className="py-10 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                  <Loader2 className="h-4 w-4 animate-spin" /> Caricamento KPI…
+                  <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" /> Caricamento KPI…
                 </div>
               )}
               {(filtriQ.isError || schedaQ.isError) && (
@@ -385,7 +385,7 @@ export const KpiAbilitantiSection = () => {
                   className="py-6 flex items-center gap-2 text-sm text-destructive"
                   data-testid="kpi-error"
                 >
-                  <AlertCircle className="h-4 w-4" />
+                  <AlertCircle aria-hidden="true" className="h-4 w-4" />
                   Impossibile caricare i KPI:{" "}
                   {((filtriQ.error ?? schedaQ.error) as Error)?.message ?? "errore sconosciuto"}
                 </div>

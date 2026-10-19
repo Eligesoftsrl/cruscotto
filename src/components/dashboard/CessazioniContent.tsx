@@ -45,7 +45,7 @@ const CausaliChart = ({
   opUomini: number; opDonne: number;
 }) => (
   <div className="rounded-lg border bg-card p-5">
-    <h4 className="mb-3 text-sm font-semibold text-foreground">{titolo}</h4>
+    <h3 className="mb-3 text-sm font-semibold text-foreground">{titolo}</h3>
     <ResponsiveContainer width="100%" height={340}>
       <BarChart layout="vertical" data={data} margin={{ left: 10, right: 20 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
@@ -152,7 +152,7 @@ export const CessazioniContent = () => {
 
       {/* ------------------- SERIE STORICA ASSUNTI VS CESSATI ------------------- */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Serie storica assunti vs cessati</h4>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Serie storica assunti vs cessati</h3>
         <ResponsiveContainer width="100%" height={320}>
           <LineChart data={evoRows} margin={{ left: 0, right: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
@@ -171,7 +171,7 @@ export const CessazioniContent = () => {
       {/* ------------------- TABELLA DETTAGLIO CESSAZIONI ------------------- */}
       <div className="rounded-lg border bg-card p-5">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <h4 className="text-sm font-semibold text-foreground">Dettaglio cessazioni per causale</h4>
+          <h3 className="text-sm font-semibold text-foreground">Dettaglio cessazioni per causale</h3>
           <TableExport filename="cessazioni_dettaglio_causale" title="Dettaglio cessazioni per causale" />
         </div>
         <div className="overflow-x-auto">

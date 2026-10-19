@@ -81,11 +81,11 @@ export const SchedePanel = () => {
         <div className="relative flex flex-col gap-4 p-6 md:flex-row md:items-center md:justify-between">
           <div className="flex items-start gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 backdrop-blur">
-              <LayoutGrid className="h-6 w-6" />
+              <LayoutGrid aria-hidden="true" className="h-6 w-6" />
             </div>
             <div>
               <h2 className="flex items-center gap-2 text-lg font-bold">
-                Gestione Schede <Sparkles className="h-4 w-4 opacity-80" />
+                Gestione Schede <Sparkles aria-hidden="true" className="h-4 w-4 opacity-80" />
               </h2>
               <p className="max-w-xl text-sm text-primary-foreground/80">
                 Attiva o disattiva le schede per macro-sezione. Le modifiche sono immediate,
@@ -106,7 +106,7 @@ export const SchedePanel = () => {
         <Card className="lg:col-span-2">
           <CardHeader className="pb-1">
             <CardTitle className="flex items-center gap-2 text-sm font-bold">
-              <PieIcon className="h-4 w-4 text-primary" /> Stato attivazione
+              <PieIcon aria-hidden="true" className="h-4 w-4 text-primary" /> Stato attivazione
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -150,7 +150,7 @@ export const SchedePanel = () => {
         <Card className="lg:col-span-3">
           <CardHeader className="pb-1">
             <CardTitle className="flex items-center gap-2 text-sm font-bold">
-              <BarChart3 className="h-4 w-4 text-primary" /> Schede più consultate
+              <BarChart3 aria-hidden="true" className="h-4 w-4 text-primary" /> Schede più consultate
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -178,7 +178,7 @@ export const SchedePanel = () => {
               </div>
             ) : (
               <div className="flex h-[190px] flex-col items-center justify-center text-center text-muted-foreground">
-                <BarChart3 className="mb-2 h-8 w-8 opacity-30" />
+                <BarChart3 aria-hidden="true" className="mb-2 h-8 w-8 opacity-30" />
                 <p className="text-xs">
                   Nessun dato di utilizzo ancora disponibile.
                   <br />
@@ -302,7 +302,7 @@ const GroupCard = ({
               <span className="text-[15px] font-bold text-foreground">{gruppo.label}</span>
               {disabled ? (
                 <Badge variant="secondary" className="gap-1 text-[10px]">
-                  <Lock className="h-3 w-3" /> Prossimamente
+                  <Lock aria-hidden="true" className="h-3 w-3" /> Prossimamente
                 </Badge>
               ) : (
                 <>
@@ -317,7 +317,7 @@ const GroupCard = ({
             </div>
             <p className="truncate text-xs text-muted-foreground">{gruppo.description}</p>
           </div>
-          <ChevronDown
+          <ChevronDown aria-hidden="true"
             className={`h-5 w-5 shrink-0 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`}
           />
         </button>
@@ -395,7 +395,7 @@ const SectionCard = ({
               </span>
               {disabled ? (
                 <Badge variant="secondary" className="gap-1 text-[10px]">
-                  <Lock className="h-3 w-3" /> Prossimamente
+                  <Lock aria-hidden="true" className="h-3 w-3" /> Prossimamente
                 </Badge>
               ) : (
                 <StatoBadge active={active} total={total} />
@@ -404,7 +404,7 @@ const SectionCard = ({
             <p className="truncate text-[11px] text-muted-foreground">{section.description}</p>
           </div>
           {!disabled && (
-            <ChevronDown
+            <ChevronDown aria-hidden="true"
               className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`}
             />
           )}
@@ -440,7 +440,7 @@ const SchedeGrid = ({ section, isOn }: { section: SezioneDef; isOn: (key: string
             disabled={allOn}
             onClick={() => setManyFlags(keys, true)}
           >
-            <Power className="h-3.5 w-3.5" /> Attiva tutte
+            <Power aria-hidden="true" className="h-3.5 w-3.5" /> Attiva tutte
           </Button>
           <Button
             size="sm"
@@ -449,7 +449,7 @@ const SchedeGrid = ({ section, isOn }: { section: SezioneDef; isOn: (key: string
             disabled={allOff}
             onClick={() => setManyFlags(keys, false)}
           >
-            <CircleSlash className="h-3.5 w-3.5" /> Disattiva tutte
+            <CircleSlash aria-hidden="true" className="h-3.5 w-3.5" /> Disattiva tutte
           </Button>
         </div>
       </div>
@@ -476,7 +476,7 @@ const SchedeGrid = ({ section, isOn }: { section: SezioneDef; isOn: (key: string
                   <span className="truncate text-[13px] font-semibold text-foreground" title={s.label}>
                     {s.label}
                   </span>
-                  {on ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-primary" /> : null}
+                  {on ? <CheckCircle2 aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-primary" /> : null}
                 </div>
                 <p className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-muted-foreground">
                   {s.description}

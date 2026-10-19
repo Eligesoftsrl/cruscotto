@@ -121,11 +121,11 @@ export const OperationalContent = ({
         <div className="flex-1 flex items-center justify-center p-8">
           <div className="tableau-card max-w-md w-full">
             <div className="tableau-card-header flex items-center gap-2">
-              <Construction className="h-4 w-4" />
+              <Construction aria-hidden="true" className="h-4 w-4" />
               Funzione disattivata
             </div>
             <div className="p-8 text-center">
-              <Construction className="h-10 w-10 text-muted-foreground/30 mx-auto mb-4" />
+              <Construction aria-hidden="true" className="h-10 w-10 text-muted-foreground/70 mx-auto mb-4" />
               <p className="text-[12px] text-muted-foreground leading-relaxed">
                 Questa scheda è stata disattivata dall'amministratore nel Pannello di
                 Amministrazione. Riattivala dalla sezione «Funzionalità» per visualizzarne i dati.
@@ -259,11 +259,11 @@ export const OperationalContent = ({
         <div className="flex-1 flex items-center justify-center p-8" data-testid="kpi-disattivata">
           <div className="tableau-card max-w-md w-full">
             <div className="tableau-card-header flex items-center gap-2">
-              <Construction className="h-4 w-4" />
+              <Construction aria-hidden="true" className="h-4 w-4" />
               Funzione disattivata
             </div>
             <div className="p-8 text-center">
-              <Construction className="h-10 w-10 text-muted-foreground/30 mx-auto mb-4" />
+              <Construction aria-hidden="true" className="h-10 w-10 text-muted-foreground/70 mx-auto mb-4" />
               <p className="text-[12px] text-muted-foreground leading-relaxed">
                 Questa scheda è stata disattivata dall'amministratore nel Pannello di
                 Amministrazione. Riattivala dalla sezione «Schede» per visualizzarne i dati.
@@ -298,11 +298,11 @@ export const OperationalContent = ({
     <div className="flex-1 flex items-center justify-center p-8">
       <div className="tableau-card max-w-md w-full">
         <div className="tableau-card-header flex items-center gap-2">
-          <Info className="h-4 w-4" />
+          <Info aria-hidden="true" className="h-4 w-4" />
           Seleziona un indicatore
         </div>
         <div className="p-8 text-center">
-          <Info className="h-10 w-10 text-muted-foreground/30 mx-auto mb-4" />
+          <Info aria-hidden="true" className="h-10 w-10 text-muted-foreground/70 mx-auto mb-4" />
           <p className="text-[12px] text-muted-foreground leading-relaxed">
             Clicca su uno degli indicatori disponibili nella sidebar sinistra per visualizzare il
             dettaglio operativo.

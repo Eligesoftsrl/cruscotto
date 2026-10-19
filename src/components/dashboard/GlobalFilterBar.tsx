@@ -34,7 +34,7 @@ export const GlobalFilterBar = () => {
         <Filter className="h-3.5 w-3.5" aria-hidden="true" />
         <span className="text-[11px] font-semibold uppercase tracking-wide">Filtri</span>
         {activeCount > 0 && (
-          <span className="ml-1 px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground text-[9px] font-bold">
+          <span className="ml-1 px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold">
             {activeCount}
           </span>
         )}

@@ -15,6 +15,7 @@ si usa, chi può vedere cosa e come leggere indici e KPI.
 5. [Glossario](05-Glossario) — terminologia ricorrente
 6. [Stato e attività](06-Stato-e-Roadmap) — rilasci, attività in corso e da fare
 7. [Indici e KPI](07-Indici-e-KPI) — come leggere Vista Sintetica, Vista Executive e KPI Riforma PA
+8. [Accessibilità](08-Accessibilita) — stato dell'adeguamento alle linee guida AgID
 
 ## In sintesi
 

@@ -124,7 +124,7 @@ export const LavoroAgileContent = () => {
 
       {/* Area chart evoluzione (serie 'tutti') */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Evoluzione lavoro agile{rangeLabel}</h4>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Evoluzione lavoro agile{rangeLabel}</h3>
         <ResponsiveContainer width="100%" height={300}>
           <AreaChart data={evoRows} margin={{ left: 0, right: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
@@ -139,7 +139,7 @@ export const LavoroAgileContent = () => {
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Bar chart variazione annuale */}
         <div className="rounded-lg border bg-card p-5 lg:col-span-2">
-          <h4 className="mb-3 text-sm font-semibold text-foreground">Variazione annuale{rangeLabel}</h4>
+          <h3 className="mb-3 text-sm font-semibold text-foreground">Variazione annuale{rangeLabel}</h3>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={evoRows} margin={{ left: 0, right: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
@@ -154,7 +154,7 @@ export const LavoroAgileContent = () => {
 
         {/* Donut genere */}
         <div className="rounded-lg border bg-card p-5">
-          <h4 className="mb-3 text-sm font-semibold text-foreground">Per genere</h4>
+          <h3 className="mb-3 text-sm font-semibold text-foreground">Per genere</h3>
           <StackedCompositionBar data={donutData} />
         </div>
       </div>

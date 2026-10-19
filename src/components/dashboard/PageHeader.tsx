@@ -11,7 +11,7 @@ export const PageHeader = ({ title, subtitle, tabs, activeTab, onTabChange }: Pa
     <div className="bg-card border-b px-5 pt-4 pb-3 flex items-end justify-between">
       <div>
         <h1 className="text-lg font-bold text-foreground">{title}</h1>
-        <p className="text-[11px] text-muted-foreground/60 mt-0.5">{subtitle}</p>
+        <p className="text-[11px] text-muted-foreground/70 mt-0.5">{subtitle}</p>
       </div>
       <div className="flex gap-0.5 bg-secondary p-[3px] rounded-lg border">
         {tabs.map((tab) => (

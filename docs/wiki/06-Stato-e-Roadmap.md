@@ -97,7 +97,8 @@ di attivazione di schede SIPrO, indici e KPI resti memorizzato in modo permanent
 - **D1 e D3 con dati reali**, in sostituzione dei dati dimostrativi.
 - **Indici di Minerva e Syllabus (D4)** con dati reali, appena disponibili le fonti.
 - **Titolo definitivo** della scheda KPI Abilitanti e di Successo.
-- **Accessibilità**: proseguire l'adeguamento alle linee guida di accessibilità della PA.
+- **Accessibilità**: completata la Fase 0 (contrasti, struttura, nomi dei controlli); prossime
+  le Fasi 1 e 2 — vedi [Accessibilità](08-Accessibilita).
 
 ## 🔵 Da testare / verificare
 

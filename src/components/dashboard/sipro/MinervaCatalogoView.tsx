@@ -49,7 +49,7 @@ export const MinervaCatalogoView = ({ tipo, titolo, kpiLabel, colonnaLabel }: Pr
               <p className="text-xs font-semibold text-muted-foreground">{titolo}</p>
               <TableExport filename="minerva_catalogo" title={titolo} />
             </div>
-            <div className="overflow-auto rounded-md border max-h-[520px]">
+            <div className="overflow-auto rounded-md border max-h-[520px]" tabIndex={0} role="region" aria-label="Tabella scorrevole">
               <table className="w-full text-[12px]">
                 <thead className="sticky top-0">
                   <tr className="border-b bg-muted text-muted-foreground">

@@ -47,10 +47,10 @@ export function TemplateGallery({ onSelectTemplate }: TemplateGalleryProps) {
               className="border rounded-xl p-4 bg-card hover:shadow-md transition-all group"
             >
               <div className="flex items-center gap-2 mb-2">
-                <Badge variant="outline" className={`text-[9px] ${catCfg.color}`}>
+                <Badge variant="outline" className={`text-[10px] ${catCfg.color}`}>
                   {catCfg.label}
                 </Badge>
-                <Badge variant="secondary" className={`text-[9px] ${diffCfg.color}`}>
+                <Badge variant="secondary" className={`text-[10px] ${diffCfg.color}`}>
                   {diffCfg.label}
                 </Badge>
               </div>
@@ -71,7 +71,7 @@ export function TemplateGallery({ onSelectTemplate }: TemplateGalleryProps) {
 
               <div className="flex items-center gap-3 text-[10px] text-muted-foreground mb-3">
                 <span className="flex items-center gap-0.5">
-                  <BookOpen className="h-3 w-3" />
+                  <BookOpen aria-hidden="true" className="h-3 w-3" />
                   {tpl.steps.length} tappe
                 </span>
                 <span>·</span>
@@ -80,11 +80,11 @@ export function TemplateGallery({ onSelectTemplate }: TemplateGalleryProps) {
 
               {tpl.tags.length > 0 && (
                 <div className="flex items-center gap-1 flex-wrap mb-3">
-                  <Tag className="h-3 w-3 text-muted-foreground/40" />
+                  <Tag aria-hidden="true" className="h-3 w-3 text-muted-foreground/70" />
                   {tpl.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-[9px] px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground font-medium"
+                      className="text-[10px] px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground font-medium"
                     >
                       {tag}
                     </span>
@@ -98,7 +98,7 @@ export function TemplateGallery({ onSelectTemplate }: TemplateGalleryProps) {
                 onClick={() => onSelectTemplate(tpl)}
                 className="w-full text-xs h-8 gap-1.5"
               >
-                <Copy className="h-3 w-3" /> Usa come base
+                <Copy aria-hidden="true" className="h-3 w-3" /> Usa come base
               </Button>
             </div>
           );

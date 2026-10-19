@@ -274,6 +274,31 @@ interface AppSidebarProps {
   onNavigate: (nav: NavState) => void;
 }
 
+/** Titolo (h1) e sottotitolo (h2) della sezione operativa corrente, per gli screen reader. */
+export const navSectionHeadings = (nav: NavState): { h1: string; h2: string } => {
+  const src = operationalSourcesAll.find((x) => x.id === nav.source);
+  const list = (src?.indicators ?? []) as { id: string; label: string }[];
+  const ind = list.find((i) => i.id === nav.indicator);
+  return { h1: src?.label ?? nav.source ?? "", h2: ind?.label ?? "Panoramica" };
+};
+
+/** Titolo leggibile della pagina corrente (titolo h1 per screen reader, title del documento). */
+export const navPageTitle = (nav: NavState): string => {
+  if (nav.level === "synthetic" && nav.pillar) {
+    const p = pillars.find((x) => x.id === nav.pillar);
+    return `${nav.pillar}${p ? ` · ${p.label}` : ""} — Vista Sintetica`;
+  }
+  if (nav.level === "operational" && nav.source) {
+    const src = operationalSourcesAll.find((x) => x.id === nav.source);
+    const ind = src?.indicators?.find((i: { id: string }) => i.id === nav.indicator) as
+      | { label: string }
+      | undefined;
+    return [src?.label ?? nav.source, ind?.label].filter(Boolean).join(" · ");
+  }
+  if (nav.level === "guided") return "Percorso guidato";
+  return "Vista Executive";
+};
+
 export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
   const { profile, signOut } = useAuth();
   const { flags } = useAdminState();
@@ -325,7 +350,7 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
   const sectionLabel = (text: string) => (
     <div
       className="px-5 pt-5 pb-2 text-[10px] uppercase tracking-[0.12em] font-bold"
-      style={{ color: "hsl(210 30% 50%)" }}
+      style={{ color: "hsl(210 30% 62%)" }}
     >
       {text}
     </div>
@@ -372,7 +397,7 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
           setExpandedSource(null);
         },
         <>
-          <Gauge
+          <Gauge aria-hidden="true"
             className="h-[18px] w-[18px]"
             style={{ color: isExec ? "hsl(var(--primary))" : undefined }}
           />
@@ -410,19 +435,19 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
                 style={{ color: isPillarActive ? "#fff" : "hsl(210 15% 65%)" }}
               >
                 {isExp ? (
-                  <ChevronDown
+                  <ChevronDown aria-hidden="true"
                     className="h-3 w-3 flex-shrink-0"
-                    style={{ color: "hsl(210 30% 50%)" }}
+                    style={{ color: "hsl(210 30% 62%)" }}
                   />
                 ) : (
-                  <ChevronRight
+                  <ChevronRight aria-hidden="true"
                     className="h-3 w-3 flex-shrink-0"
-                    style={{ color: "hsl(210 30% 50%)" }}
+                    style={{ color: "hsl(210 30% 62%)" }}
                   />
                 )}
                 <PIcon
                   className="h-4 w-4 flex-shrink-0"
-                  style={{ color: isPillarActive ? "hsl(var(--primary))" : "hsl(210 20% 55%)" }}
+                  style={{ color: isPillarActive ? "hsl(var(--primary))" : "hsl(210 20% 64%)" }}
                 />
                 <span className="text-left leading-tight">
                   <span className="font-bold">{p.id}</span>
@@ -446,7 +471,7 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
                         }
                         className="flex items-center gap-2 w-full pl-4 pr-3 py-[6px] text-[11px] transition-all hover:bg-white/[0.04]"
                         style={{
-                          color: isActive ? "#fff" : "hsl(210 15% 55%)",
+                          color: isActive ? "#fff" : "hsl(210 15% 64%)",
                           background: isActive ? "hsl(var(--primary) / 0.15)" : undefined,
                           borderLeft: isActive
                             ? "2px solid hsl(var(--primary))"
@@ -502,14 +527,14 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
               >
                 {hasInd ? (
                   isExp ? (
-                    <ChevronDown
+                    <ChevronDown aria-hidden="true"
                       className="h-3 w-3 flex-shrink-0"
-                      style={{ color: "hsl(210 30% 50%)" }}
+                      style={{ color: "hsl(210 30% 62%)" }}
                     />
                   ) : (
-                    <ChevronRight
+                    <ChevronRight aria-hidden="true"
                       className="h-3 w-3 flex-shrink-0"
-                      style={{ color: "hsl(210 30% 50%)" }}
+                      style={{ color: "hsl(210 30% 62%)" }}
                     />
                   )
                 ) : (
@@ -517,10 +542,10 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
                 )}
                 <SrcIcon
                   className="h-4 w-4 flex-shrink-0"
-                  style={{ color: isSrcActive ? "hsl(var(--primary))" : "hsl(210 20% 55%)" }}
+                  style={{ color: isSrcActive ? "hsl(var(--primary))" : "hsl(210 20% 64%)" }}
                 />
                 <span className={isSrcActive ? "font-semibold" : ""}>{src.label}</span>
-                {!hasInd && <span className="ml-auto text-[9px] opacity-40 italic">soon</span>}
+                {!hasInd && <span className="ml-auto text-[10px] opacity-40 italic">soon</span>}
               </button>
 
               {hasInd && isExp && (() => {
@@ -537,7 +562,7 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
                       }
                       className="flex items-center gap-2 w-full pl-4 pr-3 py-[6px] text-[11px] transition-all hover:bg-white/[0.04]"
                       style={{
-                        color: isActive ? "#fff" : "hsl(210 15% 55%)",
+                        color: isActive ? "#fff" : "hsl(210 15% 64%)",
                         background: isActive ? "hsl(var(--primary) / 0.15)" : undefined,
                         borderLeft: isActive
                           ? "2px solid hsl(var(--primary))"
@@ -577,13 +602,13 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
                                     [group.label]: !groupOpen,
                                   }))
                                 }
-                                className="flex items-center gap-1.5 w-full pl-3 pr-3 pt-2.5 pb-1 text-[9px] font-semibold uppercase tracking-wider transition-colors hover:text-foreground"
-                                style={{ color: "hsl(210 20% 45%)" }}
+                                className="flex items-center gap-1.5 w-full pl-3 pr-3 pt-2.5 pb-1 text-[10px] font-semibold uppercase tracking-wider transition-colors hover:text-foreground"
+                                style={{ color: "hsl(210 20% 62%)" }}
                               >
                                 {groupOpen ? (
-                                  <ChevronDown className="h-3 w-3 flex-shrink-0" />
+                                  <ChevronDown aria-hidden="true" className="h-3 w-3 flex-shrink-0" />
                                 ) : (
-                                  <ChevronRight className="h-3 w-3 flex-shrink-0" />
+                                  <ChevronRight aria-hidden="true" className="h-3 w-3 flex-shrink-0" />
                                 )}
                                 <span>{group.label}</span>
                                 <span className="ml-auto opacity-60">{items.length}</span>
@@ -610,7 +635,7 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
           className="flex items-center gap-2.5 w-full py-2.5 px-5 text-[12.5px] transition-all hover:bg-white/[0.06] border-t focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white/40"
           style={{ color: "hsl(210 15% 65%)", borderColor: "hsl(var(--sidebar-border))" }}
         >
-          <ShieldCheck className="h-[18px] w-[18px]" style={{ color: "hsl(var(--primary))" }} />
+          <ShieldCheck aria-hidden="true" className="h-[18px] w-[18px]" style={{ color: "hsl(var(--primary))" }} />
           <span className="font-semibold">Amministrazione</span>
         </button>
       )}
@@ -631,7 +656,7 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
             <div className="text-[12px] font-semibold text-white/90 truncate">
               {profile.full_name}
             </div>
-            <div className="text-[10px] font-light" style={{ color: "hsl(210 25% 55%)" }}>
+            <div className="text-[10px] font-light" style={{ color: "hsl(210 25% 64%)" }}>
               {profile?.role === "dfp" ? "DFP" : (profile?.ente_denominazione ?? "Ente HR")}
             </div>
           </div>
@@ -640,13 +665,13 @@ export const AppSidebar = ({ nav, onNavigate }: AppSidebarProps) => {
             className="p-1.5 rounded-md hover:bg-white/10 transition"
             title="Esci"
           >
-            <LogOut className="h-4 w-4" style={{ color: "hsl(210 25% 55%)" }} />
+            <LogOut aria-hidden="true" className="h-4 w-4" style={{ color: "hsl(210 25% 64%)" }} />
           </button>
         </div>
       )}
       <div
         className="px-5 py-2.5 text-[10px] border-t flex gap-2"
-        style={{ borderColor: "hsl(var(--sidebar-border))", color: "hsl(210 25% 50%)" }}
+        style={{ borderColor: "hsl(var(--sidebar-border))", color: "hsl(210 25% 64%)" }}
       >
         <a
           href="#"

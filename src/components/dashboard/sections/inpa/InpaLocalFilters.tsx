@@ -87,7 +87,7 @@ export const InpaLocalFilters = ({ filters, onChange }: InpaLocalFiltersProps) =
         Filtri InPA
       </span>
 
-      <select
+      <select aria-label="Anno"
         className={sel}
         value={filters.anno}
         onChange={(e) => handleChange("anno", e.target.value)}
@@ -100,7 +100,7 @@ export const InpaLocalFilters = ({ filters, onChange }: InpaLocalFiltersProps) =
         ))}
       </select>
 
-      <select
+      <select aria-label="Regione"
         className={sel}
         value={filters.regione}
         onChange={(e) => handleChange("regione", e.target.value)}
@@ -113,7 +113,7 @@ export const InpaLocalFilters = ({ filters, onChange }: InpaLocalFiltersProps) =
         ))}
       </select>
 
-      <select
+      <select aria-label="Tipo di procedura"
         className={sel}
         value={filters.tipo_procedura}
         onChange={(e) => handleChange("tipo_procedura", e.target.value)}
@@ -127,7 +127,7 @@ export const InpaLocalFilters = ({ filters, onChange }: InpaLocalFiltersProps) =
       </select>
 
       {options.settori.length > 0 && (
-        <select
+        <select aria-label="Settore"
           className={sel}
           value={filters.settore}
           onChange={(e) => handleChange("settore", e.target.value)}
@@ -142,7 +142,7 @@ export const InpaLocalFilters = ({ filters, onChange }: InpaLocalFiltersProps) =
       )}
 
       {options.stati.length > 0 && (
-        <select
+        <select aria-label="Stato"
           className={sel}
           value={filters.stato}
           onChange={(e) => handleChange("stato", e.target.value)}

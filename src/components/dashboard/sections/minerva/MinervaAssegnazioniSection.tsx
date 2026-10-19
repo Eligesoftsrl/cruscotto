@@ -116,13 +116,13 @@ export const MinervaAssegnazioniSection = () => {
           <div className="p-4">
             <div className="text-center mb-2">
               <div
-                className={`text-2xl font-bold ${kpis.coperturaPerc >= 70 ? "text-green-600" : kpis.coperturaPerc >= 40 ? "text-amber-600" : "text-red-600"}`}
+                className={`text-2xl font-bold ${kpis.coperturaPerc >= 70 ? "text-green-700" : kpis.coperturaPerc >= 40 ? "text-amber-700" : "text-red-600"}`}
               >
                 {kpis.coperturaPerc}%
               </div>
               <div className="text-[11px] text-muted-foreground">Copertura Assegnazioni</div>
             </div>
-            <Progress value={kpis.coperturaPerc} className="h-2" />
+            <Progress value={kpis.coperturaPerc} className="h-2" aria-label="Copertura assegnazioni" />
           </div>
         </div>
       </div>
@@ -198,9 +198,9 @@ export const MinervaAssegnazioniSection = () => {
                   <span
                     className={
                       r.copertura >= 70
-                        ? "text-green-600 font-semibold"
+                        ? "text-green-700 font-semibold"
                         : r.copertura >= 40
-                          ? "text-amber-600"
+                          ? "text-amber-700"
                           : "text-red-600 font-semibold"
                     }
                   >

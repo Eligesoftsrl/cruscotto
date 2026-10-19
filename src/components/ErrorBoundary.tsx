@@ -62,7 +62,7 @@ const DefaultErrorFallback = ({ error, reset }: { error: Error; reset: () => voi
   <div className="min-h-[60vh] w-full flex items-center justify-center p-6">
     <div className="max-w-md w-full bg-card border rounded-lg shadow-sm p-8 text-center space-y-4">
       <div className="mx-auto w-14 h-14 rounded-full bg-destructive/10 flex items-center justify-center">
-        <AlertTriangle className="h-7 w-7 text-destructive" />
+        <AlertTriangle aria-hidden="true" className="h-7 w-7 text-destructive" />
       </div>
       <div className="space-y-1.5">
         <h2 className="text-lg font-bold text-foreground">Si è verificato un errore</h2>
@@ -81,7 +81,7 @@ const DefaultErrorFallback = ({ error, reset }: { error: Error; reset: () => voi
           onClick={reset}
           className="inline-flex items-center gap-2 rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold transition-colors hover:bg-primary/90"
         >
-          <RefreshCw className="h-4 w-4" /> Riprova
+          <RefreshCw aria-hidden="true" className="h-4 w-4" /> Riprova
         </button>
         <button
           onClick={() => window.location.assign("/")}

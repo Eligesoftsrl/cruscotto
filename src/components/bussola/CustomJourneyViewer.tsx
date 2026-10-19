@@ -181,7 +181,7 @@ export function CustomJourneyViewer({
           <h2 className="text-sm font-bold text-white leading-tight">{journey.title}</h2>
         </div>
         <button onClick={onBack} className="p-1.5 rounded-full hover:bg-white/10 transition">
-          <X className="h-4 w-4 text-white/70" />
+          <X aria-hidden="true" className="h-4 w-4 text-white/70" />
         </button>
       </div>
 
@@ -239,14 +239,14 @@ export function CustomJourneyViewer({
             onClick={() => setCurrentStep((c) => c - 1)}
             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
           >
-            <ArrowLeft className="h-4 w-4" /> Precedente
+            <ArrowLeft aria-hidden="true" className="h-4 w-4" /> Precedente
           </button>
         ) : (
           <button
             onClick={onBack}
             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
           >
-            <ArrowLeft className="h-4 w-4" /> Chiudi
+            <ArrowLeft aria-hidden="true" className="h-4 w-4" /> Chiudi
           </button>
         )}
 
@@ -255,21 +255,21 @@ export function CustomJourneyViewer({
             onClick={() => setCurrentStep((c) => c + 1)}
             className="flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-bold hover:opacity-90 transition"
           >
-            Prossimo <ArrowRight className="h-4 w-4" />
+            Prossimo <ArrowRight aria-hidden="true" className="h-4 w-4" />
           </button>
         ) : onGoToDashboard ? (
           <button
             onClick={() => onGoToDashboard({ level: "executive" }, currentStep)}
             className="flex items-center gap-2 px-4 py-2 rounded-md bg-[hsl(142,71%,35%)] text-white text-sm font-bold hover:opacity-90 transition"
           >
-            Vista Analitica <ChevronRight className="h-4 w-4" />
+            Vista Analitica <ChevronRight aria-hidden="true" className="h-4 w-4" />
           </button>
         ) : (
           <button
             onClick={onBack}
             className="flex items-center gap-2 px-4 py-2 rounded-md bg-[hsl(142,71%,35%)] text-white text-sm font-bold hover:opacity-90 transition"
           >
-            Fine percorso <ChevronRight className="h-4 w-4" />
+            Fine percorso <ChevronRight aria-hidden="true" className="h-4 w-4" />
           </button>
         )}
       </div>
@@ -328,7 +328,7 @@ function IndicatorCard({
           </div>
           <div className="flex items-center gap-1.5">
             <span className={`text-xs font-bold ${c.text}`}>{pct}%</span>
-            <ChevronDown
+            <ChevronDown aria-hidden="true"
               className={`h-3 w-3 text-muted-foreground transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
             />
           </div>
@@ -345,17 +345,17 @@ function IndicatorCard({
       {expanded && (
         <div className="px-3 pb-3 pt-1 border-t bg-muted/30 animate-in slide-in-from-top-2 duration-200 space-y-3">
           <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
-            <Badge variant="secondary" className="text-[9px] px-1.5 py-0">
+            <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
               {indicator.pillar}
             </Badge>
             <span className="flex items-center gap-1">
-              <Database className="h-3 w-3" />
+              <Database aria-hidden="true" className="h-3 w-3" />
               {indicator.source}
             </span>
           </div>
 
           <div className="bg-card rounded-md px-3 py-2 border">
-            <div className="text-[9px] font-bold tracking-wider uppercase text-muted-foreground mb-1">
+            <div className="text-[10px] font-bold tracking-wider uppercase text-muted-foreground mb-1">
               Posizionamento
             </div>
             <div className="flex items-center gap-3">
@@ -391,7 +391,7 @@ function IndicatorCard({
                   }}
                   className="inline-flex items-center gap-1.5 text-[10px] font-bold text-primary hover:underline"
                 >
-                  <ExternalLink className="h-3 w-3" />
+                  <ExternalLink aria-hidden="true" className="h-3 w-3" />
                   Vedi indicatore nel cruscotto
                 </button>
               )}
@@ -411,7 +411,7 @@ function IndicatorCard({
                   }}
                   className="inline-flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground hover:text-foreground hover:underline"
                 >
-                  <Database className="h-3 w-3" />
+                  <Database aria-hidden="true" className="h-3 w-3" />
                   Vai al dato operativo
                 </button>
               )}

@@ -32,7 +32,7 @@ export const NavigationStepper = ({ nav, onNavigate }: NavigationStepperProps) =
   steps.push({
     id: "executive",
     label: "Executive",
-    icon: <Gauge className="h-4 w-4" />,
+    icon: <Gauge aria-hidden="true" className="h-4 w-4" />,
     active: nav.level === "executive",
     completed: nav.level !== "executive",
     onClick: () => onNavigate({ level: "executive" }),
@@ -43,7 +43,7 @@ export const NavigationStepper = ({ nav, onNavigate }: NavigationStepperProps) =
     steps.push({
       id: "pillar",
       label: `${nav.pillar} · ${pillarLabels[nav.pillar] ?? nav.pillar}`,
-      icon: <Layers className="h-4 w-4" />,
+      icon: <Layers aria-hidden="true" className="h-4 w-4" />,
       active: !nav.indicator,
       completed: !!nav.indicator,
       onClick: () => onNavigate({ level: "synthetic", pillar: nav.pillar }),
@@ -55,7 +55,7 @@ export const NavigationStepper = ({ nav, onNavigate }: NavigationStepperProps) =
       steps.push({
         id: "indicator",
         label: ind?.label ?? nav.indicator,
-        icon: <BarChart3 className="h-4 w-4" />,
+        icon: <BarChart3 aria-hidden="true" className="h-4 w-4" />,
         active: true,
         completed: false,
       });
@@ -67,7 +67,7 @@ export const NavigationStepper = ({ nav, onNavigate }: NavigationStepperProps) =
     steps.push({
       id: "operational",
       label: `Operativa · ${nav.source}`,
-      icon: <Layers className="h-4 w-4" />,
+      icon: <Layers aria-hidden="true" className="h-4 w-4" />,
       active: true,
       completed: false,
     });
@@ -78,7 +78,7 @@ export const NavigationStepper = ({ nav, onNavigate }: NavigationStepperProps) =
     steps.push({
       id: "guided",
       label: `Percorso guidato`,
-      icon: <Layers className="h-4 w-4" />,
+      icon: <Layers aria-hidden="true" className="h-4 w-4" />,
       active: true,
       completed: false,
     });

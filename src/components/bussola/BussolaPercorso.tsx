@@ -85,7 +85,7 @@ export const BussolaPercorso = ({
           <h2 className="text-sm font-bold text-white leading-tight">{percorso.question}</h2>
         </div>
         <button onClick={onBack} className="p-1.5 rounded-full hover:bg-white/10 transition">
-          <X className="h-4 w-4 text-white/70" />
+          <X aria-hidden="true" className="h-4 w-4 text-white/70" />
         </button>
       </div>
 
@@ -137,7 +137,7 @@ export const BussolaPercorso = ({
             className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-primary text-primary-foreground text-sm font-bold hover:opacity-90 transition"
           >
             {step.cta.label}
-            <ExternalLink className="h-3.5 w-3.5" />
+            <ExternalLink aria-hidden="true" className="h-3.5 w-3.5" />
           </button>
         )}
       </div>
@@ -148,14 +148,14 @@ export const BussolaPercorso = ({
             onClick={() => setCurrentStep(currentStep - 1)}
             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
           >
-            <ArrowLeft className="h-4 w-4" /> Precedente
+            <ArrowLeft aria-hidden="true" className="h-4 w-4" /> Precedente
           </button>
         ) : (
           <button
             onClick={onBack}
             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
           >
-            <ArrowLeft className="h-4 w-4" /> Chiudi
+            <ArrowLeft aria-hidden="true" className="h-4 w-4" /> Chiudi
           </button>
         )}
 
@@ -164,14 +164,14 @@ export const BussolaPercorso = ({
             onClick={() => setCurrentStep(currentStep + 1)}
             className="flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-bold hover:opacity-90 transition"
           >
-            Prossimo <ArrowRight className="h-4 w-4" />
+            Prossimo <ArrowRight aria-hidden="true" className="h-4 w-4" />
           </button>
         ) : (
           <button
             onClick={() => onGoToDashboard({ level: "executive" }, currentStep)}
             className="flex items-center gap-2 px-4 py-2 rounded-md bg-[hsl(142,71%,35%)] text-white text-sm font-bold hover:opacity-90 transition"
           >
-            Vista Analitica <ChevronRight className="h-4 w-4" />
+            Vista Analitica <ChevronRight aria-hidden="true" className="h-4 w-4" />
           </button>
         )}
       </div>
@@ -367,7 +367,7 @@ function IndicatorRow({
           <div className="flex items-center gap-1.5">
             <span className={`text-xs font-bold ${c.text}`}>{pct}%</span>
             {hasDrilldown && (
-              <ChevronDown
+              <ChevronDown aria-hidden="true"
                 className={`h-3 w-3 text-muted-foreground transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
               />
             )}
@@ -388,7 +388,7 @@ function IndicatorRow({
             indicator.denominator != null &&
             indicator.denominator !== 1 && (
               <div className="bg-card rounded-md px-3 py-2 border">
-                <div className="text-[9px] font-bold tracking-wider uppercase text-muted-foreground mb-1">
+                <div className="text-[10px] font-bold tracking-wider uppercase text-muted-foreground mb-1">
                   Formula
                 </div>
                 <div className="text-sm font-mono text-foreground">
@@ -409,7 +409,7 @@ function IndicatorRow({
 
           {indicator.trend && indicator.trend.length > 0 && (
             <div className="bg-card rounded-md px-3 py-2 border">
-              <div className="text-[9px] font-bold tracking-wider uppercase text-muted-foreground mb-1">
+              <div className="text-[10px] font-bold tracking-wider uppercase text-muted-foreground mb-1">
                 Trend storico
               </div>
               <div className="h-[80px]">
@@ -462,7 +462,7 @@ function IndicatorRow({
 
           {indicator.benchmark != null && (
             <div className="bg-card rounded-md px-3 py-2 border">
-              <div className="text-[9px] font-bold tracking-wider uppercase text-muted-foreground mb-1">
+              <div className="text-[10px] font-bold tracking-wider uppercase text-muted-foreground mb-1">
                 Benchmark {indicator.benchmarkLabel ? `· ${indicator.benchmarkLabel}` : ""}
               </div>
               <div className="flex items-center gap-3">
@@ -489,26 +489,26 @@ function IndicatorRow({
 
           {indicator.methodology && (
             <div className="flex items-start gap-2 text-[10px] text-muted-foreground">
-              <BookOpen className="h-3 w-3 mt-0.5 flex-shrink-0" />
+              <BookOpen aria-hidden="true" className="h-3 w-3 mt-0.5 flex-shrink-0" />
               <span>{indicator.methodology}</span>
             </div>
           )}
 
           {indicator.dataSource && (
             <div className="bg-card rounded-md px-3 py-2 border border-primary/20">
-              <div className="text-[9px] font-bold tracking-wider uppercase text-primary/70 mb-1.5">
+              <div className="text-[10px] font-bold tracking-wider uppercase text-primary mb-1.5">
                 Provenienza dato
               </div>
               <div className="space-y-1">
                 <div className="flex items-center gap-2 text-[10px]">
-                  <Database className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                  <Database aria-hidden="true" className="h-3 w-3 text-muted-foreground flex-shrink-0" />
                   <span className="text-muted-foreground">Tabella:</span>
                   <span className="font-mono text-foreground font-medium">
                     {indicator.dataSource.table}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-[10px]">
-                  <Calculator className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                  <Calculator aria-hidden="true" className="h-3 w-3 text-muted-foreground flex-shrink-0" />
                   <span className="text-muted-foreground">Calcolo:</span>
                   <span className="font-mono text-foreground font-medium">
                     {indicator.dataSource.formula}
@@ -532,7 +532,7 @@ function IndicatorRow({
                   }}
                   className="inline-flex items-center gap-1.5 text-[10px] font-bold text-primary hover:underline"
                 >
-                  <ExternalLink className="h-3 w-3" />
+                  <ExternalLink aria-hidden="true" className="h-3 w-3" />
                   Vedi indicatore nel cruscotto
                 </button>
               )}
@@ -552,7 +552,7 @@ function IndicatorRow({
                   }}
                   className="inline-flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground hover:text-foreground hover:underline"
                 >
-                  <Database className="h-3 w-3" />
+                  <Database aria-hidden="true" className="h-3 w-3" />
                   Vai al dato operativo
                 </button>
               )}

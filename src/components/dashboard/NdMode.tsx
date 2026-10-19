@@ -56,7 +56,7 @@ export const NdMode = ({ children }: { children: React.ReactNode }) => {
     return (
       <div>
         <div className="flex items-center gap-2 px-4 py-1.5 text-[11px] font-medium text-amber-800 bg-amber-50 border-b border-amber-200">
-          <Info className="h-3.5 w-3.5 shrink-0" />
+          <Info aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
           Dati a scopo dimostrativo — questa sezione usa valori di esempio in attesa delle fonti dati ufficiali
         </div>
         {children}

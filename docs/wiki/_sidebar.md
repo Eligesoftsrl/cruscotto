@@ -8,3 +8,4 @@
 - [5. Glossario](05-Glossario)
 - [6. Stato e attività](06-Stato-e-Roadmap)
 - [7. Indici e KPI](07-Indici-e-KPI)
+- [8. Accessibilità](08-Accessibilita)

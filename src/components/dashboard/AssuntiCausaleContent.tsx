@@ -131,7 +131,7 @@ export const AssuntiCausaleContent = () => {
       {/* ------------------- BARRE + DONUT ------------------- */}
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="rounded-lg border bg-card p-5">
-          <h4 className="mb-3 text-sm font-semibold text-foreground">Assunzioni per causale — Uomini vs Donne</h4>
+          <h3 className="mb-3 text-sm font-semibold text-foreground">Assunzioni per causale — Uomini vs Donne</h3>
           <ResponsiveContainer width="100%" height={360}>
             <BarChart layout="vertical" data={causaliRows} margin={{ left: 10, right: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
@@ -146,14 +146,14 @@ export const AssuntiCausaleContent = () => {
         </div>
 
         <div className="rounded-lg border bg-card p-5">
-          <h4 className="mb-3 text-sm font-semibold text-foreground">Composizione per causale</h4>
+          <h3 className="mb-3 text-sm font-semibold text-foreground">Composizione per causale</h3>
           <RankedBarChart data={causaliRows.map((r) => ({ name: r.descrizione, value: r.tutti }))} multicolor />
         </div>
       </div>
 
       {/* ------------------- TREND ASSUNZIONI ------------------- */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Trend assunzioni</h4>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Trend assunzioni</h3>
         <ResponsiveContainer width="100%" height={300}>
           <AreaChart data={evoRows} margin={{ left: 0, right: 10 }}>
             <defs>
@@ -174,7 +174,7 @@ export const AssuntiCausaleContent = () => {
       {/* ------------------- TABELLA DETTAGLIO ------------------- */}
       <div className="rounded-lg border bg-card p-5">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <h4 className="text-sm font-semibold text-foreground">Dettaglio per causale</h4>
+          <h3 className="text-sm font-semibold text-foreground">Dettaglio per causale</h3>
           <TableExport filename="assunti_dettaglio_causale" title="Dettaglio per causale" />
         </div>
         <div className="overflow-x-auto">

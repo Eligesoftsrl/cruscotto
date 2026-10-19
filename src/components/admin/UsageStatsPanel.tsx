@@ -49,7 +49,7 @@ export const UsageStatsPanel = () => {
         </Card>
         <Card>
           <CardContent className="p-4">
-            <div className="text-2xl font-bold text-amber-600">{unused.length}</div>
+            <div className="text-2xl font-bold text-amber-700">{unused.length}</div>
             <div className="text-xs text-muted-foreground">Funzioni mai utilizzate</div>
           </CardContent>
         </Card>

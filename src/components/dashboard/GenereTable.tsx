@@ -73,7 +73,7 @@ export const GenereTable = () => {
         <div className="text-[13px] font-semibold text-foreground">
           Analisi per genere e fascia d'età
         </div>
-        <div className="text-[10.5px] text-muted-foreground/60 mt-0.5">
+        <div className="text-[10.5px] text-muted-foreground/70 mt-0.5">
           Anno 2023 · quota donne per fascia
         </div>
       </div>
@@ -84,7 +84,7 @@ export const GenereTable = () => {
               {["Fascia d'età", "Uomini", "Donne", "Totale", "% Donne", "Δ PA"].map((h) => (
                 <th
                   key={h}
-                  className="py-[5px] px-2 text-left text-[10px] text-muted-foreground/60 uppercase tracking-wide font-semibold border-b-2"
+                  className="py-[5px] px-2 text-left text-[10px] text-muted-foreground/70 uppercase tracking-wide font-semibold border-b-2"
                 >
                   {h}
                 </th>

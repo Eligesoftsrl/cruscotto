@@ -359,7 +359,7 @@ export const GlossaryDialog = () => {
 
         <div className="px-5 py-3 border-b space-y-2.5">
           <div className="relative">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+            <Search aria-hidden="true" className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
             <Input
               placeholder="Cerca termine…"
               value={search}
@@ -412,7 +412,7 @@ export const GlossaryDialog = () => {
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-[12.5px] font-semibold text-foreground">{entry.term}</span>
                   <span
-                    className={`px-1.5 py-0.5 text-[9px] rounded font-medium ${categoryColors[entry.category]}`}
+                    className={`px-1.5 py-0.5 text-[10px] rounded font-medium ${categoryColors[entry.category]}`}
                   >
                     {categoryLabels[entry.category]}
                   </span>

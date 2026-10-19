@@ -140,12 +140,12 @@ export const BenchmarkView = () => {
       <div className="rounded-lg border bg-card p-4 space-y-3">
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-2">
-            <Users className="h-4 w-4 text-primary" />
+            <Users aria-hidden="true" className="h-4 w-4 text-primary" />
             <span className="text-[12px] font-bold uppercase tracking-wide text-foreground">Enti da confrontare</span>
           </div>
           <div className="flex items-center gap-2">
             <label className="text-[11px] font-semibold text-muted-foreground uppercase">Regione</label>
-            <select
+            <select aria-label="Regione"
               value={regione}
               onChange={(e) => cambiaRegione(e.target.value)}
               disabled={!!regioneBloccata}
@@ -207,7 +207,7 @@ export const BenchmarkView = () => {
           <div className="bg-card border rounded-xl p-5">
             <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
               <h3 className="text-[15px] font-bold text-foreground">Confronto per indicatore vs media cluster</h3>
-              <select
+              <select aria-label="Indicatore per il confronto con la media cluster"
                 value={asseBar}
                 onChange={(e) => setAsseBar(e.target.value)}
                 className="rounded-md border border-input bg-background px-3 py-1.5 text-[12px] outline-none focus:ring-1 focus:ring-ring cursor-pointer"

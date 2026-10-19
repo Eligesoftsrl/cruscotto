@@ -157,7 +157,7 @@ export const KpiSuccessRateSection = () => {
                 align: "right",
                 render: (r: any) => (
                   <span
-                    className={`font-semibold ${r.media >= 60 ? "text-green-600" : r.media >= 40 ? "text-amber-600" : "text-red-600"}`}
+                    className={`font-semibold ${r.media >= 60 ? "text-green-700" : r.media >= 40 ? "text-amber-700" : "text-red-600"}`}
                   >
                     {r.media}%
                   </span>

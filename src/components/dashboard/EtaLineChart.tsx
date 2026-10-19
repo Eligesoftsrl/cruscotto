@@ -38,7 +38,7 @@ export const EtaLineChart = () => {
           <div className="text-[13px] font-semibold text-foreground">
             Evoluzione età media 2012–2023
           </div>
-          <div className="text-[10.5px] text-muted-foreground/60 mt-0.5">
+          <div className="text-[10.5px] text-muted-foreground/70 mt-0.5">
             Confronto con cluster e totale PA
           </div>
         </div>

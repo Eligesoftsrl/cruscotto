@@ -42,7 +42,7 @@ export function IndicatorPicker({ selected, onToggle }: IndicatorPickerProps) {
     <div className="space-y-3">
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Search aria-hidden="true" className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -54,7 +54,7 @@ export function IndicatorPicker({ selected, onToggle }: IndicatorPickerProps) {
       {/* Filters */}
       <div className="flex flex-wrap gap-1.5">
         <div className="flex items-center gap-1 mr-2">
-          <Filter className="h-3 w-3 text-muted-foreground" />
+          <Filter aria-hidden="true" className="h-3 w-3 text-muted-foreground" />
           <span className="text-[10px] text-muted-foreground uppercase font-bold">Pillar</span>
         </div>
         {pillars.map((p) => (
@@ -116,7 +116,7 @@ export function IndicatorPicker({ selected, onToggle }: IndicatorPickerProps) {
                         isSelected ? "bg-primary border-primary" : "border-muted-foreground/30"
                       }`}
                     >
-                      {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
+                      {isSelected && <Check aria-hidden="true" className="h-3 w-3 text-primary-foreground" />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">

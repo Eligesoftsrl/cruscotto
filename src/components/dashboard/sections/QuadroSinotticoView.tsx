@@ -251,7 +251,7 @@ export const QuadroSinotticoView = ({ pillar }: QuadroSinotticoViewProps) => {
       {/* Header */}
       <div className="tableau-card">
         <div className="tableau-card-header flex items-center gap-2">
-          <FileText className="h-4 w-4" />
+          <FileText aria-hidden="true" className="h-4 w-4" />
           Quadro Sinottico · {pillar} — {data.label}
         </div>
         <div className="p-4">
@@ -263,7 +263,7 @@ export const QuadroSinotticoView = ({ pillar }: QuadroSinotticoViewProps) => {
       {data.executive.length > 0 && (
         <div className="tableau-card">
           <div className="tableau-card-header flex items-center gap-2">
-            <BarChart3 className="h-4 w-4" />
+            <BarChart3 aria-hidden="true" className="h-4 w-4" />
             Indicatori Executive · {pillar}
           </div>
           <div className="divide-y divide-border">
@@ -276,7 +276,7 @@ export const QuadroSinotticoView = ({ pillar }: QuadroSinotticoViewProps) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-1.5">
-                      <Calculator className="h-3 w-3 text-muted-foreground" />
+                      <Calculator aria-hidden="true" className="h-3 w-3 text-muted-foreground" />
                       <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                         Formula
                       </span>
@@ -288,7 +288,7 @@ export const QuadroSinotticoView = ({ pillar }: QuadroSinotticoViewProps) => {
                   </div>
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-1.5">
-                      <Lightbulb className="h-3 w-3 text-muted-foreground" />
+                      <Lightbulb aria-hidden="true" className="h-3 w-3 text-muted-foreground" />
                       <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                         Interpretazione
                       </span>
@@ -299,8 +299,8 @@ export const QuadroSinotticoView = ({ pillar }: QuadroSinotticoViewProps) => {
                   </div>
                 </div>
                 <div className="flex items-center gap-1.5 mt-1">
-                  <Database className="h-3 w-3 text-muted-foreground/60" />
-                  <span className="text-[9px] text-muted-foreground/70">{ex.sources}</span>
+                  <Database aria-hidden="true" className="h-3 w-3 text-muted-foreground/70" />
+                  <span className="text-[10px] text-muted-foreground/70">{ex.sources}</span>
                 </div>
               </div>
             ))}
@@ -311,7 +311,7 @@ export const QuadroSinotticoView = ({ pillar }: QuadroSinotticoViewProps) => {
       {/* Synthetic indicators table */}
       <div className="tableau-card">
         <div className="tableau-card-header flex items-center gap-2">
-          <Info className="h-4 w-4" />
+          <Info aria-hidden="true" className="h-4 w-4" />
           Indicatori Sintetici · {pillar} — Mappatura
         </div>
         <div className="overflow-x-auto">

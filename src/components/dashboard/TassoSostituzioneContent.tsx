@@ -101,7 +101,7 @@ export const TassoSostituzioneContent = () => {
 
       {/* Bar chart tasso di sostituzione (nessuna didascalia) */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Tasso di sostituzione</h4>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Tasso di sostituzione</h3>
         <ResponsiveContainer width="100%" height={320}>
           <BarChart data={evoRows} margin={{ left: 0, right: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
@@ -115,7 +115,7 @@ export const TassoSostituzioneContent = () => {
 
       {/* Area chart Assunti vs Cessati */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Assunti vs Cessati</h4>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Assunti vs Cessati</h3>
         <ResponsiveContainer width="100%" height={320}>
           <AreaChart data={evoRows} margin={{ left: 0, right: 10 }}>
             <defs>
@@ -142,7 +142,7 @@ export const TassoSostituzioneContent = () => {
       {/* Tabella dettaglio */}
       <div className="rounded-lg border bg-card p-5">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <h4 className="text-sm font-semibold text-foreground">Dettaglio tasso di sostituzione</h4>
+          <h3 className="text-sm font-semibold text-foreground">Dettaglio tasso di sostituzione</h3>
           <TableExport filename="tasso_sostituzione_dettaglio" title="Dettaglio tasso di sostituzione" />
         </div>
         <div className="overflow-x-auto">
@@ -162,7 +162,7 @@ export const TassoSostituzioneContent = () => {
                   <td className="py-2 pr-2 font-medium text-foreground">{r.anno}</td>
                   <td className="py-2 pr-2 text-right">{nf.format(r.assunti)}</td>
                   <td className="py-2 pr-2 text-right">{nf.format(r.cessati)}</td>
-                  <td className={`py-2 pr-2 text-right ${r.saldo < 0 ? "text-red-600" : "text-green-600"}`}>{signed(r.saldo)}</td>
+                  <td className={`py-2 pr-2 text-right ${r.saldo < 0 ? "text-red-600" : "text-green-700"}`}>{signed(r.saldo)}</td>
                   <td className="py-2 text-right">{n1(r.sostituzione_pct)}%</td>
                 </tr>
               ))}

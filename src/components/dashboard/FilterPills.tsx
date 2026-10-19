@@ -39,9 +39,9 @@ const Pill = ({
         <span className={`w-1.5 h-1.5 rounded-full ${active ? "bg-primary" : "bg-muted-foreground/40"}`} />
         {active ? `${label}: ${display}` : label}
         {active ? (
-          <X className="h-3 w-3 ml-0.5 hover:text-destructive" onClick={(e) => { e.stopPropagation(); onClear(); }} />
+          <X aria-hidden="true" className="h-3 w-3 ml-0.5 hover:text-destructive" onClick={(e) => { e.stopPropagation(); onClear(); }} />
         ) : (
-          <ChevronDown className="h-3 w-3 ml-0.5" />
+          <ChevronDown aria-hidden="true" className="h-3 w-3 ml-0.5" />
         )}
       </button>
       {open && (
@@ -152,13 +152,13 @@ export const FilterPills = ({
         <>
           <div className="w-px h-5 bg-border" />
           <button onClick={resetFilters} className="flex items-center gap-1 px-2 py-1 rounded-full text-[10px] text-muted-foreground hover:text-destructive transition-colors">
-            <RotateCcw className="h-3 w-3" /> Reset ({activeCount})
+            <RotateCcw aria-hidden="true" className="h-3 w-3" /> Reset ({activeCount})
           </button>
         </>
       )}
 
       <div className="ml-auto flex items-center gap-3">
-        <span className="text-[10.5px] text-muted-foreground/60 whitespace-nowrap">Dati al 31/12/{filters.anno || latestYear}</span>
+        <span className="text-[10.5px] text-muted-foreground/70 whitespace-nowrap">Dati al 31/12/{filters.anno || latestYear}</span>
         <EnteSelector />
       </div>
     </div>

@@ -49,7 +49,7 @@ export const DashboardSidebar = ({
       {/* Logo */}
       <div className="flex h-16 items-center gap-3 border-b border-sidebar-border px-4">
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary">
-          <Users className="h-5 w-5 text-sidebar-primary-foreground" />
+          <Users aria-hidden="true" className="h-5 w-5 text-sidebar-primary-foreground" />
         </div>
         {!collapsed && (
           <div className="overflow-hidden">
@@ -92,9 +92,9 @@ export const DashboardSidebar = ({
         className="absolute -right-3 top-20 flex h-6 w-6 items-center justify-center rounded-full border bg-card shadow-sm hover:bg-secondary transition-colors"
       >
         {collapsed ? (
-          <ChevronRight className="h-3 w-3 text-foreground" />
+          <ChevronRight aria-hidden="true" className="h-3 w-3 text-foreground" />
         ) : (
-          <ChevronLeft className="h-3 w-3 text-foreground" />
+          <ChevronLeft aria-hidden="true" className="h-3 w-3 text-foreground" />
         )}
       </button>
     </aside>

@@ -65,7 +65,7 @@ const NonAccreditato = ({ accreditati }: { accreditati: number }) => (
     </div>
     <div className="tableau-card max-w-xl mx-auto">
       <div className="tableau-card-header flex items-center gap-2">
-        <ShieldAlert className="h-4 w-4" /> Ente non accreditato in SIPrO
+        <ShieldAlert aria-hidden="true" className="h-4 w-4" /> Ente non accreditato in SIPrO
       </div>
       <div className="p-6 text-sm text-muted-foreground leading-relaxed space-y-2">
         <p>L'ente selezionato non risulta tra gli enti accreditati in SIPrO: i dati di questa sezione non sono disponibili.</p>

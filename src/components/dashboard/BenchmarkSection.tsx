@@ -72,7 +72,7 @@ export const BenchmarkSection = () => {
     etaMediaBench: string,
   ) => (
     <div className="flex-1 min-w-[260px]">
-      <h4 className="text-sm font-semibold text-foreground mb-1 text-center">{title}</h4>
+      <h3 className="text-sm font-semibold text-foreground mb-1 text-center">{title}</h3>
       <div className="flex justify-center gap-4 mb-2 text-[10px] text-muted-foreground">
         <span>
           Età media amm.: <strong className="text-foreground">{etaMediaAmm}</strong>
@@ -169,7 +169,7 @@ export const BenchmarkSection = () => {
             <label className="text-xs font-medium text-foreground whitespace-nowrap">
               {f.label}:
             </label>
-            <select
+            <select aria-label={f.label}
               value={f.value}
               onChange={(e) => f.setter(e.target.value)}
               className="rounded border bg-background px-2.5 py-1.5 text-xs outline-none focus:ring-1 focus:ring-ring min-w-[200px]"

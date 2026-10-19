@@ -47,7 +47,7 @@ export const ExportButton = ({
       className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors disabled:opacity-50"
       title={label}
     >
-      <Download className="h-3.5 w-3.5" />
+      <Download aria-hidden="true" className="h-3.5 w-3.5" />
       {label}
     </button>
   );

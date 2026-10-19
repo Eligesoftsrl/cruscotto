@@ -110,7 +110,12 @@ export function StackedCompositionBar({
               style={{ width: `${pct}%`, background: colors[i % colors.length], minWidth: pct > 0 ? 2 : 0 }}
               title={`${d.name}: ${itNum(d.value)} (${pct.toFixed(1)}%)`}
             >
-              {pct >= 8 ? `${Math.round(pct)}%` : ""}
+              {pct >= 8 ? (
+                // Etichetta su fondo scurito: contrasto AA con qualunque colore del segmento.
+                <span className="rounded px-1 bg-black/50">{`${Math.round(pct)}%`}</span>
+              ) : (
+                ""
+              )}
             </div>
           );
         })}

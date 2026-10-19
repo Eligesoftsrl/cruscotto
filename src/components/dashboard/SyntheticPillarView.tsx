@@ -77,9 +77,9 @@ function mockTrend(id: string, value: number): { anno: number; valore: number }[
 }
 
 const DeltaIcon = ({ diff }: { diff: number }) => {
-  if (diff > 0) return <TrendingUp className="h-3 w-3" />;
-  if (diff < 0) return <TrendingDown className="h-3 w-3" />;
-  return <Minus className="h-3 w-3" />;
+  if (diff > 0) return <TrendingUp aria-hidden="true" className="h-3 w-3" />;
+  if (diff < 0) return <TrendingDown aria-hidden="true" className="h-3 w-3" />;
+  return <Minus aria-hidden="true" className="h-3 w-3" />;
 };
 
 interface SyntheticPillarViewProps {
@@ -238,9 +238,9 @@ export const SyntheticPillarView = ({
           disabled
           aria-disabled="true"
           title="Quadro Sinottico non disponibile"
-          className="ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-semibold bg-muted text-muted-foreground/50 cursor-not-allowed opacity-60"
+          className="ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-semibold bg-muted text-muted-foreground/70 cursor-not-allowed opacity-60"
         >
-          <FileText className="h-4 w-4" />
+          <FileText aria-hidden="true" className="h-4 w-4" />
           Quadro Sinottico
         </button>
       </div>
@@ -346,7 +346,7 @@ export const SyntheticPillarView = ({
                 <div className="tableau-card" style={{ borderLeft: `4px solid ${meta.color}` }}>
                   <div className="tableau-card-header flex items-center gap-2">
                     <span className="font-bold">{selectedInd.id}</span>
-                    <span className="text-muted-foreground">·</span>
+                    <span className="opacity-70" aria-hidden="true">·</span>
                     <span>{selectedInd.label}</span>
                   </div>
                   <div className="p-5">
@@ -428,6 +428,7 @@ export const SyntheticPillarView = ({
         })()}
 
       {/* ── Indicator Cards Grid ── */}
+      <h2 className="sr-only">Indicatori della dimensione</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
         {enriched.map((ind) => {
           const pct = Math.round(ind.value * 100);
@@ -460,7 +461,7 @@ export const SyntheticPillarView = ({
             >
               {isSelected && (
                 <div className="absolute -top-1 right-3">
-                  <ChevronDown className="h-4 w-4 text-primary animate-bounce" />
+                  <ChevronDown aria-hidden="true" className="h-4 w-4 text-primary animate-bounce" />
                 </div>
               )}
               <div className="p-4 space-y-2">
@@ -473,11 +474,11 @@ export const SyntheticPillarView = ({
                       {ind.label}
                     </h3>
                   </div>
-                  <ArrowRight
+                  <ArrowRight aria-hidden="true"
                     className={`h-4 w-4 flex-shrink-0 mt-0.5 transition-colors ${
                       isSelected
                         ? "text-primary"
-                        : "text-muted-foreground/30 group-hover:text-primary"
+                        : "text-muted-foreground/70 group-hover:text-primary"
                     }`}
                   />
                 </div>
@@ -512,7 +513,7 @@ export const SyntheticPillarView = ({
       {indicators.length === 0 && (
         <div className="tableau-card">
           <div className="p-10 text-center">
-            <Info className="h-8 w-8 text-muted-foreground/40 mx-auto mb-3" />
+            <Info aria-hidden="true" className="h-8 w-8 text-muted-foreground/70 mx-auto mb-3" />
             <p className="text-sm text-muted-foreground">
               Nessun indicatore sintetico configurato per {pillar}
             </p>

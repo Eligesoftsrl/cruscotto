@@ -53,7 +53,7 @@ export const KpiPositioningMatrix = () => {
         <MockUpBadge className="ml-auto" />
       </div>
       <div className="tableau-card-body">
-        <div className="grid grid-cols-2 gap-0 mb-3 text-[9px] text-muted-foreground text-center">
+        <div className="grid grid-cols-2 gap-0 mb-3 text-[10px] text-muted-foreground text-center">
           <div className="p-1.5 rounded-tl" style={{ background: quadrantColors.topLeft }}>
             <span className="font-bold text-[hsl(var(--chart-blue))]">Area dello Sviluppo</span>
             <br />

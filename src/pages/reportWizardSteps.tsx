@@ -41,17 +41,17 @@ import {
 
 export type WizardStep = "audience" | "sections" | "customize" | "preview";
 export const STEPS: { key: WizardStep; label: string; icon: React.ReactNode }[] = [
-  { key: "audience", label: "Destinatario", icon: <Users className="h-4 w-4" /> },
-  { key: "sections", label: "Contenuti", icon: <FileText className="h-4 w-4" /> },
-  { key: "customize", label: "Personalizza", icon: <StickyNote className="h-4 w-4" /> },
-  { key: "preview", label: "Anteprima", icon: <Eye className="h-4 w-4" /> },
+  { key: "audience", label: "Destinatario", icon: <Users aria-hidden="true" className="h-4 w-4" /> },
+  { key: "sections", label: "Contenuti", icon: <FileText aria-hidden="true" className="h-4 w-4" /> },
+  { key: "customize", label: "Personalizza", icon: <StickyNote aria-hidden="true" className="h-4 w-4" /> },
+  { key: "preview", label: "Anteprima", icon: <Eye aria-hidden="true" className="h-4 w-4" /> },
 ];
 
 const REPR_ICONS: Record<RepresentationMode, { icon: React.ReactNode; label: string }> = {
-  narrative: { icon: <AlignLeft className="h-3.5 w-3.5" />, label: "Narrativo" },
-  chart: { icon: <BarChart3 className="h-3.5 w-3.5" />, label: "Grafico" },
-  table: { icon: <Table2 className="h-3.5 w-3.5" />, label: "Tabella" },
-  kpi_strip: { icon: <LayoutGrid className="h-3.5 w-3.5" />, label: "KPI Strip" },
+  narrative: { icon: <AlignLeft aria-hidden="true" className="h-3.5 w-3.5" />, label: "Narrativo" },
+  chart: { icon: <BarChart3 aria-hidden="true" className="h-3.5 w-3.5" />, label: "Grafico" },
+  table: { icon: <Table2 aria-hidden="true" className="h-3.5 w-3.5" />, label: "Tabella" },
+  kpi_strip: { icon: <LayoutGrid aria-hidden="true" className="h-3.5 w-3.5" />, label: "KPI Strip" },
 };
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -120,7 +120,7 @@ export function StepAudience({
               </div>
               {isSelected && (
                 <div className="mt-3 flex items-center gap-1.5 text-xs text-primary font-bold">
-                  <Check className="h-4 w-4" /> Selezionato
+                  <Check aria-hidden="true" className="h-4 w-4" /> Selezionato
                 </div>
               )}
             </button>
@@ -188,10 +188,10 @@ export function StepSections({
       </p>
       <div className="flex items-center gap-2 mb-6">
         <span className="flex items-center gap-1 text-[10px] font-bold text-destructive">
-          <AlertTriangle className="h-3 w-3" /> Critico
+          <AlertTriangle aria-hidden="true" className="h-3 w-3" /> Critico
         </span>
         <span className="flex items-center gap-1 text-[10px] font-bold text-[hsl(45,80%,30%)]">
-          <Star className="h-3 w-3" /> Notevole
+          <Star aria-hidden="true" className="h-3 w-3" /> Notevole
         </span>
         <span className="text-[10px] text-muted-foreground ml-2">
           — Il sistema evidenzia le sezioni che richiedono attenzione in base ai dati
@@ -204,9 +204,9 @@ export function StepSections({
           onClick={() => setShowThemes(!showThemes)}
           className="flex items-center gap-2 text-xs font-bold text-primary mb-3 hover:underline"
         >
-          <Sparkles className="h-3.5 w-3.5" />
+          <Sparkles aria-hidden="true" className="h-3.5 w-3.5" />
           Temi preconfezionati — selezione rapida
-          <ChevronDown
+          <ChevronDown aria-hidden="true"
             className={`h-3.5 w-3.5 transition-transform ${showThemes ? "rotate-180" : ""}`}
           />
         </button>
@@ -225,8 +225,8 @@ export function StepSections({
                 <p className="text-[10px] text-muted-foreground leading-snug mb-2">
                   {theme.description}
                 </p>
-                <div className="flex items-center gap-1.5 text-[9px] text-muted-foreground">
-                  <BookOpen className="h-3 w-3" />
+                <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                  <BookOpen aria-hidden="true" className="h-3 w-3" />
                   <span>{theme.sectionIds.length} capitoli</span>
                 </div>
               </button>
@@ -270,23 +270,23 @@ export function StepSections({
                             : "border-border bg-muted"
                         }`}
                       >
-                        {isSelected && <Check className="h-3 w-3" />}
+                        {isSelected && <Check aria-hidden="true" className="h-3 w-3" />}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-0.5">
                           <span className="text-sm font-bold text-foreground">{sec.title}</span>
                           {sec.relevance === "critical" && (
-                            <span className="flex-shrink-0 text-[9px] font-bold px-1.5 py-0.5 rounded bg-destructive/10 text-destructive">
+                            <span className="flex-shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-destructive/10 text-destructive">
                               Critico
                             </span>
                           )}
                           {sec.relevance === "notable" && (
-                            <span className="flex-shrink-0 text-[9px] font-bold px-1.5 py-0.5 rounded bg-[hsl(45,100%,92%)] text-[hsl(45,80%,30%)]">
+                            <span className="flex-shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-[hsl(45,100%,92%)] text-[hsl(45,80%,30%)]">
                               Notevole
                             </span>
                           )}
                           {sec.pillar && (
-                            <span className="flex-shrink-0 text-[9px] font-semibold px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+                            <span className="flex-shrink-0 text-[10px] font-semibold px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
                               {sec.pillar}
                             </span>
                           )}
@@ -301,7 +301,7 @@ export function StepSections({
                         )}
                         {/* Question answered — always visible */}
                         <div className="flex items-start gap-1.5 mt-1.5">
-                          <HelpCircle className="h-3 w-3 text-muted-foreground flex-shrink-0 mt-0.5" />
+                          <HelpCircle aria-hidden="true" className="h-3 w-3 text-muted-foreground flex-shrink-0 mt-0.5" />
                           <span className="text-[10px] text-foreground/70 italic leading-snug">
                             «{sec.questionAnswered}»
                           </span>
@@ -316,7 +316,7 @@ export function StepSections({
                         className="flex-shrink-0 mt-0.5 p-1 rounded hover:bg-muted transition"
                         title="Mostra dettagli"
                       >
-                        <ChevronDown
+                        <ChevronDown aria-hidden="true"
                           className={`h-4 w-4 text-muted-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`}
                         />
                       </button>
@@ -327,7 +327,7 @@ export function StepSections({
                       <div className="px-4 pb-4 ml-8 border-t border-dashed border-border/50 pt-3 space-y-3">
                         <div>
                           <div className="text-[10px] font-bold text-foreground uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                            <Lightbulb className="h-3 w-3 text-primary" /> Contenuto informativo
+                            <Lightbulb aria-hidden="true" className="h-3 w-3 text-primary" /> Contenuto informativo
                           </div>
                           <p className="text-xs text-muted-foreground leading-relaxed">
                             {sec.extendedDescription}
@@ -336,13 +336,13 @@ export function StepSections({
                         <div className="flex flex-wrap gap-4">
                           <div>
                             <div className="text-[10px] font-bold text-foreground uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                              <Database className="h-3 w-3 text-primary" /> Fonti dati
+                              <Database aria-hidden="true" className="h-3 w-3 text-primary" /> Fonti dati
                             </div>
                             <div className="flex flex-wrap gap-1">
                               {sec.dataSources.map((ds) => (
                                 <span
                                   key={ds}
-                                  className="text-[9px] font-medium px-2 py-0.5 rounded-full bg-muted text-muted-foreground"
+                                  className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-muted text-muted-foreground"
                                 >
                                   {ds}
                                 </span>
@@ -357,7 +357,7 @@ export function StepSections({
                               {sec.representations.map((r) => (
                                 <span
                                   key={r}
-                                  className="flex items-center gap-1 text-[9px] font-medium px-2 py-0.5 rounded bg-muted text-muted-foreground"
+                                  className="flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded bg-muted text-muted-foreground"
                                 >
                                   {REPR_ICONS[r].icon} {REPR_ICONS[r].label}
                                 </span>
@@ -375,7 +375,7 @@ export function StepSections({
                               {sec.data.kpis.slice(0, 4).map((kpi) => (
                                 <div
                                   key={kpi.label}
-                                  className="flex items-center gap-1.5 text-[9px] px-2 py-1 rounded bg-muted/60"
+                                  className="flex items-center gap-1.5 text-[10px] px-2 py-1 rounded bg-muted/60"
                                 >
                                   <span
                                     className={`w-1.5 h-1.5 rounded-full ${
@@ -391,7 +391,7 @@ export function StepSections({
                                   </span>
                                   <span className="text-muted-foreground">{kpi.value}</span>
                                   {kpi.cluster && (
-                                    <span className="text-muted-foreground/60">
+                                    <span className="text-muted-foreground/70">
                                       vs {kpi.cluster}
                                     </span>
                                   )}
@@ -485,14 +485,14 @@ export function StepCustomize({
                     disabled={i === 0}
                     className="text-muted-foreground hover:text-foreground disabled:opacity-20 transition"
                   >
-                    <ChevronDown className="h-3 w-3 rotate-180" />
+                    <ChevronDown aria-hidden="true" className="h-3 w-3 rotate-180" />
                   </button>
                   <button
                     onClick={() => onMoveSection(sec.id, 1)}
                     disabled={i === sectionDefs.length - 1}
                     className="text-muted-foreground hover:text-foreground disabled:opacity-20 transition"
                   >
-                    <ChevronDown className="h-3 w-3" />
+                    <ChevronDown aria-hidden="true" className="h-3 w-3" />
                   </button>
                 </div>
                 <span className="w-6 h-6 rounded bg-primary/10 text-primary text-[11px] font-bold flex items-center justify-center">
@@ -503,7 +503,7 @@ export function StepCustomize({
                   <div className="text-[10px] text-muted-foreground">{sec.description}</div>
                 </div>
                 {sec.relevance === "critical" && (
-                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-destructive/10 text-destructive">
+                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-destructive/10 text-destructive">
                     Critico
                   </span>
                 )}
@@ -554,7 +554,7 @@ export function StepCustomize({
                         onClick={() => setEditingAnnotation(null)}
                         className="p-1 text-muted-foreground hover:text-foreground"
                       >
-                        <X className="h-3.5 w-3.5" />
+                        <X aria-hidden="true" className="h-3.5 w-3.5" />
                       </button>
                     </div>
                   ) : (
@@ -563,7 +563,7 @@ export function StepCustomize({
                         onClick={() => setEditingAnnotation(sec.id)}
                         className="flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-primary transition"
                       >
-                        <StickyNote className="h-3 w-3" />
+                        <StickyNote aria-hidden="true" className="h-3 w-3" />
                         {hasNote ? "Modifica nota" : "Aggiungi nota"}
                       </button>
                       {hasNote && (
@@ -687,7 +687,7 @@ export function SectionRenderer({
         </span>
         <h3 className="text-base font-bold text-foreground">{section.title}</h3>
         {section.pillar && (
-          <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+          <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
             {section.pillar}
           </span>
         )}

@@ -105,7 +105,7 @@ export const InpaTempiDettaglioSection = () => {
                 align: "right",
                 render: (r: any) => (
                   <span
-                    className={`font-semibold ${r.durata > 180 ? "text-red-600" : r.durata > 90 ? "text-amber-600" : "text-green-600"}`}
+                    className={`font-semibold ${r.durata > 180 ? "text-red-600" : r.durata > 90 ? "text-amber-700" : "text-green-700"}`}
                   >
                     {r.durata}
                   </span>

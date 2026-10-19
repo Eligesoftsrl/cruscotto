@@ -52,7 +52,7 @@ const Select = ({
 }) => (
   <div className="flex items-center gap-2">
     <label className="text-xs font-medium text-foreground whitespace-nowrap">{label}:</label>
-    <select
+    <select aria-label={label}
       value={value}
       disabled={disabled}
       onChange={(e) => onChange(e.target.value)}
@@ -156,7 +156,7 @@ export const AnalisiEtaContent = () => {
       {/* ------------------- PIRAMIDE + EVOLUZIONE ------------------- */}
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="rounded-lg border bg-card p-5">
-          <h4 className="mb-3 text-sm font-semibold text-foreground">Piramide per età e genere</h4>
+          <h3 className="mb-3 text-sm font-semibold text-foreground">Piramide per età e genere</h3>
           <ResponsiveContainer width="100%" height={340}>
             <BarChart layout="vertical" data={piramideRows} stackOffset="sign" margin={{ left: 10, right: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
@@ -172,7 +172,7 @@ export const AnalisiEtaContent = () => {
 
         <div className="rounded-lg border bg-card p-5">
           <div className="mb-3 flex items-center justify-between">
-            <h4 className="text-sm font-semibold text-foreground">Evoluzione età media</h4>
+            <h3 className="text-sm font-semibold text-foreground">Evoluzione età media</h3>
             <div className="flex gap-1">
               {(["T", "U", "D"] as Genere[]).map((g) => (
                 <button key={g} onClick={() => setSerieGenere(g)}
@@ -201,7 +201,7 @@ export const AnalisiEtaContent = () => {
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="rounded-lg border bg-card p-5">
           <div className="mb-3 flex items-center justify-between">
-            <h4 className="text-sm font-semibold text-foreground">Benchmarking età media</h4>
+            <h3 className="text-sm font-semibold text-foreground">Benchmarking età media</h3>
             <div className="flex gap-1">
               {(["comparto", "regione"] as BenchDimensione[]).map((d) => (
                 <button key={d} onClick={() => setBenchDim(d)}
@@ -224,7 +224,7 @@ export const AnalisiEtaContent = () => {
 
         <div className="rounded-lg border bg-card p-5">
           <div className="mb-3 flex items-center justify-between gap-3">
-            <h4 className="text-sm font-semibold text-foreground">Analisi per genere e fascia d'età</h4>
+            <h3 className="text-sm font-semibold text-foreground">Analisi per genere e fascia d'età</h3>
             <TableExport filename="analisi_eta_genere_fascia" title="Analisi per genere e fascia d'età" />
           </div>
           <div className="overflow-x-auto">
@@ -244,7 +244,7 @@ export const AnalisiEtaContent = () => {
                     <td className="py-2 pr-2 text-right">{nf.format(r.donne)}</td>
                     <td className="py-2 pr-2 text-right">{nf.format(r.tutti)}</td>
                     <td className="py-2 pr-2 text-right">{n1(r.donne_pct)}%</td>
-                    <td className={`py-2 text-right ${(r.delta_pa_pp ?? 0) > 0 ? "text-red-600" : (r.delta_pa_pp ?? 0) < 0 ? "text-green-600" : ""}`}>
+                    <td className={`py-2 text-right ${(r.delta_pa_pp ?? 0) > 0 ? "text-red-600" : (r.delta_pa_pp ?? 0) < 0 ? "text-green-700" : ""}`}>
                       {r.delta_pa_pp == null ? "N/D" : `${r.delta_pa_pp > 0 ? "+" : ""}${n1(r.delta_pa_pp)} pp`}
                     </td>
                   </tr>

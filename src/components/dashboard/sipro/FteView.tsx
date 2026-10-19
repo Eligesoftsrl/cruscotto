@@ -58,7 +58,7 @@ export const FteView = () => {
           </div>
           <div className="bg-card border rounded-xl p-5">
             <p className="text-xs font-semibold text-muted-foreground mb-3">FTE programmati e assegnati per profilo</p>
-            <div className="max-h-[560px] overflow-y-auto">
+            <div className="max-h-[560px] overflow-y-auto" tabIndex={0} role="region" aria-label="Tabella scorrevole">
               <ResponsiveContainer width="100%" height={Math.max(340, chartData.length * 34)}>
                 <BarChart data={chartData} layout="vertical" margin={{ top: 5, right: 30, left: 10, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border))" />

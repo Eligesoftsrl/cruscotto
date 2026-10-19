@@ -109,9 +109,9 @@ const MACRO_COLORS = [
 ];
 
 const DeltaIcon = ({ type }: { type?: string }) => {
-  if (type === "up") return <ArrowUpRight className="h-3 w-3" />;
-  if (type === "down") return <ArrowDownRight className="h-3 w-3" />;
-  return <Minus className="h-3 w-3" />;
+  if (type === "up") return <ArrowUpRight aria-hidden="true" className="h-3 w-3" />;
+  if (type === "down") return <ArrowDownRight aria-hidden="true" className="h-3 w-3" />;
+  return <Minus aria-hidden="true" className="h-3 w-3" />;
 };
 
 export const OverviewHome = () => {
@@ -210,7 +210,7 @@ export const OverviewHome = () => {
                   <span className="text-[10.5px] text-muted-foreground font-medium uppercase tracking-wide">
                     {card.label}
                   </span>
-                  <Icon className="h-3.5 w-3.5 text-muted-foreground/40" />
+                  <Icon className="h-3.5 w-3.5 text-muted-foreground/70" />
                 </div>
                 <div className="text-2xl font-bold font-mono leading-none">
                   {card.value}

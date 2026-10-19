@@ -77,7 +77,7 @@ export const DotazioneUoView = () => {
                       <td className="px-2 py-1.5 text-foreground">{r.uo}</td>
                       <td className="px-2 py-1.5 text-right tabular-nums">{fx(r.dotazione)}</td>
                       <td className="px-2 py-1.5 text-right tabular-nums">{fx(r.servizio_ti)}</td>
-                      <td className={`px-2 py-1.5 text-right tabular-nums font-semibold ${(r.gap_ti ?? 0) < 0 ? "text-destructive" : (r.gap_ti ?? 0) > 0 ? "text-emerald-600" : "text-muted-foreground"}`}>
+                      <td className={`px-2 py-1.5 text-right tabular-nums font-semibold ${(r.gap_ti ?? 0) < 0 ? "text-destructive" : (r.gap_ti ?? 0) > 0 ? "text-emerald-700" : "text-muted-foreground"}`}>
                         {fx(r.gap_ti, 2)}
                       </td>
                     </tr>

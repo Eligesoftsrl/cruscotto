@@ -28,11 +28,11 @@ export const TopBar = ({ nav, onNavigate }: TopBarProps) => {
     location.pathname.startsWith("/bussola") || location.pathname.startsWith("/rapporto");
 
   return (
-    <div className="sticky top-0 z-40">
+    <header className="sticky top-0 z-40">
       {/* Row 1: Institutional dark bar */}
-      <header className="bg-[#004080] text-white h-10 flex items-center px-6 text-xs">
+      <div className="bg-[#004080] text-white h-10 flex items-center px-6 text-xs">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-[8px] font-bold">
+          <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-bold">
             🏛
           </div>
           <span className="font-semibold tracking-wide">Dipartimento della Funzione Pubblica</span>
@@ -43,13 +43,13 @@ export const TopBar = ({ nav, onNavigate }: TopBarProps) => {
         {profile && (
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center gap-2 rounded px-2 py-1 outline-none transition hover:bg-white/10 focus:ring-2 focus:ring-white/40">
-              <div className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold bg-white/20">
+              <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold bg-white/20">
                 {profile.full_name?.[0]?.toUpperCase() ?? "U"}
               </div>
               <span className="text-white/90 text-[11px] font-medium truncate max-w-[140px]">
                 {profile.full_name}
               </span>
-              <ChevronDown className="h-3 w-3 text-white/60" />
+              <ChevronDown aria-hidden="true" className="h-3 w-3 text-white/60" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>
@@ -67,30 +67,30 @@ export const TopBar = ({ nav, onNavigate }: TopBarProps) => {
               <DropdownMenuSeparator />
               {isAdmin && (
                 <DropdownMenuItem onClick={() => navigate("/admin")}>
-                  <ShieldCheck className="h-4 w-4 mr-2" /> Amministrazione
+                  <ShieldCheck aria-hidden="true" className="h-4 w-4 mr-2" /> Amministrazione
                 </DropdownMenuItem>
               )}
               <DropdownMenuItem onClick={() => navigate("/")}>
-                <Home className="h-4 w-4 mr-2" /> Home
+                <Home aria-hidden="true" className="h-4 w-4 mr-2" /> Home
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={signOut}
                 className="text-destructive focus:text-destructive"
               >
-                <LogOut className="h-4 w-4 mr-2" /> Esci
+                <LogOut aria-hidden="true" className="h-4 w-4 mr-2" /> Esci
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )}
-      </header>
+      </div>
 
       {/* Row 2: Product bar */}
       <div className="bg-card border-b flex items-center h-12 px-6">
         <div className="flex items-center gap-3 min-w-0">
           <div>
             <div className="text-sm font-bold text-foreground leading-tight">Cruscotto HR</div>
-            <div className="text-[9px] text-muted-foreground leading-tight">
+            <div className="text-[10px] text-muted-foreground leading-tight">
               Sistema di Monitoraggio HR della Pubblica Amministrazione
             </div>
           </div>
@@ -114,7 +114,7 @@ export const TopBar = ({ nav, onNavigate }: TopBarProps) => {
             onClick={() => navigate("/")}
             className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition mr-2"
           >
-            <Home className="h-3.5 w-3.5" />
+            <Home aria-hidden="true" className="h-3.5 w-3.5" />
             <span className="font-semibold">Home</span>
           </button>
         )}
@@ -124,7 +124,7 @@ export const TopBar = ({ nav, onNavigate }: TopBarProps) => {
             onClick={() => navigate("/bussola")}
             className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition"
           >
-            <Compass className="h-3.5 w-3.5" />
+            <Compass aria-hidden="true" className="h-3.5 w-3.5" />
             <span className="font-semibold">Pannello di Governo</span>
           </button>
         )}
@@ -135,6 +135,6 @@ export const TopBar = ({ nav, onNavigate }: TopBarProps) => {
           </span>
         )}
       </div>
-    </div>
+    </header>
   );
 };

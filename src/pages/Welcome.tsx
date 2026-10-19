@@ -45,7 +45,7 @@ const Welcome = () => {
             className="group bg-card border-2 border-transparent hover:border-primary/40 rounded-xl p-8 text-left transition-all hover:shadow-lg flex flex-col"
           >
             <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition">
-              <Compass className="h-7 w-7 text-primary" />
+              <Compass aria-hidden="true" className="h-7 w-7 text-primary" />
             </div>
             <h2 className="text-lg font-bold text-foreground mb-2">Navigazione Guidata</h2>
             <p className="text-sm text-muted-foreground leading-relaxed flex-1">
@@ -53,7 +53,7 @@ const Welcome = () => {
               rapide e un quadro d'insieme.
             </p>
             <div className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-primary group-hover:gap-3 transition-all">
-              Inizia il percorso <ArrowRight className="h-4 w-4" />
+              Inizia il percorso <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </div>
           </button>
 
@@ -63,7 +63,7 @@ const Welcome = () => {
             className="group bg-card border-2 border-transparent hover:border-primary/40 rounded-xl p-8 text-left transition-all hover:shadow-lg flex flex-col"
           >
             <div className="w-14 h-14 rounded-2xl bg-accent/60 flex items-center justify-center mb-5 group-hover:bg-accent transition">
-              <BarChart3 className="h-7 w-7 text-foreground" />
+              <BarChart3 aria-hidden="true" className="h-7 w-7 text-foreground" />
             </div>
             <h2 className="text-lg font-bold text-foreground mb-2">Vista Tecnica</h2>
             <p className="text-sm text-muted-foreground leading-relaxed flex-1">
@@ -71,7 +71,7 @@ const Welcome = () => {
               per analisti e statistici.
             </p>
             <div className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-muted-foreground group-hover:text-foreground group-hover:gap-3 transition-all">
-              Accedi al cruscotto <ArrowRight className="h-4 w-4" />
+              Accedi al cruscotto <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </div>
           </button>
         </div>

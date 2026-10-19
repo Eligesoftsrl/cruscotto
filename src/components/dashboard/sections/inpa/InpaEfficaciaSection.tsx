@@ -65,10 +65,11 @@ export const InpaEfficaciaSection = () => {
   const totale = data.length;
 
   const classColors: Record<string, string> = {
-    Critico: "hsl(0,70%,55%)",
-    Sovrasaturo: "hsl(30,85%,55%)",
-    Equilibrato: "hsl(150,60%,40%)",
-    Sottosaturo: "hsl(210,80%,45%)",
+    // Tonalità scurite: usate anche come colore del testo (contrasto AA su bianco).
+    Critico: "hsl(0,70%,42%)",
+    Sovrasaturo: "hsl(30,90%,32%)",
+    Equilibrato: "hsl(150,60%,28%)",
+    Sottosaturo: "hsl(210,80%,40%)",
   };
 
   const distribuzione = Object.entries(classi).map(([name, value]) => ({
@@ -87,7 +88,7 @@ export const InpaEfficaciaSection = () => {
                 {d.value}
               </div>
               <div className="text-[11px] text-muted-foreground mt-1">{d.name}</div>
-              <div className="text-[9px] text-muted-foreground/60 mt-0.5">{d.pct}% dei bandi</div>
+              <div className="text-[10px] text-muted-foreground/70 mt-0.5">{d.pct}% dei bandi</div>
             </div>
           </div>
         ))}
@@ -96,7 +97,7 @@ export const InpaEfficaciaSection = () => {
       <div className="tableau-card">
         <div className="tableau-card-header">
           Saturazione Bandi (Candidature / Posti × 100)
-          <span className="ml-2 text-[10px] font-normal text-muted-foreground">
+          <span className="ml-2 text-[10px] font-normal opacity-80">
             &lt;50% = Sottosaturo · 50-200% = Equilibrato · 200-500% = Sovrasaturo · &gt;500% =
             Critico
           </span>

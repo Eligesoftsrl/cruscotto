@@ -194,9 +194,10 @@ const ambitoConfig: Record<
 };
 
 function getSemaforoColor(score: number): string {
-  if (score >= 60) return "hsl(142,71%,45%)";
-  if (score >= 50) return "hsl(45,100%,42%)";
-  return "hsl(var(--destructive))";
+  // Tonalità scurite per contrasto AA (testo su bianco e su sfondo tinta 15%).
+  if (score >= 60) return "hsl(142,71%,26%)";
+  if (score >= 50) return "hsl(38,100%,28%)";
+  return "hsl(0,72%,40%)";
 }
 
 function getSemaforoLabel(score: number): string {
@@ -234,19 +235,20 @@ export const BussolaHome = ({
   return (
     <TooltipProvider delayDuration={200}>
       <main className="max-w-[1100px] mx-auto px-4 sm:px-6 py-6">
+        <h1 className="sr-only">Pannello di Governo</h1>
         {/* Sub-header */}
         <div className="flex items-center gap-2 mb-5">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded border border-primary/20 bg-primary/5">
-            <Compass className="h-4 w-4 text-primary" />
+            <Compass aria-hidden="true" className="h-4 w-4 text-primary" />
             <span className="text-xs font-bold tracking-wider uppercase text-primary">
               Pannello di Governo
             </span>
           </div>
           <button
             onClick={() => navigate("/demo-narrativi")}
-            className="ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 bg-primary/10 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors"
+            className="ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 bg-primary/5 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
           >
-            <Zap className="h-3.5 w-3.5" />
+            <Zap aria-hidden="true" className="h-3.5 w-3.5" />
             Demo
           </button>
           <span className="text-sm font-medium text-muted-foreground hidden sm:inline">
@@ -268,9 +270,9 @@ export const BussolaHome = ({
                     className={`text-[11px] font-semibold flex items-center gap-0.5 ${kpi.trendUp ? "text-[hsl(142,71%,65%)]" : "text-[hsl(45,100%,70%)]"}`}
                   >
                     {kpi.trendUp ? (
-                      <ArrowUpRight className="h-3 w-3" />
+                      <ArrowUpRight aria-hidden="true" className="h-3 w-3" />
                     ) : (
-                      <ArrowDownRight className="h-3 w-3" />
+                      <ArrowDownRight aria-hidden="true" className="h-3 w-3" />
                     )}
                     {kpi.trend}
                   </span>
@@ -302,7 +304,7 @@ export const BussolaHome = ({
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              <Sparkles className="h-3 w-3" />
+              <Sparkles aria-hidden="true" className="h-3 w-3" />
               Percorsi personalizzati
             </button>
           </div>
@@ -359,8 +361,8 @@ export const BussolaHome = ({
                       <span className="text-xs font-semibold text-muted-foreground">
                         {count} percorsi disponibili
                       </span>
-                      <ChevronRight
-                        className={`h-4 w-4 transition ${isExpanded ? "rotate-90 text-primary" : "text-muted-foreground/30 group-hover:text-primary"}`}
+                      <ChevronRight aria-hidden="true"
+                        className={`h-4 w-4 transition ${isExpanded ? "rotate-90 text-primary" : "text-muted-foreground/70 group-hover:text-primary"}`}
                       />
                     </div>
                   </button>
@@ -442,7 +444,7 @@ export const BussolaHome = ({
                     <p className="text-xs text-muted-foreground mb-2 leading-snug">{p.purpose}</p>
 
                     {/* Cosa ottieni */}
-                    <p className="text-[11px] text-primary/80 leading-snug mb-3 font-medium">
+                    <p className="text-[11px] text-primary leading-snug mb-3 font-medium">
                       {p.whatYouGet}
                     </p>
 
@@ -469,8 +471,8 @@ export const BussolaHome = ({
                         {levelLabel}
                       </span>
                       {hasJourney && (
-                        <span className="text-[11px] text-muted-foreground/50 group-hover:text-primary transition flex items-center gap-1">
-                          <Route className="h-3 w-3" />
+                        <span className="text-[11px] text-muted-foreground/70 group-hover:text-primary transition flex items-center gap-1">
+                          <Route aria-hidden="true" className="h-3 w-3" />
                           Esplora · {guidedJourneys[p.journeyId].steps.length} tappe
                         </span>
                       )}
@@ -486,7 +488,7 @@ export const BussolaHome = ({
               className="w-full bg-card border rounded-xl p-5 flex items-center gap-4 text-left transition-all hover:shadow-md hover:scale-[1.01] active:scale-100 group mb-6"
             >
               <div className="w-11 h-11 rounded-lg bg-[hsl(270,60%,92%)] text-[hsl(270,60%,45%)] flex items-center justify-center flex-shrink-0">
-                <FileText className="h-5 w-5" />
+                <FileText aria-hidden="true" className="h-5 w-5" />
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-base font-bold text-foreground mb-0.5">
@@ -496,7 +498,7 @@ export const BussolaHome = ({
                   Executive Summary · Rapporto Esteso · Rapporto Tecnico
                 </p>
               </div>
-              <ChevronRight className="h-5 w-5 text-muted-foreground/30 group-hover:text-primary transition flex-shrink-0" />
+              <ChevronRight aria-hidden="true" className="h-5 w-5 text-muted-foreground/70 group-hover:text-primary transition flex-shrink-0" />
             </button>
 
             {/* Footer */}
@@ -513,7 +515,7 @@ export const BussolaHome = ({
           className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center justify-center group"
           title="Crea percorso personalizzato"
         >
-          <Plus className="h-6 w-6 group-hover:rotate-90 transition-transform duration-200" />
+          <Plus aria-hidden="true" className="h-6 w-6 group-hover:rotate-90 transition-transform duration-200" />
         </button>
       </main>
     </TooltipProvider>
@@ -550,8 +552,8 @@ export function PercorsoRow({
           {percorso.valueProposition}
         </div>
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[11px] text-muted-foreground/60 flex items-center gap-1">
-            <BookOpen className="h-3 w-3" />
+          <span className="text-[11px] text-muted-foreground/70 flex items-center gap-1">
+            <BookOpen aria-hidden="true" className="h-3 w-3" />
             {stepsCount} {stepsCount === 1 ? "capitolo" : "capitoli"}
           </span>
           {pillars.map((p) => (
@@ -574,7 +576,7 @@ export function PercorsoRow({
           )}
         </div>
       </div>
-      <ChevronRight className="h-4 w-4 text-muted-foreground/30 group-hover:text-primary transition flex-shrink-0 mt-1" />
+      <ChevronRight aria-hidden="true" className="h-4 w-4 text-muted-foreground/70 group-hover:text-primary transition flex-shrink-0 mt-1" />
     </button>
   );
 }
@@ -591,15 +593,15 @@ export function GuidedJourneyRow({
       onClick={onClick}
       className="w-full rounded-lg px-3 py-3 flex items-start gap-3 text-left transition-all hover:bg-accent/50 group border border-transparent hover:border-border/50"
     >
-      <Route className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+      <Route aria-hidden="true" className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
       <div className="flex-1 min-w-0">
         <div className="text-sm font-semibold text-foreground leading-snug mb-0.5">
           {journey.title}
         </div>
         <div className="text-xs text-muted-foreground leading-snug mb-1">{journey.subtitle}</div>
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[11px] text-muted-foreground/60 flex items-center gap-1">
-            <BookOpen className="h-3 w-3" />
+          <span className="text-[11px] text-muted-foreground/70 flex items-center gap-1">
+            <BookOpen aria-hidden="true" className="h-3 w-3" />
             {journey.steps.length} tappe
           </span>
           <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
@@ -607,7 +609,7 @@ export function GuidedJourneyRow({
           </span>
         </div>
       </div>
-      <ChevronRight className="h-4 w-4 text-muted-foreground/30 group-hover:text-primary transition flex-shrink-0 mt-1" />
+      <ChevronRight aria-hidden="true" className="h-4 w-4 text-muted-foreground/70 group-hover:text-primary transition flex-shrink-0 mt-1" />
     </button>
   );
 }

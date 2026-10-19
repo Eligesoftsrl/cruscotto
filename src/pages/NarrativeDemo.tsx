@@ -107,7 +107,7 @@ export default function NarrativeDemo() {
         to="/bussola"
         className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
-        <ArrowLeft className="h-4 w-4" /> Torna al Pannello di Governo
+        <ArrowLeft aria-hidden="true" className="h-4 w-4" /> Torna al Pannello di Governo
       </Link>
 
       <h1 className="text-2xl font-bold text-foreground">Demo: Generatori Narrativi Dinamici</h1>
@@ -230,7 +230,7 @@ export default function NarrativeDemo() {
           {missingIndicators.length > 0 && (
             <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-3 space-y-2">
               <p className="text-sm font-bold text-destructive flex items-center gap-1.5">
-                <AlertTriangle className="h-4 w-4" />
+                <AlertTriangle aria-hidden="true" className="h-4 w-4" />
                 Indicatori senza generatore narrativo ({missingIndicators.length}):
               </p>
               <div className="flex flex-wrap gap-2">
@@ -249,7 +249,7 @@ export default function NarrativeDemo() {
           {missingIndicators.length === 0 && (
             <div className="rounded-lg border border-[hsl(var(--chart-green))]/30 bg-[hsl(var(--chart-green))]/5 p-3">
               <p className="text-sm font-bold text-[hsl(var(--chart-green))] flex items-center gap-1.5">
-                <Check className="h-4 w-4" />
+                <Check aria-hidden="true" className="h-4 w-4" />
                 Tutti gli indicatori hanno un generatore narrativo!
               </p>
             </div>
@@ -264,7 +264,7 @@ export default function NarrativeDemo() {
             <CardTitle className="text-base">Tabella Completa Indicatori</CardTitle>
             <div className="flex items-center gap-2">
               <div className="relative">
-                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                <Search aria-hidden="true" className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
                 <Input
                   placeholder="Cerca indicatore..."
                   value={searchTerm}
@@ -349,9 +349,9 @@ export default function NarrativeDemo() {
                     </td>
                     <td className="py-2 px-2 text-center">
                       {ind.hasNarrative ? (
-                        <Check className="h-4 w-4 text-[hsl(var(--chart-green))] mx-auto" />
+                        <Check aria-hidden="true" className="h-4 w-4 text-[hsl(var(--chart-green))] mx-auto" />
                       ) : (
-                        <AlertTriangle className="h-4 w-4 text-destructive mx-auto" />
+                        <AlertTriangle aria-hidden="true" className="h-4 w-4 text-destructive mx-auto" />
                       )}
                     </td>
                   </tr>

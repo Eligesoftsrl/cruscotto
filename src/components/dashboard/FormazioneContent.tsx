@@ -115,7 +115,7 @@ export const FormazioneContent = () => {
 
       {/* Bar-list giornate per macrocategoria */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Giornate per macrocategoria</h4>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Giornate per macrocategoria</h3>
         <ResponsiveContainer width="100%" height={Math.max(220, macroRows.length * 26)}>
           <BarChart data={macroRows} layout="vertical" margin={{ left: 10, right: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" horizontal={false} />
@@ -129,7 +129,7 @@ export const FormazioneContent = () => {
 
       {/* Trend giornate di formazione */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Trend giornate di formazione{rangeLabel}</h4>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Trend giornate di formazione{rangeLabel}</h3>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={evoRows} margin={{ left: 0, right: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />

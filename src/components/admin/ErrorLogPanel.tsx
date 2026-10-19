@@ -36,7 +36,7 @@ export const ErrorLogPanel = () => {
       <CardContent className="p-4 space-y-3">
         <div className="flex items-center gap-2 flex-wrap">
           <div className="relative flex-1 min-w-[180px] max-w-xs">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Search aria-hidden="true" className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               value={q}
               onChange={(e) => setQ(e.target.value)}
@@ -54,10 +54,10 @@ export const ErrorLogPanel = () => {
           <div className="flex-1" />
           <span className="text-xs text-muted-foreground">{rows.length} voci</span>
           <Button variant="outline" size="sm" onClick={() => exportCsv("errori.csv", rows as unknown as Record<string, unknown>[])}>
-            <Download className="h-4 w-4 mr-1.5" /> CSV
+            <Download aria-hidden="true" className="h-4 w-4 mr-1.5" /> CSV
           </Button>
           <Button variant="outline" size="sm" onClick={() => clearLog("errori")}>
-            <Trash2 className="h-4 w-4 mr-1.5" /> Svuota
+            <Trash2 aria-hidden="true" className="h-4 w-4 mr-1.5" /> Svuota
           </Button>
         </div>
         <div className="rounded-md border overflow-x-auto">

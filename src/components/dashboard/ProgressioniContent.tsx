@@ -103,7 +103,7 @@ export const ProgressioniContent = () => {
 
       {/* Bar chart per anno */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Progressioni per anno{rangeLabel}</h4>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Progressioni per anno{rangeLabel}</h3>
         <ResponsiveContainer width="100%" height={320}>
           <BarChart data={evoRows} margin={{ left: 0, right: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
@@ -119,7 +119,7 @@ export const ProgressioniContent = () => {
 
       {/* Line chart trend (stesse due serie) */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Trend progressioni{rangeLabel}</h4>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Trend progressioni{rangeLabel}</h3>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={evoRows} margin={{ left: 0, right: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />

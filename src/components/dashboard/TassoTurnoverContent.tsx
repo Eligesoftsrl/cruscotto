@@ -103,7 +103,7 @@ export const TassoTurnoverContent = () => {
 
       {/* Combo chart */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Assunti vs Cessati e Tasso di Turnover</h4>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Assunti vs Cessati e Tasso di Turnover</h3>
         <ResponsiveContainer width="100%" height={340}>
           <ComposedChart data={evoRows} margin={{ left: 0, right: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
@@ -121,7 +121,7 @@ export const TassoTurnoverContent = () => {
 
       {/* Saldo netto cumulato */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Saldo netto cumulato</h4>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Saldo netto cumulato</h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={evoRows} margin={{ left: 0, right: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
@@ -137,7 +137,7 @@ export const TassoTurnoverContent = () => {
       {/* Tabella serie storica */}
       <div className="rounded-lg border bg-card p-5">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <h4 className="text-sm font-semibold text-foreground">Serie storica turnover</h4>
+          <h3 className="text-sm font-semibold text-foreground">Serie storica turnover</h3>
           <TableExport filename="turnover_serie_storica" title="Serie storica turnover" />
         </div>
         <div className="overflow-x-auto">
@@ -158,7 +158,7 @@ export const TassoTurnoverContent = () => {
                   <td className="py-2 pr-2 font-medium text-foreground">{r.anno}</td>
                   <td className="py-2 pr-2 text-right">{nf.format(r.assunti)}</td>
                   <td className="py-2 pr-2 text-right">{nf.format(r.cessati)}</td>
-                  <td className={`py-2 pr-2 text-right ${r.saldo < 0 ? "text-red-600" : "text-green-600"}`}>{signed(r.saldo)}</td>
+                  <td className={`py-2 pr-2 text-right ${r.saldo < 0 ? "text-red-600" : "text-green-700"}`}>{signed(r.saldo)}</td>
                   <td className="py-2 pr-2 text-right">{n1(r.turnover_pct)}%</td>
                   <td className="py-2 text-right">{n1(r.ingresso_pct)}%</td>
                 </tr>

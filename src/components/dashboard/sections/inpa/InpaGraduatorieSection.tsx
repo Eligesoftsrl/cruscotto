@@ -95,7 +95,7 @@ export const InpaGraduatorieSection = () => {
               <div className="text-2xl font-bold text-foreground">{kpi.value}</div>
               <div className="text-[11px] text-muted-foreground mt-1">{kpi.label}</div>
               {"sub" in kpi && kpi.sub && (
-                <div className="text-[9px] text-muted-foreground/60 mt-0.5">{kpi.sub}</div>
+                <div className="text-[10px] text-muted-foreground/70 mt-0.5">{kpi.sub}</div>
               )}
             </div>
           </div>

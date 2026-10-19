@@ -31,7 +31,7 @@ const Admin = () => {
       <main className="max-w-[1200px] mx-auto px-6 py-8">
         <header className="mb-6 flex items-center gap-3">
           <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
-            <ShieldCheck className="h-6 w-6 text-primary" />
+            <ShieldCheck aria-hidden="true" className="h-6 w-6 text-primary" />
           </div>
           <div>
             <h1 className="text-xl font-bold text-foreground">Pannello di Amministrazione</h1>
@@ -44,22 +44,22 @@ const Admin = () => {
         <Tabs defaultValue="schede">
           <TabsList className="mb-4 flex-wrap h-auto">
             <TabsTrigger value="schede">
-              <LayoutGrid className="h-4 w-4 mr-1.5" /> Schede
+              <LayoutGrid aria-hidden="true" className="h-4 w-4 mr-1.5" /> Schede
             </TabsTrigger>
             <TabsTrigger value="flags">
-              <ToggleLeft className="h-4 w-4 mr-1.5" /> Funzionalità
+              <ToggleLeft aria-hidden="true" className="h-4 w-4 mr-1.5" /> Funzionalità
             </TabsTrigger>
             <TabsTrigger value="accessi">
-              <LogIn className="h-4 w-4 mr-1.5" /> Accessi
+              <LogIn aria-hidden="true" className="h-4 w-4 mr-1.5" /> Accessi
             </TabsTrigger>
             <TabsTrigger value="eventi">
-              <Activity className="h-4 w-4 mr-1.5" /> Eventi
+              <Activity aria-hidden="true" className="h-4 w-4 mr-1.5" /> Eventi
             </TabsTrigger>
             <TabsTrigger value="errori">
-              <AlertTriangle className="h-4 w-4 mr-1.5" /> Errori
+              <AlertTriangle aria-hidden="true" className="h-4 w-4 mr-1.5" /> Errori
             </TabsTrigger>
             <TabsTrigger value="stat">
-              <BarChart3 className="h-4 w-4 mr-1.5" /> Statistiche
+              <BarChart3 aria-hidden="true" className="h-4 w-4 mr-1.5" /> Statistiche
             </TabsTrigger>
           </TabsList>
 

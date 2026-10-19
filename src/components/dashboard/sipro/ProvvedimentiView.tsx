@@ -67,7 +67,7 @@ export const ProvvedimentiView = () => {
                 <LoadingSpinner />
               ) : (
                 <>
-                  <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                  <div className="space-y-2 max-h-[300px] overflow-y-auto" tabIndex={0} role="region" aria-label="Elenco scorrevole">
                     {rows.map((r) => (
                       <div key={r.provvedimento_id} className="flex items-start gap-3 bg-muted/30 rounded-lg px-3 py-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />

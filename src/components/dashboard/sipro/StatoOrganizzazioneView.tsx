@@ -54,14 +54,14 @@ export const StatoOrganizzazioneView = () => {
                 <LoadingSpinner />
               ) : (
                 <>
-                  <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                  <div className="space-y-2 max-h-[300px] overflow-y-auto" tabIndex={0} role="region" aria-label="Elenco scorrevole">
                     {rows.map((r) => (
                       <div key={r.organizzazione_id} className="flex items-center justify-between bg-muted/30 rounded-lg px-3 py-2">
                         <div className="min-w-0">
                           <div className="text-xs font-medium text-foreground truncate">{r.ente}</div>
                           <div className="text-[10px] text-muted-foreground truncate">{r.organizzazione}</div>
                         </div>
-                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded whitespace-nowrap ${r.stato === "Formalizzata" ? "bg-emerald-500/10 text-emerald-600" : "bg-amber-500/10 text-amber-600"}`}>
+                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded whitespace-nowrap ${r.stato === "Formalizzata" ? "bg-emerald-500/10 text-emerald-700" : "bg-amber-500/10 text-amber-700"}`}>
                           {r.stato}
                         </span>
                       </div>

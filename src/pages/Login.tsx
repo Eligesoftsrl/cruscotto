@@ -66,7 +66,7 @@ const Login = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Loader2 aria-hidden="true" className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -83,7 +83,7 @@ const Login = () => {
     return (
       <div className="min-h-screen flex flex-col bg-background">
         <div className="h-1 w-full bg-primary" />
-        <div className="flex-1 flex flex-col items-center justify-center px-4">
+        <div role="main" className="flex-1 flex flex-col items-center justify-center px-4">
           <div className="text-center space-y-3 mb-10">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-primary text-primary-foreground text-3xl shadow-lg">
               🏛️
@@ -97,7 +97,7 @@ const Login = () => {
           <div className="w-full max-w-md rounded-lg border-2 bg-card p-7 space-y-5">
             <div className="flex items-center gap-3">
               <div className="w-11 h-11 rounded-lg flex items-center justify-center bg-primary text-primary-foreground">
-                <Shield className="h-5 w-5" />
+                <Shield aria-hidden="true" className="h-5 w-5" />
               </div>
               <div>
                 <h2 className="text-[15px] font-bold text-foreground">Accesso riservato</h2>
@@ -114,17 +114,17 @@ const Login = () => {
             >
               {signingIn ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" /> Reindirizzamento...
+                  <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" /> Reindirizzamento...
                 </>
               ) : (
                 <>
-                  <LogIn className="h-4 w-4" /> Accedi con SSO
+                  <LogIn aria-hidden="true" className="h-4 w-4" /> Accedi con SSO
                 </>
               )}
             </button>
           </div>
 
-          <p className="mt-10 text-[12px] text-muted-foreground/60">
+          <p className="mt-10 text-[12px] text-muted-foreground/70">
             Autenticazione gestita tramite Identity Provider (Keycloak)
           </p>
         </div>
@@ -137,7 +137,7 @@ const Login = () => {
       {/* AGID-style top band */}
       <div className="h-1 w-full bg-primary" />
 
-      <div className="flex-1 flex flex-col items-center justify-center px-4">
+      <div role="main" className="flex-1 flex flex-col items-center justify-center px-4">
         <div className="text-center space-y-3 mb-10">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-primary text-primary-foreground text-3xl shadow-lg">
             🏛️
@@ -159,9 +159,9 @@ const Login = () => {
               <div className="absolute top-0 left-0 right-0 h-1 rounded-t-lg bg-primary" />
               <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-primary text-primary-foreground">
                 {signingIn ? (
-                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <Loader2 aria-hidden="true" className="h-5 w-5 animate-spin" />
                 ) : (
-                  <Shield className="h-6 w-6" />
+                  <Shield aria-hidden="true" className="h-6 w-6" />
                 )}
               </div>
               <div className="space-y-2">
@@ -187,9 +187,9 @@ const Login = () => {
               <div className="absolute top-0 left-0 right-0 h-1 rounded-t-lg bg-accent" />
               <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-accent text-accent-foreground">
                 {loadingEnti ? (
-                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <Loader2 aria-hidden="true" className="h-5 w-5 animate-spin" />
                 ) : (
-                  <Building2 className="h-6 w-6" />
+                  <Building2 aria-hidden="true" className="h-6 w-6" />
                 )}
               </div>
               <div className="space-y-2">
@@ -224,7 +224,7 @@ const Login = () => {
               <div className="absolute top-0 left-0 right-0 h-1 rounded-t-lg bg-accent" />
               <div className="flex items-center gap-3">
                 <div className="w-11 h-11 rounded-lg flex items-center justify-center bg-accent text-accent-foreground">
-                  <Building2 className="h-5 w-5" />
+                  <Building2 aria-hidden="true" className="h-5 w-5" />
                 </div>
                 <div>
                   <h2 className="text-[15px] font-bold text-foreground">Responsabile HR</h2>
@@ -235,7 +235,7 @@ const Login = () => {
               </div>
 
               <div className="relative">
-                <select
+                <select aria-label="Seleziona ente"
                   value={selectedEnte ?? ""}
                   onChange={(e) => setSelectedEnte(e.target.value ? Number(e.target.value) : null)}
                   className="appearance-none w-full rounded-md border-2 border-input bg-background pl-3 pr-8 py-3 text-[14px] text-foreground outline-none focus:ring-2 focus:ring-primary focus:border-primary cursor-pointer transition-all"
@@ -247,7 +247,7 @@ const Login = () => {
                     </option>
                   ))}
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                <ChevronDown aria-hidden="true" className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
               </div>
 
               <button
@@ -261,7 +261,7 @@ const Login = () => {
           </div>
         )}
 
-        <p className="mt-10 text-[12px] text-muted-foreground/60">
+        <p className="mt-10 text-[12px] text-muted-foreground/70">
           Ambiente dimostrativo — dati simulati per 6 comuni pilota
         </p>
       </div>

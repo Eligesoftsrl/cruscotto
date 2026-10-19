@@ -58,7 +58,7 @@ export function CommunityJourneys({ onFollowJourney, refreshKey }: CommunityJour
   if (sorted.length === 0) {
     return (
       <div className="text-center py-12">
-        <Route className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
+        <Route aria-hidden="true" className="h-10 w-10 text-muted-foreground/70 mx-auto mb-3" />
         <p className="text-sm font-medium text-muted-foreground">Nessun percorso personalizzato</p>
         <p className="text-xs text-muted-foreground/70 mt-1">
           Crea il tuo primo percorso con il pulsante "+" in basso
@@ -104,20 +104,20 @@ export function CommunityJourneys({ onFollowJourney, refreshKey }: CommunityJour
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <Badge variant="outline" className={`text-[9px] ${cfg.color}`}>
+                  <Badge variant="outline" className={`text-[10px] ${cfg.color}`}>
                     {cfg.label}
                   </Badge>
                   {j.is_public ? (
-                    <Globe className="h-3 w-3 text-muted-foreground/50" />
+                    <Globe aria-hidden="true" className="h-3 w-3 text-muted-foreground/70" />
                   ) : (
-                    <Lock className="h-3 w-3 text-muted-foreground/50" />
+                    <Lock aria-hidden="true" className="h-3 w-3 text-muted-foreground/70" />
                   )}
                 </div>
                 <button
                   onClick={() => handleDelete(j.id)}
                   className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-destructive/10 text-destructive transition"
                 >
-                  <Trash2 className="h-3.5 w-3.5" />
+                  <Trash2 aria-hidden="true" className="h-3.5 w-3.5" />
                 </button>
               </div>
 
@@ -132,7 +132,7 @@ export function CommunityJourneys({ onFollowJourney, refreshKey }: CommunityJour
                 <span>{totalIndicators} indicatori</span>
                 <span>·</span>
                 <span className="flex items-center gap-0.5">
-                  <Eye className="h-3 w-3" />
+                  <Eye aria-hidden="true" className="h-3 w-3" />
                   {j.usage_count}
                 </span>
               </div>
@@ -144,7 +144,7 @@ export function CommunityJourneys({ onFollowJourney, refreshKey }: CommunityJour
                   onClick={() => handleFollow(j)}
                   className="text-xs h-7 gap-1"
                 >
-                  <Route className="h-3 w-3" /> Segui
+                  <Route aria-hidden="true" className="h-3 w-3" /> Segui
                 </Button>
               </div>
             </div>

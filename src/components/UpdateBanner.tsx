@@ -53,14 +53,14 @@ export const UpdateBanner = () => {
           onClick={() => window.location.reload()}
           className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring"
         >
-          <RefreshCw className="h-3.5 w-3.5" /> Ricarica
+          <RefreshCw aria-hidden="true" className="h-3.5 w-3.5" /> Ricarica
         </button>
         <button
           onClick={() => setDismissed(true)}
           aria-label="Chiudi avviso"
           className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
-          <X className="h-4 w-4" />
+          <X aria-hidden="true" className="h-4 w-4" />
         </button>
       </div>
     </div>

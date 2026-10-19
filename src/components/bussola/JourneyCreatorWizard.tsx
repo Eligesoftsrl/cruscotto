@@ -182,11 +182,11 @@ export function JourneyCreatorWizard({
         <div className="bg-gradient-to-r from-[hsl(213,50%,20%)] to-[hsl(213,50%,28%)] px-5 py-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-[hsl(45,100%,70%)]" />
+              <Sparkles aria-hidden="true" className="h-4 w-4 text-[hsl(45,100%,70%)]" />
               <span className="text-sm font-semibold text-white">Nuovo percorso</span>
             </div>
             <button onClick={onClose} className="p-1.5 rounded-full hover:bg-white/10">
-              <X className="h-4 w-4 text-white/70" />
+              <X aria-hidden="true" className="h-4 w-4 text-white/70" />
             </button>
           </div>
           {/* Progress bar */}
@@ -225,7 +225,7 @@ export function JourneyCreatorWizard({
           {wizardStep === 0 && (
             <div className="space-y-5">
               <div className="flex items-start gap-2 p-3 rounded-lg bg-primary/5 border border-primary/10">
-                <Lightbulb className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                <Lightbulb aria-hidden="true" className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
                 <p className="text-xs text-muted-foreground">
                   Dai un nome al tuo percorso e scegli il tipo di analisi. Nel passo successivo
                   selezionerai gli indicatori.
@@ -294,7 +294,7 @@ export function JourneyCreatorWizard({
                         : "border-border hover:border-primary/30"
                     }`}
                   >
-                    <Lock className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <Lock aria-hidden="true" className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                     <div>
                       <div className="text-xs font-bold text-foreground">Privato</div>
                       <p className="text-[10px] text-muted-foreground">Solo per te</p>
@@ -308,7 +308,7 @@ export function JourneyCreatorWizard({
                         : "border-border hover:border-primary/30"
                     }`}
                   >
-                    <Globe className="h-4 w-4 text-primary flex-shrink-0" />
+                    <Globe aria-hidden="true" className="h-4 w-4 text-primary flex-shrink-0" />
                     <div>
                       <div className="text-xs font-bold text-foreground">Community</div>
                       <p className="text-[10px] text-muted-foreground">Condiviso con tutti</p>
@@ -323,7 +323,7 @@ export function JourneyCreatorWizard({
           {wizardStep === 1 && (
             <div className="space-y-3">
               <div className="flex items-start gap-2 p-3 rounded-lg bg-primary/5 border border-primary/10">
-                <Lightbulb className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                <Lightbulb aria-hidden="true" className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
                 <p className="text-xs text-muted-foreground">
                   Ogni tappa rappresenta un'area di analisi. Seleziona almeno un indicatore per
                   ciascuna tappa.
@@ -371,13 +371,13 @@ export function JourneyCreatorWizard({
                           }}
                           className="p-1 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition"
                         >
-                          <Trash2 className="h-3.5 w-3.5" />
+                          <Trash2 aria-hidden="true" className="h-3.5 w-3.5" />
                         </button>
                       )}
                       {isExpanded ? (
-                        <ChevronUp className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                        <ChevronUp aria-hidden="true" className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                       ) : (
-                        <ChevronDown className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                        <ChevronDown aria-hidden="true" className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                       )}
                     </button>
 
@@ -425,7 +425,7 @@ export function JourneyCreatorWizard({
                 onClick={addStep}
                 className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-dashed border-primary/30 text-primary text-sm font-medium hover:bg-primary/5 hover:border-primary/50 transition"
               >
-                <Plus className="h-4 w-4" />
+                <Plus aria-hidden="true" className="h-4 w-4" />
                 Aggiungi tappa
               </button>
 
@@ -449,7 +449,7 @@ export function JourneyCreatorWizard({
               onClick={() => setWizardStep((s) => s - 1)}
               className="gap-1.5"
             >
-              <ArrowLeft className="h-4 w-4" /> Indietro
+              <ArrowLeft aria-hidden="true" className="h-4 w-4" /> Indietro
             </Button>
           ) : (
             <Button variant="ghost" size="sm" onClick={onClose}>
@@ -463,11 +463,11 @@ export function JourneyCreatorWizard({
               disabled={!canProceed()}
               className="gap-1.5"
             >
-              Avanti <ArrowRight className="h-4 w-4" />
+              Avanti <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Button>
           ) : (
             <Button onClick={handleSave} disabled={saving || !canProceed()} className="gap-1.5">
-              {saving ? "Salvataggio..." : "Crea percorso"} <Sparkles className="h-4 w-4" />
+              {saving ? "Salvataggio..." : "Crea percorso"} <Sparkles aria-hidden="true" className="h-4 w-4" />
             </Button>
           )}
         </div>

@@ -28,7 +28,7 @@ export const DashboardHeader = ({ activeSection }: DashboardHeaderProps) => {
       </div>
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2 rounded-lg border bg-background px-3 py-1.5">
-          <Search className="h-4 w-4 text-muted-foreground" />
+          <Search aria-hidden="true" className="h-4 w-4 text-muted-foreground" />
           <input
             type="text"
             placeholder="Cerca..."
@@ -36,10 +36,10 @@ export const DashboardHeader = ({ activeSection }: DashboardHeaderProps) => {
           />
         </div>
         <button className="flex h-9 w-9 items-center justify-center rounded-lg border bg-background hover:bg-secondary transition-colors">
-          <Filter className="h-4 w-4 text-muted-foreground" />
+          <Filter aria-hidden="true" className="h-4 w-4 text-muted-foreground" />
         </button>
         <button className="relative flex h-9 w-9 items-center justify-center rounded-lg border bg-background hover:bg-secondary transition-colors">
-          <Bell className="h-4 w-4 text-muted-foreground" />
+          <Bell aria-hidden="true" className="h-4 w-4 text-muted-foreground" />
           <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-accent border-2 border-card" />
         </button>
       </div>

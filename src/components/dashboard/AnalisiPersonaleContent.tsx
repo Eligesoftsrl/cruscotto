@@ -110,7 +110,7 @@ export const AnalisiPersonaleContent = () => {
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Personale per macrocategoria */}
         <div className="rounded-lg border bg-card p-5">
-          <h4 className="mb-3 text-sm font-semibold text-foreground">Personale per macrocategoria</h4>
+          <h3 className="mb-3 text-sm font-semibold text-foreground">Personale per macrocategoria</h3>
           <ResponsiveContainer width="100%" height={Math.max(220, catRows.length * 26)}>
             <BarChart data={catRows} layout="vertical" margin={{ left: 10, right: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" horizontal={false} />
@@ -127,14 +127,14 @@ export const AnalisiPersonaleContent = () => {
 
         {/* Distribuzione per titolo di studio */}
         <div className="rounded-lg border bg-card p-5">
-          <h4 className="mb-3 text-sm font-semibold text-foreground">Distribuzione per titolo di studio</h4>
+          <h3 className="mb-3 text-sm font-semibold text-foreground">Distribuzione per titolo di studio</h3>
           <RankedBarChart data={titRows.map((r) => ({ name: r.titolo_studio, value: r.valore }))} multicolor />
         </div>
       </div>
 
       {/* Evoluzione personale */}
       <div className="rounded-lg border bg-card p-5">
-        <h4 className="mb-3 text-sm font-semibold text-foreground">Evoluzione personale</h4>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Evoluzione personale</h3>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={evoRows} margin={{ left: 0, right: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />

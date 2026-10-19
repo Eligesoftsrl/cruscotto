@@ -101,9 +101,9 @@ export function TableExport({
           aria-label="Esporta dati"
         >
           {busy ? (
-            <Loader2 className={variant === "compact" ? "h-3 w-3 animate-spin" : "h-3.5 w-3.5 animate-spin"} />
+            <Loader2 aria-hidden="true" className={variant === "compact" ? "h-3 w-3 animate-spin" : "h-3.5 w-3.5 animate-spin"} />
           ) : (
-            <Download className={variant === "compact" ? "h-3 w-3" : "h-3.5 w-3.5"} />
+            <Download aria-hidden="true" className={variant === "compact" ? "h-3 w-3" : "h-3.5 w-3.5"} />
           )}
           Esporta
         </DropdownMenuTrigger>

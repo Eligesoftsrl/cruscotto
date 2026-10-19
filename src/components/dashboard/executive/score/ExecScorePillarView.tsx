@@ -165,9 +165,9 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
               disabled
               aria-disabled="true"
               title="Quadro Sinottico non disponibile"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-semibold bg-muted text-muted-foreground/50 cursor-not-allowed opacity-60"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-semibold bg-muted text-muted-foreground/70 cursor-not-allowed opacity-60"
             >
-              <FileText className="h-4 w-4" />
+              <FileText aria-hidden="true" className="h-4 w-4" />
               Quadro Sinottico
             </button>
           </div>
@@ -175,19 +175,19 @@ export const ExecScorePillarView = ({ pillar, selectedIndicator: selectedRaw, on
 
         {q.isLoading && (
           <div className="tableau-card p-10 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-            <Loader2 className="h-4 w-4 animate-spin" /> Caricamento indicatori…
+            <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" /> Caricamento indicatori…
           </div>
         )}
         {q.isError && (
           <div className="tableau-card p-6 flex items-center gap-2 text-sm text-destructive" data-testid="exec-score-error">
-            <AlertCircle className="h-4 w-4" />
+            <AlertCircle aria-hidden="true" className="h-4 w-4" />
             Impossibile caricare gli indicatori {pillar}: {(q.error as Error)?.message ?? "errore sconosciuto"}
           </div>
         )}
 
         {selectedOff && (
           <div className="tableau-card p-4 flex items-center gap-2 text-sm text-muted-foreground" data-testid="exec-score-indice-off">
-            <Power className="h-4 w-4" />
+            <Power aria-hidden="true" className="h-4 w-4" />
             L'indice <b className="text-foreground">{selectedIndicator}</b> è stato disattivato dall'amministratore nel
             Pannello di gestione.
           </div>

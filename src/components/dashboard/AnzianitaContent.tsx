@@ -141,7 +141,7 @@ export const AnzianitaContent = () => {
       {/* ------------------- DISTRIBUZIONE + EVOLUZIONE ------------------- */}
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="rounded-lg border bg-card p-5">
-          <h4 className="mb-3 text-sm font-semibold text-foreground">Distribuzione per anzianità</h4>
+          <h3 className="mb-3 text-sm font-semibold text-foreground">Distribuzione per anzianità</h3>
           <ResponsiveContainer width="100%" height={340}>
             <BarChart data={fasceRows} barGap={2} margin={{ left: 10, right: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
@@ -156,7 +156,7 @@ export const AnzianitaContent = () => {
         </div>
 
         <div className="rounded-lg border bg-card p-5">
-          <h4 className="mb-3 text-sm font-semibold text-foreground">Evoluzione composizione per anzianità</h4>
+          <h3 className="mb-3 text-sm font-semibold text-foreground">Evoluzione composizione per anzianità</h3>
           <ResponsiveContainer width="100%" height={340}>
             <AreaChart data={evoPivot} stackOffset="expand" margin={{ left: 0, right: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
@@ -177,7 +177,7 @@ export const AnzianitaContent = () => {
       {/* ------------------- TABELLA DETTAGLIO ------------------- */}
       <div className="rounded-lg border bg-card p-5">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <h4 className="text-sm font-semibold text-foreground">Dettaglio per fascia di anzianità</h4>
+          <h3 className="text-sm font-semibold text-foreground">Dettaglio per fascia di anzianità</h3>
           <TableExport filename="anzianita_dettaglio_fascia" title="Dettaglio per fascia di anzianità" />
         </div>
         <div className="overflow-x-auto">

@@ -145,7 +145,7 @@ const DrilldownTable = ({ data }: { data: DrilldownData }) => {
       </div>
       {data.rows.length > 5 && (
         <div className="relative">
-          <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+          <Search aria-hidden="true" className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
           <input
             type="text"
             placeholder="Cerca..."
@@ -459,7 +459,7 @@ export const ExecutiveKpiCard = ({
 
         <div className="px-4 pb-3 mt-auto">
           <span className="inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:underline">
-            <ArrowRight className="h-3.5 w-3.5" /> Approfondisci
+            <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" /> Approfondisci
           </span>
         </div>
       </div>
@@ -547,7 +547,7 @@ export const ExecutiveKpiCard = ({
                 <span className="text-sm text-muted-foreground flex items-center gap-1.5">
                   {fb.numeratorLabel}
                   {hasNumDrill && (
-                    <Search className="h-3 w-3 text-primary/50 group-hover:text-primary transition-colors" />
+                    <Search aria-hidden="true" className="h-3 w-3 text-primary group-hover:text-primary transition-colors" />
                   )}
                 </span>
                 <span
@@ -556,9 +556,9 @@ export const ExecutiveKpiCard = ({
                   {fmtVal(fb.numeratorValue)}
                   {hasNumDrill &&
                     (drillNum ? (
-                      <ChevronUp className="inline h-3 w-3 ml-1" />
+                      <ChevronUp aria-hidden="true" className="inline h-3 w-3 ml-1" />
                     ) : (
-                      <ChevronDown className="inline h-3 w-3 ml-1" />
+                      <ChevronDown aria-hidden="true" className="inline h-3 w-3 ml-1" />
                     ))}
                 </span>
               </button>
@@ -586,7 +586,7 @@ export const ExecutiveKpiCard = ({
                 <span className="text-sm text-muted-foreground flex items-center gap-1.5">
                   {fb.denominatorLabel}
                   {hasDenDrill && (
-                    <Search className="h-3 w-3 text-primary/50 group-hover:text-primary transition-colors" />
+                    <Search aria-hidden="true" className="h-3 w-3 text-primary group-hover:text-primary transition-colors" />
                   )}
                 </span>
                 <span
@@ -595,9 +595,9 @@ export const ExecutiveKpiCard = ({
                   {fmtVal(fb.denominatorValue)}
                   {hasDenDrill &&
                     (drillDen ? (
-                      <ChevronUp className="inline h-3 w-3 ml-1" />
+                      <ChevronUp aria-hidden="true" className="inline h-3 w-3 ml-1" />
                     ) : (
-                      <ChevronDown className="inline h-3 w-3 ml-1" />
+                      <ChevronDown aria-hidden="true" className="inline h-3 w-3 ml-1" />
                     ))}
                 </span>
               </button>
@@ -652,9 +652,9 @@ export const ExecutiveKpiCard = ({
       {idx.metodologia && (
         <Collapsible open={open} onOpenChange={setOpen} className="mx-4 mb-3">
           <CollapsibleTrigger className="flex items-center gap-1.5 w-full px-3 py-2 rounded border border-border/40 bg-muted/20 hover:bg-muted/40 transition-colors text-left">
-            <Info className="h-4 w-4 text-primary shrink-0" />
+            <Info aria-hidden="true" className="h-4 w-4 text-primary shrink-0" />
             <span className="text-sm font-semibold text-primary flex-1">Scheda metodologica</span>
-            <ChevronDown
+            <ChevronDown aria-hidden="true"
               className={`h-4 w-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
             />
           </CollapsibleTrigger>
@@ -668,7 +668,7 @@ export const ExecutiveKpiCard = ({
       {idx.interconnections && idx.interconnections.connections.length > 0 && (
         <div className="mx-4 mb-3">
           <div className="flex items-center gap-1.5 mb-2">
-            <Link2 className="h-3.5 w-3.5 text-muted-foreground" />
+            <Link2 aria-hidden="true" className="h-3.5 w-3.5 text-muted-foreground" />
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               Interconnessioni
             </span>
@@ -715,7 +715,7 @@ export const ExecutiveKpiCard = ({
             </div>
           </TooltipProvider>
           {idx.interconnections.bridgeNote && (
-            <p className="mt-1.5 text-xs text-primary/80 italic leading-snug">
+            <p className="mt-1.5 text-xs text-primary italic leading-snug">
               🔗 {idx.interconnections.bridgeNote}
             </p>
           )}
@@ -727,7 +727,7 @@ export const ExecutiveKpiCard = ({
           onClick={() => onDrillDown?.(idx.pillar)}
           className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
         >
-          <ArrowRight className="h-3.5 w-3.5" /> Dettaglio {idx.pillar}
+          <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" /> Dettaglio {idx.pillar}
         </button>
       </div>
     </div>

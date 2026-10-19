@@ -19,7 +19,7 @@ export const BenchmarkDotPlot = () => {
       <div className="px-4 py-3 border-b flex items-center justify-between">
         <div>
           <div className="text-[13px] font-semibold text-foreground">Benchmarking età media</div>
-          <div className="text-[10.5px] text-muted-foreground/60 mt-0.5">
+          <div className="text-[10.5px] text-muted-foreground/70 mt-0.5">
             Anno 2023 · ● questa amm. ○ cluster
           </div>
         </div>
@@ -58,7 +58,7 @@ export const BenchmarkDotPlot = () => {
           </div>
         </div>
 
-        <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wide font-semibold mb-1.5">
+        <div className="text-[10px] text-muted-foreground/70 uppercase tracking-wide font-semibold mb-1.5">
           Età media per comparto
         </div>
 
@@ -109,7 +109,7 @@ export const BenchmarkDotPlot = () => {
           ))}
         </div>
 
-        <div className="text-[10px] text-muted-foreground/50 mt-2">
+        <div className="text-[10px] text-muted-foreground/70 mt-2">
           Scale: 44 anni ←————————→ 56 anni
         </div>
       </div>

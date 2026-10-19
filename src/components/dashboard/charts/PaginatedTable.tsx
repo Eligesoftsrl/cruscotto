@@ -96,13 +96,15 @@ export function PaginatedTable<T extends Record<string, any>>({
             <TableExport data={exportData} filename={exportFilename} title={caption || exportFilename} />
           )}
           {totalPages > 1 && (
-            <div className="flex items-center gap-1">
+            <nav className="flex items-center gap-1" aria-label="Paginazione tabella">
               <button
+                type="button"
+                aria-label="Pagina precedente"
                 onClick={() => setPage((p) => Math.max(0, p - 1))}
                 disabled={page === 0}
                 className="p-1 rounded hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                <ChevronLeft className="h-3.5 w-3.5" />
+                <ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
               {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
                 let pageNum: number;
@@ -118,6 +120,9 @@ export function PaginatedTable<T extends Record<string, any>>({
                 return (
                   <button
                     key={pageNum}
+                    type="button"
+                    aria-label={`Pagina ${pageNum + 1}`}
+                    aria-current={pageNum === page ? "page" : undefined}
                     onClick={() => setPage(pageNum)}
                     className={`min-w-[24px] h-6 rounded text-[11px] font-medium ${
                       pageNum === page ? "bg-primary text-primary-foreground" : "hover:bg-muted"
@@ -128,13 +133,15 @@ export function PaginatedTable<T extends Record<string, any>>({
                 );
               })}
               <button
+                type="button"
+                aria-label="Pagina successiva"
                 onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
                 disabled={page === totalPages - 1}
                 className="p-1 rounded hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                <ChevronRight className="h-3.5 w-3.5" />
+                <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
-            </div>
+            </nav>
           )}
         </div>
       </div>

@@ -76,7 +76,7 @@ const TrendDelta = ({ current, prev }: { current: number; prev: number }) => {
   if (delta === 0)
     return (
       <span className="text-xs text-muted-foreground flex items-center gap-1">
-        <Minus className="h-3 w-3" /> Stabile rispetto all'anno precedente
+        <Minus aria-hidden="true" className="h-3 w-3" /> Stabile rispetto all'anno precedente
       </span>
     );
   const positive = delta > 0;
@@ -84,7 +84,7 @@ const TrendDelta = ({ current, prev }: { current: number; prev: number }) => {
     <span
       className={`text-xs font-semibold flex items-center gap-1 ${positive ? "text-[hsl(var(--chart-green))]" : "text-[hsl(var(--destructive))]"}`}
     >
-      {positive ? <TrendingUp className="h-3.5 w-3.5" /> : <TrendingDown className="h-3.5 w-3.5" />}
+      {positive ? <TrendingUp aria-hidden="true" className="h-3.5 w-3.5" /> : <TrendingDown aria-hidden="true" className="h-3.5 w-3.5" />}
       {positive ? "+" : ""}
       {delta}pp rispetto all'anno precedente
     </span>
@@ -98,12 +98,12 @@ const InterconnectionBadges = ({ indicatorId }: { indicatorId: string }) => {
   return (
     <TooltipProvider delayDuration={200}>
       <div className="flex items-center gap-1 flex-wrap">
-        <span className="text-[9px] text-muted-foreground/70 mr-0.5">↔</span>
+        <span className="text-[10px] text-muted-foreground/70 mr-0.5">↔</span>
         {conns.connections.map((c) => (
           <Tooltip key={c.pillar}>
             <TooltipTrigger asChild>
               <span
-                className="text-[9px] font-bold px-1.5 py-0.5 rounded-full cursor-help"
+                className="text-[10px] font-bold px-1.5 py-0.5 rounded-full cursor-help"
                 style={{
                   background: `${PILLAR_COLORS[c.pillar]}20`,
                   color: PILLAR_COLORS[c.pillar],
@@ -227,7 +227,7 @@ const NarrativeKpiCard = ({
           {simValue === null && <TrendDelta current={idx.value} prev={idx.prev} />}
           {simValue !== null && (
             <span className="text-xs text-primary flex items-center gap-1">
-              <SlidersHorizontal className="h-3 w-3" />
+              <SlidersHorizontal aria-hidden="true" className="h-3 w-3" />
               Valore reale: {Math.round(idx.value * 100)}% → Simulato: {pct}%
             </span>
           )}
@@ -236,7 +236,7 @@ const NarrativeKpiCard = ({
         {/* Expandable "Cosa implica" */}
         <CollapsibleTrigger asChild>
           <button className="w-full flex items-center justify-center gap-1.5 py-2.5 border-t text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors">
-            {open ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+            {open ? <ChevronUp aria-hidden="true" className="h-3.5 w-3.5" /> : <ChevronDown aria-hidden="true" className="h-3.5 w-3.5" />}
             {open ? "Chiudi dettagli" : "Cosa implica"}
           </button>
         </CollapsibleTrigger>
@@ -247,7 +247,7 @@ const NarrativeKpiCard = ({
             <div className="pt-3">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1">
-                  <SlidersHorizontal className="h-3 w-3" /> Simula valore
+                  <SlidersHorizontal aria-hidden="true" className="h-3 w-3" /> Simula valore
                 </p>
                 {simValue !== null && (
                   <button
@@ -294,7 +294,7 @@ const NarrativeKpiCard = ({
             {interpretation && (
               <div>
                 <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide mb-1 flex items-center gap-1">
-                  <BookOpen className="h-3 w-3" /> Come leggere questo dato
+                  <BookOpen aria-hidden="true" className="h-3 w-3" /> Come leggere questo dato
                 </p>
                 <p className="text-xs text-muted-foreground leading-relaxed whitespace-pre-line">
                   {interpretation.split("\n").slice(0, 4).join("\n")}
@@ -316,7 +316,7 @@ const NarrativeKpiCard = ({
                 }}
                 className="w-full flex items-center justify-center gap-1.5 mt-2 px-3 py-2 rounded-lg bg-primary/10 text-primary text-xs font-bold hover:bg-primary/20 transition-colors"
               >
-                <ExternalLink className="h-3.5 w-3.5" />
+                <ExternalLink aria-hidden="true" className="h-3.5 w-3.5" />
                 Approfondisci nel cruscotto
               </button>
             )}
@@ -398,7 +398,7 @@ const ImpactCard = ({
       </p>
 
       <span className="text-[10px] text-primary font-semibold flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-        Approfondisci <ChevronRight className="h-3 w-3" />
+        Approfondisci <ChevronRight aria-hidden="true" className="h-3 w-3" />
       </span>
     </button>
   );
@@ -422,7 +422,7 @@ const OperativeCorrelationCard = ({
     <span className="text-[11px] text-muted-foreground leading-snug">{corr.description}</span>
     {corr.drillTarget && (
       <span className="text-[10px] text-primary font-semibold flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-        Vai al dettaglio <ChevronRight className="h-3 w-3" />
+        Vai al dettaglio <ChevronRight aria-hidden="true" className="h-3 w-3" />
       </span>
     )}
   </button>
@@ -493,7 +493,7 @@ export const StepPanel = ({
     {step.kpiIds.length > 0 && (
       <div>
         <h4 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-          <Layers className="h-4 w-4" /> Indicatori chiave
+          <Layers aria-hidden="true" className="h-4 w-4" /> Indicatori chiave
         </h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {step.kpiIds.map((id) => (
@@ -512,7 +512,7 @@ export const StepPanel = ({
     {step.operativeCorrelations && step.operativeCorrelations.length > 0 && (
       <div>
         <h4 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-          <ExternalLink className="h-4 w-4" /> Indicatori operativi correlati
+          <ExternalLink aria-hidden="true" className="h-4 w-4" /> Indicatori operativi correlati
         </h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {step.operativeCorrelations.map((corr, i) => (
@@ -526,7 +526,7 @@ export const StepPanel = ({
     {step.impacts.length > 0 && (
       <div>
         <h4 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-          <Compass className="h-4 w-4" /> Impatti trasversali
+          <Compass aria-hidden="true" className="h-4 w-4" /> Impatti trasversali
         </h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {step.impacts.map((imp) => (
@@ -546,7 +546,7 @@ export const StepPanel = ({
         onClick={() => onNavigate(step.drillTarget as NavState)}
         className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary/10 text-primary font-bold text-sm hover:bg-primary/20 transition-colors"
       >
-        <ExternalLink className="h-4 w-4" />
+        <ExternalLink aria-hidden="true" className="h-4 w-4" />
         Vai al dato di dettaglio
       </button>
     )}

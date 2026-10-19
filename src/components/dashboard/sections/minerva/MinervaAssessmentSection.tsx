@@ -135,12 +135,12 @@ export const MinervaAssessmentSection = () => {
       <div className="grid grid-cols-5 gap-3">
         {[
           { label: "Cicli Totali", value: kpis.totCicli },
-          { label: "Completati", value: kpis.completati, color: "text-green-600" },
-          { label: "In Corso", value: kpis.inCorso, color: "text-amber-600" },
+          { label: "Completati", value: kpis.completati, color: "text-green-700" },
+          { label: "In Corso", value: kpis.inCorso, color: "text-amber-700" },
           {
             label: "Gap Medio",
             value: kpis.gapMedio,
-            color: kpis.gapMedio > 1 ? "text-red-600" : "text-green-600",
+            color: kpis.gapMedio > 1 ? "text-red-600" : "text-green-700",
           },
           { label: "Dipendenti Valutati", value: kpis.dipValutati },
         ].map((k) => (
