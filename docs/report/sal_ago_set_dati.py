@@ -156,7 +156,7 @@ AREE = [
         ("23/09", "Prima wiki tecnica", "11 pagine: panoramica, percorso di conversione, architettura a livelli, cartelle, autenticazione, sicurezza, dati, amministrazione, rilascio, convenzioni.", "docs/wiki (v1)", C),
         ("24/09", "Wiki come manuale", "Wiki riscritta per un pubblico non tecnico: manuale utente, ruoli e accessi, panoramica architettura, stato e attività.", "docs/wiki (v2)", C),
         ("24/09", "Registro formale e sezione tecnica", "Linguaggio formale e impersonale; nuova pagina di architettura tecnica per principi generali.", "Pagina Architettura", C),
-        ("24/09", "Menu della wiki e collegamenti", "Menu laterale e collegamenti nel formato della wiki; data di ultimo aggiornamento.", "_sidebar", C),
-        ("25/09", "Note di rilascio", "Pagina «Stato e attività» aggiornata con la sezione «Rilascio del 25/09/2026».", "Stato e Roadmap", C),
+        ("24/09", "Menu della wiki e collegamenti", "Menu laterale e collegamenti nel formato della wiki.", "_sidebar", C),
+        ("25/09", "Note di rilascio", "Pagina «Stato e attività» aggiornata con le note di rilascio.", "Stato e Roadmap", C),
     ]),
 ]

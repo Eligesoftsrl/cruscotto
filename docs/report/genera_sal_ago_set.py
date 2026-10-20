@@ -20,7 +20,6 @@ from genera_resoconto_ago_set import BLU, GRIGIO, LOGO, heading, table  # noqa: 
 from sal_ago_set_dati import AREE  # noqa: E402
 
 OUT = Path(__file__).with_name("SAL-Cruscotto-HR-Agosto-Settembre-2026.docx")
-DOC_MARKERS = ("MD", "PDF", ".sql", ".sh", "README", "DEPLOY_", "GUIDA", "wiki", "Stato e Roadmap", "version.json")
 
 
 def main():
@@ -34,7 +33,7 @@ def main():
     doc.styles["Normal"].font.size = Pt(10.5)
 
     fp = sec.footer.paragraphs[0]
-    fp.text = "Cruscotto HR · SAL agosto – settembre 2026"
+    fp.text = "Cruscotto HR · Stato Avanzamento Lavori"
     fp.alignment = WD_ALIGN_PARAGRAPH.CENTER
     for r in fp.runs:
         r.font.size = Pt(8)
@@ -51,7 +50,6 @@ def main():
     for txt, size, color, bold in [
         ("Cruscotto HR", 28, BLU, True),
         ("Stato Avanzamento Lavori (SAL)", 18, None, False),
-        ("Periodo: 25 agosto – 29 settembre 2026", 13, GRIGIO, False),
     ]:
         p = doc.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -78,15 +76,12 @@ def main():
     heading(doc, "1. Riepilogo per area", 1)
     doc.add_paragraph(
         "Le attività sono raggruppate per area e numerate (es. D.05 = quinta attività "
-        "dell'area D). Per ogni attività sono indicati data, descrizione, risultato prodotto "
-        "e stato."
+        "dell'area D). Per ogni attività sono indicati descrizione, risultato prodotto e "
+        "stato."
     )
-    righe = []
-    for code, titolo, items in AREE:
-        date = [x[0] for x in items]
-        righe.append((code, titolo, str(len(items)), f"{date[0]} – {date[-1]}" if len(set(date)) > 1 else date[0]))
-    righe.append(("", "Totale", str(tot), "25/08 – 29/09"))
-    table(doc, ["Area", "Descrizione", "N. attività", "Periodo"], righe, [1.5, 15, 3, 5])
+    righe = [(code, titolo, str(len(items))) for code, titolo, items in AREE]
+    righe.append(("", "Totale", str(tot)))
+    table(doc, ["Area", "Descrizione", "N. attività"], righe, [2, 19.5, 4])
     doc.add_paragraph()
     p = doc.add_paragraph()
     p.add_run("Legenda stato. ").bold = True
@@ -102,34 +97,12 @@ def main():
     for code, titolo, items in AREE:
         heading(doc, f"{code}. {titolo}", 2)
         rows = [
-            (f"{code}.{i:02d}", d, att, det, out, st)
-            for i, (d, att, det, out, st) in enumerate(items, 1)
+            (f"{code}.{i:02d}", att, det, out, st)
+            for i, (_d, att, det, out, st) in enumerate(items, 1)
         ]
-        table(doc, ["N.", "Data", "Attività", "Descrizione", "Risultato / Output", "Stato"], rows,
-              [1.4, 1.5, 4.6, 9.6, 5.0, 3.5])
+        table(doc, ["N.", "Attività", "Descrizione", "Risultato / Output", "Stato"], rows,
+              [1.4, 5.0, 10.6, 5.2, 3.9])
         doc.add_paragraph()
-
-    # ── Documenti consegnati
-    doc.add_page_break()
-    heading(doc, "3. Documenti e script consegnati", 1)
-    docs = [
-        (f"{code}.{i:02d}", d, out, att)
-        for code, _, items in AREE
-        for i, (d, att, _det, out, _st) in enumerate(items, 1)
-        if any(m in out for m in DOC_MARKERS)
-    ]
-    table(doc, ["Rif.", "Data", "Documento / file", "Attività"], docs, [1.6, 1.8, 9.5, 12.6])
-
-    # ── Attività con dipendenze esterne
-    doc.add_paragraph()
-    heading(doc, "4. Attività con passi a carico di terzi", 1)
-    ext = [
-        (f"{code}.{i:02d}", att, st)
-        for code, _, items in AREE
-        for i, (_d, att, _det, _out, st) in enumerate(items, 1)
-        if not st == "Completato"
-    ]
-    table(doc, ["Rif.", "Attività", "Stato"], ext, [1.6, 14, 10])
 
     doc.save(OUT)
     print(f"Creato {OUT} — {tot} attività")
