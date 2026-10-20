@@ -46,7 +46,127 @@ NUMERI = [
     ("Viste dati di compatibilità prodotte e validate", "15 (più 13 viste predisposte)"),
     ("Tabelle mappate rispetto ai grafici", "54"),
     ("Componenti riorganizzati sul livello di servizio unico", "46"),
+    ("Servizi di accesso ai dati creati", "18"),
+    ("File più grande dell'applicazione", "da 1.189 a 340 righe"),
+    ("Caricamento iniziale", "da pacchetto unico di ~1,9 MB a pagine a richiesta"),
+    ("Errori rilevati dai controlli automatici del codice", "da 7 a 0"),
     ("Documenti tecnici consegnati", "oltre 15 (Markdown e PDF)"),
+]
+
+# ── Dal prototipo all'applicazione ──────────────────────────────────────────
+PARTENZA = [
+    ("Accesso ai dati sparso", "La base dati veniva interrogata direttamente da circa 46 "
+     "componenti grafici: ogni modifica a una tabella o a una query costringeva a toccare "
+     "decine di file e non era possibile verificare la logica in modo isolato."),
+    ("Dati finti", "Molte sezioni mostravano numeri inventati scritti nel codice, non i dati "
+     "reali."),
+    ("Indirizzi e chiavi nel codice", "Indirizzi del database scritti a mano: l'applicazione "
+     "non funzionava fuori dal computer dello sviluppatore e non poteva passare da sviluppo a "
+     "produzione senza modifiche al codice."),
+    ("Logica mescolata alla grafica", "Interrogazioni e calcoli dentro i componenti di "
+     "interfaccia: codice difficile da leggere, correggere e riutilizzare."),
+    ("Duplicazione", "Griglie di indicatori, stati di caricamento e stili dei grafici copiati "
+     "in ogni sezione: ogni ritocco andava ripetuto a mano."),
+    ("File troppo grandi", "Alcuni file facevano «tutto» (fino a 1.189 righe)."),
+    ("Nessun controllo di qualità", "Assenza di regole automatiche e test: facile introdurre "
+     "regressioni senza accorgersene."),
+    ("Caricamento lento", "Un unico pacchetto di circa 1,9 MB da scaricare alla prima "
+     "apertura."),
+    ("Nessuna gestione degli errori", "Un errore in un grafico poteva lasciare la pagina "
+     "bianca; gli errori di caricamento non venivano segnalati."),
+    ("Accesso dimostrativo", "Scelta del profilo da un elenco, senza autenticazione reale né "
+     "perimetro dei dati."),
+]
+
+LIVELLI = [
+    ("Componente (presentazione)", "Mostra i dati: card, grafici, tabelle, filtri. Non sa da "
+     "dove arrivano i dati né come si calcolano.", "La card «Personale in servizio»"),
+    ("Hook (orchestrazione)", "Collega il componente ai dati: legge i filtri attivi, avvia il "
+     "caricamento, gestisce attesa, errori e memoria temporanea (cache), evita richieste "
+     "ripetute.", "«Dammi i dati della scheda Età per i filtri scelti»"),
+    ("Service (accesso ai dati)", "Unico punto che parla con la base dati: prepara i parametri "
+     "(anno, ente, comparto…), chiama le funzioni di calcolo, trasforma il risultato nel "
+     "formato atteso dall'interfaccia.", "Chiamata alla funzione di calcolo dell'età e "
+     "conversione dei campi"),
+    ("Configurazione", "Indirizzi e impostazioni letti dall'ambiente (sviluppo, staging, "
+     "produzione), mai scritti nel codice.", "Indirizzo della base dati e di Keycloak"),
+    ("Strato di protezione e base dati", "Verifica l'identità dell'utente e restituisce solo "
+     "i dati del suo perimetro.", "Un responsabile HR vede solo il proprio ente"),
+]
+
+PRIMA_DOPO = [
+    ("Accesso ai dati", "Dentro ~46 componenti", "Centralizzato in 18 servizi"),
+    ("Dati delle sezioni", "In gran parte dimostrativi", "Reali; i dimostrativi residui sono "
+     "segnalati"),
+    ("Configurazione", "Indirizzi scritti nel codice", "Un'unica configurazione per ambiente"),
+    ("Interfaccia", "Elementi duplicati in ogni sezione", "Componenti riutilizzabili e tema "
+     "comune"),
+    ("Dimensione dei file", "Fino a 1.189 righe", "Il più grande ridotto a 340 righe"),
+    ("Caricamento", "Pacchetto unico ~1,9 MB", "Pagine caricate a richiesta"),
+    ("Errori", "Pagina bianca, errori silenziosi", "Protezione dagli errori e avvisi all'utente"),
+    ("Qualità", "Nessun controllo", "Regole automatiche (0 errori), formattazione su 175 file, "
+     "test"),
+    ("Tipi di dato", "Generici, non controllati", "Servizi principali tipizzati sulla base "
+     "dati"),
+    ("Accesso", "Profilo scelto da elenco", "Single sign-on Keycloak, ruoli e perimetro per "
+     "ente"),
+]
+
+DIFFICOLTA = [
+    ("Due anagrafiche enti diverse", "Nella base dati esistevano due elenchi di enti con "
+     "identificativi sovrapposti (gli stessi numeri indicavano enti diversi).",
+     "Scelta di un'anagrafica unica e, in seguito, del codice fiscale dell'ente come chiave "
+     "definitiva."),
+    ("Dati in forma «a dizionario»", "La base dati reale memorizza gli indicatori come coppie "
+     "elemento/valore, mentre l'applicazione si aspetta tabelle per ente.",
+     "Viste di trasformazione che riorganizzano i dati senza modificare l'interfaccia "
+     "(264 enti, 78 metriche)."),
+    ("Codici diversi tra tabelle", "Le causali nei dati usano codici con prefisso (es. A23, "
+     "C01) diversi da quelli delle tabelle di decodifica.", "Tabelle di decodifica dedicate, "
+     "verificate sui dati reali."),
+    ("Fonti non ancora disponibili", "InPA, Syllabus, competenze e PTFP non erano presenti "
+     "negli estratti forniti.", "Viste predisposte vuote e avviso «dati a scopo dimostrativo» "
+     "nelle sezioni interessate, in attesa delle fonti."),
+    ("Accesso Keycloak bloccato dal browser", "Il controllo silenzioso della sessione in un "
+     "riquadro nascosto veniva bloccato dalle politiche di sicurezza del server di identità.",
+     "Passaggio al solo flusso con reindirizzamento, più robusto."),
+    ("Token senza informazioni sull'ente", "Il token di accesso inizialmente non indicava "
+     "l'ente dell'utente.", "Contratto dei claim concordato con chi gestisce Keycloak: ruoli e "
+     "codice fiscale dell'ente (enti_cf)."),
+    ("Orologi dei server non allineati", "Lo strato di protezione rifiutava token validi "
+     "perché l'orologio del server era avanti/indietro di alcuni minuti.", "Tolleranza "
+     "configurabile e richiesta di sincronizzazione oraria al sistemista."),
+    ("Versioni vecchie nei browser", "Gli utenti continuavano a vedere versioni precedenti "
+     "(anche l'icona) a causa della memoria del browser.", "Identificativo di versione, regole "
+     "di cache e banner «Nuova versione disponibile»."),
+    ("Errori dopo sessioni scadute", "Sessioni vecchie generavano errori di autorizzazione "
+     "diffusi.", "Le chiamate amministrative e il tracciamento partono solo dopo un accesso "
+     "valido."),
+]
+
+SICUREZZA = [
+    ("Nessuna credenziale nel codice", "Indirizzi e chiavi letti dalla configurazione; "
+     "verificato che nessun segreto finisca nel pacchetto scaricato dal browser."),
+    ("Accesso diretto ai dati vietato", "Una regola automatica blocca qualsiasi componente che "
+     "provi a interrogare la base dati fuori dai servizi."),
+    ("Accesso aziendale sicuro", "Single sign-on con protocollo PKCE, senza segreti "
+     "nell'applicazione; segnalata la necessità di rigenerare un segreto esposto e di usare un "
+     "client pubblico."),
+    ("Ruoli consentiti espliciti", "Solo i ruoli previsti accedono; gli altri vedono la "
+     "schermata «Accesso non autorizzato»."),
+    ("Perimetro dei dati per ente", "Ogni responsabile HR vede solo i dati del proprio ente "
+     "(codice fiscale dal token); senza ente associato nessun dato aggregato."),
+    ("Separazione dei privilegi", "La vista su tutti gli enti (DFP) non comporta l'accesso al "
+     "pannello di amministrazione."),
+    ("Strato di protezione dei dati", "Servizio intermedio che verifica il token e applica le "
+     "regole di accesso prima di interrogare la base dati; regole di accesso per riga (RLS) "
+     "predisposte per il sistemista."),
+    ("Dati personali", "Segnalato come priorità massima il blocco dell'accesso anonimo alle "
+     "tabelle con dati di login."),
+    ("Registri sicuri", "I registri non contengono dettagli tecnici sensibili; esportazioni "
+     "protette dall'inserimento di formule malevole nei fogli di calcolo."),
+    ("Risorse solo interne", "Font istituzionale incluso nell'applicazione: nessuna richiesta a "
+     "servizi esterni, compatibile con le politiche di sicurezza dei contenuti."),
 ]
 
 # Ogni area: (titolo, periodo, introduzione, [(attività, dettaglio)])
@@ -412,7 +532,50 @@ def main():
     table(doc, ["Indicatore", "Valore"], NUMERI, [11.5, 5])
     doc.add_page_break()
 
-    # 2. Attività per area
+    # 2. Dal prototipo all'applicazione
+    heading(doc, "Dal prototipo all'applicazione", 1)
+    doc.add_paragraph(
+        "Il punto di partenza era un prototipo realizzato rapidamente per mostrare "
+        "l'idea: valido per far vedere il funzionamento, ma non adatto a essere mantenuto "
+        "ed evoluto nel tempo né a lavorare con dati reali e utenti reali. Il lavoro di "
+        "agosto e settembre lo ha trasformato in un'applicazione strutturata, mantenendo "
+        "invariato ciò che l'utente vede."
+    )
+    heading(doc, "La situazione di partenza", 2)
+    table(doc, ["Problema", "Perché era un problema"], PARTENZA, [4.5, 12])
+    doc.add_paragraph()
+
+    heading(doc, "La nuova architettura a livelli", 2)
+    doc.add_paragraph(
+        "L'applicazione è stata organizzata in livelli con responsabilità separate. Ogni "
+        "livello parla solo con quello successivo: il percorso di un dato è sempre "
+        "Componente → Hook → Service → strato di protezione → base dati."
+    )
+    table(doc, ["Livello", "Cosa fa", "Esempio"], LIVELLI, [4, 8.5, 4])
+    doc.add_paragraph()
+    doc.add_paragraph(
+        "Perché conta: se cambia una tabella o una funzione di calcolo si interviene su un "
+        "solo servizio, non su decine di schermate; la logica si può verificare con test "
+        "automatici; le nuove schede si costruiscono riutilizzando gli stessi mattoni. Una "
+        "regola automatica impedisce di aggirare questa organizzazione."
+    )
+    heading(doc, "Confronto prima / dopo", 2)
+    table(doc, ["Aspetto", "Prototipo", "Applicazione attuale"], PRIMA_DOPO, [3.8, 5.6, 7.1])
+    doc.add_paragraph()
+
+    heading(doc, "Difficoltà incontrate e soluzioni", 2)
+    table(doc, ["Difficoltà", "Descrizione", "Soluzione adottata"], DIFFICOLTA, [3.8, 6.4, 6.3])
+    doc.add_paragraph()
+
+    heading(doc, "Sicurezza", 2)
+    doc.add_paragraph(
+        "La sicurezza è stata affrontata su più livelli: codice, accesso, dati e "
+        "infrastruttura."
+    )
+    table(doc, ["Intervento", "Cosa garantisce"], SICUREZZA, [4.5, 12])
+    doc.add_page_break()
+
+    # 3. Attività per area
     heading(doc, "Attività svolte per area", 1)
     for titolo, periodo, intro, righe in AREE:
         heading(doc, titolo, 2)
@@ -425,7 +588,7 @@ def main():
         doc.add_paragraph()
 
     doc.add_page_break()
-    # 3. Cronologia
+    # 4. Cronologia
     heading(doc, "Cronologia", 1)
     doc.add_paragraph("Principali attività per giornata di lavoro.")
     table(doc, ["Data", "Attività"], CRONOLOGIA, [2.5, 14])
