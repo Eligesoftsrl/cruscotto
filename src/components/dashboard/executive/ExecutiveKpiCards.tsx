@@ -296,6 +296,7 @@ export const MockUpBadge = ({ className = "" }: { className?: string }) => (
   <span
     title="Dati dimostrativi (mock-up): fonte non ancora collegata"
     data-testid="mock-up-badge"
+    lang="en"
     className={`text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-dashed border-amber-400 ${className}`}
   >
     Dati mock-up
@@ -439,7 +440,7 @@ export const ExecutiveKpiCard = ({
                 {idx.interconnections.connections.map((c) => (
                   <Tooltip key={c.pillar}>
                     <TooltipTrigger asChild>
-                      <span
+                      <span tabIndex={0}
                         className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded text-xs font-bold border border-border/40 bg-card cursor-help"
                         style={{ borderLeftWidth: 2, borderLeftColor: PILLAR_COLORS[c.pillar] }}
                       >

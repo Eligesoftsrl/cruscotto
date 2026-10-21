@@ -91,7 +91,7 @@ export const PillarExecutiveSummary = ({ journey }: Props) => {
         style={{ background: `hsl(var(${journey.colorVar}) / 0.06)` }}
       >
         <FileText aria-hidden="true" className="h-4 w-4" style={{ color: `hsl(var(${journey.colorVar}))` }} />
-        <span className="text-sm font-extrabold text-foreground">Executive Summary</span>
+        <span lang="en" className="text-sm font-extrabold text-foreground">Executive Summary</span>
         {hasOverrides && (
           <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-bold">
             SIMULAZIONE

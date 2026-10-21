@@ -343,7 +343,7 @@ function IndicatorRow({
             <TooltipProvider delayDuration={150}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <span className="text-[10px] font-bold text-primary cursor-help border-b border-dotted border-primary/40">
+                  <span tabIndex={0} className="text-[10px] font-bold text-primary cursor-help border-b border-dotted border-primary/40">
                     {indicator.id}
                   </span>
                 </TooltipTrigger>

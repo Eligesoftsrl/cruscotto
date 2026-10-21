@@ -408,7 +408,9 @@ export const AppSidebar = ({ nav, onNavigate, mobileOpen = false, onMobileClose 
             className="h-[18px] w-[18px]"
             style={{ color: isExec ? "hsl(var(--primary))" : undefined }}
           />
-          <span className="font-semibold">Vista Executive</span>
+          <span className="font-semibold">
+            Vista <span lang="en">Executive</span>
+          </span>
         </>,
       )}
 

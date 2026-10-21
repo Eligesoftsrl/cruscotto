@@ -28,13 +28,26 @@ export const OnboardingTour = () => {
 
     const driverObj = driver({
       showProgress: true,
-      animate: true,
+      // Accessibilità: frecce per avanzare/tornare, Esc per chiudere; niente animazioni
+      // se l'utente ha chiesto di ridurre il movimento.
+      allowKeyboardControl: true,
+      allowClose: true,
+      animate: !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,
       overlayColor: "rgba(0,0,0,0.6)",
       popoverClass: "onboarding-popover",
       nextBtnText: "Avanti →",
       prevBtnText: "← Indietro",
       doneBtnText: "Inizia!",
       progressText: "{{current}} di {{total}}",
+      // Accessibilità: il riquadro della guida è una finestra di dialogo con titolo e
+      // pulsante di chiusura dal nome leggibile.
+      onPopoverRender: (popover) => {
+        popover.wrapper.setAttribute("role", "dialog");
+        popover.wrapper.setAttribute("aria-modal", "true");
+        popover.title.id = "onboarding-title";
+        popover.wrapper.setAttribute("aria-labelledby", "onboarding-title");
+        popover.closeButton.setAttribute("aria-label", "Chiudi la guida");
+      },
       onDestroyStarted: () => {
         localStorage.setItem(TOUR_KEY, "true");
         driverObj.destroy();
@@ -59,7 +72,7 @@ export const OnboardingTour = () => {
             title: "📂 Sidebar di navigazione",
             description:
               "La sidebar organizza il cruscotto in tre sezioni:<br/>" +
-              "• <strong>Vista Executive</strong> – indicatori strategici aggregati per i 6 Pillar (D1-D6)<br/>" +
+              "• <strong>Vista <span lang='en'>Executive</span></strong> – indicatori strategici aggregati per i 6 Pillar (D1-D6)<br/>" +
               "• <strong>Vista Sintetica</strong> – drill-down per Pillar con indicatori di dettaglio<br/>" +
               "• <strong>Vista Operativa</strong> – dati analitici per fonte (Conto Annuale, InPA, Minerva, SIPrO, Syllabus, KPI Riforma, Lavoro Pubblico)",
             side: "right",

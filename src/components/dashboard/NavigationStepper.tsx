@@ -118,7 +118,12 @@ export const NavigationStepper = ({ nav, onNavigate }: NavigationStepperProps) =
               >
                 {step.icon}
               </span>
-              <span className="max-w-[140px] sm:max-w-[200px] truncate">{step.label}</span>
+              <span
+                lang={step.label === "Executive" ? "en" : undefined}
+                className="max-w-[140px] sm:max-w-[200px] truncate"
+              >
+                {step.label}
+              </span>
             </button>
           </div>
         ))}

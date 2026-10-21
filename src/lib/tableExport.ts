@@ -129,6 +129,8 @@ export async function exportExcel(tables: ExportTable[], filename: string) {
     used.add(n);
     XLSX.utils.book_append_sheet(wb, ws, n);
   });
+  // Accessibilità: titolo e autore del file (letti da Excel e dai lettori di schermo).
+  wb.Props = { Title: tables[0]?.title || filename, Author: "Cruscotto HR", Subject: filename };
   const out = XLSX.write(wb, { bookType: "xlsx", type: "array" });
   triggerDownload(
     new Blob([out], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }),
@@ -148,6 +150,20 @@ export async function exportPDF(tables: ExportTable[], filename: string, docTitl
   const doc = new jsPDF({ orientation: maxCols > 5 ? "landscape" : "portrait", unit: "pt", format: "a4" });
   const marginX = 32;
   let first = true;
+
+  // Accessibilità: metadati del documento (titolo mostrato dal lettore PDF, lingua italiana).
+  // NB: jsPDF non produce PDF «taggati»; per l'uso con lettori di schermo l'alternativa
+  // accessibile è l'esportazione Excel/CSV della stessa tabella (offerta nello stesso menu).
+  const title = docTitle || tables[0]?.title || filename;
+  doc.setProperties({
+    title,
+    subject: tables.map((t) => t.title).filter(Boolean).join(" · ") || title,
+    author: "Cruscotto HR",
+    creator: "Cruscotto HR",
+    keywords: "Cruscotto HR, esportazione dati",
+  });
+  doc.setLanguage("it");
+  doc.viewerPreferences({ DisplayDocTitle: true });
 
   tables.forEach((t) => {
     let startY = 48;

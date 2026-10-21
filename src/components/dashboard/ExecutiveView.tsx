@@ -311,7 +311,9 @@ export const ExecutiveView = ({
         {/* Header */}
         <div className="flex items-end justify-between">
           <div>
-            <h1 className="text-xl font-bold text-foreground">Vista Executive</h1>
+            <h1 className="text-xl font-bold text-foreground">
+              Vista <span lang="en">Executive</span>
+            </h1>
             <p className="text-sm text-muted-foreground mt-0.5">
               <span className="inline-flex items-center gap-1.5 flex-wrap">
                 <span className="px-1.5 py-0.5 rounded text-xs font-bold bg-primary text-primary-foreground">

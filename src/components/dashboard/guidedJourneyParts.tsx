@@ -102,7 +102,7 @@ const InterconnectionBadges = ({ indicatorId }: { indicatorId: string }) => {
         {conns.connections.map((c) => (
           <Tooltip key={c.pillar}>
             <TooltipTrigger asChild>
-              <span
+              <span tabIndex={0}
                 className="text-[10px] font-bold px-1.5 py-0.5 rounded-full cursor-help"
                 style={{
                   background: `${PILLAR_COLORS[c.pillar]}20`,
@@ -184,7 +184,7 @@ const NarrativeKpiCard = ({
               <TooltipProvider delayDuration={150}>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="text-[10px] text-muted-foreground font-mono cursor-help border-b border-dotted border-muted-foreground/40">
+                    <span tabIndex={0} className="text-[10px] text-muted-foreground font-mono cursor-help border-b border-dotted border-muted-foreground/40">
                       {idx.id}
                     </span>
                   </TooltipTrigger>
@@ -360,7 +360,7 @@ const ImpactCard = ({
         <TooltipProvider delayDuration={150}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <span className="text-xs font-bold text-foreground cursor-help border-b border-dotted border-muted-foreground/40">
+              <span tabIndex={0} className="text-xs font-bold text-foreground cursor-help border-b border-dotted border-muted-foreground/40">
                 {impact.indicatorId} — {impact.label}
               </span>
             </TooltipTrigger>

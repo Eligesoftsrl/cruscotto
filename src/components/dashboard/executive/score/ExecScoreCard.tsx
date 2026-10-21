@@ -435,7 +435,7 @@ export const ExecScoreCard = ({
                 return (
                   <Tooltip key={p}>
                     <TooltipTrigger asChild>
-                      <span
+                      <span tabIndex={0}
                         className="inline-flex items-center gap-1 px-2 py-1 rounded-md border border-border/40 bg-card cursor-help"
                         style={{ borderLeftWidth: 3, borderLeftColor: PILLAR_COLORS[p] }}
                       >

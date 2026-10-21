@@ -50,6 +50,23 @@ e con prove di navigazione da tastiera.
   scomparsa (pulsante «Menu» in alto a sinistra, chiusura con Esc); le card e i filtri vanno a
   capo e la pagina non scorre in orizzontale fino a 320 px di larghezza.
 
+## Fase 1-bis · Verifiche avanzate e WCAG 2.2 — completata
+
+- **Scadenza della sessione**: chi sta lavorando resta collegato automaticamente; in caso di
+  inattività compare un avviso 2 minuti prima con «Resta collegato» o «Esci»; a sessione
+  scaduta, «Accedi di nuovo» riporta alla stessa pagina.
+- **Spaziatura del testo**: aumentando interlinea e spaziature nessun testo viene tagliato.
+- **Suggerimenti**: si aprono anche da tastiera e si chiudono con Esc.
+- **Riduzione del movimento**: con l'impostazione di sistema «riduci movimento» il Cruscotto
+  elimina animazioni e transizioni, anche dei grafici e della guida iniziale.
+- **Guida iniziale**: utilizzabile da tastiera (frecce ed Esc).
+- **Focus non coperto** e **dimensione minima dei pulsanti** (criteri WCAG 2.2) verificati.
+- **Termini inglesi**: «Executive» e «Mock-up» letti con pronuncia inglese.
+- **File esportati**: Excel con titolo e autore (versione accessibile), PDF con titolo e lingua
+  (versione per la stampa).
+- **Controllo automatico permanente**: verifica WCAG 2.0/2.1/2.2 A e AA su 28 pagine con due
+  profili, da eseguire prima di ogni rilascio.
+
 ## Prossime fasi
 - **Fase 2 · Adempimenti**: pagina «Dichiarazione di Accessibilità» secondo il modello AgID
   e canale per le segnalazioni (in attesa dei riferimenti dell'amministrazione responsabile).

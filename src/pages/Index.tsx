@@ -223,7 +223,7 @@ const Index = () => {
           />
           <NavigationStepper nav={nav} onNavigate={setNav} />
           {/* GlobalFilterBar rimosso: i filtri sono ora le sole "pill" in alto (FilterPills) su indicazione committente */}
-          <main id="main-content" tabIndex={-1} className="flex-1 flex flex-col min-w-0 outline-none" role="main">
+          <main id="main-content" tabIndex={-1} className="flex-1 flex flex-col min-w-0 overflow-x-clip outline-none" role="main">
             {renderContent()}
           </main>
         </div>

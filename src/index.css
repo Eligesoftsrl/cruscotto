@@ -222,3 +222,32 @@
 .nd-mode span.inline-flex.items-center.text-xs.font-semibold {
   display: none !important;
 }
+
+/* ---------------------------------------------------------------------------
+   Accessibilità (WCAG 2.1/2.2)
+--------------------------------------------------------------------------- */
+/* 2.4.11 Focus non coperto: lo scorrimento verso l'elemento con il focus lascia spazio
+   all'intestazione fissa (barra istituzionale + barra superiore + percorso). */
+html {
+  scroll-padding-top: 9rem;
+  scroll-padding-bottom: 4rem;
+}
+
+/* 2.3.3 Animazioni da interazioni: rispetta la preferenza «riduci movimento» del sistema. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Tour guidato: pulsanti e chiusura ben visibili da tastiera. */
+.driver-popover button:focus-visible,
+.driver-popover-close-btn:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}

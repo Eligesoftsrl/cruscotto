@@ -13,6 +13,7 @@ import { logErrore } from "@/services/admin/logger";
 import { Unauthorized } from "@/components/Unauthorized";
 import Login from "./pages/Login";
 import { LiveRegion, LoadingAnnouncer, useDocumentTitle } from "@/lib/a11y/announcer";
+import { SessionTimeoutWarning } from "@/components/SessionTimeoutWarning";
 
 // Route lazy-loaded: riducono il bundle iniziale (code-splitting).
 const Welcome = lazy(() => import("./pages/Welcome"));
@@ -97,6 +98,7 @@ const App = () => (
           <AuthProvider>
             <UsageTracker />
             <RouteTitle />
+            <SessionTimeoutWarning />
             <RoutedErrorBoundary>
               <Suspense fallback={<FullscreenSpinner />}>
                 <Routes>

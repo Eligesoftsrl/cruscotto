@@ -34,8 +34,8 @@ interface TableExportProps {
 
 const FORMATS: { key: ExportFormat; label: string; icon: typeof FileText }[] = [
   { key: "csv", label: "CSV", icon: FileText },
-  { key: "xlsx", label: "Excel (.xlsx)", icon: FileSpreadsheet },
-  { key: "pdf", label: "PDF", icon: FileType },
+  { key: "xlsx", label: "Excel (.xlsx) · accessibile", icon: FileSpreadsheet },
+  { key: "pdf", label: "PDF · per la stampa", icon: FileType },
 ];
 
 /**
