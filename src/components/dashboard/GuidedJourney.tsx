@@ -1,36 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Check,
-  ChevronRight,
-  ChevronDown,
-  ChevronUp,
-  ExternalLink,
-  Layers,
-  Compass,
-  CircleDot,
-  Circle,
-  TrendingUp,
-  TrendingDown,
-  Minus,
-  BookOpen,
-  SlidersHorizontal,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, CircleDot, Circle } from "lucide-react";
 import { PillarExecutiveSummary } from "./PillarExecutiveSummary";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Slider } from "@/components/ui/slider";
-import { Progress } from "@/components/ui/progress";
-import type {
-  GuidedJourneyDef,
-  JourneyStep,
-  CrossImpact,
-  OperativeCorrelation,
-} from "@/data/guidedJourneys";
-import { executiveIndicesStatic } from "./executive/executiveData";
-import { getNarrative, narrativeThresholds } from "@/data/narrativeGenerators";
-import { interconnessioni, PILLAR_COLORS } from "./executive/executiveInterconnessioni";
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
+
+import type { GuidedJourneyDef } from "@/data/guidedJourneys";
+
 import type { NavState } from "./AppSidebar";
 
 import { StepPanel } from "./guidedJourneyParts";
@@ -130,7 +103,8 @@ export const GuidedJourney = ({
                       {isCompleted ? (
                         <Check aria-hidden="true" className="h-4 w-4 text-primary" />
                       ) : isActive ? (
-                        <CircleDot aria-hidden="true"
+                        <CircleDot
+                          aria-hidden="true"
                           className="h-4 w-4"
                           style={{ color: `hsl(var(${journey.colorVar}))` }}
                         />
@@ -172,7 +146,8 @@ export const GuidedJourney = ({
                         {isCompleted ? (
                           <Check aria-hidden="true" className="h-5 w-5 text-primary" />
                         ) : isActive ? (
-                          <CircleDot aria-hidden="true"
+                          <CircleDot
+                            aria-hidden="true"
                             className="h-5 w-5"
                             style={{ color: `hsl(var(${journey.colorVar}))` }}
                           />

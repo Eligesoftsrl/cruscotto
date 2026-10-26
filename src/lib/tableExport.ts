@@ -86,13 +86,19 @@ const sanitize = (name: string) =>
 // ---------------------------------------------------------------------------
 // CSV (separatore ";" + BOM -> compatibile con Excel italiano)
 // ---------------------------------------------------------------------------
+/**
+ * Cella CSV sicura: neutralizza la «formula injection» (=, +, -, @, tab, a capo iniziali
+ * verrebbero eseguiti come formule da Excel/Sheets) senza alterare i numeri negativi.
+ */
+export function csvCell(v: string | number | null | undefined): string {
+  let s = String(v ?? "");
+  const isNumber = typeof v === "number" || /^-?\d+([.,]\d+)?%?$/.test(s.trim());
+  if (!isNumber && /^[=+\-@\t\r]/.test(s)) s = "'" + s;
+  return `"${s.replace(/"/g, '""')}"`;
+}
+
 export function exportCSV(tables: ExportTable[], filename: string) {
-  const esc = (v: string | number) => {
-    let s = String(v ?? "");
-    // Neutralizza la formula/CSV injection (Excel/Sheets).
-    if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
-    return `"${s.replace(/"/g, '""')}"`;
-  };
+  const esc = csvCell;
   const blocks = tables.map((t) => {
     const lines: string[] = [];
     if (tables.length > 1) lines.push(esc(t.title));
@@ -122,7 +128,7 @@ export async function exportExcel(tables: ExportTable[], filename: string) {
       );
       return { wch: Math.min(Math.max(maxLen + 2, 8), 60) };
     });
-    let name = sanitize(t.title).slice(0, 28) || `Foglio${i + 1}`;
+    const name = sanitize(t.title).slice(0, 28) || `Foglio${i + 1}`;
     let n = name;
     let k = 1;
     while (used.has(n)) n = `${name}_${k++}`.slice(0, 31);

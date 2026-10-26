@@ -18,7 +18,9 @@ import os
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from typing import Literal
+
+from pydantic import BaseModel, Field
 
 from security import (
     current_claims,
@@ -85,7 +87,7 @@ def list_flags(_: dict = Depends(require_authorized)):
 
 
 class FlagIn(BaseModel):
-    key: str
+    key: str = Field(max_length=100)
     enabled: bool
 
 
@@ -120,9 +122,9 @@ def list_accessi(_: dict = Depends(require_admin), limit: int = 200):
 
 
 class AccessoIn(BaseModel):
-    esito: str = "success"          # 'success' | 'fail'
-    ip: str | None = None
-    user_agent: str | None = None
+    esito: Literal["success", "fail"] = "success"  # vincolo CHECK della tabella log_accessi
+    ip: str | None = Field(default=None, max_length=64)
+    user_agent: str | None = Field(default=None, max_length=512)
 
 
 @app.post("/admin/log-accessi")
@@ -153,8 +155,8 @@ def list_eventi(_: dict = Depends(require_admin), limit: int = 200):
 
 
 class EventoIn(BaseModel):
-    azione: str
-    sezione: str | None = None
+    azione: str = Field(max_length=100)
+    sezione: str | None = Field(default=None, max_length=200)
     dettagli: dict | None = None
 
 
@@ -188,10 +190,11 @@ def list_errori(_: dict = Depends(require_admin), limit: int = 200):
 
 
 class ErroreIn(BaseModel):
-    messaggio: str
-    livello: str = "error"          # 'error' | 'warn'
-    origine: str | None = None      # 'query' | 'boundary' | 'runtime'
-    stack: str | None = None
+    # Limiti di lunghezza: evitano registri gonfiati ad arte (abuso / DoS).
+    messaggio: str = Field(max_length=2000)
+    livello: Literal["error", "warn"] = "error"
+    origine: str | None = Field(default=None, max_length=50)  # 'query' | 'boundary' | 'runtime'
+    stack: str | None = Field(default=None, max_length=8000)
 
 
 @app.post("/admin/log-errori")

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Search, Check, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+
 import { indicatorCatalog, pillars, sources, type CatalogIndicator } from "@/data/indicatorCatalog";
 
 interface IndicatorPickerProps {
@@ -42,8 +42,12 @@ export function IndicatorPicker({ selected, onToggle }: IndicatorPickerProps) {
     <div className="space-y-3">
       {/* Search */}
       <div className="relative">
-        <Search aria-hidden="true" className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input aria-label="Cerca indicatore"
+        <Search
+          aria-hidden="true"
+          className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
+        />
+        <Input
+          aria-label="Cerca indicatore"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Cerca indicatore..."
@@ -116,7 +120,9 @@ export function IndicatorPicker({ selected, onToggle }: IndicatorPickerProps) {
                         isSelected ? "bg-primary border-primary" : "border-muted-foreground/30"
                       }`}
                     >
-                      {isSelected && <Check aria-hidden="true" className="h-3 w-3 text-primary-foreground" />}
+                      {isSelected && (
+                        <Check aria-hidden="true" className="h-3 w-3 text-primary-foreground" />
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">

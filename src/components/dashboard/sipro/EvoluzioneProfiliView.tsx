@@ -1,10 +1,10 @@
 import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { RankedBarChart } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
+
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useCatalogoRiepilogo, useCatalogoDistribuzione } from "@/hooks/useSchedaSiproProfili";
-import { LoadingSpinner, ErrorBox, KpiBox, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
+import { LoadingSpinner, ErrorBox, KpiBox } from "./_shared";
 
 /** S14 - Evoluzione Profili: KPI (totali/attivi/eliminati) + donut per origine. */
 export const EvoluzioneProfiliView = () => {
@@ -21,7 +21,11 @@ export const EvoluzioneProfiliView = () => {
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={setScope} />
-      {riepilogo.error ? <ErrorBox error={riepilogo.error} /> : riepilogo.isLoading ? <LoadingSpinner /> : (
+      {riepilogo.error ? (
+        <ErrorBox error={riepilogo.error} />
+      ) : riepilogo.isLoading ? (
+        <LoadingSpinner />
+      ) : (
         <div className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <KpiBox label="Profili totali" value={r?.profili_totali ?? 0} />
@@ -29,10 +33,10 @@ export const EvoluzioneProfiliView = () => {
             <KpiBox label="Eliminati" value={r?.eliminati ?? "N/D"} />
           </div>
           <div className="bg-card border rounded-xl p-5">
-            <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Distribuzione profili di ruolo per origine</p>
-            {origine.isLoading ? <LoadingSpinner /> : (
-              <RankedBarChart data={data} multicolor />
-            )}
+            <p className="text-xs font-semibold text-muted-foreground text-center mb-3">
+              Distribuzione profili di ruolo per origine
+            </p>
+            {origine.isLoading ? <LoadingSpinner /> : <RankedBarChart data={data} multicolor />}
           </div>
         </div>
       )}

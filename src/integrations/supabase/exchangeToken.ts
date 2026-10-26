@@ -24,7 +24,14 @@ const explicit = ((import.meta.env.VITE_EXCHANGE_URL as string | undefined) ?? "
 const proxyOff = explicit.toLowerCase() === "off";
 const fallback = import.meta.env.PROD ? "/auth" : "";
 
-export const EXCHANGE_URL = proxyOff ? "" : (explicit || fallback).replace(/\/+$/, "");
+/** Rimuove le barre finali senza espressioni regolari (nessun rischio ReDoS). */
+const trimTrailingSlashes = (u: string): string => {
+  let end = u.length;
+  while (end > 0 && u[end - 1] === "/") end--;
+  return u.slice(0, end);
+};
+
+export const EXCHANGE_URL = proxyOff ? "" : trimTrailingSlashes(explicit || fallback);
 
 export const EXCHANGE_ENABLED = EXCHANGE_URL.length > 0;
 

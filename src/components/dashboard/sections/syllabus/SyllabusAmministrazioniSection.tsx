@@ -11,7 +11,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  Legend,
 } from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 

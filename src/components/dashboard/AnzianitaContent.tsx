@@ -1,17 +1,27 @@
 import { useIstituzione } from "@/hooks/useIstituzione";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
-import { useState } from "react";
+
 import { useQuery } from "@tanstack/react-query";
 import { searchEnti } from "@/services/ca/filtriService";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  AreaChart, Area, Legend,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  Legend,
 } from "recharts";
 import { useFilters } from "@/contexts/FilterContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEnteScope } from "@/hooks/useEnteScope";
 import {
-  useAnzianitaKpi, useAnzianitaFasce, useAnzianitaEvoluzione,
+  useAnzianitaKpi,
+  useAnzianitaFasce,
+  useAnzianitaEvoluzione,
 } from "@/hooks/useSchedaAnzianita";
 import type { Genere, AnzFiltri } from "@/services/ca/anzianitaService";
 
@@ -22,14 +32,26 @@ const n1 = (v: number | null | undefined) =>
 
 /* ------------------------------ KPI card --------------------------------- */
 const Kpi = ({
-  titolo, valore, unita, accent,
+  titolo,
+  valore,
+  unita,
+  accent,
 }: {
-  titolo: string; valore: string; unita?: string; accent: string;
+  titolo: string;
+  valore: string;
+  unita?: string;
+  accent: string;
 }) => (
-  <div className="flex-1 min-w-[190px] rounded-lg border bg-card p-4" style={{ borderLeft: `4px solid ${accent}` }}>
+  <div
+    className="flex-1 min-w-[190px] rounded-lg border bg-card p-4"
+    style={{ borderLeft: `4px solid ${accent}` }}
+  >
     <p className="text-xs text-muted-foreground">{titolo}</p>
     <p className="mt-1 text-3xl font-bold text-foreground">
-      {valore}{unita ? <span className="ml-1 text-base font-medium text-muted-foreground">{unita}</span> : null}
+      {valore}
+      {unita ? (
+        <span className="ml-1 text-base font-medium text-muted-foreground">{unita}</span>
+      ) : null}
     </p>
   </div>
 );
@@ -85,7 +107,10 @@ export const AnzianitaContent = () => {
   // Pivot dell'evoluzione: x=anno, serie=fascia, y=percentuale.
   const fasceOrdinate = [
     ...new Map(
-      evoRows.slice().sort((a, b) => a.ordine - b.ordine).map((r) => [r.ordine, r.fascia]),
+      evoRows
+        .slice()
+        .sort((a, b) => a.ordine - b.ordine)
+        .map((r) => [r.ordine, r.fascia]),
     ).values(),
   ];
   const evoByAnno = new Map<number, Record<string, number>>();
@@ -100,25 +125,54 @@ export const AnzianitaContent = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm font-semibold text-foreground">
-          {ente ? <>Amministrazione: <span className="text-primary">{ente.descrizione}</span></> : enteScope.label ? <>Amministrazione: <span className="text-primary">{enteScope.label}</span></> : "Totale PA"} · Conto Annuale RGS · Anno {filtri.anno}
+          {ente ? (
+            <>
+              Amministrazione: <span className="text-primary">{ente.descrizione}</span>
+            </>
+          ) : enteScope.label ? (
+            <>
+              Amministrazione: <span className="text-primary">{enteScope.label}</span>
+            </>
+          ) : (
+            "Totale PA"
+          )}{" "}
+          · Conto Annuale RGS · Anno {filtri.anno}
         </p>
         <div className="relative w-[320px] max-w-full" style={{ display: "none" }}>
           <input
             aria-label="Cerca un ente"
             value={ente ? ente.descrizione : enteTerm}
-            onChange={(e) => { setEnte(null); setEnteTerm(e.target.value); }}
+            onChange={(e) => {
+              setEnte(null);
+              setEnteTerm(e.target.value);
+            }}
             placeholder="Cerca un ente (es. Roma Capitale)…"
             className="w-full rounded border bg-background px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-ring"
           />
           {ente && (
-            <button type="button" aria-label="Cancella ente selezionato" onClick={() => { setEnte(null); setEnteTerm(""); }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-muted-foreground hover:text-destructive">✕</button>
+            <button
+              type="button"
+              aria-label="Cancella ente selezionato"
+              onClick={() => {
+                setEnte(null);
+                setEnteTerm("");
+              }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-muted-foreground hover:text-destructive"
+            >
+              ✕
+            </button>
           )}
           {!ente && (entiQ.data?.length ?? 0) > 0 && (
             <div className="absolute z-50 mt-1 w-full max-h-[240px] overflow-y-auto rounded-lg border bg-card shadow-lg">
               {entiQ.data!.map((o) => (
-                <button key={o.codice} onClick={() => { setEnte({ codice: o.codice, descrizione: o.descrizione }); setEnteTerm(""); }}
-                  className="block w-full text-left px-3 py-1.5 text-[11px] text-foreground hover:bg-muted">
+                <button
+                  key={o.codice}
+                  onClick={() => {
+                    setEnte({ codice: o.codice, descrizione: o.descrizione });
+                    setEnteTerm("");
+                  }}
+                  className="block w-full text-left px-3 py-1.5 text-[11px] text-foreground hover:bg-muted"
+                >
                   {o.descrizione} <span className="text-muted-foreground">({o.codice})</span>
                 </button>
               ))}
@@ -129,46 +183,88 @@ export const AnzianitaContent = () => {
 
       {/* ---------------------------- KPI CARDS ---------------------------- */}
       <div className="flex flex-wrap gap-4">
-        <Kpi accent="hsl(220,60%,50%)" titolo="Personale totale"
-          valore={k ? nf.format(k.personale) : "\u2014"} />
-        <Kpi accent="hsl(25,85%,55%)" titolo="Fascia prevalente"
-          valore={k?.fascia_prevalente ?? "\u2014"} />
-        <Kpi accent="hsl(280,45%,55%)" titolo="% fascia prevalente" unita="%"
-          valore={n1(k?.fascia_prevalente_pct)} />
-        <Kpi accent="hsl(145,50%,42%)" titolo="Anzianità media stimata" unita="anni"
-          valore={n1(k?.anzianita_media)} />
+        <Kpi
+          accent="hsl(220,60%,50%)"
+          titolo="Personale totale"
+          valore={k ? nf.format(k.personale) : "\u2014"}
+        />
+        <Kpi
+          accent="hsl(25,85%,55%)"
+          titolo="Fascia prevalente"
+          valore={k?.fascia_prevalente ?? "\u2014"}
+        />
+        <Kpi
+          accent="hsl(280,45%,55%)"
+          titolo="% fascia prevalente"
+          unita="%"
+          valore={n1(k?.fascia_prevalente_pct)}
+        />
+        <Kpi
+          accent="hsl(145,50%,42%)"
+          titolo="Anzianità media stimata"
+          unita="anni"
+          valore={n1(k?.anzianita_media)}
+        />
       </div>
 
       {/* ------------------- DISTRIBUZIONE + EVOLUZIONE ------------------- */}
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="rounded-lg border bg-card p-5">
-          <h3 className="mb-3 text-sm font-semibold text-foreground">Distribuzione per anzianità</h3>
+          <h3 className="mb-3 text-sm font-semibold text-foreground">
+            Distribuzione per anzianità
+          </h3>
           <ResponsiveContainer width="100%" height={340}>
             <BarChart data={fasceRows} barGap={2} margin={{ left: 10, right: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
               <XAxis dataKey="fascia" tick={{ fontSize: 10 }} />
               <YAxis tick={{ fontSize: 10 }} tickFormatter={(v: number) => nf.format(v)} />
-              <Tooltip formatter={(v: number, name) => [nf.format(Number(v)), name === "uomini" ? "Uomini" : "Donne"]} />
+              <Tooltip
+                formatter={(v: number, name) => [
+                  nf.format(Number(v)),
+                  name === "uomini" ? "Uomini" : "Donne",
+                ]}
+              />
               <Legend formatter={(v) => (v === "uomini" ? "Uomini" : "Donne")} />
-              <Bar dataKey="uomini" fill="hsl(220,60%,50%)" fillOpacity={opUomini} radius={[3, 3, 0, 0]} />
-              <Bar dataKey="donne" fill="hsl(25,85%,55%)" fillOpacity={opDonne} radius={[3, 3, 0, 0]} />
+              <Bar
+                dataKey="uomini"
+                fill="hsl(220,60%,50%)"
+                fillOpacity={opUomini}
+                radius={[3, 3, 0, 0]}
+              />
+              <Bar
+                dataKey="donne"
+                fill="hsl(25,85%,55%)"
+                fillOpacity={opDonne}
+                radius={[3, 3, 0, 0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         <div className="rounded-lg border bg-card p-5">
-          <h3 className="mb-3 text-sm font-semibold text-foreground">Evoluzione composizione per anzianità</h3>
+          <h3 className="mb-3 text-sm font-semibold text-foreground">
+            Evoluzione composizione per anzianità
+          </h3>
           <ResponsiveContainer width="100%" height={340}>
             <AreaChart data={evoPivot} stackOffset="expand" margin={{ left: 0, right: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
               <XAxis dataKey="anno" tick={{ fontSize: 10 }} />
-              <YAxis tick={{ fontSize: 10 }} tickFormatter={(v: number) => `${Math.round(v * 100)}%`} />
+              <YAxis
+                tick={{ fontSize: 10 }}
+                tickFormatter={(v: number) => `${Math.round(v * 100)}%`}
+              />
               <Tooltip formatter={(v: number) => `${n1(Number(v))}%`} />
               <Legend />
               {fasceOrdinate.map((f, i) => (
-                <Area key={f} type="monotone" dataKey={f} stackId="1"
+                <Area
+                  key={f}
+                  type="monotone"
+                  dataKey={f}
+                  stackId="1"
                   stroke={FASCIA_COLORS[i % FASCIA_COLORS.length]}
-                  fill={FASCIA_COLORS[i % FASCIA_COLORS.length]} fillOpacity={0.7} />
+                  fill={FASCIA_COLORS[i % FASCIA_COLORS.length]}
+                  fillOpacity={0.7}
+                />
               ))}
             </AreaChart>
           </ResponsiveContainer>
@@ -178,18 +274,33 @@ export const AnzianitaContent = () => {
       {/* ------------------- TABELLA DETTAGLIO ------------------- */}
       <div className="rounded-lg border bg-card p-5">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <h3 className="text-sm font-semibold text-foreground">Dettaglio per fascia di anzianità</h3>
-          <TableExport filename="anzianita_dettaglio_fascia" title="Dettaglio per fascia di anzianità" />
+          <h3 className="text-sm font-semibold text-foreground">
+            Dettaglio per fascia di anzianità
+          </h3>
+          <TableExport
+            filename="anzianita_dettaglio_fascia"
+            title="Dettaglio per fascia di anzianità"
+          />
         </div>
         <div className="overflow-x-auto">
           <table aria-label="Dettaglio per fascia di anzianità" className="w-full text-xs">
             <thead>
               <tr className="border-b text-left text-muted-foreground">
-                <th scope="col" className="py-2 pr-2">Fascia</th>
-                <th scope="col" className="py-2 pr-2 text-right">Uomini</th>
-                <th scope="col" className="py-2 pr-2 text-right">Donne</th>
-                <th scope="col" className="py-2 pr-2 text-right">Totale</th>
-                <th scope="col" className="py-2 text-right">% sul totale</th>
+                <th scope="col" className="py-2 pr-2">
+                  Fascia
+                </th>
+                <th scope="col" className="py-2 pr-2 text-right">
+                  Uomini
+                </th>
+                <th scope="col" className="py-2 pr-2 text-right">
+                  Donne
+                </th>
+                <th scope="col" className="py-2 pr-2 text-right">
+                  Totale
+                </th>
+                <th scope="col" className="py-2 text-right">
+                  % sul totale
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -198,12 +309,18 @@ export const AnzianitaContent = () => {
                   <td className="py-2 pr-2 font-medium text-foreground">{r.fascia}</td>
                   <td className="py-2 pr-2 text-right">{nf.format(r.uomini)}</td>
                   <td className="py-2 pr-2 text-right">{nf.format(r.donne)}</td>
-                  <td className="py-2 pr-2 text-right font-semibold text-foreground">{nf.format(r.tutti)}</td>
+                  <td className="py-2 pr-2 text-right font-semibold text-foreground">
+                    {nf.format(r.tutti)}
+                  </td>
                   <td className="py-2 text-right">{n1(r.percentuale)}%</td>
                 </tr>
               ))}
               {fasceRows.length === 0 && (
-                <tr><td colSpan={5} className="py-6 text-center text-muted-foreground">Nessun dato</td></tr>
+                <tr>
+                  <td colSpan={5} className="py-6 text-center text-muted-foreground">
+                    Nessun dato
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>

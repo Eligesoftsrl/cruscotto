@@ -90,9 +90,7 @@ export const BenchmarkDotPlot = () => {
                   style={{
                     left: "55%",
                     transform: "translateX(-50%)",
-                    borderColor: row.isHighlighted
-                      ? "hsl(var(--chart-red))"
-                      : "hsl(var(--chart-red))",
+                    borderColor: "hsl(var(--chart-red))",
                     background: "transparent",
                   }}
                 />

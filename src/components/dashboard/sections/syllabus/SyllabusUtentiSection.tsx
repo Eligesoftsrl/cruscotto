@@ -5,7 +5,6 @@ import {
   fetchSyllabusPartecipazioni,
 } from "@/services/dw/syllabusService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 
 export const SyllabusUtentiSection = () => {
   const [entiData, setEntiData] = useState<any[]>([]);

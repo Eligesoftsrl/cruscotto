@@ -24,9 +24,13 @@ export interface AdminState {
   errori: ErrorLog[];
 }
 
-const uid = (): string =>
-  globalThis.crypto?.randomUUID?.() ??
-  `id-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+// Identificativi generati con il generatore crittografico del browser (mai Math.random).
+const uid = (): string => {
+  if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
+  const b = new Uint8Array(16);
+  globalThis.crypto.getRandomValues(b);
+  return `id-${Array.from(b, (x) => x.toString(16).padStart(2, "0")).join("")}`;
+};
 
 // -- Mapper: righe DB (snake_case) -> tipi frontend (camelCase) --
 type Row = Record<string, unknown>;
@@ -95,7 +99,10 @@ async function loadAll(): Promise<void> {
       const dbFlags = flagsRows.map(mapFlag);
       const known = new Set(dbFlags.map((f) => f.key));
       const merged = dbFlags.length
-        ? [...dbFlags, ...DEFAULT_FEATURE_FLAGS.filter((d) => !known.has(d.key)).map((d) => ({ ...d }))]
+        ? [
+            ...dbFlags,
+            ...DEFAULT_FEATURE_FLAGS.filter((d) => !known.has(d.key)).map((d) => ({ ...d })),
+          ]
         : state.flags;
       setState({
         flags: merged,
@@ -300,10 +307,9 @@ export function exportCsv(filename: string, rows: Record<string, unknown>[]) {
     if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
     return `"${s.replace(/"/g, '""')}"`;
   };
-  const csv = [
-    headers.join(","),
-    ...rows.map((r) => headers.map((h) => esc(r[h])).join(",")),
-  ].join("\n");
+  const csv = [headers.join(","), ...rows.map((r) => headers.map((h) => esc(r[h])).join(","))].join(
+    "\n",
+  );
   const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");

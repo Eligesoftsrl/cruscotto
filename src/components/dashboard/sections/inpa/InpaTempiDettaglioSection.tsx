@@ -10,7 +10,6 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-  ReferenceLine,
 } from "recharts";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 

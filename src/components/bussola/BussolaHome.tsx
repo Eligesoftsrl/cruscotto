@@ -14,7 +14,6 @@ import {
   Zap,
   Target,
   FileText,
-  Info,
   BookOpen,
   Route,
   ArrowUpRight,
@@ -22,12 +21,12 @@ import {
   Plus,
   Sparkles,
 } from "lucide-react";
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { bussolaPercorsi, type BussolaPercorsoData } from "@/data/bussolaPercorsi";
 import { guidedJourneys, type GuidedJourneyDef } from "@/data/guidedJourneys";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Progress } from "@/components/ui/progress";
+
 import { CommunityJourneys } from "./CommunityJourneys";
 import { TemplateGallery } from "./TemplateGallery";
 import type { JourneyTemplate } from "@/data/journeyTemplates";
@@ -361,7 +360,8 @@ export const BussolaHome = ({
                       <span className="text-xs font-semibold text-muted-foreground">
                         {count} percorsi disponibili
                       </span>
-                      <ChevronRight aria-hidden="true"
+                      <ChevronRight
+                        aria-hidden="true"
                         className={`h-4 w-4 transition ${isExpanded ? "rotate-90 text-primary" : "text-muted-foreground/70 group-hover:text-primary"}`}
                       />
                     </div>
@@ -498,7 +498,10 @@ export const BussolaHome = ({
                   Executive Summary · Rapporto Esteso · Rapporto Tecnico
                 </p>
               </div>
-              <ChevronRight aria-hidden="true" className="h-5 w-5 text-muted-foreground/70 group-hover:text-primary transition flex-shrink-0" />
+              <ChevronRight
+                aria-hidden="true"
+                className="h-5 w-5 text-muted-foreground/70 group-hover:text-primary transition flex-shrink-0"
+              />
             </button>
 
             {/* Footer */}
@@ -515,7 +518,10 @@ export const BussolaHome = ({
           className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center justify-center group"
           title="Crea percorso personalizzato"
         >
-          <Plus aria-hidden="true" className="h-6 w-6 group-hover:rotate-90 transition-transform duration-200" />
+          <Plus
+            aria-hidden="true"
+            className="h-6 w-6 group-hover:rotate-90 transition-transform duration-200"
+          />
         </button>
       </main>
     </TooltipProvider>
@@ -576,7 +582,10 @@ export function PercorsoRow({
           )}
         </div>
       </div>
-      <ChevronRight aria-hidden="true" className="h-4 w-4 text-muted-foreground/70 group-hover:text-primary transition flex-shrink-0 mt-1" />
+      <ChevronRight
+        aria-hidden="true"
+        className="h-4 w-4 text-muted-foreground/70 group-hover:text-primary transition flex-shrink-0 mt-1"
+      />
     </button>
   );
 }
@@ -609,7 +618,10 @@ export function GuidedJourneyRow({
           </span>
         </div>
       </div>
-      <ChevronRight aria-hidden="true" className="h-4 w-4 text-muted-foreground/70 group-hover:text-primary transition flex-shrink-0 mt-1" />
+      <ChevronRight
+        aria-hidden="true"
+        className="h-4 w-4 text-muted-foreground/70 group-hover:text-primary transition flex-shrink-0 mt-1"
+      />
     </button>
   );
 }

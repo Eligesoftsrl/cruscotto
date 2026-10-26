@@ -2,12 +2,19 @@ import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { RankedBarChart } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList,
-  PieChart, Pie, Legend, ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Cell,
+  LabelList,
+  ResponsiveContainer,
 } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useProcessiDistribuzione } from "@/hooks/useSchedaSiproProcessi";
-import { LoadingSpinner, ErrorBox, BAR_COLOR, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
+import { LoadingSpinner, ErrorBox, BAR_COLOR, TOOLTIP_STYLE } from "./_shared";
 
 /** S15 - Mappatura Processi: semicerchio per funzione + barre per tipologia. */
 export const MappaturaProcessiView = () => {
@@ -27,25 +34,60 @@ export const MappaturaProcessiView = () => {
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={setScope} />
-      {error ? <ErrorBox error={error} /> : loading ? <LoadingSpinner /> : (
+      {error ? (
+        <ErrorBox error={error} />
+      ) : loading ? (
+        <LoadingSpinner />
+      ) : (
         <div className="bg-card border rounded-xl p-5 space-y-2">
-          <h3 className="text-[15px] font-bold text-foreground">Mappatura dei processi per funzione e tipologia</h3>
+          <h3 className="text-[15px] font-bold text-foreground">
+            Mappatura dei processi per funzione e tipologia
+          </h3>
           <div className="space-y-6 pt-2">
             <div className="max-w-md mx-auto w-full">
-              <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Processi per funzione</p>
+              <p className="text-xs font-semibold text-muted-foreground text-center mb-3">
+                Processi per funzione
+              </p>
               <RankedBarChart data={byFunzione} multicolor />
             </div>
             <div>
-              <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Processi per tipologia</p>
+              <p className="text-xs font-semibold text-muted-foreground text-center mb-3">
+                Processi per tipologia
+              </p>
               <ResponsiveContainer width="100%" height={Math.max(280, byTipologia.length * 40)}>
-                <BarChart data={byTipologia} layout="vertical" margin={{ top: 5, right: 40, left: 10, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border))" />
-                  <XAxis type="number" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" allowDecimals={false} />
-                  <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" width={340} />
+                <BarChart
+                  data={byTipologia}
+                  layout="vertical"
+                  margin={{ top: 5, right: 40, left: 10, bottom: 5 }}
+                >
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    horizontal={false}
+                    stroke="hsl(var(--border))"
+                  />
+                  <XAxis
+                    type="number"
+                    tick={{ fontSize: 11 }}
+                    stroke="hsl(var(--muted-foreground))"
+                    allowDecimals={false}
+                  />
+                  <YAxis
+                    type="category"
+                    dataKey="name"
+                    tick={{ fontSize: 11 }}
+                    stroke="hsl(var(--muted-foreground))"
+                    width={340}
+                  />
                   <Tooltip contentStyle={TOOLTIP_STYLE} />
                   <Bar dataKey="value" name="N° processi" radius={[0, 4, 4, 0]} maxBarSize={26}>
-                    {byTipologia.map((_, i) => <Cell key={i} fill={BAR_COLOR} />)}
-                    <LabelList dataKey="value" position="insideRight" style={{ fontSize: 11, fontWeight: 700, fill: "white" }} />
+                    {byTipologia.map((_, i) => (
+                      <Cell key={i} fill={BAR_COLOR} />
+                    ))}
+                    <LabelList
+                      dataKey="value"
+                      position="insideRight"
+                      style={{ fontSize: 11, fontWeight: 700, fill: "white" }}
+                    />
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>

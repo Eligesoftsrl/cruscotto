@@ -2,16 +2,7 @@ import { useEffect, useState } from "react";
 import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
 import { fetchPtfpReclutamento } from "@/services/dw/minervaService";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 export const MinervaFabbisognoSection = () => {
   const { data: enteIds } = useFilteredEnteIds();

@@ -1,0 +1,11 @@
+# Configurazione Gitleaks del Cruscotto HR.
+# La chiave pubblica «anon» della base dati è pubblica per progetto (è inclusa nel pacchetto
+# del browser ed è protetta dalle regole di accesso): il commit storico che la riportava
+# nella documentazione è registrato come eccezione nota. Qualsiasi altro segreto blocca.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Chiave pubblica anon (ruolo anon) storicamente presente in docs/ENV_LOCALE.md"
+commits = ["f95966528143f8fc457bb1c64c538ed98f6557b8"]
+paths = ['''node_modules''', '''dist''']

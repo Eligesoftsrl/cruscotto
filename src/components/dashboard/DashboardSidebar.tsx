@@ -4,7 +4,6 @@ import {
   Calendar,
   Clock,
   LogOut,
-  TrendingUp,
   GraduationCap,
   ArrowUpRight,
   Briefcase,

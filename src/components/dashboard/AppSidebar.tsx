@@ -1,9 +1,7 @@
 import { useState } from "react";
 import {
-  BarChart3,
   ChevronDown,
   ChevronRight,
-  Home,
   ClipboardList,
   Target,
   PenTool,
@@ -14,10 +12,8 @@ import {
   Scale,
   FlaskConical,
   FolderOpen,
-  Monitor,
   LogOut,
   Gauge,
-  Layers,
   Activity,
   GraduationCap,
   HelpCircle,
@@ -144,9 +140,7 @@ const contoAnnualeIndicators = [
 const siproGroups: { label: string; items: { id: string; label: string }[] }[] = [
   {
     label: "Benchmark",
-    items: [
-      { id: "sipro-benchmark-dfp", label: "Benchmark DFP (Multi-Ente)" },
-    ],
+    items: [{ id: "sipro-benchmark-dfp", label: "Benchmark DFP (Multi-Ente)" }],
   },
   {
     label: "Organizzazione",
@@ -294,15 +288,19 @@ export const navPageTitle = (nav: NavState): string => {
   if (nav.level === "operational" && nav.source) {
     const src = operationalSourcesAll.find((x) => x.id === nav.source);
     const ind = src?.indicators?.find((i: { id: string }) => i.id === nav.indicator) as
-      | { label: string }
-      | undefined;
+      { label: string } | undefined;
     return [src?.label ?? nav.source, ind?.label].filter(Boolean).join(" · ");
   }
   if (nav.level === "guided") return "Percorso guidato";
   return "Vista Executive";
 };
 
-export const AppSidebar = ({ nav, onNavigate, mobileOpen = false, onMobileClose }: AppSidebarProps) => {
+export const AppSidebar = ({
+  nav,
+  onNavigate,
+  mobileOpen = false,
+  onMobileClose,
+}: AppSidebarProps) => {
   const { profile, signOut } = useAuth();
   const { flags } = useAdminState();
   const navigate = useNavigate();
@@ -404,7 +402,8 @@ export const AppSidebar = ({ nav, onNavigate, mobileOpen = false, onMobileClose 
           setExpandedSource(null);
         },
         <>
-          <Gauge aria-hidden="true"
+          <Gauge
+            aria-hidden="true"
             className="h-[18px] w-[18px]"
             style={{ color: isExec ? "hsl(var(--primary))" : undefined }}
           />
@@ -420,88 +419,92 @@ export const AppSidebar = ({ nav, onNavigate, mobileOpen = false, onMobileClose 
         {pillars
           .filter((p) => !DISABLED_SYNTHETIC_PILLARS.has(p.id))
           .map((p) => {
-          const PIcon = p.icon;
-          const isExp = expandedPillar === p.id;
-          const isPillarActive = nav.level === "synthetic" && nav.pillar === p.id;
-          // Indici disattivati dall'Admin (Pannello → Schede → Indici Dx) nascosti.
-          const indicators = (syntheticIndicators[p.id] || []).filter((ind) => {
-            const key = EXEC_FLAG_BY_SIDEBAR[`${p.id}.${ind.id}`];
-            return !key || !disabledFlags.has(key);
-          });
+            const PIcon = p.icon;
+            const isExp = expandedPillar === p.id;
+            const isPillarActive = nav.level === "synthetic" && nav.pillar === p.id;
+            // Indici disattivati dall'Admin (Pannello → Schede → Indici Dx) nascosti.
+            const indicators = (syntheticIndicators[p.id] || []).filter((ind) => {
+              const key = EXEC_FLAG_BY_SIDEBAR[`${p.id}.${ind.id}`];
+              return !key || !disabledFlags.has(key);
+            });
 
-          return (
-            <div key={p.id}>
-              <button
-                onClick={() => {
-                  const opening = expandedPillar !== p.id;
-                  setExpandedPillar(opening ? p.id : null);
-                  if (opening) {
-                    setExpandedSource(null);
-                    onNavigate({ level: "synthetic", pillar: p.id });
-                  }
-                }}
-                className="flex items-center gap-2 w-full px-5 py-2 text-[12px] transition-all hover:bg-white/[0.06]"
-                style={{ color: isPillarActive ? "#fff" : "hsl(210 15% 65%)" }}
-              >
-                {isExp ? (
-                  <ChevronDown aria-hidden="true"
-                    className="h-3 w-3 flex-shrink-0"
-                    style={{ color: "hsl(210 30% 62%)" }}
-                  />
-                ) : (
-                  <ChevronRight aria-hidden="true"
-                    className="h-3 w-3 flex-shrink-0"
-                    style={{ color: "hsl(210 30% 62%)" }}
-                  />
-                )}
-                <PIcon
-                  className="h-4 w-4 flex-shrink-0"
-                  style={{ color: isPillarActive ? "hsl(var(--primary))" : "hsl(210 20% 64%)" }}
-                />
-                <span className="text-left leading-tight">
-                  <span className="font-bold">{p.id}</span>
-                  <span className="ml-1 font-normal opacity-80">{p.label}</span>
-                </span>
-              </button>
-
-              {isExp && (
-                <div
-                  className="ml-8 border-l"
-                  style={{ borderColor: "hsl(var(--sidebar-border))" }}
+            return (
+              <div key={p.id}>
+                <button
+                  onClick={() => {
+                    const opening = expandedPillar !== p.id;
+                    setExpandedPillar(opening ? p.id : null);
+                    if (opening) {
+                      setExpandedSource(null);
+                      onNavigate({ level: "synthetic", pillar: p.id });
+                    }
+                  }}
+                  className="flex items-center gap-2 w-full px-5 py-2 text-[12px] transition-all hover:bg-white/[0.06]"
+                  style={{ color: isPillarActive ? "#fff" : "hsl(210 15% 65%)" }}
                 >
-                  {indicators.map((ind) => {
-                    const isActive =
-                      nav.level === "synthetic" && nav.pillar === p.id && nav.indicator === ind.id;
-                    return (
-                      <button
-                        key={ind.id}
-                        onClick={() =>
-                          onNavigate({ level: "synthetic", pillar: p.id, indicator: ind.id })
-                        }
-                        className="flex items-center gap-2 w-full pl-4 pr-3 py-[6px] text-[11px] transition-all hover:bg-white/[0.04]"
-                        style={{
-                          color: isActive ? "#fff" : "hsl(210 15% 64%)",
-                          background: isActive ? "hsl(var(--primary) / 0.15)" : undefined,
-                          borderLeft: isActive
-                            ? "2px solid hsl(var(--primary))"
-                            : "2px solid transparent",
-                        }}
-                      >
-                        <span
-                          className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                  {isExp ? (
+                    <ChevronDown
+                      aria-hidden="true"
+                      className="h-3 w-3 flex-shrink-0"
+                      style={{ color: "hsl(210 30% 62%)" }}
+                    />
+                  ) : (
+                    <ChevronRight
+                      aria-hidden="true"
+                      className="h-3 w-3 flex-shrink-0"
+                      style={{ color: "hsl(210 30% 62%)" }}
+                    />
+                  )}
+                  <PIcon
+                    className="h-4 w-4 flex-shrink-0"
+                    style={{ color: isPillarActive ? "hsl(var(--primary))" : "hsl(210 20% 64%)" }}
+                  />
+                  <span className="text-left leading-tight">
+                    <span className="font-bold">{p.id}</span>
+                    <span className="ml-1 font-normal opacity-80">{p.label}</span>
+                  </span>
+                </button>
+
+                {isExp && (
+                  <div
+                    className="ml-8 border-l"
+                    style={{ borderColor: "hsl(var(--sidebar-border))" }}
+                  >
+                    {indicators.map((ind) => {
+                      const isActive =
+                        nav.level === "synthetic" &&
+                        nav.pillar === p.id &&
+                        nav.indicator === ind.id;
+                      return (
+                        <button
+                          key={ind.id}
+                          onClick={() =>
+                            onNavigate({ level: "synthetic", pillar: p.id, indicator: ind.id })
+                          }
+                          className="flex items-center gap-2 w-full pl-4 pr-3 py-[6px] text-[11px] transition-all hover:bg-white/[0.04]"
                           style={{
-                            background: isActive ? "hsl(var(--primary))" : "hsl(210 20% 35%)",
+                            color: isActive ? "#fff" : "hsl(210 15% 64%)",
+                            background: isActive ? "hsl(var(--primary) / 0.15)" : undefined,
+                            borderLeft: isActive
+                              ? "2px solid hsl(var(--primary))"
+                              : "2px solid transparent",
                           }}
-                        />
-                        <span className={isActive ? "font-semibold" : ""}>{ind.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          );
-        })}
+                        >
+                          <span
+                            className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                            style={{
+                              background: isActive ? "hsl(var(--primary))" : "hsl(210 20% 35%)",
+                            }}
+                          />
+                          <span className={isActive ? "font-semibold" : ""}>{ind.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
       </div>
       {/* ── Operational ── */}
       <div data-tour="sidebar-operational">
@@ -536,12 +539,14 @@ export const AppSidebar = ({ nav, onNavigate, mobileOpen = false, onMobileClose 
               >
                 {hasInd ? (
                   isExp ? (
-                    <ChevronDown aria-hidden="true"
+                    <ChevronDown
+                      aria-hidden="true"
                       className="h-3 w-3 flex-shrink-0"
                       style={{ color: "hsl(210 30% 62%)" }}
                     />
                   ) : (
-                    <ChevronRight aria-hidden="true"
+                    <ChevronRight
+                      aria-hidden="true"
                       className="h-3 w-3 flex-shrink-0"
                       style={{ color: "hsl(210 30% 62%)" }}
                     />
@@ -557,79 +562,87 @@ export const AppSidebar = ({ nav, onNavigate, mobileOpen = false, onMobileClose 
                 {!hasInd && <span className="ml-auto text-[10px] opacity-40 italic">soon</span>}
               </button>
 
-              {hasInd && isExp && (() => {
-                const renderItem = (ind: { id: string; label: string }) => {
-                  const isActive =
-                    nav.level === "operational" &&
-                    nav.source === src.id &&
-                    nav.indicator === ind.id;
-                  return (
-                    <button
-                      key={ind.id}
-                      onClick={() =>
-                        onNavigate({ level: "operational", source: src.id, indicator: ind.id })
-                      }
-                      className="flex items-center gap-2 w-full pl-4 pr-3 py-[6px] text-[11px] transition-all hover:bg-white/[0.04]"
-                      style={{
-                        color: isActive ? "#fff" : "hsl(210 15% 64%)",
-                        background: isActive ? "hsl(var(--primary) / 0.15)" : undefined,
-                        borderLeft: isActive
-                          ? "2px solid hsl(var(--primary))"
-                          : "2px solid transparent",
-                      }}
-                    >
-                      <span
-                        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+              {hasInd &&
+                isExp &&
+                (() => {
+                  const renderItem = (ind: { id: string; label: string }) => {
+                    const isActive =
+                      nav.level === "operational" &&
+                      nav.source === src.id &&
+                      nav.indicator === ind.id;
+                    return (
+                      <button
+                        key={ind.id}
+                        onClick={() =>
+                          onNavigate({ level: "operational", source: src.id, indicator: ind.id })
+                        }
+                        className="flex items-center gap-2 w-full pl-4 pr-3 py-[6px] text-[11px] transition-all hover:bg-white/[0.04]"
                         style={{
-                          background: isActive ? "hsl(var(--primary))" : "hsl(210 20% 35%)",
+                          color: isActive ? "#fff" : "hsl(210 15% 64%)",
+                          background: isActive ? "hsl(var(--primary) / 0.15)" : undefined,
+                          borderLeft: isActive
+                            ? "2px solid hsl(var(--primary))"
+                            : "2px solid transparent",
                         }}
-                      />
-                      <span className={isActive ? "font-semibold" : ""}>{ind.label}</span>
-                    </button>
+                      >
+                        <span
+                          className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                          style={{
+                            background: isActive ? "hsl(var(--primary))" : "hsl(210 20% 35%)",
+                          }}
+                        />
+                        <span className={isActive ? "font-semibold" : ""}>{ind.label}</span>
+                      </button>
+                    );
+                  };
+                  return (
+                    <div
+                      className="ml-8 border-l"
+                      style={{ borderColor: "hsl(var(--sidebar-border))" }}
+                    >
+                      {src.id === "sipro"
+                        ? siproGroups.map((group) => {
+                            const items = group.items.filter((gi) =>
+                              src.indicators.some((si) => si.id === gi.id),
+                            );
+                            if (items.length === 0) return null;
+                            const groupOpen =
+                              openSiproGroups[group.label] ??
+                              items.some((i) => i.id === nav.indicator);
+                            return (
+                              <div key={group.label}>
+                                <button
+                                  onClick={() =>
+                                    setOpenSiproGroups((prev) => ({
+                                      ...prev,
+                                      [group.label]: !groupOpen,
+                                    }))
+                                  }
+                                  className="flex items-center gap-1.5 w-full pl-3 pr-3 pt-2.5 pb-1 text-[10px] font-semibold uppercase tracking-wider transition-colors hover:text-foreground"
+                                  style={{ color: "hsl(210 20% 62%)" }}
+                                >
+                                  {groupOpen ? (
+                                    <ChevronDown
+                                      aria-hidden="true"
+                                      className="h-3 w-3 flex-shrink-0"
+                                    />
+                                  ) : (
+                                    <ChevronRight
+                                      aria-hidden="true"
+                                      className="h-3 w-3 flex-shrink-0"
+                                    />
+                                  )}
+                                  <span>{group.label}</span>
+                                  <span className="ml-auto opacity-60">{items.length}</span>
+                                </button>
+                                {groupOpen && items.map(renderItem)}
+                              </div>
+                            );
+                          })
+                        : src.indicators.map(renderItem)}
+                    </div>
                   );
-                };
-                return (
-                  <div
-                    className="ml-8 border-l"
-                    style={{ borderColor: "hsl(var(--sidebar-border))" }}
-                  >
-                    {src.id === "sipro"
-                      ? siproGroups.map((group) => {
-                          const items = group.items.filter((gi) =>
-                            src.indicators.some((si) => si.id === gi.id),
-                          );
-                          if (items.length === 0) return null;
-                          const groupOpen =
-                            openSiproGroups[group.label] ??
-                            items.some((i) => i.id === nav.indicator);
-                          return (
-                            <div key={group.label}>
-                              <button
-                                onClick={() =>
-                                  setOpenSiproGroups((prev) => ({
-                                    ...prev,
-                                    [group.label]: !groupOpen,
-                                  }))
-                                }
-                                className="flex items-center gap-1.5 w-full pl-3 pr-3 pt-2.5 pb-1 text-[10px] font-semibold uppercase tracking-wider transition-colors hover:text-foreground"
-                                style={{ color: "hsl(210 20% 62%)" }}
-                              >
-                                {groupOpen ? (
-                                  <ChevronDown aria-hidden="true" className="h-3 w-3 flex-shrink-0" />
-                                ) : (
-                                  <ChevronRight aria-hidden="true" className="h-3 w-3 flex-shrink-0" />
-                                )}
-                                <span>{group.label}</span>
-                                <span className="ml-auto opacity-60">{items.length}</span>
-                              </button>
-                              {groupOpen && items.map(renderItem)}
-                            </div>
-                          );
-                        })
-                      : src.indicators.map(renderItem)}
-                  </div>
-                );
-              })()}
+                })()}
             </div>
           );
         })}
@@ -644,7 +657,11 @@ export const AppSidebar = ({ nav, onNavigate, mobileOpen = false, onMobileClose 
           className="flex items-center gap-2.5 w-full py-2.5 px-5 text-[12.5px] transition-all hover:bg-white/[0.06] border-t focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white/40"
           style={{ color: "hsl(210 15% 65%)", borderColor: "hsl(var(--sidebar-border))" }}
         >
-          <ShieldCheck aria-hidden="true" className="h-[18px] w-[18px]" style={{ color: "hsl(var(--primary))" }} />
+          <ShieldCheck
+            aria-hidden="true"
+            className="h-[18px] w-[18px]"
+            style={{ color: "hsl(var(--primary))" }}
+          />
           <span className="font-semibold">Amministrazione</span>
         </button>
       )}

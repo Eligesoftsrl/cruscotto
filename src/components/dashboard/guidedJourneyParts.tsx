@@ -3,29 +3,24 @@
  * trend/interconnessione, card KPI narrativa/impatto/correlazione e StepPanel.
  * Estratte da GuidedJourney.tsx per ridurne la dimensione (refactor strutturale).
  */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  ArrowLeft,
-  ArrowRight,
-  Check,
   ChevronRight,
   ChevronDown,
   ChevronUp,
   ExternalLink,
   Layers,
   Compass,
-  CircleDot,
-  Circle,
   TrendingUp,
   TrendingDown,
   Minus,
   BookOpen,
   SlidersHorizontal,
 } from "lucide-react";
-import { PillarExecutiveSummary } from "./PillarExecutiveSummary";
+
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Slider } from "@/components/ui/slider";
-import { Progress } from "@/components/ui/progress";
+
 import type {
   GuidedJourneyDef,
   JourneyStep,
@@ -84,7 +79,11 @@ const TrendDelta = ({ current, prev }: { current: number; prev: number }) => {
     <span
       className={`text-xs font-semibold flex items-center gap-1 ${positive ? "text-[hsl(var(--chart-green))]" : "text-[hsl(var(--destructive))]"}`}
     >
-      {positive ? <TrendingUp aria-hidden="true" className="h-3.5 w-3.5" /> : <TrendingDown aria-hidden="true" className="h-3.5 w-3.5" />}
+      {positive ? (
+        <TrendingUp aria-hidden="true" className="h-3.5 w-3.5" />
+      ) : (
+        <TrendingDown aria-hidden="true" className="h-3.5 w-3.5" />
+      )}
       {positive ? "+" : ""}
       {delta}pp rispetto all'anno precedente
     </span>
@@ -102,7 +101,8 @@ const InterconnectionBadges = ({ indicatorId }: { indicatorId: string }) => {
         {conns.connections.map((c) => (
           <Tooltip key={c.pillar}>
             <TooltipTrigger asChild>
-              <span tabIndex={0}
+              <span
+                tabIndex={0}
                 className="text-[10px] font-bold px-1.5 py-0.5 rounded-full cursor-help"
                 style={{
                   background: `${PILLAR_COLORS[c.pillar]}20`,
@@ -184,7 +184,10 @@ const NarrativeKpiCard = ({
               <TooltipProvider delayDuration={150}>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span tabIndex={0} className="text-[10px] text-muted-foreground font-mono cursor-help border-b border-dotted border-muted-foreground/40">
+                    <span
+                      tabIndex={0}
+                      className="text-[10px] text-muted-foreground font-mono cursor-help border-b border-dotted border-muted-foreground/40"
+                    >
                       {idx.id}
                     </span>
                   </TooltipTrigger>
@@ -236,7 +239,11 @@ const NarrativeKpiCard = ({
         {/* Expandable "Cosa implica" */}
         <CollapsibleTrigger asChild>
           <button className="w-full flex items-center justify-center gap-1.5 py-2.5 border-t text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors">
-            {open ? <ChevronUp aria-hidden="true" className="h-3.5 w-3.5" /> : <ChevronDown aria-hidden="true" className="h-3.5 w-3.5" />}
+            {open ? (
+              <ChevronUp aria-hidden="true" className="h-3.5 w-3.5" />
+            ) : (
+              <ChevronDown aria-hidden="true" className="h-3.5 w-3.5" />
+            )}
             {open ? "Chiudi dettagli" : "Cosa implica"}
           </button>
         </CollapsibleTrigger>
@@ -360,7 +367,10 @@ const ImpactCard = ({
         <TooltipProvider delayDuration={150}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <span tabIndex={0} className="text-xs font-bold text-foreground cursor-help border-b border-dotted border-muted-foreground/40">
+              <span
+                tabIndex={0}
+                className="text-xs font-bold text-foreground cursor-help border-b border-dotted border-muted-foreground/40"
+              >
                 {impact.indicatorId} — {impact.label}
               </span>
             </TooltipTrigger>

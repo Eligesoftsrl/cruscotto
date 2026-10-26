@@ -1,43 +1,14 @@
 import { useLatestYear } from "@/hooks/useLatestYear";
-import { useState, useRef, useCallback } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import {
-  Compass,
-  Printer,
-  Eye,
-  Check,
-  ChevronDown,
-  ChevronRight,
-  StickyNote,
-  X,
-  ArrowLeft,
-  ArrowRight,
-  Users,
-  FileText,
-  BarChart3,
-  Table2,
-  AlignLeft,
-  LayoutGrid,
-  Star,
-  AlertTriangle,
-  Download,
-  RotateCcw,
-  GripVertical,
-  HelpCircle,
-  Database,
-  Lightbulb,
-  BookOpen,
-  Sparkles,
-} from "lucide-react";
+import { Printer, Check, ArrowLeft, ArrowRight, FileText, RotateCcw } from "lucide-react";
 import { TopBar } from "@/components/dashboard/TopBar";
 import {
   reportSectionsCatalog,
   reportAudienceProfiles,
-  reportThemes,
   type ReportAudience,
   type RepresentationMode,
-  type ReportSectionDef,
 } from "@/data/reportSections";
 
 /* ═══ Wizard Steps ═══ */

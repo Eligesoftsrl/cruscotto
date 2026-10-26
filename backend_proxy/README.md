@@ -37,6 +37,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --workers 2
 ## Variabili d'ambiente
 Vedi `.env.example`. Le due da recuperare dal sistemista:
 - `SUPABASE_JWT_SECRET` — JWT secret dell'istanza PostgREST/Supabase (quella degli RPC)
+- `KEYCLOAK_CLIENT_ID` — client Keycloak del Cruscotto (es. `cruscotto`). **Obbligatorio per la sicurezza**: i ruoli di client sono letti solo da questo client e, se `KEYCLOAK_AUDIENCE` non è impostata, il token deve avere `azp` uguale a questo valore.
 - password in `DATABASE_URL` — utente `cruscapp`
 
 ## Frontend

@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
 import { fetchKpiRilevazione } from "@/services/dw/kpiRilevazioneService";
-import {
-  computeDimensionScores,
-  extractAllKpis,
-  type DimensionScore,
-} from "@/hooks/useKpiCalculations";
+import { computeDimensionScores, extractAllKpis } from "@/hooks/useKpiCalculations";
 import {
   RadarChart,
   Radar,

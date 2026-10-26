@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Compass, ArrowLeft } from "lucide-react";
 import { FilterProvider } from "@/contexts/FilterContext";
-import { AppSidebar, navPageTitle, navSectionHeadings, type NavState } from "@/components/dashboard/AppSidebar";
+import {
+  AppSidebar,
+  navPageTitle,
+  navSectionHeadings,
+  type NavState,
+} from "@/components/dashboard/AppSidebar";
 import { TopBar } from "@/components/dashboard/TopBar";
 import { ExecutiveView } from "@/components/dashboard/ExecutiveView";
 import { SyntheticPillarView } from "@/components/dashboard/SyntheticPillarView";
@@ -12,7 +17,7 @@ import { NdMode } from "@/components/dashboard/NdMode";
 import { OperationalContent } from "@/components/dashboard/OperationalContent";
 import { GuidedJourney } from "@/components/dashboard/GuidedJourney";
 import { guidedJourneys } from "@/data/guidedJourneys";
-import { GlobalFilterBar } from "@/components/dashboard/GlobalFilterBar";
+
 import { NavigationStepper } from "@/components/dashboard/NavigationStepper";
 import { OnboardingTour } from "@/components/dashboard/OnboardingTour";
 import { useDocumentTitle } from "@/lib/a11y/announcer";
@@ -163,14 +168,14 @@ const Index = () => {
       // h1 visibile solo agli screen reader (accessibilità: un h1 per pagina).
       return (
         <>
-        <h1 className="sr-only">{navSectionHeadings(nav).h1}</h1>
-        <h2 className="sr-only">{navSectionHeadings(nav).h2}</h2>
-        <OperationalContent
-          source={nav.source}
-          indicator={nav.indicator}
-          onGoExecutive={() => setNav({ level: "executive" })}
-          onGoSynthetic={(pillar) => setNav({ level: "synthetic", pillar })}
-        />
+          <h1 className="sr-only">{navSectionHeadings(nav).h1}</h1>
+          <h2 className="sr-only">{navSectionHeadings(nav).h2}</h2>
+          <OperationalContent
+            source={nav.source}
+            indicator={nav.indicator}
+            onGoExecutive={() => setNav({ level: "executive" })}
+            onGoSynthetic={(pillar) => setNav({ level: "synthetic", pillar })}
+          />
         </>
       );
     }
@@ -223,7 +228,12 @@ const Index = () => {
           />
           <NavigationStepper nav={nav} onNavigate={setNav} />
           {/* GlobalFilterBar rimosso: i filtri sono ora le sole "pill" in alto (FilterPills) su indicazione committente */}
-          <main id="main-content" tabIndex={-1} className="flex-1 flex flex-col min-w-0 overflow-x-clip outline-none" role="main">
+          <main
+            id="main-content"
+            tabIndex={-1}
+            className="flex-1 flex flex-col min-w-0 overflow-x-clip outline-none"
+            role="main"
+          >
             {renderContent()}
           </main>
         </div>

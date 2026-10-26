@@ -1,16 +1,25 @@
 import { useIstituzione } from "@/hooks/useIstituzione";
-import { useState } from "react";
+
 import { useQuery } from "@tanstack/react-query";
 import { searchEnti } from "@/services/ca/filtriService";
 import {
-  BarChart, Bar, LineChart, Line, XAxis, YAxis,
-  CartesianGrid, Tooltip, ResponsiveContainer,
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 import { useFilters } from "@/contexts/FilterContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEnteScope } from "@/hooks/useEnteScope";
 import {
-  useFormazioneKpi, useFormazioneMacrocategorie, useFormazioneEvoluzione,
+  useFormazioneKpi,
+  useFormazioneMacrocategorie,
+  useFormazioneEvoluzione,
 } from "@/hooks/useSchedaFormazione";
 import type { Genere, FormazioneFiltri } from "@/services/ca/formazioneService";
 
@@ -22,13 +31,27 @@ const signed = (v: number | null | undefined) =>
 const TEAL = "hsl(175,55%,42%)";
 const BLUE = "hsl(215,70%,50%)";
 
-const Kpi = ({ titolo, valore, unita, accent }: {
-  titolo: string; valore: string; unita?: string; accent: string;
+const Kpi = ({
+  titolo,
+  valore,
+  unita,
+  accent,
+}: {
+  titolo: string;
+  valore: string;
+  unita?: string;
+  accent: string;
 }) => (
-  <div className="flex-1 min-w-[190px] rounded-lg border bg-card p-4" style={{ borderLeft: `4px solid ${accent}` }}>
+  <div
+    className="flex-1 min-w-[190px] rounded-lg border bg-card p-4"
+    style={{ borderLeft: `4px solid ${accent}` }}
+  >
     <p className="text-xs text-muted-foreground">{titolo}</p>
     <p className="mt-1 text-3xl font-bold text-foreground">
-      {valore}{unita ? <span className="ml-1 text-base font-medium text-muted-foreground">{unita}</span> : null}
+      {valore}
+      {unita ? (
+        <span className="ml-1 text-base font-medium text-muted-foreground">{unita}</span>
+      ) : null}
     </p>
   </div>
 );
@@ -63,7 +86,10 @@ export const FormazioneContent = () => {
   const macro = useFormazioneMacrocategorie(filtri);
   const evo = useFormazioneEvoluzione(filtri);
   const k = kpi.data;
-  const macroRows = (macro.data ?? []).slice().sort((a, b) => b.giornate_formazione - a.giornate_formazione).slice(0, 12);
+  const macroRows = (macro.data ?? [])
+    .slice()
+    .sort((a, b) => b.giornate_formazione - a.giornate_formazione)
+    .slice(0, 12);
   const evoRows = (evo.data ?? []).slice().sort((a, b) => a.anno - b.anno);
   const primoAnno = evoRows[0]?.anno;
   const ultimoAnno = evoRows[evoRows.length - 1]?.anno;
@@ -75,22 +101,53 @@ export const FormazioneContent = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm font-semibold text-foreground">
-          {ente ? <>Amministrazione: <span className="text-primary">{ente.descrizione}</span></> : enteScope.label ? <>Amministrazione: <span className="text-primary">{enteScope.label}</span></> : "Totale PA"} · Conto Annuale RGS · Anno {filtri.anno}
+          {ente ? (
+            <>
+              Amministrazione: <span className="text-primary">{ente.descrizione}</span>
+            </>
+          ) : enteScope.label ? (
+            <>
+              Amministrazione: <span className="text-primary">{enteScope.label}</span>
+            </>
+          ) : (
+            "Totale PA"
+          )}{" "}
+          · Conto Annuale RGS · Anno {filtri.anno}
         </p>
         <div className="relative w-[320px] max-w-full" style={{ display: "none" }}>
-          <input value={ente ? ente.descrizione : enteTerm}
-            onChange={(e) => { setEnte(null); setEnteTerm(e.target.value); }}
+          <input
+            value={ente ? ente.descrizione : enteTerm}
+            onChange={(e) => {
+              setEnte(null);
+              setEnteTerm(e.target.value);
+            }}
             placeholder="Cerca un ente (es. Roma Capitale)…"
-            className="w-full rounded border bg-background px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-ring" />
+            className="w-full rounded border bg-background px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-ring"
+          />
           {ente && (
-            <button type="button" aria-label="Cancella ente selezionato" onClick={() => { setEnte(null); setEnteTerm(""); }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-muted-foreground hover:text-destructive">✕</button>
+            <button
+              type="button"
+              aria-label="Cancella ente selezionato"
+              onClick={() => {
+                setEnte(null);
+                setEnteTerm("");
+              }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-muted-foreground hover:text-destructive"
+            >
+              ✕
+            </button>
           )}
           {!ente && (entiQ.data?.length ?? 0) > 0 && (
             <div className="absolute z-50 mt-1 w-full max-h-[240px] overflow-y-auto rounded-lg border bg-card shadow-lg">
               {entiQ.data!.map((o) => (
-                <button key={o.codice} onClick={() => { setEnte({ codice: o.codice, descrizione: o.descrizione }); setEnteTerm(""); }}
-                  className="block w-full text-left px-3 py-1.5 text-[11px] text-foreground hover:bg-muted">
+                <button
+                  key={o.codice}
+                  onClick={() => {
+                    setEnte({ codice: o.codice, descrizione: o.descrizione });
+                    setEnteTerm("");
+                  }}
+                  className="block w-full text-left px-3 py-1.5 text-[11px] text-foreground hover:bg-muted"
+                >
                   {o.descrizione} <span className="text-muted-foreground">({o.codice})</span>
                 </button>
               ))}
@@ -100,17 +157,43 @@ export const FormazioneContent = () => {
       </div>
 
       {errored && (
-        <div role="alert" className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-xs text-destructive">
+        <div
+          role="alert"
+          className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-xs text-destructive"
+        >
           Errore nel caricamento dei dati della scheda.
         </div>
       )}
 
       {/* KPI (misura in GIORNATE) */}
       <div className="flex flex-wrap gap-4">
-        <Kpi accent={TEAL} titolo="Giornate di formazione" valore={loading ? "…" : (k?.giornate_formazione != null ? nf.format(Math.round(k.giornate_formazione)) : "N/D")} />
-        <Kpi accent={BLUE} titolo="Giornate pro capite" valore={loading ? "…" : n1(k?.giornate_pro_capite)} />
-        <Kpi accent="hsl(220,10%,55%)" titolo="Personale in servizio" valore={loading ? "…" : (k?.personale != null ? nf.format(k.personale) : "N/D")} />
-        <Kpi accent="hsl(160,60%,40%)" titolo="Variazione % vs anno prec." unita="%" valore={loading ? "…" : signed(k?.var_prec_pct)} />
+        <Kpi
+          accent={TEAL}
+          titolo="Giornate di formazione"
+          valore={
+            loading
+              ? "…"
+              : k?.giornate_formazione != null
+                ? nf.format(Math.round(k.giornate_formazione))
+                : "N/D"
+          }
+        />
+        <Kpi
+          accent={BLUE}
+          titolo="Giornate pro capite"
+          valore={loading ? "…" : n1(k?.giornate_pro_capite)}
+        />
+        <Kpi
+          accent="hsl(220,10%,55%)"
+          titolo="Personale in servizio"
+          valore={loading ? "…" : k?.personale != null ? nf.format(k.personale) : "N/D"}
+        />
+        <Kpi
+          accent="hsl(160,60%,40%)"
+          titolo="Variazione % vs anno prec."
+          unita="%"
+          valore={loading ? "…" : signed(k?.var_prec_pct)}
+        />
       </div>
 
       {/* Bar-list giornate per macrocategoria */}
@@ -119,24 +202,43 @@ export const FormazioneContent = () => {
         <ResponsiveContainer width="100%" height={Math.max(220, macroRows.length * 26)}>
           <BarChart data={macroRows} layout="vertical" margin={{ left: 10, right: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" horizontal={false} />
-            <XAxis type="number" tick={{ fontSize: 10 }} tickFormatter={(v: number) => nf.format(v)} />
+            <XAxis
+              type="number"
+              tick={{ fontSize: 10 }}
+              tickFormatter={(v: number) => nf.format(v)}
+            />
             <YAxis type="category" dataKey="descrizione" tick={{ fontSize: 10 }} width={220} />
             <Tooltip formatter={(v: number) => [nf.format(Math.round(Number(v))), "Giornate"]} />
-            <Bar dataKey="giornate_formazione" name="Giornate" fill={TEAL} barSize={16} radius={[0, 4, 4, 0]} />
+            <Bar
+              dataKey="giornate_formazione"
+              name="Giornate"
+              fill={TEAL}
+              barSize={16}
+              radius={[0, 4, 4, 0]}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
 
       {/* Trend giornate di formazione */}
       <div className="rounded-lg border bg-card p-5">
-        <h3 className="mb-3 text-sm font-semibold text-foreground">Trend giornate di formazione{rangeLabel}</h3>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">
+          Trend giornate di formazione{rangeLabel}
+        </h3>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={evoRows} margin={{ left: 0, right: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
             <XAxis dataKey="anno" tick={{ fontSize: 10 }} />
             <YAxis tick={{ fontSize: 10 }} tickFormatter={(v: number) => nf.format(v)} />
             <Tooltip formatter={(v: number) => [nf.format(Math.round(Number(v))), "Giornate"]} />
-            <Line type="monotone" dataKey="giornate_formazione" name="Giornate" stroke={BLUE} strokeWidth={2} dot={{ r: 2 }} />
+            <Line
+              type="monotone"
+              dataKey="giornate_formazione"
+              name="Giornate"
+              stroke={BLUE}
+              strokeWidth={2}
+              dot={{ r: 2 }}
+            />
           </LineChart>
         </ResponsiveContainer>
       </div>

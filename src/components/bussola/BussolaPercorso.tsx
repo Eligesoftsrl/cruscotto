@@ -20,7 +20,7 @@ import {
   type BussolaProjection,
 } from "@/data/bussolaPercorsi";
 import { useAuth } from "@/contexts/AuthContext";
-import { useBussolaData } from "@/hooks/useBussolaData";
+
 import {
   Area,
   AreaChart,
@@ -84,7 +84,11 @@ export const BussolaPercorso = ({
           </p>
           <h2 className="text-sm font-bold text-white leading-tight">{percorso.question}</h2>
         </div>
-        <button aria-label="Chiudi percorso" onClick={onBack} className="p-1.5 rounded-full hover:bg-white/10 transition">
+        <button
+          aria-label="Chiudi percorso"
+          onClick={onBack}
+          className="p-1.5 rounded-full hover:bg-white/10 transition"
+        >
           <X aria-hidden="true" className="h-4 w-4 text-white/70" />
         </button>
       </div>
@@ -343,7 +347,10 @@ function IndicatorRow({
             <TooltipProvider delayDuration={150}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <span tabIndex={0} className="text-[10px] font-bold text-primary cursor-help border-b border-dotted border-primary/40">
+                  <span
+                    tabIndex={0}
+                    className="text-[10px] font-bold text-primary cursor-help border-b border-dotted border-primary/40"
+                  >
                     {indicator.id}
                   </span>
                 </TooltipTrigger>
@@ -367,7 +374,8 @@ function IndicatorRow({
           <div className="flex items-center gap-1.5">
             <span className={`text-xs font-bold ${c.text}`}>{pct}%</span>
             {hasDrilldown && (
-              <ChevronDown aria-hidden="true"
+              <ChevronDown
+                aria-hidden="true"
                 className={`h-3 w-3 text-muted-foreground transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
               />
             )}
@@ -501,14 +509,20 @@ function IndicatorRow({
               </div>
               <div className="space-y-1">
                 <div className="flex items-center gap-2 text-[10px]">
-                  <Database aria-hidden="true" className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                  <Database
+                    aria-hidden="true"
+                    className="h-3 w-3 text-muted-foreground flex-shrink-0"
+                  />
                   <span className="text-muted-foreground">Tabella:</span>
                   <span className="font-mono text-foreground font-medium">
                     {indicator.dataSource.table}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-[10px]">
-                  <Calculator aria-hidden="true" className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                  <Calculator
+                    aria-hidden="true"
+                    className="h-3 w-3 text-muted-foreground flex-shrink-0"
+                  />
                   <span className="text-muted-foreground">Calcolo:</span>
                   <span className="font-mono text-foreground font-medium">
                     {indicator.dataSource.formula}

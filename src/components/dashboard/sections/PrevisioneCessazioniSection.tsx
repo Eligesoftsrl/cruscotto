@@ -1,4 +1,4 @@
-import { distribuzioneEta, kpiOverview } from "@/fixtures";
+import { kpiOverview } from "@/fixtures";
 import { DemoDataBadge } from "@/components/dashboard/DemoDataBadge";
 import { AlertTriangle, CalendarClock, Users, TrendingDown } from "lucide-react";
 import {
@@ -10,9 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-  LineChart,
   Line,
-  ReferenceLine,
   AreaChart,
   Area,
 } from "recharts";
@@ -48,7 +46,10 @@ const scenari = [
 
 export const PrevisioneCessazioniSection = () => {
   const totPreviste = previsioneCessazioni.reduce((s, r) => s + r.cessazioni, 0);
-  const piccoAnno = previsioneCessazioni.reduce((a, b) => (b.cessazioni > a.cessazioni ? b : a));
+  const piccoAnno = previsioneCessazioni.reduce(
+    (a, b) => (b.cessazioni > a.cessazioni ? b : a),
+    previsioneCessazioni[0],
+  );
   const percPersonale = ((totPreviste / kpiOverview.personaleTotale) * 100).toFixed(1);
 
   return (

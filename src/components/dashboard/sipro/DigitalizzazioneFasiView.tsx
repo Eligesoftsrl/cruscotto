@@ -1,16 +1,22 @@
 import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { StackedCompositionBar } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
+
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useDigitalizzazioneFasi, useFasiRiepilogo } from "@/hooks/useSchedaSiproProcessi";
 import { fetchFasiRiepilogo } from "@/services/sipro/processiService";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
-import { LoadingSpinner, ErrorBox, Pager, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
+import { LoadingSpinner, ErrorBox, Pager } from "./_shared";
 
 const PER_PAGE = 20;
 
-const Semicircle = ({ title, data }: { title: string; data: { name: string; value: number }[] }) => {
+const Semicircle = ({
+  title,
+  data,
+}: {
+  title: string;
+  data: { name: string; value: number }[];
+}) => {
   const tot = data.reduce((s, d) => s + d.value, 0);
   return (
     <div>
@@ -21,7 +27,11 @@ const Semicircle = ({ title, data }: { title: string; data: { name: string; valu
 };
 
 /** S19 Digitalizzazione Fasi / S20 Lavoro Agile: 3 semicerchi + tabella riepilogo per processo. */
-export const DigitalizzazioneFasiView = ({ title = "Livello di digitalizzazione, esternalizzazione e lavoro agile delle fasi" }: { title?: string }) => {
+export const DigitalizzazioneFasiView = ({
+  title = "Livello di digitalizzazione, esternalizzazione e lavoro agile delle fasi",
+}: {
+  title?: string;
+}) => {
   // Utente di ente: ente e regione bloccati al perimetro (useSiproAccesso)
   const initialScope = useSiproInitialScope();
   const [scope, setScope] = useState<SiproScope>(initialScope);
@@ -34,62 +44,124 @@ export const DigitalizzazioneFasiView = ({ title = "Livello di digitalizzazione,
 
   const loading = digitale.isLoading || outsourcing.isLoading || agile.isLoading;
   const error = digitale.error || outsourcing.error || agile.error;
-  const toData = (d?: { stato: string; numero: number }[]) => (d ?? []).map((r) => ({ name: r.stato, value: r.numero }));
+  const toData = (d?: { stato: string; numero: number }[]) =>
+    (d ?? []).map((r) => ({ name: r.stato, value: r.numero }));
 
   const rows = riepilogo.data ?? [];
   const totalRighe = rows[0]?.totale_righe ?? 0;
   const totalPages = Math.max(1, Math.ceil(totalRighe / PER_PAGE));
 
-  const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
+  const resetAndSet = (v: SiproScope) => {
+    setPage(0);
+    setScope(v);
+  };
 
   const exportTables = async () => {
-      const all = await fetchFasiRiepilogo(scope, 100000, 0);
-      return [{
+    const all = await fetchFasiRiepilogo(scope, 100000, 0);
+    return [
+      {
         title,
-        headers: ["Processo", "N° fasi", "Fasi esternalizzate", "Fasi in lavoro agile", "Livello prevalente"],
-        rows: all.map((r) => [r.processo, r.numero_fasi, r.fasi_esternalizzate, r.fasi_agile, r.digitale_prevalente ?? "—"]),
-      }];
+        headers: [
+          "Processo",
+          "N° fasi",
+          "Fasi esternalizzate",
+          "Fasi in lavoro agile",
+          "Livello prevalente",
+        ],
+        rows: all.map((r) => [
+          r.processo,
+          r.numero_fasi,
+          r.fasi_esternalizzate,
+          r.fasi_agile,
+          r.digitale_prevalente ?? "—",
+        ]),
+      },
+    ];
   };
 
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={resetAndSet} />
-      {error ? <ErrorBox error={error} /> : loading ? <LoadingSpinner /> : (
+      {error ? (
+        <ErrorBox error={error} />
+      ) : loading ? (
+        <LoadingSpinner />
+      ) : (
         <div className="space-y-4">
           <div className="bg-card border rounded-xl p-5">
             <h3 className="text-[15px] font-bold text-foreground mb-2">{title}</h3>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               <Semicircle title="Livello di digitalizzazione" data={toData(digitale.data)} />
-              <Semicircle title="Fasi con attività esternalizzabili" data={toData(outsourcing.data)} />
+              <Semicircle
+                title="Fasi con attività esternalizzabili"
+                data={toData(outsourcing.data)}
+              />
               <Semicircle title="Lavoro agile" data={toData(agile.data)} />
             </div>
           </div>
           <div className="bg-card border rounded-xl p-5">
             <div className="mb-2 flex items-center justify-end">
-              <TableExport fetchTables={exportTables} filename="sipro_digitalizzazione_fasi" title={title} />
+              <TableExport
+                fetchTables={exportTables}
+                filename="sipro_digitalizzazione_fasi"
+                title={title}
+              />
             </div>
-            <p className="text-xs font-semibold text-muted-foreground mb-3">Dettaglio per processo</p>
-            {riepilogo.isLoading ? <LoadingSpinner /> : (
+            <p className="text-xs font-semibold text-muted-foreground mb-3">
+              Dettaglio per processo
+            </p>
+            {riepilogo.isLoading ? (
+              <LoadingSpinner />
+            ) : (
               <>
                 <div className="overflow-auto rounded-md border">
                   <table aria-label="Digitalizzazione delle fasi" className="w-full text-[12px]">
                     <thead>
                       <tr className="border-b bg-muted/40 text-muted-foreground">
-                        <th scope="col" className="text-left px-3 py-2 font-semibold">Processo</th>
-                        <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">N° fasi</th>
-                        <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">Fasi esternalizzate</th>
-                        <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">Fasi in lavoro agile</th>
-                        <th scope="col" className="text-left px-3 py-2 font-semibold whitespace-nowrap">Livello prevalente</th>
+                        <th scope="col" className="text-left px-3 py-2 font-semibold">
+                          Processo
+                        </th>
+                        <th
+                          scope="col"
+                          className="text-right px-3 py-2 font-semibold whitespace-nowrap"
+                        >
+                          N° fasi
+                        </th>
+                        <th
+                          scope="col"
+                          className="text-right px-3 py-2 font-semibold whitespace-nowrap"
+                        >
+                          Fasi esternalizzate
+                        </th>
+                        <th
+                          scope="col"
+                          className="text-right px-3 py-2 font-semibold whitespace-nowrap"
+                        >
+                          Fasi in lavoro agile
+                        </th>
+                        <th
+                          scope="col"
+                          className="text-left px-3 py-2 font-semibold whitespace-nowrap"
+                        >
+                          Livello prevalente
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {rows.map((r) => (
-                        <tr key={r.processo_id} className="border-b last:border-0 hover:bg-muted/20">
+                        <tr
+                          key={r.processo_id}
+                          className="border-b last:border-0 hover:bg-muted/20"
+                        >
                           <td className="px-3 py-2 text-foreground">{r.processo}</td>
                           <td className="px-3 py-2 text-right tabular-nums">{r.numero_fasi}</td>
-                          <td className="px-3 py-2 text-right tabular-nums">{r.fasi_esternalizzate}</td>
+                          <td className="px-3 py-2 text-right tabular-nums">
+                            {r.fasi_esternalizzate}
+                          </td>
                           <td className="px-3 py-2 text-right tabular-nums">{r.fasi_agile}</td>
-                          <td className="px-3 py-2 text-foreground">{r.digitale_prevalente ?? "—"}</td>
+                          <td className="px-3 py-2 text-foreground">
+                            {r.digitale_prevalente ?? "—"}
+                          </td>
                         </tr>
                       ))}
                     </tbody>

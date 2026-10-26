@@ -1,11 +1,11 @@
 import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { useState } from "react";
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
+
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useProcessi, useProcessiDistribuzione } from "@/hooks/useSchedaSiproProcessi";
 import { fetchProcessi } from "@/services/sipro/processiService";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
-import { LoadingSpinner, ErrorBox, Pager, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
+import { LoadingSpinner, ErrorBox, Pager } from "./_shared";
 import { RankedBarChart } from "@/components/dashboard/_shared/charts";
 
 const PER_PAGE = 20;
@@ -27,37 +27,85 @@ export const FasiProcessiView = () => {
   const totObj = byObiettivo.reduce((s, d) => s + d.value, 0);
 
   const exportTables = async () => {
-      const all = await fetchProcessi(scope, 100000, 0);
-      return [{
+    const all = await fetchProcessi(scope, 100000, 0);
+    return [
+      {
         title: "Fasi dei Processi",
-        headers: ["Processo", "Funzione", "Tipologia", "Obiettivo", "Rilevanza", "Semplificazione", "N° criticità"],
-        rows: all.map((r) => [r.processo, r.funzione, r.tipologia, r.obiettivo, r.rilevanza, r.semplificazione, r.numero_criticita]),
-      }];
+        headers: [
+          "Processo",
+          "Funzione",
+          "Tipologia",
+          "Obiettivo",
+          "Rilevanza",
+          "Semplificazione",
+          "N° criticità",
+        ],
+        rows: all.map((r) => [
+          r.processo,
+          r.funzione,
+          r.tipologia,
+          r.obiettivo,
+          r.rilevanza,
+          r.semplificazione,
+          r.numero_criticita,
+        ]),
+      },
+    ];
   };
 
-  const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
+  const resetAndSet = (v: SiproScope) => {
+    setPage(0);
+    setScope(v);
+  };
 
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={resetAndSet} />
-      {lista.error ? <ErrorBox error={lista.error} /> : lista.isLoading ? <LoadingSpinner /> : (
+      {lista.error ? (
+        <ErrorBox error={lista.error} />
+      ) : lista.isLoading ? (
+        <LoadingSpinner />
+      ) : (
         <div className="space-y-4">
           <div className="bg-card border rounded-xl p-5">
             <div className="mb-2 flex items-center justify-end">
-              <TableExport fetchTables={exportTables} filename="sipro_fasi_processi" title="Fasi dei Processi" />
+              <TableExport
+                fetchTables={exportTables}
+                filename="sipro_fasi_processi"
+                title="Fasi dei Processi"
+              />
             </div>
-            <p className="text-xs font-semibold text-muted-foreground mb-3">Elenco processi censiti</p>
+            <p className="text-xs font-semibold text-muted-foreground mb-3">
+              Elenco processi censiti
+            </p>
             <div className="overflow-auto rounded-md border">
               <table aria-label="Fasi dei processi" className="w-full text-[12px]">
                 <thead>
                   <tr className="border-b bg-muted/40 text-muted-foreground">
-                    <th scope="col" className="text-left px-3 py-2 font-semibold">Processo</th>
-                    <th scope="col" className="text-left px-3 py-2 font-semibold">Funzione</th>
-                    <th scope="col" className="text-left px-3 py-2 font-semibold">Tipologia</th>
-                    <th scope="col" className="text-left px-3 py-2 font-semibold">Obiettivo</th>
-                    <th scope="col" className="text-left px-3 py-2 font-semibold">Rilevanza</th>
-                    <th scope="col" className="text-left px-3 py-2 font-semibold">Semplificazione</th>
-                    <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">N° criticità</th>
+                    <th scope="col" className="text-left px-3 py-2 font-semibold">
+                      Processo
+                    </th>
+                    <th scope="col" className="text-left px-3 py-2 font-semibold">
+                      Funzione
+                    </th>
+                    <th scope="col" className="text-left px-3 py-2 font-semibold">
+                      Tipologia
+                    </th>
+                    <th scope="col" className="text-left px-3 py-2 font-semibold">
+                      Obiettivo
+                    </th>
+                    <th scope="col" className="text-left px-3 py-2 font-semibold">
+                      Rilevanza
+                    </th>
+                    <th scope="col" className="text-left px-3 py-2 font-semibold">
+                      Semplificazione
+                    </th>
+                    <th
+                      scope="col"
+                      className="text-right px-3 py-2 font-semibold whitespace-nowrap"
+                    >
+                      N° criticità
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -78,7 +126,9 @@ export const FasiProcessiView = () => {
             <Pager page={page} totalPages={totalPages} onPage={setPage} total={totalRighe} />
           </div>
           <div className="bg-card border rounded-xl p-5">
-            <p className="text-xs font-semibold text-muted-foreground text-center mb-3">Obiettivi strategici</p>
+            <p className="text-xs font-semibold text-muted-foreground text-center mb-3">
+              Obiettivi strategici
+            </p>
             <RankedBarChart data={byObiettivo} multicolor />
           </div>
         </div>

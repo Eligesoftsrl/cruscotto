@@ -8,7 +8,7 @@
 ```dotenv
 # --- Supabase (progetto reale progetto-gru / PSN) ---
 VITE_SUPABASE_URL="https://api-cr.progetto-gru.it"
-VITE_SUPABASE_PUBLISHABLE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzg4MzU2NDc4LCJleHAiOjE5NDYwMzY0Nzh9.OIkNpiyGJlDzjpfsv59OAy1kjNVgrvrae4HZruXVMhQ"
+VITE_SUPABASE_PUBLISHABLE_KEY="<chiave pubblica anon: chiederla al referente tecnico>"
 
 # --- Keycloak (realm gru) ---
 VITE_KEYCLOAK_URL="https://identity.progetto-gru.it"

@@ -23,6 +23,9 @@ from fastapi import Depends, Header, HTTPException
 
 KEYCLOAK_ISSUER = os.environ["KEYCLOAK_ISSUER"]          # es. https://identity.progetto-gru.it/realms/gru
 KEYCLOAK_AUDIENCE = os.environ.get("KEYCLOAK_AUDIENCE")  # opzionale ma consigliato
+# Client Keycloak del Cruscotto: i ruoli "client" sono letti SOLO da questo client e il
+# token deve essere stato emesso per esso (claim azp) quando l'audience non è configurata.
+KEYCLOAK_CLIENT_ID = os.environ.get("KEYCLOAK_CLIENT_ID", "").strip()
 SUPABASE_JWT_SECRET = os.environ["SUPABASE_JWT_SECRET"]  # lo stesso JWT_SECRET dell'istanza PostgREST/Supabase
 TOKEN_TTL_SECONDS = int(os.environ.get("TOKEN_TTL_SECONDS", "3600"))
 
@@ -56,26 +59,30 @@ def verify_keycloak_token(token: str) -> dict:
     """Verifica firma, issuer, scadenza (e audience se configurata)."""
     try:
         key = _jwks_client.get_signing_key_from_jwt(token)
-        return jwt.decode(
+        claims = jwt.decode(
             token,
             key.key,
             algorithms=["RS256"],
             issuer=KEYCLOAK_ISSUER,
             audience=KEYCLOAK_AUDIENCE or None,
-            options={"verify_aud": bool(KEYCLOAK_AUDIENCE)},
+            options={"verify_aud": bool(KEYCLOAK_AUDIENCE), "require": ["exp", "iat", "iss", "sub"]},
         )
-    except jwt.PyJWTError as e:
-        raise HTTPException(status_code=401, detail=f"Token Keycloak non valido: {e}")
+    except jwt.PyJWTError:
+        # Messaggio generico: i dettagli della verifica non vengono esposti al client.
+        raise HTTPException(status_code=401, detail="Token Keycloak non valido o scaduto")
+    if not KEYCLOAK_AUDIENCE and KEYCLOAK_CLIENT_ID and claims.get("azp") != KEYCLOAK_CLIENT_ID:
+        raise HTTPException(status_code=401, detail="Token non emesso per il Cruscotto")
+    return claims
 
 
 def roles_of(claims: dict) -> list[str]:
     """Ruoli realm + eventuali ruoli client (resource_access)."""
     realm = claims.get("realm_access", {}).get("roles", []) or []
     res = claims.get("resource_access", {}) or {}
-    client = []
-    for _, v in res.items():
-        client.extend((v or {}).get("roles", []) or [])
-    return [*realm, *client]
+    # Solo i ruoli del client del Cruscotto: un ruolo «admin» di un'altra applicazione
+    # dello stesso realm NON deve dare privilegi qui (evita escalation di privilegi).
+    client = (res.get(KEYCLOAK_CLIENT_ID) or {}).get("roles", []) if KEYCLOAK_CLIENT_ID else []
+    return [*realm, *(client or [])]
 
 
 def is_global(claims: dict) -> bool:

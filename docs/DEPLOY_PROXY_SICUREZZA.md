@@ -43,6 +43,7 @@ Nel file `backend_proxy/.env` (già presente, **non** in git) valorizzare i `CHA
 | `SUPABASE_JWT_SECRET` | *(da inserire)* | `JWT_SECRET` dell'istanza Supabase/PostgREST che serve gli RPC (`api-cr`). In self-hosted è nel `.env` dello stack; in Studio: *Settings → API → JWT Secret*. |
 | `DATABASE_URL` (password) | `postgresql://cruscapp:****@172.16.0.15:5432/cruscotto` | Password utente `cruscapp` (già impostata; ruotarla se serve). |
 | `KEYCLOAK_ISSUER` | `https://identity.progetto-gru.it/realms/gru` | già impostato |
+| `KEYCLOAK_CLIENT_ID` | client del Cruscotto (lo stesso di `VITE_KEYCLOAK_CLIENT_ID`) | **da impostare**: limita i ruoli di client al solo Cruscotto e verifica che il token sia emesso per esso |
 | `KEYCLOAK_AUDIENCE` | `oqtane-gru-cruscotto` (consigliato) | client Keycloak della SPA |
 | `DB_SCHEMA` | `scruscotto` | già impostato |
 | `ALLOWED_ORIGINS` | (non necessario in opzione A, stessa origine) | — |

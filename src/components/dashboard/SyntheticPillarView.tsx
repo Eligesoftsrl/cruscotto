@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from "react";
 import { syntheticIndicators } from "./AppSidebar";
 import { BottomUpNav } from "./BottomUpNav";
-import { QuadroSinotticoView } from "./sections/QuadroSinotticoView";
+
 import { executiveIndicesStatic } from "./executive/executiveData";
 import { ExecutiveKpiCard } from "./executive/ExecutiveKpiCards";
-import type { ExecutiveIndex } from "./executive/ExecutiveKpiCards";
+
 import { useD1Calculations } from "@/hooks/useD1Calculations";
 import { useAuth } from "@/contexts/AuthContext";
 import { useFilters } from "@/contexts/FilterContext";
@@ -14,7 +14,6 @@ import {
   Minus,
   ArrowRight,
   ChevronDown,
-  ExternalLink,
   Info,
   FileText,
 } from "lucide-react";
@@ -29,7 +28,6 @@ import {
   Cell,
   LineChart,
   Line,
-  Legend,
 } from "recharts";
 
 const pillarMeta: Record<string, { label: string; description: string; color: string }> = {
@@ -245,8 +243,7 @@ export const SyntheticPillarView = ({
         </button>
       </div>
 
-      {/* ── Methodology Sheet (disattivata) ── */}
-      {false && showMethodology && <QuadroSinotticoView pillar={pillar} />}
+      {/* ── Methodology Sheet: disattivata (rimossa dal rendering) ── */}
 
       {/* ── Summary Bar Chart with highlight ── */}
       {barData.length > 1 && (
@@ -346,7 +343,9 @@ export const SyntheticPillarView = ({
                 <div className="tableau-card" style={{ borderLeft: `4px solid ${meta.color}` }}>
                   <div className="tableau-card-header flex items-center gap-2">
                     <span className="font-bold">{selectedInd.id}</span>
-                    <span className="opacity-70" aria-hidden="true">·</span>
+                    <span className="opacity-70" aria-hidden="true">
+                      ·
+                    </span>
                     <span>{selectedInd.label}</span>
                   </div>
                   <div className="p-5">
@@ -474,7 +473,8 @@ export const SyntheticPillarView = ({
                       {ind.label}
                     </h3>
                   </div>
-                  <ArrowRight aria-hidden="true"
+                  <ArrowRight
+                    aria-hidden="true"
                     className={`h-4 w-4 flex-shrink-0 mt-0.5 transition-colors ${
                       isSelected
                         ? "text-primary"

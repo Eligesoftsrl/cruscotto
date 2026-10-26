@@ -66,7 +66,7 @@ export const useAuth = () => useContext(AuthContext);
  *  - è un ente HR privo di codici fiscali (`enti_cf`) nel token.
  * In questi casi l'accesso viene inibito (nessun profilo) per evitare errori.
  */
-function resolveKeycloak(): { profile: UserProfile | null; unauthorized: boolean } {
+export function resolveKeycloak(): { profile: UserProfile | null; unauthorized: boolean } {
   if (!keycloak?.authenticated || !keycloak.tokenParsed) {
     return { profile: null, unauthorized: false };
   }

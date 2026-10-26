@@ -80,7 +80,7 @@ const RouteTitle = () => {
   const { pathname } = useLocation();
   const title = pathname.startsWith("/dashboard")
     ? null
-    : ROUTE_TITLES[pathname] ?? "Pagina non trovata";
+    : (ROUTE_TITLES[pathname] ?? "Pagina non trovata");
   useDocumentTitle(title, { announce: true });
   return null;
 };
@@ -94,7 +94,7 @@ const App = () => (
         <UpdateBanner />
         <LiveRegion />
         <LoadingAnnouncer />
-        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <BrowserRouter>
           <AuthProvider>
             <UsageTracker />
             <RouteTitle />

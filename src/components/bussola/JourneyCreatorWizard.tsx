@@ -7,7 +7,6 @@ import {
   Trash2,
   Globe,
   Lock,
-  Route,
   Sparkles,
   ChevronDown,
   ChevronUp,
@@ -15,11 +14,11 @@ import {
 } from "lucide-react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+
 import { IndicatorPicker } from "./IndicatorPicker";
-import { indicatorCatalog } from "@/data/indicatorCatalog";
+
 import { toast } from "@/hooks/use-toast";
 import { useCustomJourneys } from "@/hooks/useCustomJourneys";
 import type { JourneyTemplate } from "@/data/journeyTemplates";
@@ -185,7 +184,11 @@ export function JourneyCreatorWizard({
               <Sparkles aria-hidden="true" className="h-4 w-4 text-[hsl(45,100%,70%)]" />
               <span className="text-sm font-semibold text-white">Nuovo percorso</span>
             </div>
-            <button aria-label="Chiudi" onClick={onClose} className="p-1.5 rounded-full hover:bg-white/10">
+            <button
+              aria-label="Chiudi"
+              onClick={onClose}
+              className="p-1.5 rounded-full hover:bg-white/10"
+            >
               <X aria-hidden="true" className="h-4 w-4 text-white/70" />
             </button>
           </div>
@@ -225,7 +228,10 @@ export function JourneyCreatorWizard({
           {wizardStep === 0 && (
             <div className="space-y-5">
               <div className="flex items-start gap-2 p-3 rounded-lg bg-primary/5 border border-primary/10">
-                <Lightbulb aria-hidden="true" className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                <Lightbulb
+                  aria-hidden="true"
+                  className="h-4 w-4 text-primary mt-0.5 flex-shrink-0"
+                />
                 <p className="text-xs text-muted-foreground">
                   Dai un nome al tuo percorso e scegli il tipo di analisi. Nel passo successivo
                   selezionerai gli indicatori.
@@ -236,7 +242,8 @@ export function JourneyCreatorWizard({
                 <label className="text-xs font-semibold text-foreground mb-1.5 block">
                   Nome del percorso *
                 </label>
-                <Input aria-label="Nome del percorso"
+                <Input
+                  aria-label="Nome del percorso"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="es. Analisi rischio organizzativo"
@@ -250,7 +257,8 @@ export function JourneyCreatorWizard({
                   Domanda guida{" "}
                   <span className="text-muted-foreground font-normal">(opzionale)</span>
                 </label>
-                <Input aria-label="Domanda guida (opzionale)"
+                <Input
+                  aria-label="Domanda guida (opzionale)"
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
                   placeholder="es. Quanto è resiliente la mia organizzazione?"
@@ -294,7 +302,10 @@ export function JourneyCreatorWizard({
                         : "border-border hover:border-primary/30"
                     }`}
                   >
-                    <Lock aria-hidden="true" className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <Lock
+                      aria-hidden="true"
+                      className="h-4 w-4 text-muted-foreground flex-shrink-0"
+                    />
                     <div>
                       <div className="text-xs font-bold text-foreground">Privato</div>
                       <p className="text-[10px] text-muted-foreground">Solo per te</p>
@@ -323,7 +334,10 @@ export function JourneyCreatorWizard({
           {wizardStep === 1 && (
             <div className="space-y-3">
               <div className="flex items-start gap-2 p-3 rounded-lg bg-primary/5 border border-primary/10">
-                <Lightbulb aria-hidden="true" className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                <Lightbulb
+                  aria-hidden="true"
+                  className="h-4 w-4 text-primary mt-0.5 flex-shrink-0"
+                />
                 <p className="text-xs text-muted-foreground">
                   Ogni tappa rappresenta un'area di analisi. Seleziona almeno un indicatore per
                   ciascuna tappa.
@@ -364,7 +378,8 @@ export function JourneyCreatorWizard({
                         )}
                       </div>
                       {steps.length > 1 && (
-                        <button aria-label="Elimina tappa"
+                        <button
+                          aria-label="Elimina tappa"
                           onClick={(e) => {
                             e.stopPropagation();
                             removeStep(idx);
@@ -375,9 +390,15 @@ export function JourneyCreatorWizard({
                         </button>
                       )}
                       {isExpanded ? (
-                        <ChevronUp aria-hidden="true" className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                        <ChevronUp
+                          aria-hidden="true"
+                          className="h-4 w-4 text-muted-foreground flex-shrink-0"
+                        />
                       ) : (
-                        <ChevronDown aria-hidden="true" className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                        <ChevronDown
+                          aria-hidden="true"
+                          className="h-4 w-4 text-muted-foreground flex-shrink-0"
+                        />
                       )}
                     </button>
 
@@ -385,7 +406,8 @@ export function JourneyCreatorWizard({
                     {isExpanded && (
                       <div className="px-4 pb-4 space-y-3 border-t bg-muted/10">
                         <div className="pt-3">
-                          <Input aria-label="Nome tappa"
+                          <Input
+                            aria-label="Nome tappa"
                             value={s.title}
                             onChange={(e) => updateStep(idx, { title: e.target.value })}
                             placeholder={`Nome tappa (es. "Struttura organico")`}
@@ -407,7 +429,8 @@ export function JourneyCreatorWizard({
                           <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1 block">
                             Nota/Commento <span className="font-normal">(opzionale)</span>
                           </label>
-                          <Input aria-label="Nota o commento della tappa (opzionale)"
+                          <Input
+                            aria-label="Nota o commento della tappa (opzionale)"
                             value={s.insightText}
                             onChange={(e) => updateStep(idx, { insightText: e.target.value })}
                             placeholder="Aggiungi un commento per questa tappa..."
@@ -467,7 +490,8 @@ export function JourneyCreatorWizard({
             </Button>
           ) : (
             <Button onClick={handleSave} disabled={saving || !canProceed()} className="gap-1.5">
-              {saving ? "Salvataggio..." : "Crea percorso"} <Sparkles aria-hidden="true" className="h-4 w-4" />
+              {saving ? "Salvataggio..." : "Crea percorso"}{" "}
+              <Sparkles aria-hidden="true" className="h-4 w-4" />
             </Button>
           )}
         </div>

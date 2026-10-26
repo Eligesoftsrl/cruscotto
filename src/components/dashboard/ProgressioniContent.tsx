@@ -1,10 +1,18 @@
 import { useIstituzione } from "@/hooks/useIstituzione";
-import { useState } from "react";
+
 import { useQuery } from "@tanstack/react-query";
 import { searchEnti } from "@/services/ca/filtriService";
 import {
-  BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, Legend,
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
 } from "recharts";
 import { useFilters } from "@/contexts/FilterContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -18,7 +26,10 @@ const ORIZZ = "hsl(175,55%,42%)";
 const TOT = "hsl(25,85%,55%)";
 
 const Kpi = ({ titolo, valore, accent }: { titolo: string; valore: string; accent: string }) => (
-  <div className="flex-1 min-w-[190px] rounded-lg border bg-card p-4" style={{ borderLeft: `4px solid ${accent}` }}>
+  <div
+    className="flex-1 min-w-[190px] rounded-lg border bg-card p-4"
+    style={{ borderLeft: `4px solid ${accent}` }}
+  >
     <p className="text-xs text-muted-foreground">{titolo}</p>
     <p className="mt-1 text-3xl font-bold text-foreground">{valore}</p>
   </div>
@@ -64,22 +75,53 @@ export const ProgressioniContent = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm font-semibold text-foreground">
-          {ente ? <>Amministrazione: <span className="text-primary">{ente.descrizione}</span></> : enteScope.label ? <>Amministrazione: <span className="text-primary">{enteScope.label}</span></> : "Totale PA"} · Conto Annuale RGS · Anno {filtri.anno}
+          {ente ? (
+            <>
+              Amministrazione: <span className="text-primary">{ente.descrizione}</span>
+            </>
+          ) : enteScope.label ? (
+            <>
+              Amministrazione: <span className="text-primary">{enteScope.label}</span>
+            </>
+          ) : (
+            "Totale PA"
+          )}{" "}
+          · Conto Annuale RGS · Anno {filtri.anno}
         </p>
         <div className="relative w-[320px] max-w-full" style={{ display: "none" }}>
-          <input value={ente ? ente.descrizione : enteTerm}
-            onChange={(e) => { setEnte(null); setEnteTerm(e.target.value); }}
+          <input
+            value={ente ? ente.descrizione : enteTerm}
+            onChange={(e) => {
+              setEnte(null);
+              setEnteTerm(e.target.value);
+            }}
             placeholder="Cerca un ente (es. Roma Capitale)…"
-            className="w-full rounded border bg-background px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-ring" />
+            className="w-full rounded border bg-background px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-ring"
+          />
           {ente && (
-            <button type="button" aria-label="Cancella ente selezionato" onClick={() => { setEnte(null); setEnteTerm(""); }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-muted-foreground hover:text-destructive">✕</button>
+            <button
+              type="button"
+              aria-label="Cancella ente selezionato"
+              onClick={() => {
+                setEnte(null);
+                setEnteTerm("");
+              }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-muted-foreground hover:text-destructive"
+            >
+              ✕
+            </button>
           )}
           {!ente && (entiQ.data?.length ?? 0) > 0 && (
             <div className="absolute z-50 mt-1 w-full max-h-[240px] overflow-y-auto rounded-lg border bg-card shadow-lg">
               {entiQ.data!.map((o) => (
-                <button key={o.codice} onClick={() => { setEnte({ codice: o.codice, descrizione: o.descrizione }); setEnteTerm(""); }}
-                  className="block w-full text-left px-3 py-1.5 text-[11px] text-foreground hover:bg-muted">
+                <button
+                  key={o.codice}
+                  onClick={() => {
+                    setEnte({ codice: o.codice, descrizione: o.descrizione });
+                    setEnteTerm("");
+                  }}
+                  className="block w-full text-left px-3 py-1.5 text-[11px] text-foreground hover:bg-muted"
+                >
                   {o.descrizione} <span className="text-muted-foreground">({o.codice})</span>
                 </button>
               ))}
@@ -89,21 +131,38 @@ export const ProgressioniContent = () => {
       </div>
 
       {errored && (
-        <div role="alert" className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-xs text-destructive">
+        <div
+          role="alert"
+          className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-xs text-destructive"
+        >
           Errore nel caricamento dei dati della scheda.
         </div>
       )}
 
       {/* KPI (3 card, una sola chiamata). Le etichette non riportano l'anno. */}
       <div className="flex flex-wrap gap-4">
-        <Kpi accent={VERT} titolo="Progressioni Verticali" valore={loading ? "…" : (k ? nf.format(k.verticali) : "N/D")} />
-        <Kpi accent={ORIZZ} titolo="Progressioni Orizzontali" valore={loading ? "…" : (k ? nf.format(k.orizzontali) : "N/D")} />
-        <Kpi accent={TOT} titolo="Totale Progressioni" valore={loading ? "…" : (k ? nf.format(k.totale) : "N/D")} />
+        <Kpi
+          accent={VERT}
+          titolo="Progressioni Verticali"
+          valore={loading ? "…" : k ? nf.format(k.verticali) : "N/D"}
+        />
+        <Kpi
+          accent={ORIZZ}
+          titolo="Progressioni Orizzontali"
+          valore={loading ? "…" : k ? nf.format(k.orizzontali) : "N/D"}
+        />
+        <Kpi
+          accent={TOT}
+          titolo="Totale Progressioni"
+          valore={loading ? "…" : k ? nf.format(k.totale) : "N/D"}
+        />
       </div>
 
       {/* Bar chart per anno */}
       <div className="rounded-lg border bg-card p-5">
-        <h3 className="mb-3 text-sm font-semibold text-foreground">Progressioni per anno{rangeLabel}</h3>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">
+          Progressioni per anno{rangeLabel}
+        </h3>
         <ResponsiveContainer width="100%" height={320}>
           <BarChart data={evoRows} margin={{ left: 0, right: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
@@ -119,7 +178,9 @@ export const ProgressioniContent = () => {
 
       {/* Line chart trend (stesse due serie) */}
       <div className="rounded-lg border bg-card p-5">
-        <h3 className="mb-3 text-sm font-semibold text-foreground">Trend progressioni{rangeLabel}</h3>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">
+          Trend progressioni{rangeLabel}
+        </h3>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={evoRows} margin={{ left: 0, right: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,90%)" />
@@ -127,8 +188,22 @@ export const ProgressioniContent = () => {
             <YAxis tick={{ fontSize: 10 }} tickFormatter={(v: number) => nf.format(v)} />
             <Tooltip formatter={(v: number, name) => [nf.format(Number(v)), name]} />
             <Legend />
-            <Line type="monotone" dataKey="verticali" name="Verticali" stroke={VERT} strokeWidth={2} dot={{ r: 2 }} />
-            <Line type="monotone" dataKey="orizzontali" name="Orizzontali" stroke={ORIZZ} strokeWidth={2} dot={{ r: 2 }} />
+            <Line
+              type="monotone"
+              dataKey="verticali"
+              name="Verticali"
+              stroke={VERT}
+              strokeWidth={2}
+              dot={{ r: 2 }}
+            />
+            <Line
+              type="monotone"
+              dataKey="orizzontali"
+              name="Orizzontali"
+              stroke={ORIZZ}
+              strokeWidth={2}
+              dot={{ r: 2 }}
+            />
           </LineChart>
         </ResponsiveContainer>
       </div>

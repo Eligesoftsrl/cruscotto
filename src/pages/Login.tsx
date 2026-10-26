@@ -39,22 +39,20 @@ const Login = () => {
       .select("id_ente, denominazione")
       .order("denominazione");
     if (data) {
-      setEnti((data as { id_ente: number; denominazione: string }[]).map((e) => ({
-        ente_id: e.id_ente,
-        denominazione: e.denominazione,
-      })));
+      setEnti(
+        (data as { id_ente: number; denominazione: string }[]).map((e) => ({
+          ente_id: e.id_ente,
+          denominazione: e.denominazione,
+        })),
+      );
     }
     setLoadingEnti(false);
     setStep("pick_ente");
   };
 
-  const handleSso = async () => {
-    setSigningIn(true);
-    // In modalita Keycloak il ruolo passato viene ignorato: ruolo ed ente
-    // arrivano dai claim del token dopo il redirect di login.
-    await signIn("dfp");
-    setSigningIn(false);
-  };
+  // In modalita Keycloak il ruolo passato viene ignorato: ruolo ed ente
+  // arrivano dai claim del token dopo il redirect di login.
+  const handleSso = handleDfp;
 
   const handleEnteConfirm = async () => {
     if (!selectedEnte) return;
@@ -114,7 +112,8 @@ const Login = () => {
             >
               {signingIn ? (
                 <>
-                  <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" /> Reindirizzamento...
+                  <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />{" "}
+                  Reindirizzamento...
                 </>
               ) : (
                 <>
@@ -235,7 +234,8 @@ const Login = () => {
               </div>
 
               <div className="relative">
-                <select aria-label="Seleziona ente"
+                <select
+                  aria-label="Seleziona ente"
                   value={selectedEnte ?? ""}
                   onChange={(e) => setSelectedEnte(e.target.value ? Number(e.target.value) : null)}
                   className="appearance-none w-full rounded-md border-2 border-input bg-background pl-3 pr-8 py-3 text-[14px] text-foreground outline-none focus:ring-2 focus:ring-primary focus:border-primary cursor-pointer transition-all"
@@ -247,7 +247,10 @@ const Login = () => {
                     </option>
                   ))}
                 </select>
-                <ChevronDown aria-hidden="true" className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                <ChevronDown
+                  aria-hidden="true"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
+                />
               </div>
 
               <button

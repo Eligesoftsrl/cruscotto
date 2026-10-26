@@ -1,9 +1,5 @@
 import { FilterPills } from "@/components/dashboard/FilterPills";
-import { KpiStrip } from "@/components/dashboard/KpiStrip";
-import { PyramidChart } from "@/components/dashboard/PyramidChart";
-import { EtaLineChart } from "@/components/dashboard/EtaLineChart";
-import { BenchmarkDotPlot } from "@/components/dashboard/BenchmarkDotPlot";
-import { GenereTable } from "@/components/dashboard/GenereTable";
+
 import { AnalisiEtaContent } from "@/components/dashboard/AnalisiEtaContent";
 import { AnzianitaContent } from "@/components/dashboard/AnzianitaContent";
 import { CessazioniContent } from "@/components/dashboard/CessazioniContent";
@@ -106,7 +102,12 @@ export const OperationalContent = ({
   // Conto Annuale
   if (source === "conto-annuale" && indicator) {
     // Genere ombreggiato/bloccato nelle schede in cui non è utilizzato.
-    const lockGenere = ["progressioni", "lavoro-flessibile", "lavoro-agile", "analisi-genere"].includes(indicator);
+    const lockGenere = [
+      "progressioni",
+      "lavoro-flessibile",
+      "lavoro-agile",
+      "analisi-genere",
+    ].includes(indicator);
     const wrap = (children: React.ReactNode) => (
       <>
         <FilterPills lockGenere={lockGenere} />
@@ -129,7 +130,10 @@ export const OperationalContent = ({
               Funzione disattivata
             </div>
             <div className="p-8 text-center">
-              <Construction aria-hidden="true" className="h-10 w-10 text-muted-foreground/70 mx-auto mb-4" />
+              <Construction
+                aria-hidden="true"
+                className="h-10 w-10 text-muted-foreground/70 mx-auto mb-4"
+              />
               <p className="text-[12px] text-muted-foreground leading-relaxed">
                 Questa scheda è stata disattivata dall'amministratore nel Pannello di
                 Amministrazione. Riattivala dalla sezione «Funzionalità» per visualizzarne i dati.
@@ -175,30 +179,30 @@ export const OperationalContent = ({
     return (
       <NdMode>
         {(() => {
-    switch (indicator) {
-      case "inpa-amministrazioni":
-        return <InpaAmministrazioniSection />;
-      case "inpa-bandi":
-        return <InpaBandiSection />;
-      case "inpa-candidature":
-        return <InpaCandidatureSection />;
-      case "inpa-categorie":
-        return <InpaCategorieSection />;
-      case "inpa-figure-ricercate":
-        return <InpaFigureRicercateSection />;
-      case "inpa-domanda-offerta":
-        return <InpaDomandaOffertaSection />;
-      case "inpa-efficacia":
-        return <InpaEfficaciaSection />;
-      case "inpa-graduatorie":
-        return <InpaGraduatorieSection />;
-      case "inpa-durata":
-        return <InpaDurataSection />;
-      case "inpa-tempi-dettaglio":
-        return <InpaTempiDettaglioSection />;
-      case "inpa-attrattivita":
-        return <InpaAttrattivitaSection />;
-    }
+          switch (indicator) {
+            case "inpa-amministrazioni":
+              return <InpaAmministrazioniSection />;
+            case "inpa-bandi":
+              return <InpaBandiSection />;
+            case "inpa-candidature":
+              return <InpaCandidatureSection />;
+            case "inpa-categorie":
+              return <InpaCategorieSection />;
+            case "inpa-figure-ricercate":
+              return <InpaFigureRicercateSection />;
+            case "inpa-domanda-offerta":
+              return <InpaDomandaOffertaSection />;
+            case "inpa-efficacia":
+              return <InpaEfficaciaSection />;
+            case "inpa-graduatorie":
+              return <InpaGraduatorieSection />;
+            case "inpa-durata":
+              return <InpaDurataSection />;
+            case "inpa-tempi-dettaglio":
+              return <InpaTempiDettaglioSection />;
+            case "inpa-attrattivita":
+              return <InpaAttrattivitaSection />;
+          }
           return null;
         })()}
       </NdMode>
@@ -210,20 +214,20 @@ export const OperationalContent = ({
     return (
       <NdMode>
         {(() => {
-    switch (indicator) {
-      case "minerva-catalogo":
-        return <MinervaCatalogoSection />;
-      case "minerva-competenze":
-        return <MinervaCompetenzeSection />;
-      case "minerva-assegnazioni":
-        return <MinervaAssegnazioniSection />;
-      case "minerva-assessment":
-        return <MinervaAssessmentSection />;
-      case "minerva-gap-analysis":
-        return <MinervaGapAnalysisSection />;
-      case "minerva-fabbisogno":
-        return <MinervaFabbisognoSection />;
-    }
+          switch (indicator) {
+            case "minerva-catalogo":
+              return <MinervaCatalogoSection />;
+            case "minerva-competenze":
+              return <MinervaCompetenzeSection />;
+            case "minerva-assegnazioni":
+              return <MinervaAssegnazioniSection />;
+            case "minerva-assessment":
+              return <MinervaAssessmentSection />;
+            case "minerva-gap-analysis":
+              return <MinervaGapAnalysisSection />;
+            case "minerva-fabbisogno":
+              return <MinervaFabbisognoSection />;
+          }
           return null;
         })()}
       </NdMode>
@@ -235,18 +239,18 @@ export const OperationalContent = ({
     return (
       <NdMode>
         {(() => {
-    switch (indicator) {
-      case "syllabus-amministrazioni":
-        return <SyllabusAmministrazioniSection />;
-      case "syllabus-corsi":
-        return <SyllabusCorsiSection />;
-      case "syllabus-discenti":
-        return <SyllabusDiscentiSection />;
-      case "syllabus-assessment":
-        return <SyllabusAssessmentSection />;
-      case "syllabus-gap-formazione":
-        return <SyllabusGapFormazioneSection />;
-    }
+          switch (indicator) {
+            case "syllabus-amministrazioni":
+              return <SyllabusAmministrazioniSection />;
+            case "syllabus-corsi":
+              return <SyllabusCorsiSection />;
+            case "syllabus-discenti":
+              return <SyllabusDiscentiSection />;
+            case "syllabus-assessment":
+              return <SyllabusAssessmentSection />;
+            case "syllabus-gap-formazione":
+              return <SyllabusGapFormazioneSection />;
+          }
           return null;
         })()}
       </NdMode>
@@ -267,7 +271,10 @@ export const OperationalContent = ({
               Funzione disattivata
             </div>
             <div className="p-8 text-center">
-              <Construction aria-hidden="true" className="h-10 w-10 text-muted-foreground/70 mx-auto mb-4" />
+              <Construction
+                aria-hidden="true"
+                className="h-10 w-10 text-muted-foreground/70 mx-auto mb-4"
+              />
               <p className="text-[12px] text-muted-foreground leading-relaxed">
                 Questa scheda è stata disattivata dall'amministratore nel Pannello di
                 Amministrazione. Riattivala dalla sezione «Schede» per visualizzarne i dati.
@@ -285,12 +292,12 @@ export const OperationalContent = ({
     return (
       <NdMode>
         {(() => {
-    switch (indicator) {
-      case "lp-distribuzione":
-        return <LpDistribuzioneSection />;
-      case "lp-dotazione":
-        return <LpDotazioneSection />;
-    }
+          switch (indicator) {
+            case "lp-distribuzione":
+              return <LpDistribuzioneSection />;
+            case "lp-dotazione":
+              return <LpDotazioneSection />;
+          }
           return null;
         })()}
       </NdMode>

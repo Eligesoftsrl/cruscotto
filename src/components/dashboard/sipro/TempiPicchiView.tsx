@@ -2,31 +2,55 @@ import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { StackedCompositionBar } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList,
-  PieChart, Pie, Legend, ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Cell,
+  LabelList,
+  Legend,
+  ResponsiveContainer,
 } from "recharts";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useTempiPicchi, usePicchiDistribuzione } from "@/hooks/useSchedaSiproProcessi";
 import { fetchTempiPicchi } from "@/services/sipro/processiService";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
-import { LoadingSpinner, ErrorBox, Pager, BAR_COLOR, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
+import { LoadingSpinner, ErrorBox, Pager, BAR_COLOR, TOOLTIP_STYLE } from "./_shared";
 
 const PER_PAGE = 20;
 const COLOR_PREVISTO = "hsl(210, 64%, 45%)";
 const COLOR_EFFETTIVO = "hsl(35, 75%, 45%)";
 
-const DistribBars = ({ title, data }: { title: string; data: { name: string; value: number }[] }) => (
+const DistribBars = ({
+  title,
+  data,
+}: {
+  title: string;
+  data: { name: string; value: number }[];
+}) => (
   <div>
     <p className="text-xs font-semibold text-muted-foreground text-center mb-2">{title}</p>
     <ResponsiveContainer width="100%" height={220}>
       <BarChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
         <XAxis dataKey="name" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
-        <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" allowDecimals={false} />
+        <YAxis
+          tick={{ fontSize: 10 }}
+          stroke="hsl(var(--muted-foreground))"
+          allowDecimals={false}
+        />
         <Tooltip contentStyle={TOOLTIP_STYLE} />
         <Bar dataKey="value" name="N° processi" radius={[4, 4, 0, 0]} maxBarSize={44}>
-          {data.map((_, i) => <Cell key={i} fill={BAR_COLOR} />)}
-          <LabelList dataKey="value" position="top" style={{ fontSize: 11, fontWeight: 700, fill: "hsl(var(--foreground))" }} />
+          {data.map((_, i) => (
+            <Cell key={i} fill={BAR_COLOR} />
+          ))}
+          <LabelList
+            dataKey="value"
+            position="top"
+            style={{ fontSize: 11, fontWeight: 700, fill: "hsl(var(--foreground))" }}
+          />
         </Bar>
       </BarChart>
     </ResponsiveContainer>
@@ -52,55 +76,114 @@ export const TempiPicchiView = () => {
 
   const tempiData = (top.data ?? []).map((r) => ({
     name: r.processo.length > 24 ? r.processo.slice(0, 24) + "…" : r.processo,
-    previsto: r.previsto ?? 0, effettivo: r.effettivo ?? 0,
+    previsto: r.previsto ?? 0,
+    effettivo: r.effettivo ?? 0,
   }));
-  const toVoce = (d?: { voce: string; numero: number }[]) => (d ?? []).map((r) => ({ name: r.voce, value: r.numero }));
+  const toVoce = (d?: { voce: string; numero: number }[]) =>
+    (d ?? []).map((r) => ({ name: r.voce, value: r.numero }));
   const presidioData = toVoce(presidio.data);
   const totPres = presidioData.reduce((s, d) => s + d.value, 0);
 
-  const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
+  const resetAndSet = (v: SiproScope) => {
+    setPage(0);
+    setScope(v);
+  };
 
   const exportTables = async () => {
-      const all = await fetchTempiPicchi(scope, 100000, 0);
-      return [{
+    const all = await fetchTempiPicchi(scope, 100000, 0);
+    return [
+      {
         title: "Tempi e Picchi",
         headers: ["Processo", "Tempo previsto", "Tempo effettivo"],
         rows: all.map((r) => [r.processo, r.previsto ?? "—", r.effettivo ?? "—"]),
-      }];
+      },
+    ];
   };
 
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={resetAndSet} />
-      {tabella.error ? <ErrorBox error={tabella.error} /> : tabella.isLoading ? <LoadingSpinner /> : (
+      {tabella.error ? (
+        <ErrorBox error={tabella.error} />
+      ) : tabella.isLoading ? (
+        <LoadingSpinner />
+      ) : (
         <div className="space-y-4">
           <div className="bg-card border rounded-xl p-5">
-            <h3 className="text-[15px] font-bold text-foreground mb-2">Tempi previsti ed effettivi dei processi (top 15, giorni)</h3>
+            <h3 className="text-[15px] font-bold text-foreground mb-2">
+              Tempi previsti ed effettivi dei processi (top 15, giorni)
+            </h3>
             <ResponsiveContainer width="100%" height={360}>
               <BarChart data={tempiData} margin={{ top: 5, right: 10, left: -5, bottom: 80 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                <XAxis dataKey="name" tick={{ fontSize: 9 }} stroke="hsl(var(--muted-foreground))" interval={0} angle={-45} textAnchor="end" height={90} />
+                <XAxis
+                  dataKey="name"
+                  tick={{ fontSize: 9 }}
+                  stroke="hsl(var(--muted-foreground))"
+                  interval={0}
+                  angle={-45}
+                  textAnchor="end"
+                  height={90}
+                />
                 <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
                 <Tooltip contentStyle={TOOLTIP_STYLE} />
-                <Bar dataKey="previsto" name="Tempo previsto" fill={COLOR_PREVISTO} radius={[2, 2, 0, 0]} maxBarSize={16} />
-                <Bar dataKey="effettivo" name="Tempo effettivo" fill={COLOR_EFFETTIVO} radius={[2, 2, 0, 0]} maxBarSize={16} />
-                <Legend verticalAlign="bottom" iconType="square" iconSize={10} wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
+                <Bar
+                  dataKey="previsto"
+                  name="Tempo previsto"
+                  fill={COLOR_PREVISTO}
+                  radius={[2, 2, 0, 0]}
+                  maxBarSize={16}
+                />
+                <Bar
+                  dataKey="effettivo"
+                  name="Tempo effettivo"
+                  fill={COLOR_EFFETTIVO}
+                  radius={[2, 2, 0, 0]}
+                  maxBarSize={16}
+                />
+                <Legend
+                  verticalAlign="bottom"
+                  iconType="square"
+                  iconSize={10}
+                  wrapperStyle={{ fontSize: 11, paddingTop: 8 }}
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
           <div className="bg-card border rounded-xl p-5">
             <div className="mb-2 flex items-center justify-end">
-              <TableExport fetchTables={exportTables} filename="sipro_tempi_picchi" title="Tempi e Picchi" />
+              <TableExport
+                fetchTables={exportTables}
+                filename="sipro_tempi_picchi"
+                title="Tempi e Picchi"
+              />
             </div>
-            <p className="text-xs font-semibold text-muted-foreground mb-3">Dettaglio tempi per processo</p>
+            <p className="text-xs font-semibold text-muted-foreground mb-3">
+              Dettaglio tempi per processo
+            </p>
             <div className="overflow-auto rounded-md border">
-              <table aria-label="Tempi previsti ed effettivi dei processi" className="w-full text-[12px]">
+              <table
+                aria-label="Tempi previsti ed effettivi dei processi"
+                className="w-full text-[12px]"
+              >
                 <thead>
                   <tr className="border-b bg-muted/40 text-muted-foreground">
-                    <th scope="col" className="text-left px-3 py-2 font-semibold">Processo</th>
-                    <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">Tempo previsto</th>
-                    <th scope="col" className="text-right px-3 py-2 font-semibold whitespace-nowrap">Tempo effettivo</th>
+                    <th scope="col" className="text-left px-3 py-2 font-semibold">
+                      Processo
+                    </th>
+                    <th
+                      scope="col"
+                      className="text-right px-3 py-2 font-semibold whitespace-nowrap"
+                    >
+                      Tempo previsto
+                    </th>
+                    <th
+                      scope="col"
+                      className="text-right px-3 py-2 font-semibold whitespace-nowrap"
+                    >
+                      Tempo effettivo
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -118,12 +201,16 @@ export const TempiPicchiView = () => {
           </div>
 
           <div className="bg-card border rounded-xl p-5">
-            <p className="text-xs font-semibold text-muted-foreground mb-3">Distribuzione dei picchi e presidio continuativo</p>
+            <p className="text-xs font-semibold text-muted-foreground mb-3">
+              Distribuzione dei picchi e presidio continuativo
+            </p>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               <DistribBars title="Per frequenza dei picchi" data={toVoce(frequenza.data)} />
               <DistribBars title="Per intensità dei picchi" data={toVoce(intensita.data)} />
               <div>
-                <p className="text-xs font-semibold text-muted-foreground text-center mb-2">% processi con presidio continuativo</p>
+                <p className="text-xs font-semibold text-muted-foreground text-center mb-2">
+                  % processi con presidio continuativo
+                </p>
                 <StackedCompositionBar data={presidioData} />
               </div>
             </div>

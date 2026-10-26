@@ -1,12 +1,10 @@
 import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { StackedCompositionBar } from "@/components/dashboard/_shared/charts";
 import { useState } from "react";
-import {
-  PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer,
-} from "recharts";
+
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useOrganizzazioniStati, useOrganizzazioni } from "@/hooks/useSchedaSiproOrganizzazione";
-import { LoadingSpinner, ErrorBox, KpiBox, Pager, PIE_COLORS, TOOLTIP_STYLE, pieValueLabel } from "./_shared";
+import { LoadingSpinner, ErrorBox, KpiBox, Pager } from "./_shared";
 
 const PER_PAGE = 20;
 
@@ -27,7 +25,10 @@ export const StatoOrganizzazioneView = () => {
   const totalRighe = rows[0]?.totale_righe ?? totale;
   const totalPages = Math.max(1, Math.ceil(totalRighe / PER_PAGE));
 
-  const resetAndSet = (v: SiproScope) => { setPage(0); setScope(v); };
+  const resetAndSet = (v: SiproScope) => {
+    setPage(0);
+    setScope(v);
+  };
 
   return (
     <div className="space-y-4">
@@ -45,7 +46,9 @@ export const StatoOrganizzazioneView = () => {
           </div>
           <div className="grid grid-cols-1 2xl:grid-cols-2 gap-6">
             <div className="bg-card border rounded-xl p-5">
-              <p className="text-xs font-semibold text-muted-foreground mb-3">Distribuzione per stato</p>
+              <p className="text-xs font-semibold text-muted-foreground mb-3">
+                Distribuzione per stato
+              </p>
               <StackedCompositionBar data={byStato} />
             </div>
             <div className="bg-card border rounded-xl p-5">
@@ -54,14 +57,28 @@ export const StatoOrganizzazioneView = () => {
                 <LoadingSpinner />
               ) : (
                 <>
-                  <div className="space-y-2 max-h-[300px] overflow-y-auto" tabIndex={0} role="region" aria-label="Elenco scorrevole">
+                  <div
+                    className="space-y-2 max-h-[300px] overflow-y-auto"
+                    tabIndex={0}
+                    role="region"
+                    aria-label="Elenco scorrevole"
+                  >
                     {rows.map((r) => (
-                      <div key={r.organizzazione_id} className="flex items-center justify-between bg-muted/30 rounded-lg px-3 py-2">
+                      <div
+                        key={r.organizzazione_id}
+                        className="flex items-center justify-between bg-muted/30 rounded-lg px-3 py-2"
+                      >
                         <div className="min-w-0">
-                          <div className="text-xs font-medium text-foreground truncate">{r.ente}</div>
-                          <div className="text-[10px] text-muted-foreground truncate">{r.organizzazione}</div>
+                          <div className="text-xs font-medium text-foreground truncate">
+                            {r.ente}
+                          </div>
+                          <div className="text-[10px] text-muted-foreground truncate">
+                            {r.organizzazione}
+                          </div>
                         </div>
-                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded whitespace-nowrap ${r.stato === "Formalizzata" ? "bg-emerald-500/10 text-emerald-700" : "bg-amber-500/10 text-amber-700"}`}>
+                        <span
+                          className={`text-[10px] font-semibold px-2 py-0.5 rounded whitespace-nowrap ${r.stato === "Formalizzata" ? "bg-emerald-500/10 text-emerald-700" : "bg-amber-500/10 text-amber-700"}`}
+                        >
                           {r.stato}
                         </span>
                       </div>

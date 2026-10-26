@@ -8,21 +8,16 @@ import React, { useState } from "react";
 import {
   AlertTriangle,
   AlignLeft,
-  ArrowRight,
   BarChart3,
   BookOpen,
   Check,
   ChevronDown,
-  ChevronRight,
   Database,
-  Download,
   Eye,
   FileText,
-  GripVertical,
   HelpCircle,
   LayoutGrid,
   Lightbulb,
-  RotateCcw,
   Sparkles,
   Star,
   StickyNote,
@@ -41,9 +36,21 @@ import {
 
 export type WizardStep = "audience" | "sections" | "customize" | "preview";
 export const STEPS: { key: WizardStep; label: string; icon: React.ReactNode }[] = [
-  { key: "audience", label: "Destinatario", icon: <Users aria-hidden="true" className="h-4 w-4" /> },
-  { key: "sections", label: "Contenuti", icon: <FileText aria-hidden="true" className="h-4 w-4" /> },
-  { key: "customize", label: "Personalizza", icon: <StickyNote aria-hidden="true" className="h-4 w-4" /> },
+  {
+    key: "audience",
+    label: "Destinatario",
+    icon: <Users aria-hidden="true" className="h-4 w-4" />,
+  },
+  {
+    key: "sections",
+    label: "Contenuti",
+    icon: <FileText aria-hidden="true" className="h-4 w-4" />,
+  },
+  {
+    key: "customize",
+    label: "Personalizza",
+    icon: <StickyNote aria-hidden="true" className="h-4 w-4" />,
+  },
   { key: "preview", label: "Anteprima", icon: <Eye aria-hidden="true" className="h-4 w-4" /> },
 ];
 
@@ -51,7 +58,10 @@ const REPR_ICONS: Record<RepresentationMode, { icon: React.ReactNode; label: str
   narrative: { icon: <AlignLeft aria-hidden="true" className="h-3.5 w-3.5" />, label: "Narrativo" },
   chart: { icon: <BarChart3 aria-hidden="true" className="h-3.5 w-3.5" />, label: "Grafico" },
   table: { icon: <Table2 aria-hidden="true" className="h-3.5 w-3.5" />, label: "Tabella" },
-  kpi_strip: { icon: <LayoutGrid aria-hidden="true" className="h-3.5 w-3.5" />, label: "KPI Strip" },
+  kpi_strip: {
+    icon: <LayoutGrid aria-hidden="true" className="h-3.5 w-3.5" />,
+    label: "KPI Strip",
+  },
 };
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -206,7 +216,8 @@ export function StepSections({
         >
           <Sparkles aria-hidden="true" className="h-3.5 w-3.5" />
           Temi preconfezionati — selezione rapida
-          <ChevronDown aria-hidden="true"
+          <ChevronDown
+            aria-hidden="true"
             className={`h-3.5 w-3.5 transition-transform ${showThemes ? "rotate-180" : ""}`}
           />
         </button>
@@ -301,7 +312,10 @@ export function StepSections({
                         )}
                         {/* Question answered — always visible */}
                         <div className="flex items-start gap-1.5 mt-1.5">
-                          <HelpCircle aria-hidden="true" className="h-3 w-3 text-muted-foreground flex-shrink-0 mt-0.5" />
+                          <HelpCircle
+                            aria-hidden="true"
+                            className="h-3 w-3 text-muted-foreground flex-shrink-0 mt-0.5"
+                          />
                           <span className="text-[10px] text-foreground/70 italic leading-snug">
                             «{sec.questionAnswered}»
                           </span>
@@ -316,7 +330,8 @@ export function StepSections({
                         className="flex-shrink-0 mt-0.5 p-1 rounded hover:bg-muted transition"
                         title="Mostra dettagli"
                       >
-                        <ChevronDown aria-hidden="true"
+                        <ChevronDown
+                          aria-hidden="true"
                           className={`h-4 w-4 text-muted-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`}
                         />
                       </button>
@@ -327,7 +342,8 @@ export function StepSections({
                       <div className="px-4 pb-4 ml-8 border-t border-dashed border-border/50 pt-3 space-y-3">
                         <div>
                           <div className="text-[10px] font-bold text-foreground uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                            <Lightbulb aria-hidden="true" className="h-3 w-3 text-primary" /> Contenuto informativo
+                            <Lightbulb aria-hidden="true" className="h-3 w-3 text-primary" />{" "}
+                            Contenuto informativo
                           </div>
                           <p className="text-xs text-muted-foreground leading-relaxed">
                             {sec.extendedDescription}
@@ -336,7 +352,8 @@ export function StepSections({
                         <div className="flex flex-wrap gap-4">
                           <div>
                             <div className="text-[10px] font-bold text-foreground uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                              <Database aria-hidden="true" className="h-3 w-3 text-primary" /> Fonti dati
+                              <Database aria-hidden="true" className="h-3 w-3 text-primary" /> Fonti
+                              dati
                             </div>
                             <div className="flex flex-wrap gap-1">
                               {sec.dataSources.map((ds) => (
@@ -481,14 +498,16 @@ export function StepCustomize({
               {/* Section header */}
               <div className="flex items-center gap-3 p-4 border-b bg-muted/30">
                 <div className="flex flex-col gap-0.5">
-                  <button aria-label="Sposta sezione su"
+                  <button
+                    aria-label="Sposta sezione su"
                     onClick={() => onMoveSection(sec.id, -1)}
                     disabled={i === 0}
                     className="text-muted-foreground hover:text-foreground disabled:opacity-20 transition"
                   >
                     <ChevronDown aria-hidden="true" className="h-3 w-3 rotate-180" />
                   </button>
-                  <button aria-label="Sposta sezione giù"
+                  <button
+                    aria-label="Sposta sezione giù"
                     onClick={() => onMoveSection(sec.id, 1)}
                     disabled={i === sectionDefs.length - 1}
                     className="text-muted-foreground hover:text-foreground disabled:opacity-20 transition"
@@ -541,7 +560,8 @@ export function StepCustomize({
                   </div>
                   {isEditing ? (
                     <div className="flex gap-2 items-start">
-                      <textarea aria-label="Commento al report"
+                      <textarea
+                        aria-label="Commento al report"
                         autoFocus
                         defaultValue={annotations[sec.id] || ""}
                         onBlur={(e) => {
@@ -551,7 +571,8 @@ export function StepCustomize({
                         className="flex-1 text-xs border rounded p-2 min-h-[60px] bg-background resize-none focus:outline-none focus:ring-1 focus:ring-primary"
                         placeholder="Aggiungi un commento, un'osservazione o un'indicazione operativa..."
                       />
-                      <button aria-label="Chiudi commento"
+                      <button
+                        aria-label="Chiudi commento"
                         onClick={() => setEditingAnnotation(null)}
                         className="p-1 text-muted-foreground hover:text-foreground"
                       >
@@ -746,16 +767,28 @@ export function SectionRenderer({
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-[hsl(213,50%,20%)] text-white">
-                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th
+                  scope="col"
+                  className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase"
+                >
                   Stato
                 </th>
-                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th
+                  scope="col"
+                  className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase"
+                >
                   Indicatore
                 </th>
-                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th
+                  scope="col"
+                  className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase"
+                >
                   Valore
                 </th>
-                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th
+                  scope="col"
+                  className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase"
+                >
                   Target
                 </th>
               </tr>
@@ -790,19 +823,34 @@ export function SectionRenderer({
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-[hsl(213,50%,20%)] text-white">
-                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th
+                  scope="col"
+                  className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase"
+                >
                   Stato
                 </th>
-                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th
+                  scope="col"
+                  className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase"
+                >
                   Indicatore
                 </th>
-                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th
+                  scope="col"
+                  className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase"
+                >
                   Valore
                 </th>
-                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th
+                  scope="col"
+                  className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase"
+                >
                   Cluster
                 </th>
-                <th scope="col" className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase">
+                <th
+                  scope="col"
+                  className="text-left px-3 py-2 text-[10px] font-bold tracking-[.08em] uppercase"
+                >
                   Var.
                 </th>
               </tr>
