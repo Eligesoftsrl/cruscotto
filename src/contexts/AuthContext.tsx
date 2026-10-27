@@ -59,6 +59,35 @@ const AuthContext = createContext<AuthContextValue>({
 
 export const useAuth = () => useContext(AuthContext);
 
+type TokenClaims = Record<string, unknown>;
+
+/** Ruoli del token (realm + client configurato), in minuscolo. */
+function tokenRoles(c: TokenClaims): string[] {
+  const realmRoles = (c.realm_access as { roles?: string[] } | undefined)?.roles ?? [];
+  const clientId = import.meta.env.VITE_KEYCLOAK_CLIENT_ID as string | undefined;
+  const resourceAccess = (c.resource_access as Record<string, { roles?: string[] }> | undefined) ?? {};
+  const clientRoles = clientId ? (resourceAccess[clientId]?.roles ?? []) : [];
+  return [...realmRoles, ...clientRoles].map((r) => r.toLowerCase());
+}
+
+/** Ente di appartenenza (claim provvisorio `istatcode`); null se assente o non numerico. */
+function tokenEnteId(c: TokenClaims): number | null {
+  const enteRaw = (c.istatcode ?? c.ente_id ?? c.enteId ?? null) as string | number | null;
+  if (enteRaw == null || enteRaw === "") return null;
+  const parsed = Number(enteRaw);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+/** Codici fiscali degli enti abilitati (claim `enti_cf`, lista o stringa separata da , ; spazi). */
+function tokenEntiCf(c: TokenClaims): string[] {
+  const rawCf = c.enti_cf ?? c.cf_ente ?? null;
+  if (Array.isArray(rawCf)) return rawCf.map((v) => String(v).trim()).filter(Boolean);
+  if (typeof rawCf === "string" && rawCf.trim()) {
+    return rawCf.split(/[,;\s]+/).map((v) => v.trim()).filter(Boolean);
+  }
+  return [];
+}
+
 /**
  * Risolve l'autenticazione Keycloak in profilo applicativo.
  * Restituisce `unauthorized: true` quando l'utente è autenticato ma:
@@ -70,12 +99,8 @@ export function resolveKeycloak(): { profile: UserProfile | null; unauthorized: 
   if (!keycloak?.authenticated || !keycloak.tokenParsed) {
     return { profile: null, unauthorized: false };
   }
-  const c = keycloak.tokenParsed as Record<string, unknown>;
-  const realmRoles = ((c.realm_access as { roles?: string[] } | undefined)?.roles ?? []) as string[];
-  const clientId = import.meta.env.VITE_KEYCLOAK_CLIENT_ID as string | undefined;
-  const resourceAccess = (c.resource_access as Record<string, { roles?: string[] }> | undefined) ?? {};
-  const clientRoles = (clientId ? resourceAccess[clientId]?.roles ?? [] : []) as string[];
-  const roles = [...realmRoles, ...clientRoles].map((r) => r.toLowerCase());
+  const c = keycloak.tokenParsed as TokenClaims;
+  const roles = tokenRoles(c);
 
   const isDfp = roles.some((r) => DFP_ROLES.includes(r));
   const isEnte = roles.some((r) => ENTE_ROLES.includes(r));
@@ -98,19 +123,8 @@ export function resolveKeycloak(): { profile: UserProfile | null; unauthorized: 
 
   // Utente-ente: consentito solo se ha un ruolo ente valido.
   if (isEnte) {
-    // Ente di appartenenza (claim provvisorio `istatcode`).
-    const enteRaw = (c.istatcode ?? c.ente_id ?? c.enteId ?? null) as string | number | null;
-    const enteParsed = enteRaw != null && enteRaw !== "" ? Number(enteRaw) : null;
-    const ente_id = enteParsed != null && Number.isFinite(enteParsed) ? enteParsed : null;
-
-    // Codici fiscali degli enti abilitati (claim `enti_cf`).
-    const rawCf = c.enti_cf ?? c.cf_ente ?? null;
-    let enti_cf: string[] = [];
-    if (Array.isArray(rawCf)) {
-      enti_cf = rawCf.map((v) => String(v).trim()).filter(Boolean);
-    } else if (typeof rawCf === "string" && rawCf.trim()) {
-      enti_cf = rawCf.split(/[,;\s]+/).map((v) => v.trim()).filter(Boolean);
-    }
+    const ente_id = tokenEnteId(c);
+    const enti_cf = tokenEntiCf(c);
 
     // Scelta cliente: ente HR senza alcun CF -> accesso negato (evita errori).
     if (enti_cf.length === 0) {

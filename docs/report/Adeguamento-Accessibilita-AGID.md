@@ -26,7 +26,7 @@ interrompere l'uso del Cruscotto e senza cambiare in modo visibile la grafica at
 | **Fase 1-bis · Verifiche avanzate e WCAG 2.2** | Scadenza della sessione, spaziatura del testo, suggerimenti, movimento, focus non coperto, dimensione dei pulsanti, file esportati, controllo automatico permanente | ✅ Completata |
 | **Verifiche specialistiche** | Prove con lettori di schermo reali, pagina di accesso Keycloak | ⏳ A cura di esperti / gestore Keycloak |
 | **Fase 2 · Adempimenti** | Dichiarazione di Accessibilità e canale per le segnalazioni | ⏳ In attesa di informazioni dal committente |
-| **Fase 3 · Grafici** | Alternative testuali e tabellari ai grafici | 📅 Pianificata |
+| **Fase 3 · Grafici** | Tabella dei dati per ogni grafico («Visualizza in tabella») | ✅ Tabelle completate · ⏳ verifica del contrasto di linee e barre |
 
 **Risultato della verifica attuale**: controllo automatico permanente su **28 pagine** del
 Cruscotto, ciascuna verificata con **due profili** (utente del Dipartimento e responsabile HR
@@ -102,7 +102,20 @@ Lavoro Pubblico, Pannello di Governo, Amministrazione, pagina di benvenuto e pag
 | **Lingua dei termini inglesi** | Il termine «Executive» (titoli, menu, percorso) e l'etichetta «Mock-up» sono indicati come inglesi, così il lettore di schermo li pronuncia correttamente. I termini tecnici entrati nell'uso comune (es. benchmark, turnover, score, KPI) restano in italiano, come consentito dalle WCAG. | 3.1.2 Parti in lingua |
 | **File esportati** | I file Excel riportano titolo e autore; i PDF riportano titolo, argomento, autore e lingua italiana, e il lettore PDF mostra il titolo del documento. Nel menu di esportazione l'Excel è indicato come «accessibile» e il PDF come «per la stampa». | EN 301 549 cap. 10 (documenti) |
 
-### 3.4 Cosa resta invariato
+### 3.4 Fase 3 · Tabelle dei grafici
+
+| Intervento | Cosa vede l'utente | Criterio WCAG |
+|---|---|---|
+| **Pulsante «Visualizza in tabella»** | Sopra ogni grafico (circa 120, in tutte le schede) c'è il pulsante «Visualizza in tabella». Si raggiunge con il tasto Tab e si apre con Invio o Spazio; funziona anche con il mouse. Il nome letto dal lettore di schermo include il titolo del grafico (es. «Visualizza in tabella (Personale per genere)»). | 1.1.1 Contenuti non testuali · 2.1.1 Tastiera · 2.5.3 Etichetta nel nome |
+| **Finestra con la tabella** | La tabella si apre in una finestra con il titolo del grafico, il numero di righe, le intestazioni di colonna e di riga. Il focus resta nella finestra finché è aperta; si chiude con Esc o con «Chiudi» e il focus torna sul pulsante. La tabella lunga scorre ed è raggiungibile da tastiera. | 1.3.1 Informazioni e correlazioni · 2.4.3 Ordine del focus · 2.1.2 Nessun impedimento all'uso della tastiera |
+| **Dati sempre allineati al grafico** | La tabella è costruita automaticamente dagli stessi dati che disegnano il grafico (serie, categorie, fette delle torte con valore e quota), con numeri in formato italiano: non può essere diversa da quanto mostrato. | 1.3.1 |
+| **Grafico descritto** | Il grafico è annunciato come immagine con il suo titolo e l'indicazione che i dati sono disponibili in tabella. Gli indicatori a lancetta, il cui valore è già scritto accanto, sono ignorati dal lettore di schermo. | 1.1.1 |
+| **Regola permanente** | Il controllo del codice impedisce di aggiungere nuovi grafici senza il pulsante della tabella. | — |
+| **Testi in italiano** | Il pulsante di chiusura delle finestre e gli altri testi nascosti per i lettori di schermo («Chiudi», «Altre pagine», «Slide precedente»…) sono ora in italiano. | 3.1.1 Lingua della pagina |
+
+Il pulsante non compare nella stampa della pagina.
+
+### 3.5 Cosa resta invariato
 
 - La **grafica complessiva** del Cruscotto (colori istituzionali, font Titillium Web,
   impaginazione su schermo grande) resta quella attuale: le modifiche ai colori sono
@@ -144,11 +157,10 @@ Lavoro Pubblico, Pannello di Governo, Amministrazione, pagina di benvenuto e pag
 - Se il Cruscotto è un servizio rivolto ai cittadini, applicazione delle **Linee guida di
   design dei servizi digitali della PA** (Designers Italia).
 
-### Fase 3 · Grafici
+### Fase 3 · Grafici (residuo)
 
-- Per ogni grafico: **tabella dei dati** consultabile in alternativa e **breve descrizione
-  testuale** del contenuto, leggibili dai lettori di schermo.
-- Verifica del contrasto di linee, barre e legende.
+- ✅ Tabella dei dati per ogni grafico (vedi 3.4).
+- Verifica del contrasto di linee, barre e legende rispetto allo sfondo (3:1, criterio 1.4.11).
 
 ---
 
@@ -156,7 +168,7 @@ Lavoro Pubblico, Pannello di Governo, Amministrazione, pagina di benvenuto e pag
 
 | Ambito | Situazione attuale | Intervento previsto |
 |---|---|---|
-| Grafici | Non dispongono ancora di un'alternativa testuale o tabellare completa. | Fase 3 |
+| Grafici | Ogni grafico ha la sua tabella dati; il contrasto di linee e barre non è ancora stato verificato. | Fase 3 (residuo) |
 | Dichiarazione di Accessibilità | Non ancora pubblicata. | Fase 2 |
 | Tabelle molto larghe | Su schermi stretti scorrono orizzontalmente al loro interno (comportamento ammesso dalle WCAG). | — |
 | PDF esportati | I PDF prodotti dal Cruscotto non sono «taggati» (struttura per i lettori di schermo). Per ogni esportazione è disponibile la versione Excel della stessa tabella, accessibile. | Valutazione di un generatore di PDF taggati |
@@ -172,3 +184,4 @@ Lavoro Pubblico, Pannello di Governo, Amministrazione, pagina di benvenuto e pag
 |---|---|---|
 | 1.0 | Ottobre 2026 | Prima emissione: Fase 0 e Fase 1 completate, Fasi 2 e 3 pianificate. |
 | 1.1 | Ottobre 2026 | Fase 1-bis completata (criteri WCAG 2.2, sessione, spaziatura, movimento, file esportati, controllo automatico permanente); aggiunte verifiche specialistiche e adempimenti ricorrenti. |
+| 1.2 | Ottobre 2026 | Fase 3: pulsante «Visualizza in tabella» con tabella dei dati su tutti i grafici; testi nascosti dei componenti in italiano. |

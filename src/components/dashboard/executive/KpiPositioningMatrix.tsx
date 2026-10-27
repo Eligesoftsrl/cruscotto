@@ -6,10 +6,10 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   ReferenceLine,
   Label,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { kpiAbilitantiData } from "./executiveData";
 import { MockUpBadge } from "./ExecutiveKpiCards";
 

@@ -1,13 +1,21 @@
 import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { useState } from "react";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useDotazioneUo, useDotazioneUoRiepilogo } from "@/hooks/useSchedaSiproOrganizzazione";
 import { fetchDotazioneUo } from "@/services/sipro/organizzazioneService";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
-import { LoadingSpinner, ErrorBox, Pager, TOOLTIP_STYLE } from "./_shared";
+import { Pager, TOOLTIP_STYLE, QueryState } from "./_shared";
+import { bySign } from "@/lib/conditional";
 
 const PER_PAGE = 20;
 const COLOR_DOTAZIONE = "hsl(175, 55%, 42%)";
@@ -48,11 +56,7 @@ export const DotazioneUoView = () => {
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={resetAndSet} />
-      {dett.error ? (
-        <ErrorBox error={dett.error} />
-      ) : dett.isLoading ? (
-        <LoadingSpinner />
-      ) : (
+      <QueryState error={dett.error} loading={dett.isLoading}>{() => (
         <div className="bg-card border rounded-xl p-5 space-y-3">
           <div className="mb-2 flex items-center justify-end">
             <TableExport fetchTables={exportTables} filename="sipro_dotazione_uo" title="Dotazione Risorse UO" />
@@ -77,7 +81,7 @@ export const DotazioneUoView = () => {
                       <td className="px-2 py-1.5 text-foreground">{r.uo}</td>
                       <td className="px-2 py-1.5 text-right tabular-nums">{fx(r.dotazione)}</td>
                       <td className="px-2 py-1.5 text-right tabular-nums">{fx(r.servizio_ti)}</td>
-                      <td className={`px-2 py-1.5 text-right tabular-nums font-semibold ${(r.gap_ti ?? 0) < 0 ? "text-destructive" : (r.gap_ti ?? 0) > 0 ? "text-emerald-700" : "text-muted-foreground"}`}>
+                      <td className={`px-2 py-1.5 text-right tabular-nums font-semibold ${bySign(r.gap_ti ?? 0, "text-emerald-700", "text-destructive", "text-muted-foreground")}`}>
                         {fx(r.gap_ti, 2)}
                       </td>
                     </tr>
@@ -112,7 +116,7 @@ export const DotazioneUoView = () => {
             </div>
           </div>
         </div>
-      )}
+      )}</QueryState>
     </div>
   );
 };

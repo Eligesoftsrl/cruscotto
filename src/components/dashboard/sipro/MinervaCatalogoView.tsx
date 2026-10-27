@@ -1,7 +1,7 @@
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { useMemo } from "react";
 import { useMinerva } from "@/hooks/useSchedaSiproProfili";
-import { LoadingSpinner, ErrorBox, KpiBox } from "./_shared";
+import { KpiBox, QueryState } from "./_shared";
 
 type MinervaTipo = "famiglia" | "profilo_professionale" | "ambito" | "area";
 
@@ -38,7 +38,7 @@ export const MinervaCatalogoView = ({ tipo, titolo, kpiLabel, colonnaLabel }: Pr
       <div className="rounded-lg border bg-muted/30 px-4 py-2 text-[11px] text-muted-foreground">
         Catalogo professionale di riferimento (Minerva) — dato globale, non filtrabile per ente o regione.
       </div>
-      {q.error ? <ErrorBox error={q.error} /> : q.isLoading ? <LoadingSpinner /> : (
+      <QueryState error={q.error} loading={q.isLoading}>{() => (
         <div className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <KpiBox label={kpiLabel} value={totale} />
@@ -71,7 +71,7 @@ export const MinervaCatalogoView = ({ tipo, titolo, kpiLabel, colonnaLabel }: Pr
             </div>
           </div>
         </div>
-      )}
+      )}</QueryState>
     </div>
   );
 };

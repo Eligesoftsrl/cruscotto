@@ -26,6 +26,7 @@ import { GlossaryDialog } from "./GlossaryDialog";
 import { useAdminState } from "@/services/admin/adminStore";
 import { CA_INDICATOR_FLAG, KPI_INDICATOR_FLAG, SIPRO_INDICATOR_FLAG } from "@/config/schedeFlags";
 import { EXEC_FLAG_BY_SIDEBAR } from "@/config/execIndiciCatalog";
+import { affix } from "@/lib/conditional";
 
 /* ── NavState ── */
 export interface NavState {
@@ -279,11 +280,25 @@ export const navSectionHeadings = (nav: NavState): { h1: string; h2: string } =>
   return { h1: src?.label ?? nav.source ?? "", h2: ind?.label ?? "Panoramica" };
 };
 
+/** Feature flag delle schede per ciascuna fonte operativa. */
+const SOURCE_FLAG_MAP: Record<string, Record<string, string>> = {
+  "conto-annuale": CA_INDICATOR_FLAG,
+  sipro: SIPRO_INDICATOR_FLAG,
+  "kpi-riforma": KPI_INDICATOR_FLAG,
+};
+
+/** Freccia apri/chiudi della fonte (segnaposto vuoto se la fonte non ha schede). */
+const SourceChevron = ({ hasIndicators, expanded }: { hasIndicators: boolean; expanded: boolean }) => {
+  if (!hasIndicators) return <div className="w-3" />;
+  const Icon = expanded ? ChevronDown : ChevronRight;
+  return <Icon aria-hidden="true" className="h-3 w-3 flex-shrink-0" style={{ color: "hsl(210 30% 62%)" }} />;
+};
+
 /** Titolo leggibile della pagina corrente (titolo h1 per screen reader, title del documento). */
 export const navPageTitle = (nav: NavState): string => {
   if (nav.level === "synthetic" && nav.pillar) {
     const p = pillars.find((x) => x.id === nav.pillar);
-    return `${nav.pillar}${p ? ` · ${p.label}` : ""} — Vista Sintetica`;
+    return `${nav.pillar}${affix(p?.label, " · ")} — Vista Sintetica`;
   }
   if (nav.level === "operational" && nav.source) {
     const src = operationalSourcesAll.find((x) => x.id === nav.source);
@@ -307,20 +322,15 @@ export const AppSidebar = ({
   const [expandedPillar, setExpandedPillar] = useState<string | null>(null);
   const [expandedSource, setExpandedSource] = useState<string | null>(null);
   const [openSiproGroups, setOpenSiproGroups] = useState<Record<string, boolean>>({});
+  const toggleSiproGroup = (label: string, open: boolean) =>
+    setOpenSiproGroups((prev) => ({ ...prev, [label]: !open }));
 
   const isExec = nav.level === "executive";
 
   // Feature flag disattivati -> nasconde le relative schede reali del Conto Annuale.
   const disabledFlags = new Set(flags.filter((f) => !f.enabled).map((f) => f.key));
   const visibleSources = operationalSources.map((src) => {
-    const flagMap =
-      src.id === "conto-annuale"
-        ? CA_INDICATOR_FLAG
-        : src.id === "sipro"
-          ? SIPRO_INDICATOR_FLAG
-          : src.id === "kpi-riforma"
-            ? KPI_INDICATOR_FLAG
-            : null;
+    const flagMap = SOURCE_FLAG_MAP[src.id] ?? null;
     if (!flagMap) return src;
     return {
       ...src,
@@ -537,23 +547,7 @@ export const AppSidebar = ({
                 className="flex items-center gap-2 w-full px-5 py-2 text-[12px] transition-all hover:bg-white/[0.06]"
                 style={{ color: isSrcActive ? "#fff" : "hsl(210 15% 65%)" }}
               >
-                {hasInd ? (
-                  isExp ? (
-                    <ChevronDown
-                      aria-hidden="true"
-                      className="h-3 w-3 flex-shrink-0"
-                      style={{ color: "hsl(210 30% 62%)" }}
-                    />
-                  ) : (
-                    <ChevronRight
-                      aria-hidden="true"
-                      className="h-3 w-3 flex-shrink-0"
-                      style={{ color: "hsl(210 30% 62%)" }}
-                    />
-                  )
-                ) : (
-                  <div className="w-3" />
-                )}
+                <SourceChevron hasIndicators={hasInd} expanded={isExp} />
                 <SrcIcon
                   className="h-4 w-4 flex-shrink-0"
                   style={{ color: isSrcActive ? "hsl(var(--primary))" : "hsl(210 20% 64%)" }}
@@ -565,6 +559,7 @@ export const AppSidebar = ({
               {hasInd &&
                 isExp &&
                 (() => {
+                  const siproIds = new Set(src.indicators.map((si) => si.id));
                   const renderItem = (ind: { id: string; label: string }) => {
                     const isActive =
                       nav.level === "operational" &&
@@ -602,9 +597,7 @@ export const AppSidebar = ({
                     >
                       {src.id === "sipro"
                         ? siproGroups.map((group) => {
-                            const items = group.items.filter((gi) =>
-                              src.indicators.some((si) => si.id === gi.id),
-                            );
+                            const items = group.items.filter((gi) => siproIds.has(gi.id));
                             if (items.length === 0) return null;
                             const groupOpen =
                               openSiproGroups[group.label] ??
@@ -612,12 +605,7 @@ export const AppSidebar = ({
                             return (
                               <div key={group.label}>
                                 <button
-                                  onClick={() =>
-                                    setOpenSiproGroups((prev) => ({
-                                      ...prev,
-                                      [group.label]: !groupOpen,
-                                    }))
-                                  }
+                                  onClick={() => toggleSiproGroup(group.label, groupOpen)}
                                   className="flex items-center gap-1.5 w-full pl-3 pr-3 pt-2.5 pb-1 text-[10px] font-semibold uppercase tracking-wider transition-colors hover:text-foreground"
                                   style={{ color: "hsl(210 20% 62%)" }}
                                 >

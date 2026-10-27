@@ -9,8 +9,8 @@ import {
   Tooltip,
   Cell,
   LabelList,
-  ResponsiveContainer,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import {
   useCatalogoRiepilogo,
@@ -19,7 +19,7 @@ import {
 } from "@/hooks/useSchedaSiproProfili";
 import { fetchCatalogoProfili } from "@/services/sipro/profiliService";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
-import { LoadingSpinner, ErrorBox, KpiBox, Pager, BAR_COLOR, TOOLTIP_STYLE } from "./_shared";
+import { LoadingSpinner, KpiBox, Pager, BAR_COLOR, TOOLTIP_STYLE, QueryState } from "./_shared";
 import { StackedCompositionBar } from "@/components/dashboard/_shared/charts";
 
 const PER_PAGE = 20;
@@ -42,7 +42,6 @@ export const CatalogoProfiliView = () => {
 
   const r = riepilogo.data;
   const byOrigine = (origine.data ?? []).map((d) => ({ name: d.voce, value: d.numero_profili }));
-  const totOrig = byOrigine.reduce((s, d) => s + d.value, 0);
   const byFamiglia = (famiglia.data ?? []).map((d) => ({ name: d.voce, value: d.numero_profili }));
   const rows = tabella.data ?? [];
   const totalRighe = rows[0]?.totale_righe ?? 0;
@@ -83,11 +82,7 @@ export const CatalogoProfiliView = () => {
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={resetAndSet} />
-      {riepilogo.error ? (
-        <ErrorBox error={riepilogo.error} />
-      ) : riepilogo.isLoading ? (
-        <LoadingSpinner />
-      ) : (
+      <QueryState error={riepilogo.error} loading={riepilogo.isLoading}>{() => (
         <div className="space-y-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <KpiBox label="Profili totali" value={r?.profili_totali ?? 0} />
@@ -222,7 +217,7 @@ export const CatalogoProfiliView = () => {
             )}
           </div>
         </div>
-      )}
+      )}</QueryState>
     </div>
   );
 };

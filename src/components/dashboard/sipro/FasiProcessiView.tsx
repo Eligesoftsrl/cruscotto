@@ -5,7 +5,7 @@ import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useProcessi, useProcessiDistribuzione } from "@/hooks/useSchedaSiproProcessi";
 import { fetchProcessi } from "@/services/sipro/processiService";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
-import { LoadingSpinner, ErrorBox, Pager } from "./_shared";
+import { Pager, QueryState } from "./_shared";
 import { RankedBarChart } from "@/components/dashboard/_shared/charts";
 
 const PER_PAGE = 20;
@@ -24,7 +24,6 @@ export const FasiProcessiView = () => {
   const totalRighe = rows[0]?.totale_righe ?? 0;
   const totalPages = Math.max(1, Math.ceil(totalRighe / PER_PAGE));
   const byObiettivo = (obiettivo.data ?? []).map((r) => ({ name: r.voce, value: r.numero }));
-  const totObj = byObiettivo.reduce((s, d) => s + d.value, 0);
 
   const exportTables = async () => {
     const all = await fetchProcessi(scope, 100000, 0);
@@ -61,11 +60,7 @@ export const FasiProcessiView = () => {
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={resetAndSet} />
-      {lista.error ? (
-        <ErrorBox error={lista.error} />
-      ) : lista.isLoading ? (
-        <LoadingSpinner />
-      ) : (
+      <QueryState error={lista.error} loading={lista.isLoading}>{() => (
         <div className="space-y-4">
           <div className="bg-card border rounded-xl p-5">
             <div className="mb-2 flex items-center justify-end">
@@ -132,7 +127,7 @@ export const FasiProcessiView = () => {
             <RankedBarChart data={byObiettivo} multicolor />
           </div>
         </div>
-      )}
+      )}</QueryState>
     </div>
   );
 };

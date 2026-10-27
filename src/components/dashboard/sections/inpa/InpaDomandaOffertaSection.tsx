@@ -8,12 +8,13 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
   ReferenceLine,
   Cell,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
+import { pickFirst } from "@/lib/conditional";
 
 export const InpaDomandaOffertaSection = () => {
   const { data: enteIds } = useFilteredEnteIds();
@@ -109,13 +110,13 @@ export const InpaDomandaOffertaSection = () => {
                 {data.slice(0, 20).map((entry, i) => (
                   <Cell
                     key={i}
-                    fill={
-                      entry.diffPct > 50
-                        ? "hsl(30,85%,55%)"
-                        : entry.diffPct < -100
-                          ? "hsl(0,70%,55%)"
-                          : "hsl(210,80%,45%)"
-                    }
+                    fill={pickFirst(
+                      [
+                        [entry.diffPct > 50, "hsl(30,85%,55%)"],
+                        [entry.diffPct < -100, "hsl(0,70%,55%)"],
+                      ],
+                      "hsl(210,80%,45%)",
+                    )}
                   />
                 ))}
               </Bar>
@@ -158,7 +159,7 @@ export const InpaDomandaOffertaSection = () => {
                 align: "right",
                 render: (r: any) => (
                   <span
-                    className={`font-semibold ${r.diffPct > 50 ? "text-amber-700" : r.diffPct < -100 ? "text-red-600" : "text-green-700"}`}
+                    className={`font-semibold ${pickFirst([[r.diffPct > 50, "text-amber-700"], [r.diffPct < -100, "text-red-600"]], "text-green-700")}`}
                   >
                     {r.diffPct}%
                   </span>

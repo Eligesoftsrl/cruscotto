@@ -1,13 +1,21 @@
 import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { useState } from "react";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList, ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Cell,
+  LabelList,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useSemplificazioneProcessi, useCriticitaDistribuzioneProcesso } from "@/hooks/useSchedaSiproProcessi";
 import { fetchSemplificazioneProcessi } from "@/services/sipro/processiService";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
-import { LoadingSpinner, ErrorBox, Pager, BAR_COLOR, TOOLTIP_STYLE } from "./_shared";
+import { LoadingSpinner, Pager, BAR_COLOR, TOOLTIP_STYLE, QueryState } from "./_shared";
 
 const PER_PAGE = 20;
 
@@ -40,7 +48,7 @@ export const CriticitaProcessiView = ({ title = "Criticità e semplificazione de
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={resetAndSet} />
-      {lista.error ? <ErrorBox error={lista.error} /> : lista.isLoading ? <LoadingSpinner /> : (
+      <QueryState error={lista.error} loading={lista.isLoading}>{() => (
         <div className="bg-card border rounded-xl p-5 space-y-2">
           <div className="mb-2 flex items-center justify-end">
             <TableExport fetchTables={exportTables} filename="sipro_criticita_processi" title={title} />
@@ -93,7 +101,7 @@ export const CriticitaProcessiView = ({ title = "Criticità e semplificazione de
             </div>
           </div>
         </div>
-      )}
+      )}</QueryState>
     </div>
   );
 };

@@ -9,7 +9,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
   ScatterChart,
   Scatter,
@@ -17,6 +16,17 @@ import {
   Cell,
   ReferenceLine,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
+import { byMinThreshold } from "@/lib/conditional";
+import { roundedMean } from "@/lib/format";
+
+/** Etichetta del quadrante (abilitanti = x, successo = y; soglia 50). */
+const quadrantLabel = (x: number, y: number): string => {
+  if (x >= 50 && y >= 50) return "🟢 Maturità";
+  if (x >= 50) return "🟡 Sviluppo";
+  if (y >= 50) return "🟣 Priorità";
+  return "🔴 Rafforzamento";
+};
 
 export const KpiBenchmarkSection = () => {
   const { data: enteIds } = useFilteredEnteIds();
@@ -58,10 +68,7 @@ export const KpiBenchmarkSection = () => {
             if (k.categoria === "successo") succVals.push(k.valore);
           });
 
-        const dimAvg = (dim: string) => {
-          const vals = byDim[dim] || [];
-          return vals.length ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : 0;
-        };
+        const dimAvg = (dim: string) => roundedMean(byDim[dim] || []);
 
         chartData.push({
           ente,
@@ -176,13 +183,7 @@ export const KpiBenchmarkSection = () => {
                         className="mt-1 font-semibold"
                         style={{ color: quadrantColor(d.x, d.y) }}
                       >
-                        {d.x >= 50 && d.y >= 50
-                          ? "🟢 Maturità"
-                          : d.x >= 50
-                            ? "🟡 Sviluppo"
-                            : d.y >= 50
-                              ? "🟣 Priorità"
-                              : "🔴 Rafforzamento"}
+                        {quadrantLabel(d.x, d.y)}
                       </div>
                     </div>
                   );
@@ -234,12 +235,7 @@ export const KpiBenchmarkSection = () => {
                 <div
                   className="text-2xl font-bold mt-1"
                   style={{
-                    color:
-                      b.media >= 60
-                        ? "hsl(150,60%,40%)"
-                        : b.media >= 40
-                          ? "hsl(30,85%,55%)"
-                          : "hsl(0,70%,55%)",
+                    color: byMinThreshold(b.media, [[60, "hsl(150,60%,40%)"], [40, "hsl(30,85%,55%)"]], "hsl(0,70%,55%)"),
                   }}
                 >
                   {b.media}%

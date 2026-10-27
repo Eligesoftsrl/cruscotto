@@ -3,6 +3,7 @@ import { Search, Check, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 import { indicatorCatalog, pillars, sources, type CatalogIndicator } from "@/data/indicatorCatalog";
+import { pickByKey } from "@/lib/conditional";
 
 interface IndicatorPickerProps {
   selected: string[];
@@ -34,7 +35,8 @@ export function IndicatorPicker({ selected, onToggle }: IndicatorPickerProps) {
 
   // Group by pillar
   const grouped = filtered.reduce<Record<string, CatalogIndicator[]>>((acc, i) => {
-    (acc[i.pillar] = acc[i.pillar] || []).push(i);
+    if (!acc[i.pillar]) acc[i.pillar] = [];
+    acc[i.pillar].push(i);
     return acc;
   }, {});
 
@@ -136,13 +138,11 @@ export function IndicatorPicker({ selected, onToggle }: IndicatorPickerProps) {
                       </p>
                     </div>
                     <div
-                      className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${
-                        ind.status === "green"
-                          ? "bg-[hsl(142,71%,45%)]"
-                          : ind.status === "yellow"
-                            ? "bg-[hsl(45,100%,42%)]"
-                            : "bg-destructive"
-                      }`}
+                      className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${pickByKey(
+                        ind.status,
+                        { green: "bg-[hsl(142,71%,45%)]", yellow: "bg-[hsl(45,100%,42%)]" },
+                        "bg-destructive",
+                      )}`}
                     />
                     <span className="text-[10px] font-bold text-muted-foreground w-8 text-right">
                       {Math.round(ind.value * 100)}%

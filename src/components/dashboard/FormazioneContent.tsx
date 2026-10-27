@@ -1,4 +1,5 @@
 import { useIstituzione } from "@/hooks/useIstituzione";
+import { AmministrazioneLabel } from "@/components/dashboard/_shared/AmministrazioneLabel";
 
 import { useQuery } from "@tanstack/react-query";
 import { searchEnti } from "@/services/ca/filtriService";
@@ -11,10 +12,9 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { useFilters } from "@/contexts/FilterContext";
-import { useAuth } from "@/contexts/AuthContext";
 import { useEnteScope } from "@/hooks/useEnteScope";
 import {
   useFormazioneKpi,
@@ -22,12 +22,13 @@ import {
   useFormazioneEvoluzione,
 } from "@/hooks/useSchedaFormazione";
 import type { Genere, FormazioneFiltri } from "@/services/ca/formazioneService";
+import { fmtSigned, loadingOr } from "@/lib/conditional";
 
 const nf = new Intl.NumberFormat("it-IT");
 const n1 = (v: number | null | undefined) =>
   v == null ? "N/D" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
 const signed = (v: number | null | undefined) =>
-  v == null ? "N/D" : `${v > 0 ? "+" : ""}${n1(v)}`;
+  v == null ? "N/D" : fmtSigned(v, n1);
 const TEAL = "hsl(175,55%,42%)";
 const BLUE = "hsl(215,70%,50%)";
 
@@ -58,8 +59,6 @@ const Kpi = ({
 
 export const FormazioneContent = () => {
   const { filters } = useFilters();
-  const { profile } = useAuth();
-  const isDfp = profile?.role === "dfp";
   const enteScope = useEnteScope();
   const { enteTerm, setEnteTerm, ente, setEnte } = useIstituzione();
 
@@ -101,17 +100,7 @@ export const FormazioneContent = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm font-semibold text-foreground">
-          {ente ? (
-            <>
-              Amministrazione: <span className="text-primary">{ente.descrizione}</span>
-            </>
-          ) : enteScope.label ? (
-            <>
-              Amministrazione: <span className="text-primary">{enteScope.label}</span>
-            </>
-          ) : (
-            "Totale PA"
-          )}{" "}
+          <AmministrazioneLabel nome={ente ? ente.descrizione : enteScope.label} />{" "}
           · Conto Annuale RGS · Anno {filtri.anno}
         </p>
         <div className="relative w-[320px] max-w-full" style={{ display: "none" }}>
@@ -170,13 +159,7 @@ export const FormazioneContent = () => {
         <Kpi
           accent={TEAL}
           titolo="Giornate di formazione"
-          valore={
-            loading
-              ? "…"
-              : k?.giornate_formazione != null
-                ? nf.format(Math.round(k.giornate_formazione))
-                : "N/D"
-          }
+          valore={loadingOr(loading, k?.giornate_formazione, (v) => nf.format(Math.round(v)))}
         />
         <Kpi
           accent={BLUE}
@@ -186,7 +169,7 @@ export const FormazioneContent = () => {
         <Kpi
           accent="hsl(220,10%,55%)"
           titolo="Personale in servizio"
-          valore={loading ? "…" : k?.personale != null ? nf.format(k.personale) : "N/D"}
+          valore={loadingOr(loading, k?.personale, nf.format)}
         />
         <Kpi
           accent="hsl(160,60%,40%)"

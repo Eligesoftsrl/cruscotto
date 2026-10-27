@@ -4,7 +4,8 @@ import {
   fetchSyllabusCatalogo,
   fetchSyllabusPartecipazioni,
 } from "@/services/dw/syllabusService";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 
 export const SyllabusUtentiSection = () => {
   const [entiData, setEntiData] = useState<any[]>([]);

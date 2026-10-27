@@ -1,15 +1,28 @@
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { useEffect, useMemo, useState } from "react";
 import {
-  RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar,
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList, ReferenceLine, Legend,
-  ResponsiveContainer,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Cell,
+  LabelList,
+  ReferenceLine,
+  Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { Users } from "lucide-react";
 import {
   useBenchmarkFiltri, useBenchmarkScore, useBenchmarkCriticita, useBenchmarkMaxEnti,
 } from "@/hooks/useSchedaSiproBenchmark";
-import { LoadingSpinner, ErrorBox, PIE_COLORS, TOOLTIP_STYLE } from "./_shared";
+import { LoadingSpinner, ErrorBox, PIE_COLORS, TOOLTIP_STYLE, QueryState } from "./_shared";
 import { useSiproAccesso } from "@/hooks/useSiproAccesso";
 
 // Numero massimo di enti confrontabili: default 6, sovrascrivibile dalla
@@ -179,11 +192,8 @@ export const BenchmarkView = () => {
 
       {selected.length === 0 ? (
         <div className="text-center text-sm text-muted-foreground py-10">Seleziona almeno un ente per visualizzare il confronto.</div>
-      ) : score.isLoading ? (
-        <LoadingSpinner />
-      ) : score.error ? (
-        <ErrorBox error={score.error} />
       ) : (
+        <QueryState error={score.error} loading={score.isLoading}>{() => (
         <>
           {/* S01.01 Radar */}
           <div className="bg-card border rounded-xl p-5">
@@ -279,6 +289,7 @@ export const BenchmarkView = () => {
             )}
           </div>
         </>
+      )}</QueryState>
       )}
     </div>
   );

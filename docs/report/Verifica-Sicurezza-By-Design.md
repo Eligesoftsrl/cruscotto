@@ -71,10 +71,29 @@
 | Problemi di sicurezza | **0** (2 corretti: SEC-08, SEC-09) |
 | Bug potenziali | **0** (corretti: condizione con rami identici, calcolo senza valore iniziale, codice irraggiungibile, funzione duplicata) |
 | Import inutilizzati | **183 rimossi** in 42 file |
-| Segnalazioni di manutenibilità residue | **231** (non bloccanti): 125 condizioni annidate, 66 variabili o assegnazioni inutilizzate, 17 funzioni troppo complesse, 23 altre |
+| Segnalazioni di manutenibilità | **da 231 a 15** (−94%), tutte non bloccanti e concentrate nel codice dimostrativo |
 
-Le segnalazioni residue riguardano la leggibilità, non la sicurezza. Verranno ridotte man mano
-che si interviene sulle singole schede.
+### 4.1 Riduzione delle segnalazioni di leggibilità (versione 1.1)
+
+| Tipo di segnalazione | Prima | Dopo | Come è stata risolta |
+|---|---|---|---|
+| Condizioni annidate (`a ? b : c ? d : e`) | 125 | 11 | Sostituite da piccole funzioni con nome chiaro (soglie, segno, semafori, scelta per chiave) e da un componente unico per gli stati «caricamento / errore / dati» delle 17 schede SIPrO |
+| Variabili e assegnazioni inutilizzate | 66 | 0 | Rimosse (calcoli mai mostrati, stati mai letti, una lettura dati superflua nella Gap Analysis Minerva) |
+| Funzioni troppo complesse | 17 | 2 | Suddivise in parti più piccole: scheda di score, card degli indici, instradamento delle schede, lettura dei ruoli dal token di accesso, passaggi di normalizzazione |
+| Funzioni annidate troppo in profondità | 6 | 0 | Spostate fuori dal componente |
+| Testi composti annidati | 9 | 1 | Sostituiti da una funzione per «prefisso + valore» |
+| Assegnazioni dentro espressioni | 2 | 0 | Separate in due istruzioni |
+| Commenti di esclusione non riconosciuti / tipi `any` | 6 | 0 | Configurazione dell'analisi allineata; tipo esplicito per le etichette dei grafici a torta |
+
+**Le 15 segnalazioni residue** sono tutte in parti dimostrative o storiche, escluse per scelta:
+calcolo D1 (`d1Service`, 9), metriche della Bussola (`bussolaService`, 1), pagina demo del
+rapporto narrativo (2), home con dati mock (2), legenda del grafico score con dati mock (1).
+Verranno chiuse quando queste parti saranno collegate ai dati reali.
+
+**Nessuna modifica visibile per l'utente.** Verifiche eseguite dopo l'intervento:
+compilazione TypeScript senza errori, build di produzione riuscita, tutti i test automatici
+superati (31), più test di equivalenza «prima/dopo» su migliaia di combinazioni per i calcoli
+dei KPI della Riforma, la normalizzazione degli score e i badge.
 
 ---
 
@@ -142,3 +161,4 @@ prima di ogni rilascio. Se un passo fallisce, il rilascio viene segnalato come n
 | Versione | Contenuto |
 |---|---|
 | 1.0 | Prima verifica completa: SAST (regole SonarQube e Semgrep), librerie, segreti, codice pubblicato, esposizione dei dati, architettura, test di sicurezza. |
+| 1.1 | Riduzione delle segnalazioni di leggibilità SonarQube da 231 a 15 (sezione 4.1), senza modifiche visibili. |

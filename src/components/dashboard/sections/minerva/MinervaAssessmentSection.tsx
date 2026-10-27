@@ -8,7 +8,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
   LineChart,
   Line,
@@ -17,6 +16,7 @@ import {
   Cell,
   ReferenceLine,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 import { Badge } from "@/components/ui/badge";
 

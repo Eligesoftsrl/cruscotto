@@ -1,13 +1,22 @@
 import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { useState } from "react";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList, Legend, ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Cell,
+  LabelList,
+  Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useCoinvolgimentoUo } from "@/hooks/useSchedaSiproProcessi";
 import { fetchCoinvolgimentoUo } from "@/services/sipro/processiService";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
-import { LoadingSpinner, ErrorBox, Pager, TOOLTIP_STYLE } from "./_shared";
+import { Pager, TOOLTIP_STYLE, QueryState } from "./_shared";
 
 const PER_PAGE = 20;
 const COLOR_NO = "hsl(0, 60%, 55%)";   // non coinvolge altre amministrazioni
@@ -51,7 +60,7 @@ export const OutsourcingFasiView = () => {
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={resetAndSet} />
-      {dett.error ? <ErrorBox error={dett.error} /> : dett.isLoading ? <LoadingSpinner /> : (
+      <QueryState error={dett.error} loading={dett.isLoading}>{() => (
         <div className="bg-card border rounded-xl p-5 space-y-2">
           <div className="mb-2 flex items-center justify-end">
             <TableExport fetchTables={exportTables} filename="sipro_outsourcing_fasi" title="Outsourcing Fasi" />
@@ -99,7 +108,7 @@ export const OutsourcingFasiView = () => {
             </div>
           </div>
         </div>
-      )}
+      )}</QueryState>
     </div>
   );
 };

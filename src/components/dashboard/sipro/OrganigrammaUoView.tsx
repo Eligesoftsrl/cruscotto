@@ -10,11 +10,11 @@ import {
   Tooltip,
   Cell,
   LabelList,
-  ResponsiveContainer,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useUoDistribuzione } from "@/hooks/useSchedaSiproOrganizzazione";
-import { LoadingSpinner, ErrorBox, BAR_COLOR, TOOLTIP_STYLE } from "./_shared";
+import { BAR_COLOR, TOOLTIP_STYLE, QueryState } from "./_shared";
 
 /** 02 - Organigramma UO: barre per livello gerarchico + donut per responsabilita. */
 export const OrganigrammaUoView = () => {
@@ -29,7 +29,6 @@ export const OrganigrammaUoView = () => {
     value: r.numero,
   }));
   const byResp = (resp.data ?? []).map((r) => ({ name: r.voce, value: r.numero }));
-  const totalResp = byResp.reduce((s, d) => s + d.value, 0);
 
   const loading = livello.isLoading || resp.isLoading;
   const error = livello.error || resp.error;
@@ -37,11 +36,7 @@ export const OrganigrammaUoView = () => {
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={setScope} />
-      {error ? (
-        <ErrorBox error={error} />
-      ) : loading ? (
-        <LoadingSpinner />
-      ) : (
+      <QueryState error={error} loading={loading}>{() => (
         <div className="bg-card border rounded-xl p-5 space-y-2">
           <h3 className="text-[15px] font-bold text-foreground">
             Distribuzione delle Unità Organizzative per Livello Gerarchico e Livello di
@@ -96,7 +91,7 @@ export const OrganigrammaUoView = () => {
             </div>
           </div>
         </div>
-      )}
+      )}</QueryState>
     </div>
   );
 };

@@ -20,7 +20,7 @@ export const GaugeArc = ({
   const circumference = Math.PI * r;
   const dashLen = value * circumference;
   return (
-    <svg width={size} height={size * 0.65} viewBox={`0 0 ${size} ${size * 0.65}`}>
+    <svg width={size} height={size * 0.65} viewBox={`0 0 ${size} ${size * 0.65}`} aria-hidden="true">
       <path
         d={`M ${size * 0.1} ${size * 0.55} A ${r} ${r} 0 1 1 ${size * 0.9} ${size * 0.55}`}
         fill="none"
@@ -91,7 +91,6 @@ export const BulletBar = ({
   max?: number;
 }) => {
   const aPct = (actual / max) * 100;
-  const tPct = (target / max) * 100;
   const isGood = actual >= target * 0.9;
   return (
     <div className="relative h-5 w-full bg-muted rounded-sm overflow-hidden">
@@ -303,6 +302,254 @@ export const MockUpBadge = ({ className = "" }: { className?: string }) => (
   </span>
 );
 
+/* ── Freccia apri/chiudi del drill-down ── */
+const DrillChevron = ({ open }: { open: boolean }) => {
+  const Icon = open ? ChevronUp : ChevronDown;
+  return <Icon aria-hidden="true" className="inline h-3 w-3 ml-1" />;
+};
+
+/* ── Riga numeratore/denominatore con drill-down opzionale ── */
+const BreakdownRow = ({
+  label,
+  value,
+  drilldown,
+  open,
+  onToggle,
+}: {
+  label: string;
+  value: string | number;
+  drilldown?: DrilldownData;
+  open: boolean;
+  onToggle: () => void;
+}) => {
+  const hasDrill = !!drilldown;
+  return (
+    <>
+      <button
+        onClick={hasDrill ? onToggle : undefined}
+        disabled={!hasDrill}
+        className={`flex items-center justify-between w-full text-left rounded px-2 py-1.5 -mx-2 transition-colors ${
+          hasDrill ? "hover:bg-primary/10 cursor-pointer group" : ""
+        } ${open ? "bg-primary/10" : ""}`}
+      >
+        <span className="text-sm text-muted-foreground flex items-center gap-1.5">
+          {label}
+          {hasDrill && (
+            <Search aria-hidden="true" className="h-3 w-3 text-primary group-hover:text-primary transition-colors" />
+          )}
+        </span>
+        <span
+          className={`text-sm font-bold ${hasDrill ? "text-primary underline decoration-dotted underline-offset-2" : "text-foreground"}`}
+        >
+          {value}
+          {hasDrill && <DrillChevron open={open} />}
+        </span>
+      </button>
+      {open && drilldown && (
+        <div className="ml-1 mr-1 mb-1">
+          <DrilldownTable data={drilldown} />
+        </div>
+      )}
+    </>
+  );
+};
+
+const fmtBreakdownVal = (v: number) => (v >= 1000 ? v.toLocaleString("it-IT") : v);
+
+/* ── Scomposizione formula (numeratore, denominatore, risultato) ── */
+const FormulaBreakdownPanel = ({
+  fb,
+  drillNum,
+  drillDen,
+  onToggleNum,
+  onToggleDen,
+}: {
+  fb: FormulaBreakdown;
+  drillNum: boolean;
+  drillDen: boolean;
+  onToggleNum: () => void;
+  onToggleDen: () => void;
+}) => (
+  <div className="mx-4 mb-3 px-3 py-3 rounded border border-primary/20 bg-primary/5 space-y-2">
+    <div className="text-xs font-semibold text-primary uppercase tracking-wider mb-1">
+      Scomposizione formula
+    </div>
+    <BreakdownRow
+      label={fb.numeratorLabel}
+      value={fmtBreakdownVal(fb.numeratorValue)}
+      drilldown={fb.numeratorDrilldown}
+      open={drillNum}
+      onToggle={onToggleNum}
+    />
+    <BreakdownRow
+      label={fb.denominatorLabel}
+      value={fmtBreakdownVal(fb.denominatorValue)}
+      drilldown={fb.denominatorDrilldown}
+      open={drillDen}
+      onToggle={onToggleDen}
+    />
+    <div className="border-t border-primary/20 pt-2 flex items-center justify-between">
+      <span className="text-sm font-semibold text-primary">{fb.resultLabel}</span>
+      <span className="text-sm font-bold text-primary">{fb.resultText}</span>
+    </div>
+  </div>
+);
+
+/* ════════════════════════════════════════════════════
+ * EXECUTIVE (compact): valore + gauge + assessment badge inline + interconnessioni + drill-down
+ * Nessuna formula, nessun breakdown, nessuna metodologia
+ * ════════════════════════════════════════════════════ */
+const ExecutiveCompactCard = ({
+  idx,
+  onDrillDown,
+  sintesi = false,
+  ...rest
+}: {
+  idx: ExecutiveIndex;
+  onDrillDown?: (pillar: string, indicatorId?: string) => void;
+  sintesi?: boolean;
+} & React.HTMLAttributes<HTMLDivElement>) => {
+  const isClickable = !!onDrillDown;
+  return (
+    <div
+      className={`tableau-card border-t-2 flex flex-col group transition-all ${idx.isPlaceholder ? "opacity-60 border-dashed" : ""} ${isClickable ? "cursor-pointer hover:shadow-lg hover:-translate-y-0.5" : ""}`}
+      style={{ borderTopColor: idx.color }}
+      onClick={() => onDrillDown?.(idx.pillar, idx.id)}
+      role={isClickable ? "button" : undefined}
+      tabIndex={isClickable ? 0 : undefined}
+      onKeyDown={
+        isClickable
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onDrillDown?.(idx.pillar, idx.id);
+              }
+            }
+          : undefined
+      }
+      {...rest}
+    >
+      <div className="p-4 pb-2">
+        <div className="flex justify-between items-start">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-lg font-bold text-foreground">{idx.displayId ?? idx.id}</span>
+              <span
+                className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded"
+                style={{ background: `${idx.color}20`, color: idx.color }}
+              >
+                {idx.pillar}
+              </span>
+              {idx.isPlaceholder && (
+                <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-muted text-muted-foreground border border-dashed border-border">
+                  Placeholder
+                </span>
+              )}
+              {sintesi && (
+                <span
+                  className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded text-white"
+                  style={{ background: idx.color }}
+                >
+                  Indice di sintesi
+                </span>
+              )}
+              {idx.isMock && <MockUpBadge />}
+            </div>
+            <p
+              className={`leading-tight ${sintesi ? "text-base font-medium text-foreground" : "text-sm text-muted-foreground"}`}
+            >
+              {idx.label}
+            </p>
+          </div>
+          <div className="flex items-center gap-2 shrink-0 ml-3">
+            <div className="text-right">
+              <span className={`${sintesi ? "text-4xl" : "text-3xl"} font-bold text-foreground`}>
+                {Math.round((idx.value ?? 0) * 100)}
+              </span>
+              <div className="text-xs text-muted-foreground">Score [0-100]</div>
+            </div>
+            <GaugeArc value={idx.value} color={idx.color} size={sintesi ? 80 : 64} />
+          </div>
+        </div>
+      </div>
+
+      {/* Assessment badge inline */}
+      <div className="mx-4 mb-2 flex items-center gap-2">
+        <span
+          className="shrink-0 px-2.5 py-1 rounded text-xs font-bold text-primary-foreground"
+          style={{ background: idx.assessment.color }}
+        >
+          {idx.assessment.level}
+        </span>
+        <p className="text-xs text-muted-foreground leading-snug line-clamp-2">
+          {idx.assessment.text}
+        </p>
+      </div>
+
+      {/* Composto da (solo indice di sintesi) */}
+      {sintesi && idx.subIndicators.length > 0 && (
+        <div
+          className="mx-4 mb-3 px-3 py-2.5 rounded bg-muted/30"
+          data-testid={`exec-composto-${idx.id}`}
+        >
+          <div className="text-[11px] font-bold text-muted-foreground uppercase tracking-[0.12em] mb-1.5">
+            Composto da
+          </div>
+          {idx.subIndicators.map((s) => (
+            <div key={s.key} className="flex items-center gap-3 py-0.5">
+              <span className="text-xs font-semibold text-foreground w-20 shrink-0">{s.key}</span>
+              <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                <div
+                  className="h-full rounded-full"
+                  style={{
+                    width: `${Math.min(100, Math.round((s.value ?? 0) * 100))}%`,
+                    background: idx.color,
+                  }}
+                />
+              </div>
+              <span className="text-xs font-bold w-8 text-right tabular-nums text-foreground">
+                {Math.round((s.value ?? 0) * 100)}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Interconnessioni (compatte) */}
+      {idx.interconnections && idx.interconnections.connections.length > 0 && (
+        <div className="mx-4 mb-2">
+          <TooltipProvider delayDuration={200}>
+            <div className="flex flex-wrap gap-1">
+              {idx.interconnections.connections.map((c) => (
+                <Tooltip key={c.pillar}>
+                  <TooltipTrigger asChild>
+                    <span tabIndex={0}
+                      className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded text-xs font-bold border border-border/40 bg-card cursor-help"
+                      style={{ borderLeftWidth: 2, borderLeftColor: PILLAR_COLORS[c.pillar] }}
+                    >
+                      <span style={{ color: PILLAR_COLORS[c.pillar] }}>{c.pillar}</span>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="max-w-[280px] p-3">
+                    <p className="text-xs font-semibold text-foreground mb-0.5">{c.label}</p>
+                    <p className="text-xs text-muted-foreground">{c.reason}</p>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+          </TooltipProvider>
+        </div>
+      )}
+
+      <div className="px-4 pb-3 mt-auto">
+        <span className="inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:underline">
+          <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" /> Approfondisci
+        </span>
+      </div>
+    </div>
+  );
+};
+
 export const ExecutiveKpiCard = ({
   idx,
   onDrillDown,
@@ -321,151 +568,8 @@ export const ExecutiveKpiCard = ({
   const [drillDen, setDrillDen] = useState(false);
   const isCompact = variant === "executive";
 
-  /* ════════════════════════════════════════════════════
-   * EXECUTIVE (compact): valore + gauge + assessment badge inline + interconnessioni + drill-down
-   * Nessuna formula, nessun breakdown, nessuna metodologia
-   * ════════════════════════════════════════════════════ */
-  if (isCompact) {
-    const isClickable = !!onDrillDown;
-    return (
-      <div
-        className={`tableau-card border-t-2 flex flex-col group transition-all ${idx.isPlaceholder ? "opacity-60 border-dashed" : ""} ${isClickable ? "cursor-pointer hover:shadow-lg hover:-translate-y-0.5" : ""}`}
-        style={{ borderTopColor: idx.color }}
-        onClick={() => onDrillDown?.(idx.pillar, idx.id)}
-        role={isClickable ? "button" : undefined}
-        tabIndex={isClickable ? 0 : undefined}
-        onKeyDown={
-          isClickable
-            ? (e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  onDrillDown?.(idx.pillar, idx.id);
-                }
-              }
-            : undefined
-        }
-        {...rest}
-      >
-        <div className="p-4 pb-2">
-          <div className="flex justify-between items-start">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-lg font-bold text-foreground">{idx.displayId ?? idx.id}</span>
-                <span
-                  className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded"
-                  style={{ background: `${idx.color}20`, color: idx.color }}
-                >
-                  {idx.pillar}
-                </span>
-                {idx.isPlaceholder && (
-                  <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-muted text-muted-foreground border border-dashed border-border">
-                    Placeholder
-                  </span>
-                )}
-                {sintesi && (
-                  <span
-                    className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded text-white"
-                    style={{ background: idx.color }}
-                  >
-                    Indice di sintesi
-                  </span>
-                )}
-                {idx.isMock && <MockUpBadge />}
-              </div>
-              <p
-                className={`leading-tight ${sintesi ? "text-base font-medium text-foreground" : "text-sm text-muted-foreground"}`}
-              >
-                {idx.label}
-              </p>
-            </div>
-            <div className="flex items-center gap-2 shrink-0 ml-3">
-              <div className="text-right">
-                <span className={`${sintesi ? "text-4xl" : "text-3xl"} font-bold text-foreground`}>
-                  {Math.round((idx.value ?? 0) * 100)}
-                </span>
-                <div className="text-xs text-muted-foreground">Score [0-100]</div>
-              </div>
-              <GaugeArc value={idx.value} color={idx.color} size={sintesi ? 80 : 64} />
-            </div>
-          </div>
-        </div>
-
-        {/* Assessment badge inline */}
-        <div className="mx-4 mb-2 flex items-center gap-2">
-          <span
-            className="shrink-0 px-2.5 py-1 rounded text-xs font-bold text-primary-foreground"
-            style={{ background: idx.assessment.color }}
-          >
-            {idx.assessment.level}
-          </span>
-          <p className="text-xs text-muted-foreground leading-snug line-clamp-2">
-            {idx.assessment.text}
-          </p>
-        </div>
-
-        {/* Composto da (solo indice di sintesi) */}
-        {sintesi && idx.subIndicators.length > 0 && (
-          <div
-            className="mx-4 mb-3 px-3 py-2.5 rounded bg-muted/30"
-            data-testid={`exec-composto-${idx.id}`}
-          >
-            <div className="text-[11px] font-bold text-muted-foreground uppercase tracking-[0.12em] mb-1.5">
-              Composto da
-            </div>
-            {idx.subIndicators.map((s) => (
-              <div key={s.key} className="flex items-center gap-3 py-0.5">
-                <span className="text-xs font-semibold text-foreground w-20 shrink-0">{s.key}</span>
-                <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full"
-                    style={{
-                      width: `${Math.min(100, Math.round((s.value ?? 0) * 100))}%`,
-                      background: idx.color,
-                    }}
-                  />
-                </div>
-                <span className="text-xs font-bold w-8 text-right tabular-nums text-foreground">
-                  {Math.round((s.value ?? 0) * 100)}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Interconnessioni (compatte) */}
-        {idx.interconnections && idx.interconnections.connections.length > 0 && (
-          <div className="mx-4 mb-2">
-            <TooltipProvider delayDuration={200}>
-              <div className="flex flex-wrap gap-1">
-                {idx.interconnections.connections.map((c) => (
-                  <Tooltip key={c.pillar}>
-                    <TooltipTrigger asChild>
-                      <span tabIndex={0}
-                        className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded text-xs font-bold border border-border/40 bg-card cursor-help"
-                        style={{ borderLeftWidth: 2, borderLeftColor: PILLAR_COLORS[c.pillar] }}
-                      >
-                        <span style={{ color: PILLAR_COLORS[c.pillar] }}>{c.pillar}</span>
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent side="top" className="max-w-[280px] p-3">
-                      <p className="text-xs font-semibold text-foreground mb-0.5">{c.label}</p>
-                      <p className="text-xs text-muted-foreground">{c.reason}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                ))}
-              </div>
-            </TooltipProvider>
-          </div>
-        )}
-
-        <div className="px-4 pb-3 mt-auto">
-          <span className="inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:underline">
-            <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" /> Approfondisci
-          </span>
-        </div>
-      </div>
-    );
-  }
+  // Vista Executive: card compatta (vedi ExecutiveCompactCard)
+  if (isCompact) return <ExecutiveCompactCard idx={idx} onDrillDown={onDrillDown} sintesi={sintesi} {...rest} />;
 
   /* ════════════════════════════════════════════════════
    * SYNTHETIC (dettagliata): tutto il contenuto come da specifica
@@ -517,105 +621,21 @@ export const ExecutiveKpiCard = ({
       </div>
 
       {/* Scomposizione formula — clickable drill-down */}
-      {idx.formulaBreakdown &&
-        (() => {
-          const fb = idx.formulaBreakdown;
-          const fmtVal = (v: number) => (v >= 1000 ? v.toLocaleString("it-IT") : v);
-          const hasNumDrill = !!fb.numeratorDrilldown;
-          const hasDenDrill = !!fb.denominatorDrilldown;
-
-          return (
-            <div className="mx-4 mb-3 px-3 py-3 rounded border border-primary/20 bg-primary/5 space-y-2">
-              <div className="text-xs font-semibold text-primary uppercase tracking-wider mb-1">
-                Scomposizione formula
-              </div>
-
-              {/* Numerator row */}
-              <button
-                onClick={
-                  hasNumDrill
-                    ? () => {
-                        setDrillNum(!drillNum);
-                        setDrillDen(false);
-                      }
-                    : undefined
-                }
-                disabled={!hasNumDrill}
-                className={`flex items-center justify-between w-full text-left rounded px-2 py-1.5 -mx-2 transition-colors ${
-                  hasNumDrill ? "hover:bg-primary/10 cursor-pointer group" : ""
-                } ${drillNum ? "bg-primary/10" : ""}`}
-              >
-                <span className="text-sm text-muted-foreground flex items-center gap-1.5">
-                  {fb.numeratorLabel}
-                  {hasNumDrill && (
-                    <Search aria-hidden="true" className="h-3 w-3 text-primary group-hover:text-primary transition-colors" />
-                  )}
-                </span>
-                <span
-                  className={`text-sm font-bold ${hasNumDrill ? "text-primary underline decoration-dotted underline-offset-2" : "text-foreground"}`}
-                >
-                  {fmtVal(fb.numeratorValue)}
-                  {hasNumDrill &&
-                    (drillNum ? (
-                      <ChevronUp aria-hidden="true" className="inline h-3 w-3 ml-1" />
-                    ) : (
-                      <ChevronDown aria-hidden="true" className="inline h-3 w-3 ml-1" />
-                    ))}
-                </span>
-              </button>
-              {drillNum && fb.numeratorDrilldown && (
-                <div className="ml-1 mr-1 mb-1">
-                  <DrilldownTable data={fb.numeratorDrilldown} />
-                </div>
-              )}
-
-              {/* Denominator row */}
-              <button
-                onClick={
-                  hasDenDrill
-                    ? () => {
-                        setDrillDen(!drillDen);
-                        setDrillNum(false);
-                      }
-                    : undefined
-                }
-                disabled={!hasDenDrill}
-                className={`flex items-center justify-between w-full text-left rounded px-2 py-1.5 -mx-2 transition-colors ${
-                  hasDenDrill ? "hover:bg-primary/10 cursor-pointer group" : ""
-                } ${drillDen ? "bg-primary/10" : ""}`}
-              >
-                <span className="text-sm text-muted-foreground flex items-center gap-1.5">
-                  {fb.denominatorLabel}
-                  {hasDenDrill && (
-                    <Search aria-hidden="true" className="h-3 w-3 text-primary group-hover:text-primary transition-colors" />
-                  )}
-                </span>
-                <span
-                  className={`text-sm font-bold ${hasDenDrill ? "text-primary underline decoration-dotted underline-offset-2" : "text-foreground"}`}
-                >
-                  {fmtVal(fb.denominatorValue)}
-                  {hasDenDrill &&
-                    (drillDen ? (
-                      <ChevronUp aria-hidden="true" className="inline h-3 w-3 ml-1" />
-                    ) : (
-                      <ChevronDown aria-hidden="true" className="inline h-3 w-3 ml-1" />
-                    ))}
-                </span>
-              </button>
-              {drillDen && fb.denominatorDrilldown && (
-                <div className="ml-1 mr-1 mb-1">
-                  <DrilldownTable data={fb.denominatorDrilldown} />
-                </div>
-              )}
-
-              {/* Result */}
-              <div className="border-t border-primary/20 pt-2 flex items-center justify-between">
-                <span className="text-sm font-semibold text-primary">{fb.resultLabel}</span>
-                <span className="text-sm font-bold text-primary">{fb.resultText}</span>
-              </div>
-            </div>
-          );
-        })()}
+      {idx.formulaBreakdown && (
+        <FormulaBreakdownPanel
+          fb={idx.formulaBreakdown}
+          drillNum={drillNum}
+          drillDen={drillDen}
+          onToggleNum={() => {
+            setDrillNum(!drillNum);
+            setDrillDen(false);
+          }}
+          onToggleDen={() => {
+            setDrillDen(!drillDen);
+            setDrillNum(false);
+          }}
+        />
+      )}
 
       {/* Contesto */}
       {idx.context && (

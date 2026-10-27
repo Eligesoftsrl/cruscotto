@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Loader2 } from "lucide-react";
 
 export const PIE_COLORS = [
@@ -15,8 +16,14 @@ export const TOOLTIP_STYLE = {
 
 // Etichetta valore per torte/ciambelle: numero posizionato ALL'ESTERNO dell'arco
 // con colore ad alto contrasto (leggibile su qualsiasi colore di fetta).
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const pieValueLabel = (props: any) => {
+interface PieLabelProps {
+  cx: number;
+  cy: number;
+  midAngle: number;
+  outerRadius: number;
+  value?: number | null;
+}
+export const pieValueLabel = (props: PieLabelProps) => {
   const { cx, cy, midAngle, outerRadius, value } = props;
   if (value == null || value === 0) return null;
   const RAD = Math.PI / 180;
@@ -58,6 +65,18 @@ export const ErrorBox = ({ error }: { error: unknown }) => (
     Errore nel caricamento dei dati: {error instanceof Error ? error.message : "sconosciuto"}
   </div>
 );
+
+/**
+ * Stato di una query: errore → ErrorBox, caricamento → spinner, altrimenti il contenuto.
+ * Il contenuto è una funzione, così viene calcolato solo quando i dati sono pronti.
+ */
+export const QueryState = ({
+  error, loading, children,
+}: { error?: unknown; loading?: boolean; children: () => ReactNode }) => {
+  if (error) return <ErrorBox error={error} />;
+  if (loading) return <LoadingSpinner />;
+  return <>{children()}</>;
+};
 
 export const Pager = ({
   page, totalPages, onPage, total,

@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import headerLogos from "@/assets/header-logos.png";
+import { pickFirst } from "@/lib/conditional";
 
 interface TopBarProps {
   nav: NavState;
@@ -59,11 +60,13 @@ export const TopBar = ({ nav, onNavigate, onToggleMenu, menuOpen = false }: TopB
                 <div className="flex flex-col">
                   <span className="text-sm font-semibold leading-tight">{profile.full_name}</span>
                   <span className="text-xs text-muted-foreground">
-                    {isAdmin
-                      ? "Amministratore (DFP)"
-                      : isDfp
-                        ? "Utente DFP"
-                        : (profile.ente_denominazione ?? "Responsabile HR")}
+                    {pickFirst(
+                      [
+                        [isAdmin, "Amministratore (DFP)"],
+                        [isDfp, "Utente DFP"],
+                      ],
+                      profile.ente_denominazione ?? "Responsabile HR",
+                    )}
                   </span>
                 </div>
               </DropdownMenuLabel>

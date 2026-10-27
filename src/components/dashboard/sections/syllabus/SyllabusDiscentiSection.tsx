@@ -7,11 +7,14 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   PieChart,
   Pie,
   Cell,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
+import { pickByKey } from "@/lib/conditional";
+
+const GENERE_LABEL: Record<string, string> = { F: "Donne", M: "Uomini" };
 
 const COLORS = [
   "hsl(210,80%,45%)",
@@ -51,7 +54,7 @@ export const SyllabusDiscentiSection = () => {
 
       setByGenere(
         Object.entries(gen).map(([name, value]) => ({
-          name: name === "F" ? "Donne" : name === "M" ? "Uomini" : name,
+          name: pickByKey(name, GENERE_LABEL, name),
           value,
         })),
       );

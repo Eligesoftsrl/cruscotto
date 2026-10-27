@@ -1,3 +1,4 @@
+import type { ComponentType } from "react";
 import { FilterPills } from "@/components/dashboard/FilterPills";
 
 import { AnalisiEtaContent } from "@/components/dashboard/AnalisiEtaContent";
@@ -54,6 +55,73 @@ interface OperationalContentProps {
   onGoSynthetic?: (pillar?: string) => void;
 }
 
+/** Schede per fonte: id indicatore -> componente. */
+const CA_SECTIONS: Record<string, ComponentType> = {
+  "analisi-eta": AnalisiEtaContent,
+  "analisi-anzianita": AnzianitaContent,
+  "cessazioni": CessazioniContent,
+  "previsione-cessazioni": PrevisioneCessazioniSection,
+  "assunti-causale": AssuntiCausaleContent,
+  "tasso-turnover": TassoTurnoverContent,
+  "tasso-sostituzione": TassoSostituzioneContent,
+  "formati-personale": FormazioneContent,
+  "progressioni": ProgressioniContent,
+  "analisi-personale": AnalisiPersonaleContent,
+  "lavoro-flessibile": LavoroFlessibileContent,
+  "lavoro-agile": LavoroAgileContent,
+  "analisi-genere": AnalisiGenereContent,
+};
+const INPA_SECTIONS: Record<string, ComponentType> = {
+  "inpa-amministrazioni": InpaAmministrazioniSection,
+  "inpa-bandi": InpaBandiSection,
+  "inpa-candidature": InpaCandidatureSection,
+  "inpa-categorie": InpaCategorieSection,
+  "inpa-figure-ricercate": InpaFigureRicercateSection,
+  "inpa-domanda-offerta": InpaDomandaOffertaSection,
+  "inpa-efficacia": InpaEfficaciaSection,
+  "inpa-graduatorie": InpaGraduatorieSection,
+  "inpa-durata": InpaDurataSection,
+  "inpa-tempi-dettaglio": InpaTempiDettaglioSection,
+  "inpa-attrattivita": InpaAttrattivitaSection,
+};
+const MINERVA_SECTIONS: Record<string, ComponentType> = {
+  "minerva-catalogo": MinervaCatalogoSection,
+  "minerva-competenze": MinervaCompetenzeSection,
+  "minerva-assegnazioni": MinervaAssegnazioniSection,
+  "minerva-assessment": MinervaAssessmentSection,
+  "minerva-gap-analysis": MinervaGapAnalysisSection,
+  "minerva-fabbisogno": MinervaFabbisognoSection,
+};
+const SYLLABUS_SECTIONS: Record<string, ComponentType> = {
+  "syllabus-amministrazioni": SyllabusAmministrazioniSection,
+  "syllabus-corsi": SyllabusCorsiSection,
+  "syllabus-discenti": SyllabusDiscentiSection,
+  "syllabus-assessment": SyllabusAssessmentSection,
+  "syllabus-gap-formazione": SyllabusGapFormazioneSection,
+};
+const LP_SECTIONS: Record<string, ComponentType> = {
+  "lp-distribuzione": LpDistribuzioneSection,
+  "lp-dotazione": LpDotazioneSection,
+};
+
+const ND_SOURCE_SECTIONS: Record<string, Record<string, ComponentType>> = {
+  "inpa": INPA_SECTIONS,
+  "minerva": MINERVA_SECTIONS,
+  "syllabus": SYLLABUS_SECTIONS,
+  "lavoro-pubblico": LP_SECTIONS,
+};
+
+/** true se il flag esiste ed è spento (flag sconosciuto o assente = attivo). */
+const isFlagDisabled = (flags: { key: string; enabled: boolean }[], key?: string) => {
+  if (!key) return false;
+  return !(flags.find((f) => f.key === key)?.enabled ?? true);
+};
+
+const renderSection = (sections: Record<string, ComponentType>, indicator?: string) => {
+  const Section = indicator ? sections[indicator] : undefined;
+  return Section ? <Section /> : null;
+};
+
 export const OperationalContent = ({
   source,
   indicator,
@@ -61,8 +129,7 @@ export const OperationalContent = ({
   onGoSynthetic,
 }: OperationalContentProps) => {
   const { flags } = useAdminState();
-  const isFlagOff = (key?: string) =>
-    key ? !(flags.find((f) => f.key === key)?.enabled ?? true) : false;
+  const isFlagOff = (key?: string) => isFlagDisabled(flags, key);
 
   // Map source to related pillar for bottom-up nav
   const sourcePillarMap: Record<string, string> = {
@@ -144,118 +211,12 @@ export const OperationalContent = ({
       );
     }
 
-    switch (indicator) {
-      case "analisi-eta":
-        return wrap(<AnalisiEtaContent />);
-      case "analisi-anzianita":
-        return wrap(<AnzianitaContent />);
-      case "cessazioni":
-        return wrap(<CessazioniContent />);
-      case "previsione-cessazioni":
-        return wrap(<PrevisioneCessazioniSection />);
-      case "assunti-causale":
-        return wrap(<AssuntiCausaleContent />);
-      case "tasso-turnover":
-        return wrap(<TassoTurnoverContent />);
-      case "tasso-sostituzione":
-        return wrap(<TassoSostituzioneContent />);
-      case "formati-personale":
-        return wrap(<FormazioneContent />);
-      case "progressioni":
-        return wrap(<ProgressioniContent />);
-      case "analisi-personale":
-        return wrap(<AnalisiPersonaleContent />);
-      case "lavoro-flessibile":
-        return wrap(<LavoroFlessibileContent />);
-      case "lavoro-agile":
-        return wrap(<LavoroAgileContent />);
-      case "analisi-genere":
-        return wrap(<AnalisiGenereContent />);
-    }
+    const CaSection = CA_SECTIONS[indicator];
+    if (CaSection) return wrap(<CaSection />);
   }
 
-  // InPA — placeholder N/D (fonti dati non ancora disponibili)
-  if (source === "inpa") {
-    return (
-      <NdMode>
-        {(() => {
-          switch (indicator) {
-            case "inpa-amministrazioni":
-              return <InpaAmministrazioniSection />;
-            case "inpa-bandi":
-              return <InpaBandiSection />;
-            case "inpa-candidature":
-              return <InpaCandidatureSection />;
-            case "inpa-categorie":
-              return <InpaCategorieSection />;
-            case "inpa-figure-ricercate":
-              return <InpaFigureRicercateSection />;
-            case "inpa-domanda-offerta":
-              return <InpaDomandaOffertaSection />;
-            case "inpa-efficacia":
-              return <InpaEfficaciaSection />;
-            case "inpa-graduatorie":
-              return <InpaGraduatorieSection />;
-            case "inpa-durata":
-              return <InpaDurataSection />;
-            case "inpa-tempi-dettaglio":
-              return <InpaTempiDettaglioSection />;
-            case "inpa-attrattivita":
-              return <InpaAttrattivitaSection />;
-          }
-          return null;
-        })()}
-      </NdMode>
-    );
-  }
 
-  // Minerva — placeholder N/D
-  if (source === "minerva") {
-    return (
-      <NdMode>
-        {(() => {
-          switch (indicator) {
-            case "minerva-catalogo":
-              return <MinervaCatalogoSection />;
-            case "minerva-competenze":
-              return <MinervaCompetenzeSection />;
-            case "minerva-assegnazioni":
-              return <MinervaAssegnazioniSection />;
-            case "minerva-assessment":
-              return <MinervaAssessmentSection />;
-            case "minerva-gap-analysis":
-              return <MinervaGapAnalysisSection />;
-            case "minerva-fabbisogno":
-              return <MinervaFabbisognoSection />;
-          }
-          return null;
-        })()}
-      </NdMode>
-    );
-  }
 
-  // Syllabus — placeholder N/D
-  if (source === "syllabus") {
-    return (
-      <NdMode>
-        {(() => {
-          switch (indicator) {
-            case "syllabus-amministrazioni":
-              return <SyllabusAmministrazioniSection />;
-            case "syllabus-corsi":
-              return <SyllabusCorsiSection />;
-            case "syllabus-discenti":
-              return <SyllabusDiscentiSection />;
-            case "syllabus-assessment":
-              return <SyllabusAssessmentSection />;
-            case "syllabus-gap-formazione":
-              return <SyllabusGapFormazioneSection />;
-          }
-          return null;
-        })()}
-      </NdMode>
-    );
-  }
 
   // KPI Riforma PA
   // Per ora resta solo la scheda «KPI Abilitanti e di Successo» (mappatura kpi-riforma_3):
@@ -287,22 +248,10 @@ export const OperationalContent = ({
     return <KpiAbilitantiSection />;
   }
 
-  // Lavoro Pubblico — placeholder N/D
-  if (source === "lavoro-pubblico") {
-    return (
-      <NdMode>
-        {(() => {
-          switch (indicator) {
-            case "lp-distribuzione":
-              return <LpDistribuzioneSection />;
-            case "lp-dotazione":
-              return <LpDotazioneSection />;
-          }
-          return null;
-        })()}
-      </NdMode>
-    );
-  }
+
+  // InPA, Minerva, Syllabus, Lavoro Pubblico — placeholder N/D (fonti dati non ancora disponibili)
+  const ndSections = ND_SOURCE_SECTIONS[source];
+  if (ndSections) return <NdMode>{renderSection(ndSections, indicator)}</NdMode>;
 
   // Fallback: select an indicator
   return (

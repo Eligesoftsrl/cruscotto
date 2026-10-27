@@ -1,3 +1,4 @@
+import { pickByKey, pickFirst, byMinThreshold } from "@/lib/conditional";
 /**
  * Hook centralizzato per il calcolo dei 41 KPI della Riforma PA
  * secondo la metodologia ufficiale del documento "Proposta analisi fonte KPI".
@@ -251,11 +252,7 @@ export function extractAllKpis(row: any): KpiRow[] {
       tipo: "quantitativo",
       categoria: "successo",
       valore: pctSafe(
-        row.q4_2_formazione_trasv === "Sì"
-          ? percorsiTot
-          : row.q4_2_formazione_trasv === "Parzialmente"
-            ? Math.round(percorsiTot * 0.5)
-            : 0,
+        pickByKey(row.q4_2_formazione_trasv, { Sì: percorsiTot, Parzialmente: Math.round(percorsiTot * 0.5) }, 0),
         percorsiTot,
       ),
     },
@@ -498,43 +495,47 @@ export function computeDimensionScores(rows: any[]): DimensionScore[] {
 export function computeCompositeIndices(row: any): CompositeIndex[] {
   const kpis = extractAllKpis(row);
   const get = (codice: string) => kpis.find((k) => k.codice === codice)?.valore ?? 0;
+  /** 1 se il KPI binario è soddisfatto (100%), altrimenti 0. */
+  const yes = (codice: string) => (get(codice) === 100 ? 1 : 0);
+  /** 1 se il KPI raggiunge la soglia indicata, altrimenti 0. */
+  const atLeast = (value: number, min: number) => (value >= min ? 1 : 0);
 
   // CGC: D1.1 + D1.2 + D1.3 + D2.3 (tutti binari 0/1)
   const cgcComps = ["D1.1", "D1.2", "D1.3", "D2.3"];
-  const cgc = cgcComps.reduce((s, c) => s + (get(c) === 100 ? 1 : 0), 0);
+  const cgc = cgcComps.reduce((s, c) => s + yes(c), 0);
 
   // PSFL: D2.3 (abilitante) + (100%-D2.1 bucket) + D3.4 bucket
   const d21inv = 100 - get("D2.1");
-  const d21bucket = d21inv <= 25 ? 2 : d21inv <= 50 ? 1 : 0;
-  const d34bucket = get("D3.4") >= 66 ? 2 : get("D3.4") >= 33 ? 1 : 0;
-  const psfl = (get("D2.3") === 100 ? 1 : 0) + d21bucket + d34bucket;
+  const d21bucket = pickFirst([[d21inv <= 25, 2], [d21inv <= 50, 1]], 0);
+  const d34bucket = byMinThreshold(get("D3.4"), [[66, 2], [33, 1]], 0);
+  const psfl = yes("D2.3") + d21bucket + d34bucket;
 
   // GR: S_GR = D3.1 + D3.2 (abilitante ≥1) + D3.4 bucket
-  const sgr = (get("D3.2") === 100 ? 1 : 0) + (get("D3.3") === 100 ? 1 : 0);
-  const grAbl = sgr >= 1 ? 1 : 0;
-  const grD34 = get("D3.4") >= 66 ? 2 : get("D3.4") >= 33 ? 1 : 0;
-  const gr = grAbl + grD34 + (get("D3.1") >= 50 ? 1 : 0);
+  const sgr = yes("D3.2") + yes("D3.3");
+  const grAbl = atLeast(sgr, 1);
+  const grD34 = d34bucket;
+  const gr = grAbl + grD34 + atLeast(get("D3.1"), 50);
 
   // IVCU: S_IVCU = D5.1 + D5.2 (abilitante ≥1) + D4.2 + D6.7 + D6.8 (vs mediana)
-  const sivcu = (get("D5.1") === 100 ? 1 : 0) + (get("D5.2") === 100 ? 1 : 0);
-  const ivcuAbl = sivcu >= 1 ? 1 : 0;
-  const ivcuD42 = get("D4.2") >= 50 ? 1 : 0;
-  const ivcuProg = get("D6.7") + get("D6.8") >= 10 ? 1 : 0;
-  const ivcu = ivcuAbl + ivcuD42 + ivcuProg + (get("D5.3") === 100 ? 1 : 0);
+  const sivcu = yes("D5.1") + yes("D5.2");
+  const ivcuAbl = atLeast(sivcu, 1);
+  const ivcuD42 = atLeast(get("D4.2"), 50);
+  const ivcuProg = atLeast(get("D6.7") + get("D6.8"), 10);
+  const ivcu = ivcuAbl + ivcuD42 + ivcuProg + yes("D5.3");
 
   return [
     {
       codice: "CGC",
       nome: "Capacità Gestione Competenze",
       valore: Math.min(4, cgc),
-      componenti: cgcComps.map((c) => ({ codice: c, contributo: get(c) === 100 ? 1 : 0 })),
+      componenti: cgcComps.map((c) => ({ codice: c, contributo: yes(c) })),
     },
     {
       codice: "PSFL",
       nome: "Planning Strategico Forza Lavoro",
       valore: Math.min(4, psfl),
       componenti: [
-        { codice: "D2.3", contributo: get("D2.3") === 100 ? 1 : 0 },
+        { codice: "D2.3", contributo: yes("D2.3") },
         { codice: "D2.1", contributo: d21bucket },
         { codice: "D3.4", contributo: d34bucket },
       ],
@@ -546,7 +547,7 @@ export function computeCompositeIndices(row: any): CompositeIndex[] {
       componenti: [
         { codice: "S_GR", contributo: grAbl },
         { codice: "D3.4", contributo: grD34 },
-        { codice: "D3.1", contributo: get("D3.1") >= 50 ? 1 : 0 },
+        { codice: "D3.1", contributo: atLeast(get("D3.1"), 50) },
       ],
     },
     {
@@ -557,7 +558,7 @@ export function computeCompositeIndices(row: any): CompositeIndex[] {
         { codice: "S_IVCU", contributo: ivcuAbl },
         { codice: "D4.2", contributo: ivcuD42 },
         { codice: "D6.7+D6.8", contributo: ivcuProg },
-        { codice: "D5.3", contributo: get("D5.3") === 100 ? 1 : 0 },
+        { codice: "D5.3", contributo: yes("D5.3") },
       ],
     },
   ];

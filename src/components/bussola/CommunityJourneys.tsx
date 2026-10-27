@@ -22,12 +22,10 @@ const categoryConfig = {
   },
 };
 
-type SortBy = "recent";
 type FilterTab = "all" | "mine";
 
 export function CommunityJourneys({ onFollowJourney, refreshKey }: CommunityJourneysProps) {
   const { journeys, loading, deleteJourney, incrementUsage } = useCustomJourneys(refreshKey);
-  const [sortBy, setSortBy] = useState<SortBy>("recent");
   const [filterTab, setFilterTab] = useState<FilterTab>("all");
 
   const handleDelete = async (id: string) => {

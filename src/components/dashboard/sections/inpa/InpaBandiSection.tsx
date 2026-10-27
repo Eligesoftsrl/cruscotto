@@ -9,7 +9,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
   PieChart,
   Pie,
@@ -17,6 +16,7 @@ import {
   LineChart,
   Line,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import {
   InpaLocalFilters,
   DEFAULT_INPA_FILTERS,

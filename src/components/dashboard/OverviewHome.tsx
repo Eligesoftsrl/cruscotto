@@ -25,12 +25,12 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   LineChart,
   Line,
   Legend,
   Cell,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   DfpOverviewFilters,

@@ -7,6 +7,26 @@ import type { GuidedJourneyDef } from "@/data/guidedJourneys";
 import type { NavState } from "./AppSidebar";
 
 import { StepPanel } from "./guidedJourneyParts";
+import { pickFirst } from "@/lib/conditional";
+
+/** Icona di stato della tappa: completata, attiva o da fare. */
+const StepIcon = ({
+  isActive,
+  isCompleted,
+  colorVar,
+  size,
+}: {
+  isActive: boolean;
+  isCompleted: boolean;
+  colorVar: string;
+  size: string;
+}) => {
+  if (isCompleted) return <Check aria-hidden="true" className={`${size} text-primary`} />;
+  if (isActive) {
+    return <CircleDot aria-hidden="true" className={size} style={{ color: `hsl(var(${colorVar}))` }} />;
+  }
+  return <Circle aria-hidden="true" className={`${size} text-muted-foreground/70`} />;
+};
 
 interface GuidedJourneyProps {
   journey: GuidedJourneyDef;
@@ -91,26 +111,16 @@ export const GuidedJourney = ({
                   <button
                     key={s.id}
                     onClick={() => setCurrentStep(i)}
-                    className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-left transition-all whitespace-nowrap flex-shrink-0 ${
-                      isActive
-                        ? "bg-primary/10 border border-primary/30"
-                        : isCompleted
-                          ? "bg-muted/50"
-                          : "hover:bg-muted/30"
-                    }`}
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-left transition-all whitespace-nowrap flex-shrink-0 ${pickFirst(
+                      [
+                        [isActive, "bg-primary/10 border border-primary/30"],
+                        [isCompleted, "bg-muted/50"],
+                      ],
+                      "hover:bg-muted/30",
+                    )}`}
                   >
                     <span className="flex-shrink-0">
-                      {isCompleted ? (
-                        <Check aria-hidden="true" className="h-4 w-4 text-primary" />
-                      ) : isActive ? (
-                        <CircleDot
-                          aria-hidden="true"
-                          className="h-4 w-4"
-                          style={{ color: `hsl(var(${journey.colorVar}))` }}
-                        />
-                      ) : (
-                        <Circle aria-hidden="true" className="h-4 w-4 text-muted-foreground/70" />
-                      )}
+                      <StepIcon isActive={isActive} isCompleted={isCompleted} colorVar={journey.colorVar} size="h-4 w-4" />
                     </span>
                     <span
                       className={`text-xs font-bold ${isActive ? "text-foreground" : "text-muted-foreground"}`}
@@ -143,21 +153,11 @@ export const GuidedJourney = ({
                       }`}
                     >
                       <span className="mt-0.5 flex-shrink-0">
-                        {isCompleted ? (
-                          <Check aria-hidden="true" className="h-5 w-5 text-primary" />
-                        ) : isActive ? (
-                          <CircleDot
-                            aria-hidden="true"
-                            className="h-5 w-5"
-                            style={{ color: `hsl(var(${journey.colorVar}))` }}
-                          />
-                        ) : (
-                          <Circle aria-hidden="true" className="h-5 w-5 text-muted-foreground/70" />
-                        )}
+                        <StepIcon isActive={isActive} isCompleted={isCompleted} colorVar={journey.colorVar} size="h-5 w-5" />
                       </span>
                       <div className="flex flex-col">
                         <span
-                          className={`text-xs font-extrabold ${isActive ? "text-foreground" : isCompleted ? "text-primary" : "text-muted-foreground"}`}
+                          className={`text-xs font-extrabold ${pickFirst([[isActive, "text-foreground"], [isCompleted, "text-primary"]], "text-muted-foreground")}`}
                         >
                           Tappa {i + 1}
                         </span>

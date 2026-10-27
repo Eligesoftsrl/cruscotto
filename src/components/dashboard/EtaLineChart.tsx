@@ -5,10 +5,11 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Area,
   ComposedChart,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
+import { pickByKey } from "@/lib/conditional";
 
 const data = [
   { anno: "'12", amm: 47.8, cluster: 47.5, pa: 47.2 },
@@ -26,6 +27,7 @@ const data = [
 ];
 
 const views = ["Uomini+Donne", "Uomini", "Donne"] as const;
+const SERIE_LABEL: Record<string, string> = { amm: "Amministrazione", cluster: "Cluster" };
 
 export const EtaLineChart = () => {
   const [activeView, setActiveView] = useState<string>(views[0]);
@@ -83,7 +85,7 @@ export const EtaLineChart = () => {
               contentStyle={{ fontSize: 11, borderRadius: 6 }}
               formatter={(v: number, name: string) => [
                 `${v} anni`,
-                name === "amm" ? "Amministrazione" : name === "cluster" ? "Cluster" : "PA",
+                pickByKey(name, SERIE_LABEL, "PA"),
               ]}
             />
             <Area

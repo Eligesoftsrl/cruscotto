@@ -10,11 +10,11 @@ import {
   Tooltip,
   Cell,
   LabelList,
-  ResponsiveContainer,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useProcessiDistribuzione } from "@/hooks/useSchedaSiproProcessi";
-import { LoadingSpinner, ErrorBox, BAR_COLOR, TOOLTIP_STYLE } from "./_shared";
+import { BAR_COLOR, TOOLTIP_STYLE, QueryState } from "./_shared";
 
 /** S15 - Mappatura Processi: semicerchio per funzione + barre per tipologia. */
 export const MappaturaProcessiView = () => {
@@ -26,7 +26,6 @@ export const MappaturaProcessiView = () => {
 
   const byFunzione = (funzione.data ?? []).map((r) => ({ name: r.voce, value: r.numero }));
   const byTipologia = (tipologia.data ?? []).map((r) => ({ name: r.voce, value: r.numero }));
-  const totFunz = byFunzione.reduce((s, d) => s + d.value, 0);
 
   const loading = funzione.isLoading || tipologia.isLoading;
   const error = funzione.error || tipologia.error;
@@ -34,11 +33,7 @@ export const MappaturaProcessiView = () => {
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={setScope} />
-      {error ? (
-        <ErrorBox error={error} />
-      ) : loading ? (
-        <LoadingSpinner />
-      ) : (
+      <QueryState error={error} loading={loading}>{() => (
         <div className="bg-card border rounded-xl p-5 space-y-2">
           <h3 className="text-[15px] font-bold text-foreground">
             Mappatura dei processi per funzione e tipologia
@@ -94,7 +89,7 @@ export const MappaturaProcessiView = () => {
             </div>
           </div>
         </div>
-      )}
+      )}</QueryState>
     </div>
   );
 };

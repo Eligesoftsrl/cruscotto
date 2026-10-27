@@ -21,9 +21,9 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Cell,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { useExecScore, useExecScoreFiltri, useExecScoreTrend } from "@/hooks/useExecScore";
 import { codiceIndice, type ExecScoreRow } from "@/services/exec/execScoreService";
 import { FilterPills } from "../../FilterPills";

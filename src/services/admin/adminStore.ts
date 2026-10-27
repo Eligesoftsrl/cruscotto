@@ -274,12 +274,14 @@ export function addErrore(e: Omit<ErrorLog, "id" | "ts"> & { ts?: string }) {
     });
 }
 
+const LOG_TABLE = { access: "log_accessi", eventi: "log_eventi", errori: "log_errori" } as const;
+
 export function clearLog(kind: "access" | "eventi" | "errori") {
   setState({ ...state, [kind]: [] } as AdminState);
   // In modalità proxy non è previsto un endpoint di cancellazione: si svuota
   // solo la vista locale (i log restano nel DB, gestibili lato back-end).
   if (EXCHANGE_ENABLED) return;
-  const table = kind === "access" ? "log_accessi" : kind === "eventi" ? "log_eventi" : "log_errori";
+  const table = LOG_TABLE[kind];
   sbUntyped
     .from(table)
     .delete()

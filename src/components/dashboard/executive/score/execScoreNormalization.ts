@@ -23,12 +23,33 @@
  */
 import type { ExecScoreRow } from "@/services/exec/execScoreService";
 import { fmtNum, fmtScore, type ExecScorePillarConfig, type ScoreStep } from "./execScoreConfig";
+import { affix } from "@/lib/conditional";
 
 const soglia = (r: ExecScoreRow) =>
-  r.soglia_score == null ? "—" : `${fmtNum(r.soglia_score, 3)}${r.unita_soglia ? ` ${r.unita_soglia}` : ""}`;
+  r.soglia_score == null ? "—" : `${fmtNum(r.soglia_score, 3)}${affix(r.unita_soglia, " ")}`;
 
 const rapporto = (r: ExecScoreRow) =>
   r.valore_1 != null && r.valore_2 ? fmtNum(r.valore_1 / r.valore_2, 3) : fmtNum(r.valore, 3);
+
+/** Passaggi della famiglia "Variazione centrata" (equivalente annuo TVO, media annua o variazione semplice). */
+function variazioneCentrataSteps(code: string, v: number, desc: string): ScoreStep[] {
+  if (desc.includes("equivalente annuo")) {
+    // TVO: variazione triennale convertita in equivalente annuo centrato
+    const rr = Math.cbrt((2 + v) / (2 - v));
+    return [
+      { label: `Variazione triennale ${code}`, value: fmtNum(v, 3) },
+      { label: `r = ((2 + ${code}) / (2 − ${code}))^(1/3)`, value: fmtNum(rr, 4) },
+      { label: "Variazione annua equivalente 2(r − 1)/(r + 1)", value: fmtNum((2 * (rr - 1)) / (rr + 1), 4) },
+    ];
+  }
+  if (desc.includes("media annua")) {
+    return [
+      { label: `Variazione triennale ${code}`, value: fmtNum(v, 3) },
+      { label: "Media annua = variazione / 3", value: fmtNum(v / 3, 4) },
+    ];
+  }
+  return [{ label: `Variazione ${code}`, value: fmtNum(v, 3) }];
+}
 
 export function normalizationSteps(
   code: string,
@@ -54,19 +75,7 @@ export function normalizationSteps(
     steps.push({ label: "Media annua = variazione / 3", value: fmtNum(v / 3, 4) });
     steps.push({ label: "Ampiezza", value: soglia(row) });
   } else if (f === "variazione centrata") {
-    if (desc.includes("equivalente annuo")) {
-      // TVO: variazione triennale convertita in equivalente annuo centrato
-      const rr = Math.cbrt((2 + v) / (2 - v));
-      steps.push({ label: `Variazione triennale ${code}`, value: fmtNum(v, 3) });
-      steps.push({ label: `r = ((2 + ${code}) / (2 − ${code}))^(1/3)`, value: fmtNum(rr, 4) });
-      steps.push({ label: "Variazione annua equivalente 2(r − 1)/(r + 1)", value: fmtNum((2 * (rr - 1)) / (rr + 1), 4) });
-    } else if (desc.includes("media annua")) {
-      steps.push({ label: `Variazione triennale ${code}`, value: fmtNum(v, 3) });
-      steps.push({ label: "Media annua = variazione / 3", value: fmtNum(v / 3, 4) });
-    } else {
-      steps.push({ label: `Variazione ${code}`, value: fmtNum(v, 3) });
-    }
-    steps.push({ label: "Ampiezza", value: soglia(row) });
+    steps.push(...variazioneCentrataSteps(code, v, desc), { label: "Ampiezza", value: soglia(row) });
   } else if (f.startsWith("inverso con soglia")) {
     steps.push({ label: `Valore ${code} (componente 1 / componente 2)`, value: rapporto(row) });
     steps.push({ label: "Soglia", value: soglia(row) });

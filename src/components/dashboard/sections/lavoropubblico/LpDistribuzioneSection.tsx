@@ -8,12 +8,12 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
   PieChart,
   Pie,
   Cell,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 
 const COLORS = [
   "hsl(210,80%,45%)",

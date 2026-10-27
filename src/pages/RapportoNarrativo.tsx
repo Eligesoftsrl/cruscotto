@@ -1,6 +1,5 @@
 import { useLatestYear } from "@/hooks/useLatestYear";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Printer, Check, ArrowLeft, ArrowRight, FileText, RotateCcw } from "lucide-react";
 import { TopBar } from "@/components/dashboard/TopBar";
@@ -21,11 +20,11 @@ import {
   SectionRenderer,
   type WizardStep,
 } from "@/pages/reportWizardSteps";
+import { pickFirst } from "@/lib/conditional";
 
 const RapportoNarrativo = () => {
   const annoLabel = useLatestYear();
   const { profile } = useAuth();
-  const navigate = useNavigate();
 
   // Wizard state
   const [step, setStep] = useState<WizardStep>("audience");
@@ -200,22 +199,10 @@ const RapportoNarrativo = () => {
               onClick={() => {
                 if (i <= stepIdx || (i === stepIdx + 1 && canNext())) setStep(s.key);
               }}
-              className={`flex items-center gap-2 px-4 h-10 text-[11px] font-semibold tracking-[.04em] whitespace-nowrap transition border-b-2 ${
-                s.key === step
-                  ? "text-white border-primary bg-primary/10"
-                  : i < stepIdx
-                    ? "text-white/60 border-transparent hover:text-white/80"
-                    : "text-white/30 border-transparent cursor-default"
-              }`}
+              className={`flex items-center gap-2 px-4 h-10 text-[11px] font-semibold tracking-[.04em] whitespace-nowrap transition border-b-2 ${pickFirst([[s.key === step, "text-white border-primary bg-primary/10"], [i < stepIdx, "text-white/60 border-transparent hover:text-white/80"]], "text-white/30 border-transparent cursor-default")}`}
             >
               <span
-                className={`w-[22px] h-[22px] rounded-full text-[10px] font-bold flex items-center justify-center ${
-                  s.key === step
-                    ? "bg-primary text-white"
-                    : i < stepIdx
-                      ? "bg-[hsl(142,71%,35%)] text-white"
-                      : "bg-white/10 text-white/50"
-                }`}
+                className={`w-[22px] h-[22px] rounded-full text-[10px] font-bold flex items-center justify-center ${pickFirst([[s.key === step, "bg-primary text-white"], [i < stepIdx, "bg-[hsl(142,71%,35%)] text-white"]], "bg-white/10 text-white/50")}`}
               >
                 {i < stepIdx ? <Check aria-hidden="true" className="h-3 w-3" /> : i + 1}
               </span>

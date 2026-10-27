@@ -8,12 +8,12 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
   Line,
   AreaChart,
   Area,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 
 // Simulated forecast data
 const previsioneCessazioni = [

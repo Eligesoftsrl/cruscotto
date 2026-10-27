@@ -6,3 +6,7 @@ export const formatPct = (n: number | null | undefined, decimals = 1): string =>
 
 export const withSign = (n: number, decimals = 1): string =>
   `${n >= 0 ? "+" : ""}${n.toFixed(decimals)}`;
+
+/** Media aritmetica arrotondata all'intero (0 se la lista è vuota). */
+export const roundedMean = (vals: number[]): number =>
+  vals.length ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : 0;

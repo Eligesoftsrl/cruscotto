@@ -22,6 +22,7 @@ import { IndicatorPicker } from "./IndicatorPicker";
 import { toast } from "@/hooks/use-toast";
 import { useCustomJourneys } from "@/hooks/useCustomJourneys";
 import type { JourneyTemplate } from "@/data/journeyTemplates";
+import { pickFirst } from "@/lib/conditional";
 
 interface JourneyCreatorWizardProps {
   open: boolean;
@@ -207,13 +208,13 @@ export function JourneyCreatorWizard({
                   }`}
                 />
                 <span
-                  className={`text-[11px] ${
-                    i === wizardStep
-                      ? "text-white font-semibold"
-                      : i < wizardStep
-                        ? "text-white/70"
-                        : "text-white/30"
-                  }`}
+                  className={`text-[11px] ${pickFirst(
+                    [
+                      [i === wizardStep, "text-white font-semibold"],
+                      [i < wizardStep, "text-white/70"],
+                    ],
+                    "text-white/30",
+                  )}`}
                 >
                   {label}
                 </span>

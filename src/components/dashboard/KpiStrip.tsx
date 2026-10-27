@@ -1,3 +1,4 @@
+import { pickByKey } from "@/lib/conditional";
 const kpis = [
   {
     label: "Personale in servizio",
@@ -61,6 +62,9 @@ const kpis = [
   },
 ];
 
+const CHANGE_CLASS: Record<string, string> = { up: "text-destructive", down: "text-chart-green" };
+const CHANGE_COLOR: Record<string, string> = { up: "hsl(var(--kpi-up))", down: "hsl(var(--kpi-down))" };
+
 export const KpiStrip = () => {
   return (
     <div className="col-span-12 grid grid-cols-5 gap-2.5">
@@ -86,20 +90,9 @@ export const KpiStrip = () => {
               )}
             </div>
             <div
-              className={`text-[11px] flex items-center gap-1 ${
-                kpi.changeType === "up"
-                  ? "text-destructive"
-                  : kpi.changeType === "down"
-                    ? "text-chart-green"
-                    : "text-muted-foreground"
-              }`}
+              className={`text-[11px] flex items-center gap-1 ${pickByKey(kpi.changeType, CHANGE_CLASS, "text-muted-foreground")}`}
               style={{
-                color:
-                  kpi.changeType === "up"
-                    ? "hsl(var(--kpi-up))"
-                    : kpi.changeType === "down"
-                      ? "hsl(var(--kpi-down))"
-                      : "hsl(var(--kpi-neutral))",
+                color: pickByKey(kpi.changeType, CHANGE_COLOR, "hsl(var(--kpi-neutral))"),
               }}
             >
               {kpi.change}

@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import type { ExportTable } from "@/lib/tableExport";
+import { pickByKey } from "@/lib/conditional";
 
 interface Column<T> {
   key: string;
@@ -19,6 +20,8 @@ interface PaginatedTableProps<T> {
   exportable?: boolean;
   exportFilename?: string;
 }
+
+const ALIGN_CLASS: Record<string, string> = { right: "text-right", center: "text-center" };
 
 export function PaginatedTable<T extends Record<string, any>>({
   data,
@@ -40,8 +43,7 @@ export function PaginatedTable<T extends Record<string, any>>({
     if (page >= totalPages) setPage(0);
   }, [data.length]);
 
-  const alignClass = (a?: string) =>
-    a === "right" ? "text-right" : a === "center" ? "text-center" : "text-left";
+  const alignClass = (a?: string) => pickByKey(a, ALIGN_CLASS, "text-left");
 
   const exportData = useMemo<ExportTable[]>(
     () => [

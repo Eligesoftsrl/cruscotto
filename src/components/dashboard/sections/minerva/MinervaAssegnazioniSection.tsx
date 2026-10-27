@@ -12,7 +12,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
   RadarChart,
   Radar,
@@ -20,8 +19,10 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 import { Progress } from "@/components/ui/progress";
+import { byMinThreshold } from "@/lib/conditional";
 
 export const MinervaAssegnazioniSection = () => {
   const { data: enteIds } = useFilteredEnteIds();
@@ -116,7 +117,7 @@ export const MinervaAssegnazioniSection = () => {
           <div className="p-4">
             <div className="text-center mb-2">
               <div
-                className={`text-2xl font-bold ${kpis.coperturaPerc >= 70 ? "text-green-700" : kpis.coperturaPerc >= 40 ? "text-amber-700" : "text-red-600"}`}
+                className={`text-2xl font-bold ${byMinThreshold(kpis.coperturaPerc, [[70, "text-green-700"], [40, "text-amber-700"]], "text-red-600")}`}
               >
                 {kpis.coperturaPerc}%
               </div>
@@ -194,15 +195,16 @@ export const MinervaAssegnazioniSection = () => {
                 key: "copertura",
                 header: "% Copertura",
                 align: "right" as const,
-                render: (r: any) => (
+                render: (r: { copertura: number }) => (
                   <span
-                    className={
-                      r.copertura >= 70
-                        ? "text-green-700 font-semibold"
-                        : r.copertura >= 40
-                          ? "text-amber-700"
-                          : "text-red-600 font-semibold"
-                    }
+                    className={byMinThreshold(
+                      r.copertura,
+                      [
+                        [70, "text-green-700 font-semibold"],
+                        [40, "text-amber-700"],
+                      ],
+                      "text-red-600 font-semibold",
+                    )}
                   >
                     {r.copertura}%
                   </span>

@@ -8,15 +8,21 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   PieChart,
   Pie,
   Cell,
   Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 import { Badge } from "@/components/ui/badge";
+import { pickByKey, byMinThreshold } from "@/lib/conditional";
 
+const TYPE_LABELS: Record<string, string> = {
+  CTP: "Tecnico Professionali",
+  CTS: "Tecnico Specialistiche",
+  CC: "Comportamentali",
+};
 const TYPE_COLORS: Record<string, string> = {
   // Tonalità scurite: usate anche come colore del testo (contrasto AA su bianco).
   CTP: "hsl(210,80%,40%)",
@@ -106,13 +112,7 @@ export const MinervaCompetenzeSection = () => {
                 {t.value}
               </div>
               <div className="text-[11px] text-muted-foreground mt-1">
-                {t.name === "CTP"
-                  ? "Tecnico Professionali"
-                  : t.name === "CTS"
-                    ? "Tecnico Specialistiche"
-                    : t.name === "CC"
-                      ? "Comportamentali"
-                      : t.name}
+                {pickByKey(t.name, TYPE_LABELS, t.name)}
               </div>
             </div>
           </div>
@@ -120,7 +120,7 @@ export const MinervaCompetenzeSection = () => {
         <div className="tableau-card">
           <div className="p-4 text-center">
             <div
-              className={`text-2xl font-bold ${coverageRate >= 80 ? "text-green-700" : coverageRate >= 50 ? "text-amber-700" : "text-red-600"}`}
+              className={`text-2xl font-bold ${byMinThreshold(coverageRate, [[80, "text-green-700"], [50, "text-amber-700"]], "text-red-600")}`}
             >
               {coverageRate}%
             </div>

@@ -11,13 +11,13 @@ import {
   Cell,
   LabelList,
   Legend,
-  ResponsiveContainer,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useTempiPicchi, usePicchiDistribuzione } from "@/hooks/useSchedaSiproProcessi";
 import { fetchTempiPicchi } from "@/services/sipro/processiService";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
-import { LoadingSpinner, ErrorBox, Pager, BAR_COLOR, TOOLTIP_STYLE } from "./_shared";
+import { Pager, BAR_COLOR, TOOLTIP_STYLE, QueryState } from "./_shared";
 
 const PER_PAGE = 20;
 const COLOR_PREVISTO = "hsl(210, 64%, 45%)";
@@ -82,7 +82,6 @@ export const TempiPicchiView = () => {
   const toVoce = (d?: { voce: string; numero: number }[]) =>
     (d ?? []).map((r) => ({ name: r.voce, value: r.numero }));
   const presidioData = toVoce(presidio.data);
-  const totPres = presidioData.reduce((s, d) => s + d.value, 0);
 
   const resetAndSet = (v: SiproScope) => {
     setPage(0);
@@ -103,11 +102,7 @@ export const TempiPicchiView = () => {
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={resetAndSet} />
-      {tabella.error ? (
-        <ErrorBox error={tabella.error} />
-      ) : tabella.isLoading ? (
-        <LoadingSpinner />
-      ) : (
+      <QueryState error={tabella.error} loading={tabella.isLoading}>{() => (
         <div className="space-y-4">
           <div className="bg-card border rounded-xl p-5">
             <h3 className="text-[15px] font-bold text-foreground mb-2">
@@ -216,7 +211,7 @@ export const TempiPicchiView = () => {
             </div>
           </div>
         </div>
-      )}
+      )}</QueryState>
     </div>
   );
 };

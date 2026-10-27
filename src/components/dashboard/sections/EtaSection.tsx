@@ -7,9 +7,9 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 
 export const EtaSection = () => {
   const { distribuzioneEta, totalePersonale, isLoading, error } = useEtaData(2023);

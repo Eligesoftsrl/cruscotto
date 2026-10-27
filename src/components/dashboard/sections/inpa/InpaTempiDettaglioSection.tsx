@@ -8,10 +8,11 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
+import { pickFirst } from "@/lib/conditional";
 
 export const InpaTempiDettaglioSection = () => {
   const { data: enteIds } = useFilteredEnteIds();
@@ -104,7 +105,7 @@ export const InpaTempiDettaglioSection = () => {
                 align: "right",
                 render: (r: any) => (
                   <span
-                    className={`font-semibold ${r.durata > 180 ? "text-red-600" : r.durata > 90 ? "text-amber-700" : "text-green-700"}`}
+                    className={`font-semibold ${pickFirst([[r.durata > 180, "text-red-600"], [r.durata > 90, "text-amber-700"]], "text-green-700")}`}
                   >
                     {r.durata}
                   </span>

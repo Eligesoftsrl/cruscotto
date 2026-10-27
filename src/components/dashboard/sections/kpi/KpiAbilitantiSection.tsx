@@ -143,6 +143,29 @@ const KpiRow = ({
   );
 };
 
+type StatoAccesso = "ok" | "verifica" | "non-censito";
+
+/** Esito della verifica "ente censito nel SIPrO" (se la verifica non risponde, i dati restano visibili). */
+const statoAccesso = ({
+  verifica,
+  isError,
+  isLoading,
+  censiti,
+  codiceFiscale,
+}: {
+  verifica: boolean;
+  isError: boolean;
+  isLoading: boolean;
+  censiti: Set<string> | null | undefined;
+  codiceFiscale: string | null | undefined;
+}): StatoAccesso => {
+  if (!verifica || isError) return "ok";
+  if (isLoading || censiti === undefined) return "verifica";
+  if (censiti === null) return "ok";
+  if (codiceFiscale != null && censiti.has(codiceFiscale.trim())) return "ok";
+  return "non-censito";
+};
+
 export const KpiAbilitantiSection = () => {
   const filtriQ = useKpiFiltri();
   const [annoSel, setAnnoSel] = useState<number | null>(null);
@@ -160,14 +183,13 @@ export const KpiAbilitantiSection = () => {
   const entiQ = useKpiEntiCensiti(verifica);
   const censiti = entiQ.data; // undefined = in caricamento · null = controllo non disponibile
   // Se la verifica non risponde si lasciano vedere i dati (scelta di prodotto).
-  const accesso: "ok" | "verifica" | "non-censito" = !verifica || entiQ.isError
-    ? "ok"
-    : entiQ.isLoading || censiti === undefined
-      ? "verifica"
-      : censiti === null ||
-          (scope.codiceFiscale != null && censiti.has(scope.codiceFiscale.trim()))
-        ? "ok"
-        : "non-censito";
+  const accesso = statoAccesso({
+    verifica,
+    isError: entiQ.isError,
+    isLoading: entiQ.isLoading,
+    censiti,
+    codiceFiscale: scope.codiceFiscale,
+  });
   const altriCensiti =
     censiti instanceof Set
       ? scope.options.filter((o) => o.cf !== scope.codiceFiscale && censiti.has(o.cf)).length

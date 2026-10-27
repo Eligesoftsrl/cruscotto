@@ -60,6 +60,13 @@ function getSnapshot() {
   return selectedCf;
 }
 
+/** CF attivo: quello scelto se è nel perimetro, altrimenti il primo disponibile (null se nessuno). */
+function resolveCurrentCf(cfList: string[], selected: string | null): string | null {
+  if (!cfList.length) return null;
+  if (selected && cfList.includes(selected)) return selected;
+  return cfList[0];
+}
+
 export interface EnteScope {
   /** true se l'utente è un utente-ente (perimetro attivo). */
   isEnteUser: boolean;
@@ -101,11 +108,7 @@ export function useEnteScope(): EnteScope {
     staleTime: Infinity,
   });
 
-  const currentCf = cfList.length
-    ? selected && cfList.includes(selected)
-      ? selected
-      : cfList[0]
-    : null;
+  const currentCf = resolveCurrentCf(cfList, selected);
 
   // Filtro effettivo: se ente_hr senza CF -> sentinella (nessun dato).
   const codiceFiscale = isEnteUser ? (currentCf ?? NO_ENTE) : null;

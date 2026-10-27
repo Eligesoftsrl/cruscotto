@@ -1,27 +1,38 @@
 import { useIstituzione } from "@/hooks/useIstituzione";
+import { AmministrazioneLabel } from "@/components/dashboard/_shared/AmministrazioneLabel";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchEnti } from "@/services/ca/filtriService";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  LineChart, Line, Legend,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  LineChart,
+  Line,
+  Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { useFilters } from "@/contexts/FilterContext";
-import { useAuth } from "@/contexts/AuthContext";
 import { useEnteScope } from "@/hooks/useEnteScope";
 import {
   usePersonaleServizio, useEtaCard, useAnzianita, useFasceGenere,
   useEvoluzione, useBenchmark,
 } from "@/hooks/useAnalisiEta";
 import type { Genere, BenchDimensione, EtaFiltri } from "@/services/ca/analisiEtaService";
+import { fmtSigned, trendArrow, bySign, unlessAll } from "@/lib/conditional";
+
+const GENERE_LABEL: Record<Genere, string> = { T: "Uomini+Donne", U: "Uomini", D: "Donne" };
 
 /* --------------------------- helper di formato --------------------------- */
 const nf = new Intl.NumberFormat("it-IT");
 const n1 = (v: number | null | undefined) =>
   v == null ? "N/D" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
 const signPP = (v: number | null | undefined, unit = "pp") =>
-  v == null ? "" : `${v > 0 ? "▲ +" : v < 0 ? "▼ " : "→ "}${n1(v)} ${unit} vs prec.`;
+  v == null ? "" : `${trendArrow(v)}${n1(v)} ${unit} vs prec.`;
 
 /* ------------------------------ KPI card --------------------------------- */
 const Kpi = ({
@@ -65,8 +76,6 @@ const Select = ({
 
 export const AnalisiEtaContent = () => {
   const { filters } = useFilters();
-  const { profile } = useAuth();
-  const isDfp = profile?.role === "dfp";
   const enteScope = useEnteScope();
   const [serieGenere, setSerieGenere] = useState<Genere>("T");
   const [benchDim, setBenchDim] = useState<BenchDimensione>("comparto");
@@ -84,10 +93,10 @@ export const AnalisiEtaContent = () => {
     anno,
     istituzione: ente?.codice ?? null,
     codiceFiscale: enteScope.codiceFiscale,
-    comparto: filters.comparto !== "Tutti" ? filters.comparto : null,
-    macrocategoria: filters.macrocategoria !== "Tutte" ? filters.macrocategoria : null,
-    categoria: filters.categoria !== "Tutte" ? filters.categoria : null,
-    regione: filters.regione !== "Tutte" ? filters.regione : null,
+    comparto: unlessAll(filters.comparto, "Tutti"),
+    macrocategoria: unlessAll(filters.macrocategoria, "Tutte"),
+    categoria: unlessAll(filters.categoria, "Tutte"),
+    regione: unlessAll(filters.regione, "Tutte"),
     genere: gMap[filters.genere] ?? "T",
   };
 
@@ -107,7 +116,7 @@ export const AnalisiEtaContent = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm font-semibold text-foreground">
-          {ente ? <>Amministrazione: <span className="text-primary">{ente.descrizione}</span></> : enteScope.label ? <>Amministrazione: <span className="text-primary">{enteScope.label}</span></> : "Totale PA"} · Conto Annuale RGS · Anno {filtri.anno}
+          <AmministrazioneLabel nome={ente ? ente.descrizione : enteScope.label} /> · Conto Annuale RGS · Anno {filtri.anno}
         </p>
         <div className="relative w-[320px] max-w-full" style={{ display: "none" }}>
           <input
@@ -178,7 +187,7 @@ export const AnalisiEtaContent = () => {
               {(["T", "U", "D"] as Genere[]).map((g) => (
                 <button key={g} onClick={() => setSerieGenere(g)}
                   className={`rounded px-2 py-1 text-xs ${serieGenere === g ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-                  {g === "T" ? "Uomini+Donne" : g === "U" ? "Uomini" : "Donne"}
+                  {GENERE_LABEL[g]}
                 </button>
               ))}
             </div>
@@ -245,8 +254,8 @@ export const AnalisiEtaContent = () => {
                     <td className="py-2 pr-2 text-right">{nf.format(r.donne)}</td>
                     <td className="py-2 pr-2 text-right">{nf.format(r.tutti)}</td>
                     <td className="py-2 pr-2 text-right">{n1(r.donne_pct)}%</td>
-                    <td className={`py-2 text-right ${(r.delta_pa_pp ?? 0) > 0 ? "text-red-600" : (r.delta_pa_pp ?? 0) < 0 ? "text-green-700" : ""}`}>
-                      {r.delta_pa_pp == null ? "N/D" : `${r.delta_pa_pp > 0 ? "+" : ""}${n1(r.delta_pa_pp)} pp`}
+                    <td className={`py-2 text-right ${bySign(r.delta_pa_pp ?? 0, "text-red-600", "text-green-700", "")}`}>
+                      {r.delta_pa_pp == null ? "N/D" : `${fmtSigned(r.delta_pa_pp, n1)} pp`}
                     </td>
                   </tr>
                 ))}

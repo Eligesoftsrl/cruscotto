@@ -33,6 +33,7 @@ import {
   type RepresentationMode,
   type ReportSectionDef,
 } from "@/data/reportSections";
+import { pickByKey } from "@/lib/conditional";
 
 export type WizardStep = "audience" | "sections" | "customize" | "preview";
 export const STEPS: { key: WizardStep; label: string; icon: React.ReactNode }[] = [
@@ -159,7 +160,8 @@ export function StepSections({
 
   const grouped = reportSectionsCatalog.reduce(
     (acc, sec) => {
-      (acc[sec.category] ??= []).push(sec);
+      acc[sec.category] ??= [];
+      acc[sec.category].push(sec);
       return acc;
     },
     {} as Record<string, ReportSectionDef[]>,
@@ -395,13 +397,7 @@ export function StepSections({
                                   className="flex items-center gap-1.5 text-[10px] px-2 py-1 rounded bg-muted/60"
                                 >
                                   <span
-                                    className={`w-1.5 h-1.5 rounded-full ${
-                                      kpi.status === "green"
-                                        ? "bg-[hsl(142,71%,45%)]"
-                                        : kpi.status === "yellow"
-                                          ? "bg-[hsl(45,93%,47%)]"
-                                          : "bg-destructive"
-                                    }`}
+                                    className={`w-1.5 h-1.5 rounded-full ${pickByKey(kpi.status, { green: "bg-[hsl(142,71%,45%)]", yellow: "bg-[hsl(45,93%,47%)]" }, "bg-destructive")}`}
                                   />
                                   <span className="font-semibold text-foreground">
                                     {kpi.label}:
@@ -727,24 +723,14 @@ export function SectionRenderer({
               style={{
                 borderTopWidth: "3px",
                 borderTopColor:
-                  kpi.status === "green"
-                    ? "hsl(142,71%,35%)"
-                    : kpi.status === "yellow"
-                      ? "hsl(45,100%,42%)"
-                      : "hsl(var(--destructive))",
+                  pickByKey(kpi.status, { green: "hsl(142,71%,35%)", yellow: "hsl(45,100%,42%)" }, "hsl(var(--destructive))"),
               }}
             >
               <div className="text-[10px] font-bold tracking-[.08em] uppercase text-muted-foreground mb-1">
                 {kpi.label}
               </div>
               <div
-                className={`font-mono text-xl font-semibold ${
-                  kpi.status === "green"
-                    ? "text-[hsl(142,71%,35%)]"
-                    : kpi.status === "yellow"
-                      ? "text-[hsl(45,80%,30%)]"
-                      : "text-destructive"
-                }`}
+                className={`font-mono text-xl font-semibold ${pickByKey(kpi.status, { green: "text-[hsl(142,71%,35%)]", yellow: "text-[hsl(45,80%,30%)]" }, "text-destructive")}`}
               >
                 {kpi.value}
               </div>
@@ -798,13 +784,7 @@ export function SectionRenderer({
                 <tr key={i} className="border-b last:border-b-0 even:bg-muted/30">
                   <td className="px-3 py-2">
                     <span
-                      className={`w-2.5 h-2.5 rounded-full inline-block ${
-                        row.status === "green"
-                          ? "bg-[hsl(142,71%,35%)]"
-                          : row.status === "yellow"
-                            ? "bg-[hsl(45,100%,42%)]"
-                            : "bg-destructive"
-                      }`}
+                      className={`w-2.5 h-2.5 rounded-full inline-block ${pickByKey(row.status, { green: "bg-[hsl(142,71%,35%)]", yellow: "bg-[hsl(45,100%,42%)]" }, "bg-destructive")}`}
                     />
                   </td>
                   <td className="px-3 py-2 text-foreground">{row.label}</td>
@@ -860,13 +840,7 @@ export function SectionRenderer({
                 <tr key={i} className="border-b last:border-b-0 even:bg-muted/30">
                   <td className="px-3 py-2">
                     <span
-                      className={`w-2.5 h-2.5 rounded-full inline-block ${
-                        kpi.status === "green"
-                          ? "bg-[hsl(142,71%,35%)]"
-                          : kpi.status === "yellow"
-                            ? "bg-[hsl(45,100%,42%)]"
-                            : "bg-destructive"
-                      }`}
+                      className={`w-2.5 h-2.5 rounded-full inline-block ${pickByKey(kpi.status, { green: "bg-[hsl(142,71%,35%)]", yellow: "bg-[hsl(45,100%,42%)]" }, "bg-destructive")}`}
                     />
                   </td>
                   <td className="px-3 py-2 text-foreground">{kpi.label}</td>
@@ -897,11 +871,7 @@ export function SectionRenderer({
                     style={{
                       width: `${barW}%`,
                       backgroundColor:
-                        kpi.status === "green"
-                          ? "hsl(142,71%,35%)"
-                          : kpi.status === "yellow"
-                            ? "hsl(45,100%,42%)"
-                            : "hsl(var(--destructive))",
+                        pickByKey(kpi.status, { green: "hsl(142,71%,35%)", yellow: "hsl(45,100%,42%)" }, "hsl(var(--destructive))"),
                     }}
                   />
                 </div>

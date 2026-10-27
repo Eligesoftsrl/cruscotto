@@ -1,4 +1,5 @@
 import { useIstituzione } from "@/hooks/useIstituzione";
+import { AmministrazioneLabel } from "@/components/dashboard/_shared/AmministrazioneLabel";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
 
 import { useQuery } from "@tanstack/react-query";
@@ -10,13 +11,12 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   AreaChart,
   Area,
   Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { useFilters } from "@/contexts/FilterContext";
-import { useAuth } from "@/contexts/AuthContext";
 import { useEnteScope } from "@/hooks/useEnteScope";
 import {
   useAnzianitaKpi,
@@ -67,8 +67,6 @@ const FASCIA_COLORS = [
 
 export const AnzianitaContent = () => {
   const { filters } = useFilters();
-  const { profile } = useAuth();
-  const isDfp = profile?.role === "dfp";
   const enteScope = useEnteScope();
   const { enteTerm, setEnteTerm, ente, setEnte } = useIstituzione();
 
@@ -125,17 +123,7 @@ export const AnzianitaContent = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm font-semibold text-foreground">
-          {ente ? (
-            <>
-              Amministrazione: <span className="text-primary">{ente.descrizione}</span>
-            </>
-          ) : enteScope.label ? (
-            <>
-              Amministrazione: <span className="text-primary">{enteScope.label}</span>
-            </>
-          ) : (
-            "Totale PA"
-          )}{" "}
+          <AmministrazioneLabel nome={ente ? ente.descrizione : enteScope.label} />{" "}
           · Conto Annuale RGS · Anno {filtri.anno}
         </p>
         <div className="relative w-[320px] max-w-full" style={{ display: "none" }}>

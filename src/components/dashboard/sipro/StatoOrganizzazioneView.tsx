@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useOrganizzazioniStati, useOrganizzazioni } from "@/hooks/useSchedaSiproOrganizzazione";
-import { LoadingSpinner, ErrorBox, KpiBox, Pager } from "./_shared";
+import { LoadingSpinner, KpiBox, Pager, QueryState } from "./_shared";
 
 const PER_PAGE = 20;
 
@@ -33,11 +33,7 @@ export const StatoOrganizzazioneView = () => {
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={resetAndSet} />
-      {stati.error ? (
-        <ErrorBox error={stati.error} />
-      ) : stati.isLoading ? (
-        <LoadingSpinner />
-      ) : (
+      <QueryState error={stati.error} loading={stati.isLoading}>{() => (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <KpiBox label="Organizzazioni totali" value={totale} />
@@ -90,7 +86,7 @@ export const StatoOrganizzazioneView = () => {
             </div>
           </div>
         </>
-      )}
+      )}</QueryState>
     </div>
   );
 };

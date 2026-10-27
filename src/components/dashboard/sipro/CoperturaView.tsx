@@ -1,11 +1,19 @@
 import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { useState } from "react";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList, ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Cell,
+  LabelList,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useFteRiepilogo, useFteCopertura } from "@/hooks/useSchedaSiproProfili";
-import { LoadingSpinner, ErrorBox, KpiBox } from "./_shared";
+import { LoadingSpinner, KpiBox, QueryState } from "./_shared";
 
 const fmt = (n: number | null | undefined) =>
   (typeof n === "number" && Number.isFinite(n) ? n : 0).toLocaleString("it-IT", { maximumFractionDigits: 2 });
@@ -47,7 +55,7 @@ export const CoperturaView = () => {
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={setScope} />
-      {riepilogo.error ? <ErrorBox error={riepilogo.error} /> : riepilogo.isLoading ? <LoadingSpinner /> : (
+      <QueryState error={riepilogo.error} loading={riepilogo.isLoading}>{() => (
         <div className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <KpiBox label="Programmati" value={fmt(r?.fte_programmati)} />
@@ -72,7 +80,7 @@ export const CoperturaView = () => {
             )}
           </div>
         </div>
-      )}
+      )}</QueryState>
     </div>
   );
 };

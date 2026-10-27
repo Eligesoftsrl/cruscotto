@@ -3,7 +3,6 @@ import { useFilteredEnteIds } from "@/hooks/useFilteredEnteIds";
 import {
   fetchBridgeProfiloCompetenza,
   fetchProfiliDiRuolo,
-  fetchCompetenze,
 } from "@/services/dw/minervaService";
 import {
   BarChart,
@@ -12,10 +11,10 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
   ReferenceLine,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 
 export const MinervaGapAnalysisSection = () => {
@@ -27,11 +26,7 @@ export const MinervaGapAnalysisSection = () => {
       const bridge = await fetchBridgeProfiloCompetenza(enteIds);
       if (!bridge) return;
 
-      const competenze = await fetchCompetenze();
       const profili = await fetchProfiliDiRuolo();
-      const compMap = Object.fromEntries(
-        (competenze ?? []).map((c) => [c.codice, c.titolo ?? c.codice]),
-      );
       const profMap = Object.fromEntries(
         (profili ?? []).map((p) => [p.codice, p.nome ?? p.codice]),
       );

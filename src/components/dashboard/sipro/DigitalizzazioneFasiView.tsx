@@ -6,7 +6,7 @@ import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useDigitalizzazioneFasi, useFasiRiepilogo } from "@/hooks/useSchedaSiproProcessi";
 import { fetchFasiRiepilogo } from "@/services/sipro/processiService";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
-import { LoadingSpinner, ErrorBox, Pager } from "./_shared";
+import { LoadingSpinner, Pager, QueryState } from "./_shared";
 
 const PER_PAGE = 20;
 
@@ -17,7 +17,6 @@ const Semicircle = ({
   title: string;
   data: { name: string; value: number }[];
 }) => {
-  const tot = data.reduce((s, d) => s + d.value, 0);
   return (
     <div>
       <p className="text-xs font-semibold text-muted-foreground text-center mb-2">{title}</p>
@@ -82,11 +81,7 @@ export const DigitalizzazioneFasiView = ({
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={resetAndSet} />
-      {error ? (
-        <ErrorBox error={error} />
-      ) : loading ? (
-        <LoadingSpinner />
-      ) : (
+      <QueryState error={error} loading={loading}>{() => (
         <div className="space-y-4">
           <div className="bg-card border rounded-xl p-5">
             <h3 className="text-[15px] font-bold text-foreground mb-2">{title}</h3>
@@ -172,7 +167,7 @@ export const DigitalizzazioneFasiView = ({
             )}
           </div>
         </div>
-      )}
+      )}</QueryState>
     </div>
   );
 };

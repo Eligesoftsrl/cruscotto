@@ -8,12 +8,12 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
   PieChart,
   Pie,
   Cell,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import {
   InpaLocalFilters,
   DEFAULT_INPA_FILTERS,
@@ -86,7 +86,6 @@ export const InpaAttrattivitaSection = () => {
   const byEta: Record<string, number> = {};
   const byTitolo: Record<string, number> = {};
   if (hasCandidati) {
-    const totCand = candidatiData.reduce((s, c) => s + (c.num_candidature ?? 0), 0);
     candidatiData.forEach((c: any) => {
       if (c.genere) byGenere[c.genere] = (byGenere[c.genere] || 0) + (c.num_candidature ?? 0);
       if (c.fascia_eta) byEta[c.fascia_eta] = (byEta[c.fascia_eta] || 0) + (c.num_candidature ?? 0);

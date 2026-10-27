@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useCatalogoRiepilogo, useCatalogoDistribuzione } from "@/hooks/useSchedaSiproProfili";
-import { LoadingSpinner, ErrorBox, KpiBox } from "./_shared";
+import { LoadingSpinner, KpiBox, QueryState } from "./_shared";
 
 /** S14 - Evoluzione Profili: KPI (totali/attivi/eliminati) + donut per origine. */
 export const EvoluzioneProfiliView = () => {
@@ -16,16 +16,11 @@ export const EvoluzioneProfiliView = () => {
 
   const r = riepilogo.data;
   const data = (origine.data ?? []).map((d) => ({ name: d.voce, value: d.numero_profili }));
-  const tot = data.reduce((s, d) => s + d.value, 0);
 
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={setScope} />
-      {riepilogo.error ? (
-        <ErrorBox error={riepilogo.error} />
-      ) : riepilogo.isLoading ? (
-        <LoadingSpinner />
-      ) : (
+      <QueryState error={riepilogo.error} loading={riepilogo.isLoading}>{() => (
         <div className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <KpiBox label="Profili totali" value={r?.profili_totali ?? 0} />
@@ -39,7 +34,7 @@ export const EvoluzioneProfiliView = () => {
             {origine.isLoading ? <LoadingSpinner /> : <RankedBarChart data={data} multicolor />}
           </div>
         </div>
-      )}
+      )}</QueryState>
     </div>
   );
 };

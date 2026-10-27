@@ -30,8 +30,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip as RTooltip,
-  ResponsiveContainer,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { PILLAR_COLORS, PILLAR_LABELS, interconnessioni } from "../executiveInterconnessioni";
@@ -44,6 +44,7 @@ import {
   type ExecScorePillarConfig,
 } from "./execScoreConfig";
 import { normalizationSteps } from "./execScoreNormalization";
+import { fmtSigned, affix, bySign } from "@/lib/conditional";
 
 /* ── Gauge semicircolare su scala [0-100] ── */
 const ScoreGauge = ({ score, color, size = 72 }: { score: number; color: string; size?: number }) => {
@@ -152,6 +153,22 @@ const MetodologiaTabs = ({ row }: { row: ExecScoreRow }) => {
   );
 };
 
+/** Parte 1 della scomposizione: componenti dell'indice (con anno di riferimento) e dettagli. */
+function calcoloIndiceSteps(row: ExecScoreRow | undefined): { label: string; value: string }[] {
+  if (!row) return [];
+  const steps: { label: string; value: string }[] = [];
+  if (row.componente_1) {
+    steps.push({ label: `${row.componente_1}${affix(row.anno_1, " (", ")")}`, value: fmtNum(row.valore_1) });
+  }
+  if (row.componente_2) {
+    steps.push({ label: `${row.componente_2}${affix(row.anno_2, " (", ")")}`, value: fmtNum(row.valore_2) });
+  }
+  (row.dettagli ?? []).forEach((d) =>
+    steps.push({ label: `${d.componente}${affix(d.anno, " (", ")")}`, value: fmtNum(d.valore) }),
+  );
+  return steps;
+}
+
 export interface ExecScoreCardProps {
   code: string; // codice indice senza prefisso (es. "IGF")
   row: ExecScoreRow | undefined;
@@ -166,6 +183,55 @@ export interface ExecScoreCardProps {
   /** Consultazione della card (apertura di un pannello): usata per «Schede più consultate». */
   onInteract?: (code: string) => void;
 }
+
+type TrendPoint = ExecScoreCardProps["trend"][number];
+
+/** Trend storico dello score (messaggio se mock-up o senza storico). */
+const ScoreTrendChart = ({
+  trend,
+  isMock,
+  code,
+  color,
+}: {
+  trend: TrendPoint[];
+  isMock: boolean;
+  code: string;
+  color: string;
+}) => {
+  const noTrend = isMock || trend.length === 0;
+  return (
+  <div className={`${noTrend ? "" : "h-[160px]"} px-1`} data-testid={`exec-score-trend-${code}`}>
+    {noTrend ? (
+      <p className="text-xs text-muted-foreground px-3">
+        {isMock ? "Trend non disponibile per i dati mock-up." : "Nessun dato storico disponibile."}
+      </p>
+    ) : (
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={trend} margin={{ left: -10, right: 10, top: 5, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--tableau-grid))" />
+          <XAxis dataKey="anno" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
+          <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
+          <RTooltip
+            contentStyle={{ fontSize: 12, background: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }}
+            formatter={(v: number, _n: string, item: { payload?: { valore: number | null; unita: string | null } }) => [
+              `${fmtScore(v)} (indice ${fmtIndex(item?.payload?.valore)}${affix(item?.payload?.unita, " · ")})`,
+              "Score",
+            ]}
+          />
+          <Line
+            type="monotone"
+            dataKey="score"
+            stroke={color}
+            strokeWidth={2.5}
+            connectNulls
+            dot={{ r: 3.5, fill: color, stroke: "hsl(var(--card))", strokeWidth: 2 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    )}
+  </div>
+  );
+};
 
 export const ExecScoreCard = ({
   code,
@@ -190,20 +256,7 @@ export const ExecScoreCard = ({
   const isComposito = componenti.length > 0;
 
   /* ── Parte 1 · calcolo dell'indice ── */
-  const parte1: { label: string; value: string }[] = [];
-  if (row?.componente_1)
-    parte1.push({
-      label: `${row.componente_1}${row.anno_1 ? ` (${row.anno_1})` : ""}`,
-      value: fmtNum(row.valore_1),
-    });
-  if (row?.componente_2)
-    parte1.push({
-      label: `${row.componente_2}${row.anno_2 ? ` (${row.anno_2})` : ""}`,
-      value: fmtNum(row.valore_2),
-    });
-  (row?.dettagli ?? []).forEach((d) =>
-    parte1.push({ label: `${d.componente}${d.anno ? ` (${d.anno})` : ""}`, value: fmtNum(d.valore) }),
-  );
+  const parte1 = calcoloIndiceSteps(row);
 
   /* ── Parte 2 · normalizzazione dello score (per famiglia di scala) ── */
   const famiglia = row?.famiglia_score ?? "";
@@ -213,13 +266,8 @@ export const ExecScoreCard = ({
   const staticIc = interconnessioni[code];
   const icPillars = (row?.interconnessioni ?? []).filter((p) => p !== pillar);
 
-  const DeltaIcon = varScore == null || varScore === 0 ? Minus : varScore > 0 ? TrendingUp : TrendingDown;
-  const deltaColor =
-    varScore == null || varScore === 0
-      ? "hsl(var(--muted-foreground))"
-      : varScore > 0
-        ? "hsl(var(--chart-green))"
-        : "hsl(var(--destructive))";
+  const DeltaIcon = bySign(varScore ?? 0, TrendingUp, TrendingDown, Minus);
+  const deltaColor = bySign(varScore ?? 0, "hsl(var(--chart-green))", "hsl(var(--destructive))", "hsl(var(--muted-foreground))");
 
   return (
     <div
@@ -285,7 +333,7 @@ export const ExecScoreCard = ({
               data-testid={`exec-score-var-${code}`}
             >
               <DeltaIcon className="h-3.5 w-3.5" />
-              {varScore == null ? "n.d." : `${varScore > 0 ? "+" : ""}${fmtScore(varScore)} punti`} vs {anno - 1}
+              {varScore == null ? "n.d." : `${fmtSigned(varScore, fmtScore)} punti`} vs {anno - 1}
             </span>
           </div>
         </div>
@@ -387,36 +435,7 @@ export const ExecScoreCard = ({
 
       {/* Trend storico */}
       <Section icon={LineChartIcon} title={`Trend storico · ${code}`} testId={`exec-score-trend-toggle-${code}`} onOpen={track}>
-        <div className={`${isMock || trend.length === 0 ? "" : "h-[160px]"} px-1`} data-testid={`exec-score-trend-${code}`}>
-          {isMock || trend.length === 0 ? (
-            <p className="text-xs text-muted-foreground px-3">
-              {isMock ? "Trend non disponibile per i dati mock-up." : "Nessun dato storico disponibile."}
-            </p>
-          ) : (
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={trend} margin={{ left: -10, right: 10, top: 5, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--tableau-grid))" />
-                <XAxis dataKey="anno" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
-                <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
-                <RTooltip
-                  contentStyle={{ fontSize: 12, background: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }}
-                  formatter={(v: number, _n: string, item: { payload?: { valore: number | null; unita: string | null } }) => [
-                    `${fmtScore(v)} (indice ${fmtIndex(item?.payload?.valore)}${item?.payload?.unita ? ` · ${item.payload.unita}` : ""})`,
-                    "Score",
-                  ]}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="score"
-                  stroke={pillarColor}
-                  strokeWidth={2.5}
-                  connectNulls
-                  dot={{ r: 3.5, fill: pillarColor, stroke: "hsl(var(--card))", strokeWidth: 2 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          )}
-        </div>
+        <ScoreTrendChart trend={trend} isMock={isMock} code={code} color={pillarColor} />
       </Section>
 
       {/* Interconnessioni */}

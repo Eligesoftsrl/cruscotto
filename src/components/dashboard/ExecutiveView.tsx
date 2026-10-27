@@ -19,6 +19,7 @@ import { PILLAR_COLORS, PILLAR_LABELS } from "./executive/executiveInterconnessi
 import { useAdminState } from "@/services/admin/adminStore";
 import { FilterPills } from "./FilterPills";
 import { EXEC_FLAG_BY_CODE } from "@/config/execIndiciCatalog";
+import { affix } from "@/lib/conditional";
 
 const EXEC_PILLARS = Object.keys(EXEC_SCORE_PILLARS);
 /** Dimensioni con layout gerarchico (sintesi da 2 + componenti da 3) richiesto dal cliente. */
@@ -46,7 +47,20 @@ const letturaScore = (
   const coda = composito
     ? (r.formula?.split("\n")[0]?.replace(/^[^=]*=\s*/, "") ?? "")
     : (r.famiglia_score ?? "");
-  return `Indice ${fmtIndex(r.valore)}${r.dominio ? ` (dominio ${r.dominio})` : ""} → score ${Math.round(score)} su 100${coda ? ` · ${coda.replace(/\.$/, "")}` : ""}.`;
+  return `Indice ${fmtIndex(r.valore)}${affix(r.dominio, " (dominio ", ")")} → score ${Math.round(score)} su 100${affix(coda.replace(/\.$/, ""), " · ")}.`;
+};
+
+/** Interconnessioni verso gli altri pilastri (esclude il pilastro corrente). */
+const altriPilastri = (lista: string[] | null | undefined, corrente: string) =>
+  (lista ?? [])
+    .filter((x) => x !== corrente)
+    .map((x) => ({ pillar: x, label: PILLAR_LABELS[x] ?? x, reason: "" }));
+
+/** Colonne della griglia in base al numero di indici del gruppo. */
+const gridColsFor = (n: number): string => {
+  if (n === 1) return "grid-cols-1 max-w-2xl";
+  if (n === 2) return "grid-cols-1 md:grid-cols-2";
+  return "grid-cols-1 md:grid-cols-2 xl:grid-cols-3";
 };
 
 /* ── Dimension grouping config — 6 Pillar ── */
@@ -198,9 +212,7 @@ export const ExecutiveView = ({
                 text: letturaScore(r, score),
               },
               interconnections: {
-                connections: (r.interconnessioni ?? [])
-                  .filter((x) => x !== p)
-                  .map((x) => ({ pillar: x, label: PILLAR_LABELS[x] ?? x, reason: "" })),
+                connections: altriPilastri(r.interconnessioni, p),
               },
             };
           });
@@ -457,13 +469,7 @@ export const ExecutiveView = ({
               ) : (
                 <DemoWrap demo={DEMO_PILLARS.includes(group.id)}>
                 <div
-                  className={`p-4 grid gap-4 bg-card ${
-                    group.indices.length === 1
-                      ? "grid-cols-1 max-w-2xl"
-                      : group.indices.length === 2
-                        ? "grid-cols-1 md:grid-cols-2"
-                        : "grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
-                  }`}
+                  className={`p-4 grid gap-4 bg-card ${gridColsFor(group.indices.length)}`}
                 >
                   {group.indices.map((idx, ii) => (
                     <ExecutiveKpiCard

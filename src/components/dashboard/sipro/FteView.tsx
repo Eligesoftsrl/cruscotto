@@ -1,13 +1,20 @@
 import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { useState } from "react";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useFteRiepilogo, useFteProfili, useFte } from "@/hooks/useSchedaSiproProfili";
 import { fetchFte } from "@/services/sipro/profiliService";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
-import { LoadingSpinner, ErrorBox, KpiBox, Pager, TOOLTIP_STYLE } from "./_shared";
+import { LoadingSpinner, KpiBox, Pager, TOOLTIP_STYLE, QueryState } from "./_shared";
 
 const PER_PAGE = 20;
 const COLOR_PROGR = "hsl(210, 64%, 45%)";
@@ -49,7 +56,7 @@ export const FteView = () => {
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={resetAndSet} />
-      {riepilogo.error ? <ErrorBox error={riepilogo.error} /> : riepilogo.isLoading ? <LoadingSpinner /> : (
+      <QueryState error={riepilogo.error} loading={riepilogo.isLoading}>{() => (
         <div className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <KpiBox label="FTE programmati" value={fmt(r?.fte_programmati)} />
@@ -106,7 +113,7 @@ export const FteView = () => {
             )}
           </div>
         </div>
-      )}
+      )}</QueryState>
     </div>
   );
 };

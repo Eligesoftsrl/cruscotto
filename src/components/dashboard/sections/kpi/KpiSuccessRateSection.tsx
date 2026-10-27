@@ -8,11 +8,13 @@ import {
   PolarGrid,
   PolarAngleAxis,
   PolarRadiusAxis,
-  ResponsiveContainer,
   Tooltip,
   Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
+import { byMinThreshold } from "@/lib/conditional";
+import { roundedMean } from "@/lib/format";
 
 export const KpiSuccessRateSection = () => {
   const { data: enteIds } = useFilteredEnteIds();
@@ -55,10 +57,7 @@ export const KpiSuccessRateSection = () => {
             if (!byDim[k.dimensione]) byDim[k.dimensione] = [];
             byDim[k.dimensione].push(k.valore);
           });
-        const dimAvg = (dim: string) => {
-          const vals = byDim[dim] || [];
-          return vals.length ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : 0;
-        };
+        const dimAvg = (dim: string) => roundedMean(byDim[dim] || []);
         const allVals = Object.values(byDim).flat();
         const media = allVals.length
           ? Math.round(allVals.reduce((a, b) => a + b, 0) / allVals.length)
@@ -153,7 +152,7 @@ export const KpiSuccessRateSection = () => {
                 align: "right",
                 render: (r: any) => (
                   <span
-                    className={`font-semibold ${r.media >= 60 ? "text-green-700" : r.media >= 40 ? "text-amber-700" : "text-red-600"}`}
+                    className={`font-semibold ${byMinThreshold(r.media, [[60, "text-green-700"], [40, "text-amber-700"]], "text-red-600")}`}
                   >
                     {r.media}%
                   </span>

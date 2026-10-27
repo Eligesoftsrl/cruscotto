@@ -136,7 +136,6 @@ const NarrativeKpiCard = ({
   onNavigate?: (nav: NavState) => void;
 }) => {
   const [open, setOpen] = useState(false);
-  const [simulating, setSimulating] = useState(false);
   const [simValue, setSimValue] = useState<number | null>(null);
   const idx = executiveIndicesStatic.find((i) => i.id === id);
   if (!idx) return null;
@@ -260,7 +259,6 @@ const NarrativeKpiCard = ({
                   <button
                     onClick={() => {
                       setSimValue(null);
-                      setSimulating(false);
                     }}
                     className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground hover:bg-muted/80 font-semibold transition-colors"
                   >

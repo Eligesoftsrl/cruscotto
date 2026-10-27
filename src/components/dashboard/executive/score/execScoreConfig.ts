@@ -11,6 +11,7 @@
  *  - riga "Fonte" statica per indice
  */
 import type { ExecScoreRow } from "@/services/exec/execScoreService";
+import { byMaxThreshold } from "@/lib/conditional";
 
 export interface ScoreStep {
   label: string;
@@ -159,7 +160,7 @@ export const resolveExecCode = (pillar: string, id?: string | null) =>
 
 /** Badge da lk_intervalli_badge (usato solo per i dati mock-up, l'API restituisce gia il badge). */
 export const badgeFromScore = (score: number) =>
-  score < 25 ? "Basso" : score < 50 ? "Moderato" : score < 75 ? "Buono" : "Eccellente";
+  byMaxThreshold(score, [[25, "Basso"], [50, "Moderato"], [75, "Buono"]], "Eccellente");
 
 export const isExecScorePillar = (pillar?: string) => !!pillar && pillar in EXEC_SCORE_PILLARS;
 

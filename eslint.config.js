@@ -27,6 +27,15 @@ export default tseslint.config(
       "no-restricted-imports": [
         "error",
         {
+          // Accessibilità AGID: ogni grafico deve avere la sua tabella dati.
+          paths: [
+            {
+              name: "recharts",
+              importNames: ["ResponsiveContainer"],
+              message:
+                "Usa ResponsiveContainer da @/components/dashboard/_shared/AccessibleChart (aggiunge «Visualizza in tabella»).",
+            },
+          ],
           patterns: [
             {
               group: ["@/integrations/supabase/client", "**/integrations/supabase/client"],
@@ -46,6 +55,11 @@ export default tseslint.config(
       "src/contexts/AuthContext.tsx",
       "src/pages/Login.tsx",
     ],
+    rules: { "no-restricted-imports": "off" },
+  },
+  {
+    // Unici punti in cui si usa il ResponsiveContainer originale di Recharts.
+    files: ["src/components/dashboard/_shared/AccessibleChart.tsx", "src/components/ui/chart.tsx"],
     rules: { "no-restricted-imports": "off" },
   },
 );

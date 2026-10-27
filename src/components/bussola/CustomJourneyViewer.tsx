@@ -15,6 +15,7 @@ import {
 import { indicatorCatalog, type CatalogIndicator } from "@/data/indicatorCatalog";
 import { Badge } from "@/components/ui/badge";
 import type { NavState } from "@/components/dashboard/AppSidebar";
+import { pickByKey } from "@/lib/conditional";
 
 interface CustomJourneyStep {
   step_order: number;
@@ -163,6 +164,7 @@ export function CustomJourneyViewer({
 
   const step = journey.steps[currentStep];
   const totalSteps = journey.steps.length;
+  const isLastStep = currentStep >= totalSteps - 1;
   const stepIndicators = step.indicators
     .map((id) => indicatorCatalog.find((c) => c.id === id))
     .filter(Boolean) as CatalogIndicator[];
@@ -250,21 +252,23 @@ export function CustomJourneyViewer({
           </button>
         )}
 
-        {currentStep < totalSteps - 1 ? (
+        {!isLastStep && (
           <button
             onClick={() => setCurrentStep((c) => c + 1)}
             className="flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-bold hover:opacity-90 transition"
           >
             Prossimo <ArrowRight aria-hidden="true" className="h-4 w-4" />
           </button>
-        ) : onGoToDashboard ? (
+        )}
+        {isLastStep && onGoToDashboard && (
           <button
             onClick={() => onGoToDashboard({ level: "executive" }, currentStep)}
             className="flex items-center gap-2 px-4 py-2 rounded-md bg-[hsl(142,71%,35%)] text-white text-sm font-bold hover:opacity-90 transition"
           >
             Vista Analitica <ChevronRight aria-hidden="true" className="h-4 w-4" />
           </button>
-        ) : (
+        )}
+        {isLastStep && !onGoToDashboard && (
           <button
             onClick={onBack}
             className="flex items-center gap-2 px-4 py-2 rounded-md bg-[hsl(142,71%,35%)] text-white text-sm font-bold hover:opacity-90 transition"
@@ -292,12 +296,7 @@ function IndicatorCard({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const c = statusConfig[indicator.status];
   const pct = Math.round(indicator.value * 100);
-  const StatusIcon =
-    indicator.status === "green"
-      ? CheckCircle
-      : indicator.status === "red"
-        ? AlertTriangle
-        : Lightbulb;
+  const StatusIcon = pickByKey(indicator.status, { green: CheckCircle, red: AlertTriangle }, Lightbulb);
   const operationalSource = sourceToOperational[indicator.source];
   const indicatorTarget = indicatorTargetMap[indicator.id];
   const hasDeepLink = !!onGoToDashboard && (indicator.pillar || operationalSource);

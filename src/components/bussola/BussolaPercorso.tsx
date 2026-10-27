@@ -19,22 +19,22 @@ import {
   type BussolaIndicator,
   type BussolaProjection,
 } from "@/data/bussolaPercorsi";
-import { useAuth } from "@/contexts/AuthContext";
 
 import {
   Area,
   AreaChart,
   Line,
   LineChart,
-  ResponsiveContainer,
   XAxis,
   YAxis,
   ReferenceLine,
   CartesianGrid,
   Tooltip as RechartsTooltip,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import type { NavState } from "@/components/dashboard/AppSidebar";
+import { pickByKey } from "@/lib/conditional";
 
 interface BussolaPercorsoProps {
   percorsoId: string;
@@ -51,7 +51,6 @@ export const BussolaPercorso = ({
   onBack,
   onGoToDashboard,
 }: BussolaPercorsoProps) => {
-  const { profile } = useAuth();
   const percorso = bussolaPercorsi.find((p) => p.id === percorsoId);
   const [currentStep, setCurrentStep] = useState(initialStep ?? 0);
 
@@ -184,14 +183,6 @@ export const BussolaPercorso = ({
 };
 
 function ProjectionChart({ projection }: { projection: BussolaProjection }) {
-  const historicalData = projection.data.filter((d) => !d.projected);
-  const projectedData = projection.data.filter((d) => d.projected);
-  const chartData = projection.data.map((d) => ({
-    anno: d.anno,
-    storico: d.projected ? undefined : d.valore,
-    proiezione: d.projected ? d.valore : undefined,
-    ...(d.anno === historicalData[historicalData.length - 1]?.anno ? { proiezione: d.valore } : {}),
-  }));
 
   const combined = projection.data.map((d, i) => {
     const isLastHistorical =
@@ -316,12 +307,7 @@ function IndicatorRow({
   const pct = Math.round(indicator.value * 100);
   const hasDrilldown = indicator.trend || indicator.numerator != null || indicator.methodology;
 
-  const StatusIcon =
-    indicator.status === "green"
-      ? CheckCircle
-      : indicator.status === "red"
-        ? AlertTriangle
-        : Lightbulb;
+  const StatusIcon = pickByKey(indicator.status, { green: CheckCircle, red: AlertTriangle }, Lightbulb);
 
   useEffect(() => {
     if (!isInitiallyFocused) return;

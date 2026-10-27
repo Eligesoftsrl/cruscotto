@@ -1,4 +1,5 @@
 import { useIstituzione } from "@/hooks/useIstituzione";
+import { AmministrazioneLabel } from "@/components/dashboard/_shared/AmministrazioneLabel";
 import { StackedCompositionBar } from "@/components/dashboard/_shared/charts";
 
 import { useQuery } from "@tanstack/react-query";
@@ -12,14 +13,14 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   ReferenceLine,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { useFilters } from "@/contexts/FilterContext";
-import { useAuth } from "@/contexts/AuthContext";
 import { useEnteScope } from "@/hooks/useEnteScope";
 import { useLavoroAgileKpi, useLavoroAgileEvoluzione } from "@/hooks/useSchedaLavoroAgile";
 import type { LavoroAgileFiltri } from "@/services/ca/lavoroAgileService";
+import { loadingOr } from "@/lib/conditional";
 
 const nf = new Intl.NumberFormat("it-IT");
 const n1 = (v: number | null | undefined) =>
@@ -59,8 +60,6 @@ const Kpi = ({
 
 export const LavoroAgileContent = () => {
   const { filters } = useFilters();
-  const { profile } = useAuth();
-  const isDfp = profile?.role === "dfp";
   const enteScope = useEnteScope();
   const { enteTerm, setEnteTerm, ente, setEnte } = useIstituzione();
 
@@ -102,17 +101,7 @@ export const LavoroAgileContent = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm font-semibold text-foreground">
-          {ente ? (
-            <>
-              Amministrazione: <span className="text-primary">{ente.descrizione}</span>
-            </>
-          ) : enteScope.label ? (
-            <>
-              Amministrazione: <span className="text-primary">{enteScope.label}</span>
-            </>
-          ) : (
-            "Totale PA"
-          )}{" "}
+          <AmministrazioneLabel nome={ente ? ente.descrizione : enteScope.label} />{" "}
           · Conto Annuale RGS · Anno {filtri.anno}
         </p>
         <div className="relative w-[320px] max-w-full" style={{ display: "none" }}>
@@ -189,7 +178,7 @@ export const LavoroAgileContent = () => {
         <Kpi
           accent={TOT}
           titolo={k?.picco_anno ? `Picco (${k.picco_anno})` : "Picco"}
-          valore={loading ? "…" : k ? nf.format(Math.round(k.picco_tutti ?? 0)) : "N/D"}
+          valore={loadingOr(loading, k, (x) => nf.format(Math.round(x.picco_tutti ?? 0)))}
         />
         <Kpi
           accent={UOMINI}

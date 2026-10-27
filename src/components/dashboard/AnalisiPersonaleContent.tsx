@@ -1,4 +1,5 @@
 import { useIstituzione } from "@/hooks/useIstituzione";
+import { AmministrazioneLabel } from "@/components/dashboard/_shared/AmministrazioneLabel";
 import { RankedBarChart } from "@/components/dashboard/_shared/charts";
 
 import { useQuery } from "@tanstack/react-query";
@@ -12,11 +13,10 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { useFilters } from "@/contexts/FilterContext";
-import { useAuth } from "@/contexts/AuthContext";
 import { useEnteScope } from "@/hooks/useEnteScope";
 import {
   usePersonaleKpi,
@@ -25,12 +25,13 @@ import {
   usePersonaleEvoluzione,
 } from "@/hooks/useSchedaPersonale";
 import type { Genere, PersonaleFiltri } from "@/services/ca/personaleService";
+import { fmtSigned, loadingOr } from "@/lib/conditional";
 
 const nf = new Intl.NumberFormat("it-IT");
 const n1 = (v: number | null | undefined) =>
   v == null ? "N/D" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
 const signed = (v: number | null | undefined) =>
-  v == null ? "N/D" : `${v > 0 ? "+" : ""}${n1(v)}`;
+  v == null ? "N/D" : fmtSigned(v, n1);
 const PALETTE = [
   "hsl(215,70%,50%)",
   "hsl(175,55%,42%)",
@@ -67,8 +68,6 @@ const Kpi = ({
 
 export const AnalisiPersonaleContent = () => {
   const { filters } = useFilters();
-  const { profile } = useAuth();
-  const isDfp = profile?.role === "dfp";
   const enteScope = useEnteScope();
   const { enteTerm, setEnteTerm, ente, setEnte } = useIstituzione();
 
@@ -109,17 +108,7 @@ export const AnalisiPersonaleContent = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm font-semibold text-foreground">
-          {ente ? (
-            <>
-              Amministrazione: <span className="text-primary">{ente.descrizione}</span>
-            </>
-          ) : enteScope.label ? (
-            <>
-              Amministrazione: <span className="text-primary">{enteScope.label}</span>
-            </>
-          ) : (
-            "Totale PA"
-          )}{" "}
+          <AmministrazioneLabel nome={ente ? ente.descrizione : enteScope.label} />{" "}
           · Conto Annuale RGS · Anno {filtri.anno}
         </p>
         <div className="relative w-[320px] max-w-full" style={{ display: "none" }}>
@@ -178,17 +167,17 @@ export const AnalisiPersonaleContent = () => {
         <Kpi
           accent="hsl(215,70%,50%)"
           titolo="Personale totale"
-          valore={loading ? "…" : k?.personale != null ? nf.format(k.personale) : "N/D"}
+          valore={loadingOr(loading, k?.personale, nf.format)}
         />
         <Kpi
           accent="hsl(25,85%,55%)"
           titolo="Dirigenti"
-          valore={loading ? "…" : k?.dirigenti != null ? nf.format(k.dirigenti) : "N/D"}
+          valore={loadingOr(loading, k?.dirigenti, nf.format)}
         />
         <Kpi
           accent="hsl(175,55%,42%)"
           titolo="Non dirigenti"
-          valore={loading ? "…" : k?.non_dirigenti != null ? nf.format(k.non_dirigenti) : "N/D"}
+          valore={loadingOr(loading, k?.non_dirigenti, nf.format)}
         />
         <Kpi
           accent="hsl(160,60%,40%)"

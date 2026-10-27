@@ -12,6 +12,12 @@ import { useCustomJourneys } from "@/hooks/useCustomJourneys";
 import type { NavState } from "@/components/dashboard/AppSidebar";
 import type { JourneyTemplate } from "@/data/journeyTemplates";
 
+/** Imposta il parametro solo se valorizzato (stringa non vuota o numero, anche 0). */
+const setParam = (params: URLSearchParams, key: string, value: string | number | null | undefined) => {
+  if (value === undefined || value === null || value === "") return;
+  params.set(key, String(value));
+};
+
 const Bussola = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -80,25 +86,25 @@ const Bussola = () => {
 
     if (nav) {
       params.set("level", nav.level);
-      if (nav.pillar) params.set("pillar", nav.pillar);
-      if (nav.source) params.set("source", nav.source);
-      if (nav.indicator) params.set("indicator", nav.indicator);
+      setParam(params, "pillar", nav.pillar);
+      setParam(params, "source", nav.source);
+      setParam(params, "indicator", nav.indicator);
     }
 
     if (percorsoId) {
       params.set("from_bussola", percorsoId);
-      if (step !== undefined) params.set("bussola_step", String(step));
-      if (originIndicatorId) params.set("bussola_indicator", originIndicatorId);
+      setParam(params, "bussola_step", step);
+      setParam(params, "bussola_indicator", originIndicatorId);
     }
 
-    if (activeJourney) params.set("from_journey", activeJourney);
-    if (journeyStep !== undefined) params.set("journey_step", String(journeyStep));
+    setParam(params, "from_journey", activeJourney);
+    setParam(params, "journey_step", journeyStep);
 
     if (activeCustomJourney) {
       params.set("from_custom_journey", "true");
       params.set("custom_journey", activeCustomJourney.id);
-      if (step !== undefined) params.set("custom_step", String(step));
-      if (originIndicatorId) params.set("custom_indicator", originIndicatorId);
+      setParam(params, "custom_step", step);
+      setParam(params, "custom_indicator", originIndicatorId);
     }
 
     navigate(`/dashboard?${params.toString()}`);

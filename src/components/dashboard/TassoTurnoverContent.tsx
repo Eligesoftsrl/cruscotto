@@ -1,4 +1,5 @@
 import { useIstituzione } from "@/hooks/useIstituzione";
+import { AmministrazioneLabel } from "@/components/dashboard/_shared/AmministrazioneLabel";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
 
 import { useQuery } from "@tanstack/react-query";
@@ -12,23 +13,23 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   ReferenceLine,
   Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { useFilters } from "@/contexts/FilterContext";
-import { useAuth } from "@/contexts/AuthContext";
 import { useEnteScope } from "@/hooks/useEnteScope";
 import { useTurnoverKpi, useTurnoverEvoluzione } from "@/hooks/useSchedaTurnover";
 import type { Genere, TurnoverFiltri } from "@/services/ca/turnoverService";
+import { fmtSigned, trendArrow } from "@/lib/conditional";
 
 const nf = new Intl.NumberFormat("it-IT");
 const n1 = (v: number | null | undefined) =>
   v == null ? "N/D" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
 const signed = (v: number | null | undefined) =>
-  v == null ? "N/D" : `${v > 0 ? "+" : ""}${nf.format(v)}`;
+  v == null ? "N/D" : fmtSigned(v, nf.format);
 const deltaPP = (v: number | null | undefined) =>
-  v == null ? undefined : `${v > 0 ? "▲ +" : v < 0 ? "▼ " : "→ "}${n1(v)} pp vs anno prec.`;
+  v == null ? undefined : `${trendArrow(v)}${n1(v)} pp vs anno prec.`;
 
 const Kpi = ({
   titolo,
@@ -60,8 +61,6 @@ const Kpi = ({
 
 export const TassoTurnoverContent = () => {
   const { filters } = useFilters();
-  const { profile } = useAuth();
-  const isDfp = profile?.role === "dfp";
   const enteScope = useEnteScope();
   const { enteTerm, setEnteTerm, ente, setEnte } = useIstituzione();
 
@@ -94,17 +93,7 @@ export const TassoTurnoverContent = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm font-semibold text-foreground">
-          {ente ? (
-            <>
-              Amministrazione: <span className="text-primary">{ente.descrizione}</span>
-            </>
-          ) : enteScope.label ? (
-            <>
-              Amministrazione: <span className="text-primary">{enteScope.label}</span>
-            </>
-          ) : (
-            "Totale PA"
-          )}{" "}
+          <AmministrazioneLabel nome={ente ? ente.descrizione : enteScope.label} />{" "}
           · Conto Annuale RGS · Anno {filtri.anno}
         </p>
         <div className="relative w-[320px] max-w-full" style={{ display: "none" }}>

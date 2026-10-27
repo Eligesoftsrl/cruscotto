@@ -24,11 +24,12 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Cell,
   LineChart,
   Line,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
+import { bySign, pickFirst } from "@/lib/conditional";
 
 const pillarMeta: Record<string, { label: string; description: string; color: string }> = {
   D1: {
@@ -94,7 +95,6 @@ export const SyntheticPillarView = ({
   onGoExecutive,
 }: SyntheticPillarViewProps) => {
   const [selectedId, setSelectedId] = useState<string | null>(selectedIndicator ?? null);
-  const [showMethodology, setShowMethodology] = useState(false);
   const { profile } = useAuth();
   const { filters } = useFilters();
 
@@ -355,12 +355,7 @@ export const SyntheticPillarView = ({
                       </span>
                       {(() => {
                         const diff = selectedInd.value - selectedInd.prev;
-                        const diffColor =
-                          diff > 0
-                            ? "hsl(var(--chart-green))"
-                            : diff < 0
-                              ? "hsl(var(--destructive))"
-                              : "hsl(var(--muted-foreground))";
+                        const diffColor = bySign(diff, "hsl(var(--chart-green))", "hsl(var(--destructive))", "hsl(var(--muted-foreground))");
                         return (
                           <span
                             className="inline-flex items-center gap-0.5 text-xs font-semibold pb-1"
@@ -431,17 +426,11 @@ export const SyntheticPillarView = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
         {enriched.map((ind) => {
           const pct = Math.round(ind.value * 100);
-          const tgtPct = Math.round(ind.target * 100);
           const diff = ind.value - ind.prev;
           const isGood = ind.value >= ind.target * 0.9;
           const isSelected = selectedId === ind.id;
           const isDimmed = selectedId !== null && !isSelected;
-          const diffColor =
-            diff > 0
-              ? "hsl(var(--chart-green))"
-              : diff < 0
-                ? "hsl(var(--destructive))"
-                : "hsl(var(--muted-foreground))";
+          const diffColor = bySign(diff, "hsl(var(--chart-green))", "hsl(var(--destructive))", "hsl(var(--muted-foreground))");
 
           return (
             <button
@@ -449,13 +438,14 @@ export const SyntheticPillarView = ({
               key={ind.id}
               onClick={() => handleCardClick(ind.id)}
               aria-pressed={isSelected}
-              className={`tableau-card text-left transition-all group relative ${
-                isSelected
-                  ? "ring-2 ring-primary shadow-md"
-                  : isDimmed
-                    ? "bg-muted/40 hover:shadow-md" /* niente opacità: il testo deve restare leggibile (contrasto AA) */
-                    : "hover:shadow-md"
-              }`}
+              className={`tableau-card text-left transition-all group relative ${pickFirst(
+                [
+                  [isSelected, "ring-2 ring-primary shadow-md"],
+                  // niente opacità: il testo deve restare leggibile (contrasto AA)
+                  [isDimmed, "bg-muted/40 hover:shadow-md"],
+                ],
+                "hover:shadow-md",
+              )}`}
               style={{ borderTop: `3px solid ${isGood ? meta.color : "hsl(var(--chart-orange))"}` }}
             >
               {isSelected && (

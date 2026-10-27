@@ -1,4 +1,5 @@
 import { useIstituzione } from "@/hooks/useIstituzione";
+import { AmministrazioneLabel } from "@/components/dashboard/_shared/AmministrazioneLabel";
 import { TableExport } from "@/components/dashboard/_shared/TableExport";
 
 import { useQuery } from "@tanstack/react-query";
@@ -10,14 +11,13 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   LineChart,
   Line,
   ReferenceLine,
   Legend,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { useFilters } from "@/contexts/FilterContext";
-import { useAuth } from "@/contexts/AuthContext";
 import { useEnteScope } from "@/hooks/useEnteScope";
 import {
   useCessazioniKpi,
@@ -25,13 +25,14 @@ import {
   useCessazioniEvoluzione,
 } from "@/hooks/useSchedaCessazioni";
 import type { Genere, CessazioniFiltri } from "@/services/ca/cessazioniService";
+import { fmtSigned } from "@/lib/conditional";
 
 /* --------------------------- helper di formato --------------------------- */
 const nf = new Intl.NumberFormat("it-IT");
 const n1 = (v: number | null | undefined) =>
   v == null ? "\u2014" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
 const signed = (v: number | null | undefined) =>
-  v == null ? "\u2014" : `${v > 0 ? "+" : ""}${nf.format(v)}`;
+  v == null ? "\u2014" : fmtSigned(v, nf.format);
 
 /* ------------------------------ KPI card --------------------------------- */
 const Kpi = ({
@@ -106,8 +107,6 @@ const CausaliChart = ({
 
 export const CessazioniContent = () => {
   const { filters } = useFilters();
-  const { profile } = useAuth();
-  const isDfp = profile?.role === "dfp";
   const enteScope = useEnteScope();
   const { enteTerm, setEnteTerm, ente, setEnte } = useIstituzione();
 
@@ -150,17 +149,7 @@ export const CessazioniContent = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm font-semibold text-foreground">
-          {ente ? (
-            <>
-              Amministrazione: <span className="text-primary">{ente.descrizione}</span>
-            </>
-          ) : enteScope.label ? (
-            <>
-              Amministrazione: <span className="text-primary">{enteScope.label}</span>
-            </>
-          ) : (
-            "Totale PA"
-          )}{" "}
+          <AmministrazioneLabel nome={ente ? ente.descrizione : enteScope.label} />{" "}
           · Conto Annuale RGS · Anno {filtri.anno}
         </p>
         <div className="relative w-[320px] max-w-full" style={{ display: "none" }}>

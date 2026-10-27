@@ -8,16 +8,28 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   ReferenceLine,
   Cell,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
+import { pickFirst } from "@/lib/conditional";
 
 /**
  * Sezione ridefinita: Focus sulla Saturazione dei bandi
  * Identifica bandi critici per eccesso o difetto di candidature
  */
+/** Classe di saturazione del bando (candidature per posto, in %). */
+const classeSaturazione = (saturazione: number): string =>
+  pickFirst(
+    [
+      [saturazione > 500, "Critico"],
+      [saturazione > 200, "Sovrasaturo"],
+      [saturazione >= 50, "Equilibrato"],
+    ],
+    "Sottosaturo",
+  );
+
 export const InpaEfficaciaSection = () => {
   const { data: enteIds } = useFilteredEnteIds();
   const [data, setData] = useState<any[]>([]);
@@ -33,14 +45,7 @@ export const InpaEfficaciaSection = () => {
           const cands = b.num_candidature_submitted ?? 0;
           const posti = b.num_posti ?? 0;
           const saturazione = posti > 0 ? Math.round((cands / posti) * 100) : 0;
-          const classe =
-            saturazione > 500
-              ? "Critico"
-              : saturazione > 200
-                ? "Sovrasaturo"
-                : saturazione >= 50
-                  ? "Equilibrato"
-                  : "Sottosaturo";
+          const classe = classeSaturazione(saturazione);
           return {
             titolo: (b.figura_ricercata ?? b.codice ?? "N/D").substring(0, 22),
             regione: b.regione ?? "-",

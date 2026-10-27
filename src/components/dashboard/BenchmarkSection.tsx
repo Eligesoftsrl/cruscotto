@@ -2,7 +2,8 @@ import { useState } from "react";
 import { filterOptions } from "@/fixtures";
 import { useEtaData } from "@/hooks/useEtaData";
 import { DemoDataBadge } from "@/components/dashboard/DemoDataBadge";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 
 const VIEWS = ["cluster", "complesso"] as const;
 type ViewMode = (typeof VIEWS)[number];

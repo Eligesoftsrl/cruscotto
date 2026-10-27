@@ -1,6 +1,7 @@
 import { Gauge, Layers, BarChart3, ChevronRight } from "lucide-react";
 import type { NavState } from "./AppSidebar";
 import { syntheticIndicators } from "./AppSidebar";
+import { pickFirst } from "@/lib/conditional";
 
 const pillarLabels: Record<string, string> = {
   D1: "Classificazione",
@@ -98,23 +99,23 @@ export const NavigationStepper = ({ nav, onNavigate }: NavigationStepperProps) =
             <button
               onClick={step.onClick}
               disabled={step.active || !step.onClick}
-              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-semibold transition-all ${
-                step.active
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : step.completed
-                    ? "bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer"
-                    : "bg-muted text-muted-foreground"
-              }`}
+              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-semibold transition-all ${pickFirst(
+                [
+                  [step.active, "bg-primary text-primary-foreground shadow-sm"],
+                  [step.completed, "bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer"],
+                ],
+                "bg-muted text-muted-foreground",
+              )}`}
               aria-current={step.active ? "step" : undefined}
             >
               <span
-                className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                  step.active
-                    ? "bg-primary-foreground/20"
-                    : step.completed
-                      ? "bg-primary/20"
-                      : "bg-muted-foreground/20"
-                }`}
+                className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${pickFirst(
+                  [
+                    [step.active, "bg-primary-foreground/20"],
+                    [step.completed, "bg-primary/20"],
+                  ],
+                  "bg-muted-foreground/20",
+                )}`}
               >
                 {step.icon}
               </span>

@@ -1,6 +1,14 @@
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList, ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Cell,
+  LabelList,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { PIE_COLORS, BAR_COLOR, TOOLTIP_STYLE } from "@/components/dashboard/sipro/_shared";
 
 export interface CategoryDatum {
@@ -9,6 +17,7 @@ export interface CategoryDatum {
 }
 
 const itNum = (n: number) => n.toLocaleString("it-IT", { maximumFractionDigits: 2 });
+const pctOf = (v: number, total: number) => (total ? Math.round((v / total) * 100) : 0);
 
 /**
  * Barre ORIZZONTALI ORDINATE (ranked bar) — sostituto delle torte/ciambelle.
@@ -67,7 +76,7 @@ export function RankedBarChart({
         <Tooltip
           contentStyle={TOOLTIP_STYLE}
           formatter={(v: number) => [
-            showPercent ? `${itNum(v)} (${total ? Math.round((v / total) * 100) : 0}%)` : itNum(v),
+            showPercent ? `${itNum(v)} (${pctOf(v, total)}%)` : itNum(v),
             "",
           ]}
         />

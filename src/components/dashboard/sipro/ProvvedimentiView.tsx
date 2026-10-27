@@ -1,11 +1,18 @@
 import { useSiproInitialScope } from "@/hooks/useSiproAccesso";
 import { useState } from "react";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LabelList, ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  LabelList,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { SiproScopeBar, type SiproScope } from "./SiproScopeBar";
 import { useProvvedimentiAndamento, useProvvedimenti } from "@/hooks/useSchedaSiproOrganizzazione";
-import { LoadingSpinner, ErrorBox, KpiBox, Pager, BAR_COLOR, TOOLTIP_STYLE } from "./_shared";
+import { LoadingSpinner, KpiBox, Pager, BAR_COLOR, TOOLTIP_STYLE, QueryState } from "./_shared";
 
 const PER_PAGE = 20;
 
@@ -36,11 +43,7 @@ export const ProvvedimentiView = () => {
   return (
     <div className="space-y-4">
       <SiproScopeBar value={scope} onChange={resetAndSet} />
-      {andamento.error ? (
-        <ErrorBox error={andamento.error} />
-      ) : andamento.isLoading ? (
-        <LoadingSpinner />
-      ) : (
+      <QueryState error={andamento.error} loading={andamento.isLoading}>{() => (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <KpiBox label="Provvedimenti totali" value={head?.provvedimenti_totali ?? 0} />
@@ -86,7 +89,7 @@ export const ProvvedimentiView = () => {
             </div>
           </div>
         </>
-      )}
+      )}</QueryState>
     </div>
   );
 };

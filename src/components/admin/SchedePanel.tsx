@@ -19,8 +19,8 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  ResponsiveContainer,
 } from "recharts";
+import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleChart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
@@ -52,7 +52,6 @@ export const SchedePanel = () => {
   const total = allSchede.length;
   const active = allSchede.filter((s) => isOn(s.flagKey)).length;
   const disabled = total - active;
-  const availableSections = SCHEDE_SECTIONS.filter((s) => s.available).length;
 
   const pieData = [
     { name: "Attive", value: active, color: COLOR_ON },
