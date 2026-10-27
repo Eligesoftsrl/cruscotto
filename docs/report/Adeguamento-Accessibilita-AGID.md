@@ -189,7 +189,6 @@ Il pulsante non compare nella stampa della pagina.
 | Ambito | Situazione attuale | Intervento previsto |
 |---|---|---|
 | Dichiarazione di Accessibilità | Bozza pronta; da compilare e pubblicare su form.agid.gov.it. | Fase 2 (committente) |
-| Voce «Metadati» del menu laterale | È un collegamento senza destinazione. | Da definire la pagina o rimuovere la voce |
 | Tabelle molto larghe | Su schermi stretti scorrono orizzontalmente al loro interno (comportamento ammesso dalle WCAG). | — |
 | Tema scuro | Non disponibile per gli utenti: i contrasti sono verificati sul tema chiaro, l'unico in uso. | Da verificare se verrà introdotto |
 | Lettori di schermo | Non ancora provati con utenti reali. | Verifiche specialistiche |

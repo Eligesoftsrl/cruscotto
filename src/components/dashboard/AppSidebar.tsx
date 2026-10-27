@@ -689,13 +689,6 @@ export const AppSidebar = ({
         className="px-5 py-2.5 text-xs border-t flex flex-wrap gap-x-2 gap-y-1"
         style={{ borderColor: "hsl(var(--sidebar-border))", color: "hsl(210 25% 64%)" }}
       >
-        <a
-          href="#"
-          className="hover:underline hover:text-white/70 transition-colors focus:outline-none focus:ring-1 focus:ring-white/40 focus:rounded-sm"
-        >
-          Metadati
-        </a>
-        <span>·</span>
         <GlossaryDialog />
         <span>·</span>
         <button
