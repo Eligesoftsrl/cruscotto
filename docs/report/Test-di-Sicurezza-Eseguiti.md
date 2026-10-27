@@ -13,7 +13,7 @@ Il dettaglio dei problemi trovati e degli interventi è nel documento
 
 | Area | Esito |
 |---|---|
-| Librerie con vulnerabilità note | ✅ **0 vulnerabilità** su 566 librerie (prodotto e strumenti di sviluppo) |
+| Librerie con vulnerabilità note | ✅ **0 vulnerabilità** su 563 librerie (prodotto e strumenti di sviluppo) |
 | Analisi statica del codice, regole SonarQube | ✅ **0 problemi di sicurezza** · 15 segnalazioni di leggibilità non bloccanti nel codice dimostrativo |
 | Analisi statica del codice, Semgrep (OWASP Top 10) | ✅ **0 risultati** |
 | Segreti nel codice e nello storico | ✅ **0 segreti** trovati |
@@ -97,7 +97,7 @@ ogni rilascio.
 | ID | Verifica | Esito |
 |---|---|---|
 | V-01 | Librerie con vulnerabilità note (prodotto) | ✅ 0 su 173 librerie |
-| V-02 | Librerie con vulnerabilità note (tutte, inclusi strumenti di sviluppo) | ✅ 0 su 566 librerie |
+| V-02 | Librerie con vulnerabilità note (tutte, inclusi strumenti di sviluppo) | ✅ 0 su 563 librerie |
 | V-03 | Regole di sicurezza SonarQube su tutto il codice | ✅ 0 |
 | V-04 | Semgrep: OWASP Top 10, JavaScript, TypeScript, React, Python, segreti | ✅ 0 risultati |
 | V-05 | Segreti nello storico del repository | ✅ 0 |

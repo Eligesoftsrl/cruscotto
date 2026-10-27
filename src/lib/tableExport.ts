@@ -1,7 +1,7 @@
 /**
  * Utility di esportazione dati tabellari in CSV, Excel (.xlsx) e PDF.
  *
- * Le librerie pesanti (xlsx, jspdf) sono caricate con import DINAMICO, così da
+ * Le librerie pesanti (xlsx, pdfkit) sono caricate con import DINAMICO, così da
  * non appesantire il bundle iniziale: vengono scaricate solo al primo export.
  *
  * Due modalità d'uso:
@@ -145,61 +145,30 @@ export async function exportExcel(tables: ExportTable[], filename: string) {
 }
 
 // ---------------------------------------------------------------------------
-// PDF — jsPDF + autotable (una tabella dopo l'altra)
+// PDF accessibile (PDF/UA «taggato») — PDFKit, caricato solo al primo export
 // ---------------------------------------------------------------------------
+async function loadFont(url: string): Promise<ArrayBuffer> {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Font non disponibile (${res.status})`);
+  return res.arrayBuffer();
+}
+
 export async function exportPDF(tables: ExportTable[], filename: string, docTitle?: string) {
-  const { default: jsPDF } = await import("jspdf");
-  const autoTable = (await import("jspdf-autotable")).default;
-
-  // Orientamento orizzontale se ci sono molte colonne.
-  const maxCols = Math.max(1, ...tables.map((t) => t.headers.length));
-  const doc = new jsPDF({ orientation: maxCols > 5 ? "landscape" : "portrait", unit: "pt", format: "a4" });
-  const marginX = 32;
-  let first = true;
-
-  // Accessibilità: metadati del documento (titolo mostrato dal lettore PDF, lingua italiana).
-  // NB: jsPDF non produce PDF «taggati»; per l'uso con lettori di schermo l'alternativa
-  // accessibile è l'esportazione Excel/CSV della stessa tabella (offerta nello stesso menu).
-  const title = docTitle || tables[0]?.title || filename;
-  doc.setProperties({
-    title,
-    subject: tables.map((t) => t.title).filter(Boolean).join(" · ") || title,
-    author: "Cruscotto HR",
-    creator: "Cruscotto HR",
-    keywords: "Cruscotto HR, esportazione dati",
+  const [{ buildAccessiblePdf }, pdfkit, regularUrl, boldUrl] = await Promise.all([
+    import("@/lib/accessiblePdf"),
+    import("pdfkit/js/pdfkit.standalone.js"),
+    import("@fontsource/titillium-web/files/titillium-web-latin-400-normal.woff?url"),
+    import("@fontsource/titillium-web/files/titillium-web-latin-700-normal.woff?url"),
+  ]);
+  const [regular, bold] = await Promise.all([loadFont(regularUrl.default), loadFont(boldUrl.default)]);
+  const PDFDocument = (pdfkit.default ?? pdfkit) as unknown as import("@/lib/accessiblePdf").PdfKitCtor;
+  const bytes = await buildAccessiblePdf({
+    title: docTitle || tables[0]?.title || filename,
+    tables,
+    fonts: { regular, bold },
+    PDFDocument,
   });
-  doc.setLanguage("it");
-  doc.viewerPreferences({ DisplayDocTitle: true });
-
-  tables.forEach((t) => {
-    let startY = 48;
-    if (!first) doc.addPage();
-    first = false;
-
-    if (docTitle) {
-      doc.setFontSize(13);
-      doc.setTextColor(17, 61, 110);
-      doc.text(docTitle, marginX, 32);
-    }
-    doc.setFontSize(10);
-    doc.setTextColor(60, 60, 60);
-    if (t.title && t.title !== docTitle) {
-      doc.text(t.title, marginX, docTitle ? 46 : 32);
-      startY = docTitle ? 58 : 44;
-    }
-
-    autoTable(doc, {
-      head: [t.headers],
-      body: t.rows.map((r) => r.map((c) => String(c ?? ""))),
-      startY,
-      margin: { left: marginX, right: marginX },
-      styles: { fontSize: 8, cellPadding: 3, overflow: "linebreak" },
-      headStyles: { fillColor: [17, 61, 110], textColor: 255, fontStyle: "bold" },
-      alternateRowStyles: { fillColor: [244, 247, 250] },
-    });
-  });
-
-  doc.save(`${sanitize(filename)}_${stamp()}.pdf`);
+  triggerDownload(new Blob([bytes as BlobPart], { type: "application/pdf" }), `${sanitize(filename)}_${stamp()}.pdf`);
 }
 
 // ---------------------------------------------------------------------------

@@ -15,18 +15,16 @@ applica a: **Cruscotto HR — [indirizzo del sito]**.
 
 ## Stato di conformità
 
-Il sito è **parzialmente conforme** ai requisiti previsti dall'allegato A alla norma
-UNI CEI EN 301549:2021 (criteri WCAG 2.1 di livello A e AA), in ragione dei casi di non
-conformità elencati di seguito.
+Il sito è **conforme** ai requisiti previsti dall'allegato A alla norma
+UNI CEI EN 301549:2021 (criteri WCAG 2.1 di livello A e AA).
+**[Da confermare dopo la verifica automatica su staging e le eventuali prove con lettori di schermo.]**
 
 ## Contenuti non accessibili
 
-**Non conformità**
+**Documenti esportati**
 
-- **Documenti PDF esportati**: i file PDF generati dal Cruscotto non sono strutturati
-  («taggati») per i lettori di schermo (EN 301549, cap. 10). *Alternativa*: per ogni
-  esportazione è disponibile la stessa tabella in formato Excel, accessibile; ogni grafico
-  offre la tabella dei dati («Visualizza in tabella») scaricabile in Excel.
+- I file **PDF** esportati sono accessibili (PDF/UA «taggati»: titolo, lingua italiana,
+  intestazioni di tabella, ordine di lettura); la stessa tabella è disponibile anche in Excel.
 
 **Contenuti non soggetti al perimetro del Cruscotto**
 

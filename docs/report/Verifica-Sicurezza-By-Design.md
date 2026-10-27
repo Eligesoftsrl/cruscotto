@@ -162,4 +162,4 @@ prima di ogni rilascio. Se un passo fallisce, il rilascio viene segnalato come n
 |---|---|
 | 1.0 | Prima verifica completa: SAST (regole SonarQube e Semgrep), librerie, segreti, codice pubblicato, esposizione dei dati, architettura, test di sicurezza. |
 | 1.1 | Riduzione delle segnalazioni di leggibilità SonarQube da 231 a 15 (sezione 4.1), senza modifiche visibili. |
-| 1.2 | Aggiornamento degli strumenti di sviluppo (SEC-13 risolto: 0 vulnerabilità su tutte le 566 librerie). Nuova esecuzione completa: SonarJS 0 problemi di sicurezza, Semgrep 0 risultati, Gitleaks 0 segreti, pacchetto pubblicato senza segreti, test di sicurezza superati. Restano solo gli interventi a cura del sistemista (SEC-01, SEC-05, SEC-12). |
+| 1.2 | Aggiornamento degli strumenti di sviluppo (SEC-13 risolto: 0 vulnerabilità su tutte le 563 librerie). Nuova esecuzione completa: SonarJS 0 problemi di sicurezza, Semgrep 0 risultati, Gitleaks 0 segreti, pacchetto pubblicato senza segreti, test di sicurezza superati. Restano solo gli interventi a cura del sistemista (SEC-01, SEC-05, SEC-12). |

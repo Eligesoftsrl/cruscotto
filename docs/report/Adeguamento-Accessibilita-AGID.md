@@ -100,7 +100,7 @@ Lavoro Pubblico, Pannello di Governo, Amministrazione, pagina di benvenuto e pag
 | **Dimensione dei pulsanti** | Tutti i pulsanti e i controlli rispettano la dimensione minima di 24×24 pixel o la distanza minima dagli altri controlli. | 2.5.8 Dimensione minima dell'obiettivo (WCAG 2.2) |
 | **Aiuto coerente** | Guida e Glossario sono sempre nella stessa posizione del menu. | 3.2.6 Aiuto coerente (WCAG 2.2) |
 | **Lingua dei termini inglesi** | Il termine «Executive» (titoli, menu, percorso) e l'etichetta «Mock-up» sono indicati come inglesi, così il lettore di schermo li pronuncia correttamente. I termini tecnici entrati nell'uso comune (es. benchmark, turnover, score, KPI) restano in italiano, come consentito dalle WCAG. | 3.1.2 Parti in lingua |
-| **File esportati** | I file Excel riportano titolo e autore; i PDF riportano titolo, argomento, autore e lingua italiana, e il lettore PDF mostra il titolo del documento. Nel menu di esportazione l'Excel è indicato come «accessibile» e il PDF come «per la stampa». | EN 301 549 cap. 10 (documenti) |
+| **File esportati** | I file Excel riportano titolo e autore; i PDF riportano titolo, argomento, autore e lingua italiana, e il lettore PDF mostra il titolo del documento. Nel menu di esportazione Excel e PDF sono entrambi indicati come «accessibile» (PDF/UA, vedi 3.4-bis). | EN 301 549 cap. 10 (documenti) |
 
 ### 3.4 Fase 3 · Tabelle dei grafici
 
@@ -118,6 +118,13 @@ Lavoro Pubblico, Pannello di Governo, Amministrazione, pagina di benvenuto e pag
 | **Testi più leggibili** | Il piè del menu laterale passa da 10 a 12 pixel; la nota della pagina di accesso non è più schiarita. | 1.4.3 Contrasto (minimo) |
 
 Il pulsante non compare nella stampa della pagina.
+
+### 3.4-bis PDF accessibili
+
+| Intervento | Cosa vede l'utente | Riferimento |
+|---|---|---|
+| **PDF «taggati» (PDF/UA)** | La voce «PDF · accessibile» del menu di esportazione produce un PDF che il lettore di schermo legge come documento strutturato: titolo e sottotitolo come intestazioni, tabella con intestazioni di colonna (e di riga, quando la prima colonna contiene etichette), ordine di lettura corretto anche su più pagine. Lingua italiana, titolo del documento mostrato dal lettore PDF, font del Cruscotto incorporato. Aspetto invariato rispetto a prima. | EN 301 549 cap. 10 · ISO 14289 (PDF/UA) · WCAG 1.3.1, 2.4.2, 3.1.1 |
+| **Verifica automatica** | Ogni PDF di prova è controllato con i test automatici e con lo script `scripts/a11y/check_pdfua.py` (struttura, lingua, titolo, font incorporati, contenuto marcato, identificativo PDF/UA). | — |
 
 ### 3.5 Fase 2 · Predisposizione degli adempimenti
 
@@ -184,7 +191,6 @@ Il pulsante non compare nella stampa della pagina.
 | Dichiarazione di Accessibilità | Bozza pronta; da compilare e pubblicare su form.agid.gov.it. | Fase 2 (committente) |
 | Voce «Metadati» del menu laterale | È un collegamento senza destinazione. | Da definire la pagina o rimuovere la voce |
 | Tabelle molto larghe | Su schermi stretti scorrono orizzontalmente al loro interno (comportamento ammesso dalle WCAG). | — |
-| PDF esportati | I PDF prodotti dal Cruscotto non sono «taggati» (struttura per i lettori di schermo). Per ogni esportazione è disponibile la versione Excel della stessa tabella, accessibile. | Valutazione di un generatore di PDF taggati |
 | Tema scuro | Non disponibile per gli utenti: i contrasti sono verificati sul tema chiaro, l'unico in uso. | Da verificare se verrà introdotto |
 | Lettori di schermo | Non ancora provati con utenti reali. | Verifiche specialistiche |
 | Pagina di accesso Keycloak | Fuori dal perimetro del Cruscotto. | A cura del gestore di Keycloak |
@@ -199,3 +205,4 @@ Il pulsante non compare nella stampa della pagina.
 | 1.1 | Ottobre 2026 | Fase 1-bis completata (criteri WCAG 2.2, sessione, spaziatura, movimento, file esportati, controllo automatico permanente); aggiunte verifiche specialistiche e adempimenti ricorrenti. |
 | 1.2 | Ottobre 2026 | Fase 3: pulsante «Visualizza in tabella» con tabella dei dati su tutti i grafici; testi nascosti dei componenti in italiano. |
 | 1.3 | Ottobre 2026 | Fase 3 completata (Excel dalla tabella dei grafici, contrasto 3:1 dei colori dei dati); Fase 2 predisposta (bozza della dichiarazione, link configurabili). |
+| 1.4 | Ottobre 2026 | PDF esportati accessibili (PDF/UA taggati) al posto dei PDF non strutturati. |

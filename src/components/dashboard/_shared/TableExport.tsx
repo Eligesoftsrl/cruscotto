@@ -35,7 +35,7 @@ interface TableExportProps {
 const FORMATS: { key: ExportFormat; label: string; icon: typeof FileText }[] = [
   { key: "csv", label: "CSV", icon: FileText },
   { key: "xlsx", label: "Excel (.xlsx) · accessibile", icon: FileSpreadsheet },
-  { key: "pdf", label: "PDF · per la stampa", icon: FileType },
+  { key: "pdf", label: "PDF · accessibile", icon: FileType },
 ];
 
 /**
@@ -47,7 +47,7 @@ const FORMATS: { key: ExportFormat; label: string; icon: typeof FileText }[] = [
  *  3. AUTO        → risale il DOM dal proprio nodo fino al primo contenitore
  *                   che contiene una <table> (nessun ref richiesto nel chiamante).
  *
- * Usa un import dinamico per le librerie pesanti (xlsx, jspdf).
+ * Usa un import dinamico per le librerie pesanti (xlsx, pdfkit).
  */
 export function TableExport({
   filename,
