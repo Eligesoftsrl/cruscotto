@@ -23,7 +23,7 @@ import {
 
 const COLORS = [
   "hsl(210,80%,45%)",
-  "hsl(30,85%,55%)",
+  "hsl(30,85%,47%)",
   "hsl(150,60%,40%)",
   "hsl(340,70%,55%)",
   "hsl(260,50%,55%)",
@@ -164,7 +164,7 @@ export const InpaCategorieSection = () => {
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="posti" name="Posti" fill="hsl(210,80%,45%)" />
-                <Bar dataKey="candidature" name="Candidature" fill="hsl(30,85%,55%)" />
+                <Bar dataKey="candidature" name="Candidature" fill="hsl(30,85%,47%)" />
               </BarChart>
             </ResponsiveContainer>
           </div>

@@ -189,7 +189,7 @@ export const MinervaCompetenzeSection = () => {
               <XAxis type="number" tick={{ fontSize: 10 }} />
               <YAxis type="category" dataKey="name" tick={{ fontSize: 9 }} width={120} />
               <Tooltip />
-              <Bar dataKey="count" name="Competenze" fill="hsl(30,85%,55%)" radius={[0, 4, 4, 0]} />
+              <Bar dataKey="count" name="Competenze" fill="hsl(30,85%,47%)" radius={[0, 4, 4, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

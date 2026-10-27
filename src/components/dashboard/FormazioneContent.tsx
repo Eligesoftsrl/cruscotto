@@ -29,7 +29,7 @@ const n1 = (v: number | null | undefined) =>
   v == null ? "N/D" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
 const signed = (v: number | null | undefined) =>
   v == null ? "N/D" : fmtSigned(v, n1);
-const TEAL = "hsl(175,55%,42%)";
+const TEAL = "hsl(175,55%,41%)";
 const BLUE = "hsl(215,70%,50%)";
 
 const Kpi = ({

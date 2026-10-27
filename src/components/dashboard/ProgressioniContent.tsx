@@ -23,8 +23,8 @@ import { loadingOr } from "@/lib/conditional";
 
 const nf = new Intl.NumberFormat("it-IT");
 const VERT = "hsl(215,70%,50%)";
-const ORIZZ = "hsl(175,55%,42%)";
-const TOT = "hsl(25,85%,55%)";
+const ORIZZ = "hsl(175,55%,41%)";
+const TOT = "hsl(25,85%,50%)";
 
 const Kpi = ({ titolo, valore, accent }: { titolo: string; valore: string; accent: string }) => (
   <div

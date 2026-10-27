@@ -59,8 +59,8 @@ const Kpi = ({
 /* Palette per le 5 fasce di anzianita (area chart impilato al 100%). */
 const FASCIA_COLORS = [
   "hsl(220,60%,50%)",
-  "hsl(25,85%,55%)",
-  "hsl(175,55%,42%)",
+  "hsl(25,85%,50%)",
+  "hsl(175,55%,41%)",
   "hsl(280,45%,55%)",
   "hsl(0,70%,50%)",
 ];
@@ -177,7 +177,7 @@ export const AnzianitaContent = () => {
           valore={k ? nf.format(k.personale) : "\u2014"}
         />
         <Kpi
-          accent="hsl(25,85%,55%)"
+          accent="hsl(25,85%,50%)"
           titolo="Fascia prevalente"
           valore={k?.fascia_prevalente ?? "\u2014"}
         />
@@ -221,7 +221,7 @@ export const AnzianitaContent = () => {
               />
               <Bar
                 dataKey="donne"
-                fill="hsl(25,85%,55%)"
+                fill="hsl(25,85%,50%)"
                 fillOpacity={opDonne}
                 radius={[3, 3, 0, 0]}
               />

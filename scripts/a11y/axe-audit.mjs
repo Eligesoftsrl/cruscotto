@@ -3,7 +3,7 @@
  * Controllo automatico di accessibilità del Cruscotto HR (WCAG 2.1 / 2.2 A e AA).
  *
  * Cosa verifica, per ogni pagina e per due profili (DFP e responsabile HR di ente):
- *  1. regole axe-core WCAG 2.0/2.1/2.2 A+AA (grafici esclusi: fase dedicata);
+ *  1. regole axe-core WCAG 2.0/2.1/2.2 A+AA (interno SVG dei grafici escluso: ogni grafico è descritto da role="img" + tabella dati, verificati);
  *  2. riflusso a 320 px (nessuno scorrimento orizzontale della pagina) — WCAG 1.4.10;
  *  3. spaziatura del testo (interlinea 1,5 ecc.): nessun testo tagliato — WCAG 1.4.12;
  *  4. focus non coperto: navigando con Tab, l'elemento selezionato non è nascosto

@@ -16,12 +16,12 @@ import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleCh
 
 const COLORS = [
   "hsl(210,80%,45%)",
-  "hsl(30,85%,55%)",
+  "hsl(30,85%,47%)",
   "hsl(150,60%,40%)",
   "hsl(340,70%,55%)",
   "hsl(260,50%,55%)",
   "hsl(180,60%,40%)",
-  "hsl(45,80%,50%)",
+  "hsl(45,80%,39%)",
   "hsl(300,50%,55%)",
 ];
 
@@ -159,7 +159,7 @@ export const InpaFigureRicercateSection = () => {
                   <YAxis type="category" dataKey="name" tick={{ fontSize: 10 }} width={130} />
                   <Tooltip />
                   <Bar dataKey="posti" name="Posti" fill="hsl(210,80%,45%)" />
-                  <Bar dataKey="candidature" name="Candidature" fill="hsl(30,85%,55%)" />
+                  <Bar dataKey="candidature" name="Candidature" fill="hsl(30,85%,47%)" />
                 </BarChart>
               </ResponsiveContainer>
             </div>

@@ -149,7 +149,7 @@ export const AnalisiEtaContent = () => {
           valore={p ? nf.format(p.personale) : "N/D"}
           delta={p?.personale_var_prec_pct != null ? signPP(p.personale_var_prec_pct, "%") : undefined}
           riga2={p ? { l: `Min ${nf.format(p.personale_min_storico ?? 0)}`, r: `Max ${nf.format(p.personale_max_storico ?? 0)}` } : undefined} />
-        <Kpi accent="hsl(25,85%,55%)" titolo="Età media" valore={n1(e?.eta_media)} unita="anni"
+        <Kpi accent="hsl(25,85%,50%)" titolo="Età media" valore={n1(e?.eta_media)} unita="anni"
           delta={e?.eta_var_prec != null ? signPP(e.eta_var_prec, "aa") : undefined}
           riga2={e ? { l: `Cluster ${n1(e.eta_cluster)}`, r: `PA ${n1(e.eta_pa)}` } : undefined} />
         <Kpi accent="hsl(0,70%,50%)" titolo="Quota over 55" valore={n1(e?.over_55)} unita="%"
@@ -175,7 +175,7 @@ export const AnalisiEtaContent = () => {
               <Tooltip formatter={(v: number, name) => [nf.format(Math.abs(Number(v))), name === "uomini_grafico" ? "Uomini" : "Donne"]} />
               <Legend formatter={(v) => (v === "uomini_grafico" ? "Uomini" : "Donne")} />
               <Bar dataKey="uomini_grafico" fill="hsl(220,60%,50%)" stackId="s" radius={[3, 0, 0, 3]} />
-              <Bar dataKey="donne" fill="hsl(25,85%,55%)" stackId="s" radius={[0, 3, 3, 0]} />
+              <Bar dataKey="donne" fill="hsl(25,85%,50%)" stackId="s" radius={[0, 3, 3, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -200,8 +200,8 @@ export const AnalisiEtaContent = () => {
               <Tooltip formatter={(v: number) => n1(Number(v))} />
               <Legend />
               <Line type="monotone" dataKey="eta_selezione" name="Questa selezione" stroke="hsl(220,60%,50%)" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="eta_cluster" name="Cluster" stroke="hsl(25,85%,55%)" strokeDasharray="5 4" dot={false} />
-              <Line type="monotone" dataKey="eta_pa" name="Totale PA" stroke="hsl(220,10%,60%)" dot={false} />
+              <Line type="monotone" dataKey="eta_cluster" name="Cluster" stroke="hsl(25,85%,50%)" strokeDasharray="5 4" dot={false} />
+              <Line type="monotone" dataKey="eta_pa" name="Totale PA" stroke="hsl(220,10%,58%)" dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </div>

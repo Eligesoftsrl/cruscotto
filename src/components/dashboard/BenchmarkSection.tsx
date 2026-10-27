@@ -97,7 +97,7 @@ export const BenchmarkSection = () => {
           />
           <Bar
             dataKey="benchmark"
-            fill="hsl(220,15%,75%)"
+            fill="hsl(220,15%,59%)"
             radius={[3, 3, 0, 0]}
             name={viewMode === "cluster" ? "Cluster" : "Complesso PA"}
           />
@@ -194,7 +194,7 @@ export const BenchmarkSection = () => {
         <span className="flex items-center gap-1.5">
           <span
             className="inline-block h-2.5 w-2.5 rounded-sm"
-            style={{ backgroundColor: "hsl(220,15%,75%)" }}
+            style={{ backgroundColor: "hsl(220,15%,59%)" }}
           />
           {viewMode === "cluster" ? "Cluster di appartenenza" : "Complesso PA"}
         </span>

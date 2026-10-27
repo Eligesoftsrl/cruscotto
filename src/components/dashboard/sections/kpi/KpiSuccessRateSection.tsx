@@ -95,8 +95,8 @@ export const KpiSuccessRateSection = () => {
                 <Radar
                   name="Target"
                   dataKey="target"
-                  stroke="hsl(210,15%,60%)"
-                  fill="hsl(210,15%,60%)"
+                  stroke="hsl(210,15%,57%)"
+                  fill="hsl(210,15%,57%)"
                   fillOpacity={0.05}
                   strokeDasharray="5 5"
                 />
@@ -117,8 +117,8 @@ export const KpiSuccessRateSection = () => {
                 <Radar
                   name="SR Successo"
                   dataKey="SR Successo"
-                  stroke="hsl(30,85%,55%)"
-                  fill="hsl(30,85%,55%)"
+                  stroke="hsl(30,85%,47%)"
+                  fill="hsl(30,85%,47%)"
                   fillOpacity={0.15}
                 />
                 <Tooltip />

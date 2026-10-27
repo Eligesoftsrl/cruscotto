@@ -723,7 +723,7 @@ export function SectionRenderer({
               style={{
                 borderTopWidth: "3px",
                 borderTopColor:
-                  pickByKey(kpi.status, { green: "hsl(142,71%,35%)", yellow: "hsl(45,100%,42%)" }, "hsl(var(--destructive))"),
+                  pickByKey(kpi.status, { green: "hsl(142,71%,35%)", yellow: "hsl(45,100%,36%)" }, "hsl(var(--destructive))"),
               }}
             >
               <div className="text-[10px] font-bold tracking-[.08em] uppercase text-muted-foreground mb-1">
@@ -871,7 +871,7 @@ export function SectionRenderer({
                     style={{
                       width: `${barW}%`,
                       backgroundColor:
-                        pickByKey(kpi.status, { green: "hsl(142,71%,35%)", yellow: "hsl(45,100%,42%)" }, "hsl(var(--destructive))"),
+                        pickByKey(kpi.status, { green: "hsl(142,71%,35%)", yellow: "hsl(45,100%,36%)" }, "hsl(var(--destructive))"),
                     }}
                   />
                 </div>

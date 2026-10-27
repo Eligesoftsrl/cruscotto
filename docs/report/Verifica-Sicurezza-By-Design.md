@@ -60,7 +60,7 @@
 | **SEC-10** | 🔵 Bassa | Esportazioni | La protezione contro le formule malevole nei CSV alterava anche i numeri negativi. | Protezione mantenuta, numeri preservati; test automatici. | ✅ Risolto |
 | **SEC-11** | 🔵 Bassa | Documentazione | La chiave pubblica della base dati era riportata in un documento interno. Non è un segreto, ma non va diffusa. | Rimossa; lo storico è registrato come eccezione nota. | ✅ Risolto |
 | **SEC-12** | ⚪ Informativa | Server web | La configurazione del server web non prevedeva le intestazioni di sicurezza (CSP, HSTS, protezione dall'incorporamento in altri siti). | Consegnata la configurazione `apache-security-headers.conf`. Si consiglia di attivare la CSP prima in sola segnalazione. | ⏳ A cura del sistemista |
-| **SEC-13** | ⚪ Informativa | Strumenti di sviluppo | Vulnerabilità negli strumenti usati solo in sviluppo (server di sviluppo e strumenti di test). Non sono presenti nel prodotto pubblicato. | Aggiornamento pianificato con il prossimo adeguamento degli strumenti. | 📅 Pianificato |
+| **SEC-13** | ⚪ Informativa | Strumenti di sviluppo | Vulnerabilità negli strumenti usati solo in sviluppo (server di sviluppo e strumenti di test). Non sono presenti nel prodotto pubblicato. | Aggiornati Vite 7.3.7, Vitest 4.1.12 e il plugin React; versione sicura forzata di `postcss-selector-parser`. | ✅ Risolto — 0 vulnerabilità anche negli strumenti di sviluppo |
 
 ---
 
@@ -162,3 +162,4 @@ prima di ogni rilascio. Se un passo fallisce, il rilascio viene segnalato come n
 |---|---|
 | 1.0 | Prima verifica completa: SAST (regole SonarQube e Semgrep), librerie, segreti, codice pubblicato, esposizione dei dati, architettura, test di sicurezza. |
 | 1.1 | Riduzione delle segnalazioni di leggibilità SonarQube da 231 a 15 (sezione 4.1), senza modifiche visibili. |
+| 1.2 | Aggiornamento degli strumenti di sviluppo (SEC-13 risolto: 0 vulnerabilità su tutte le 566 librerie). Nuova esecuzione completa: SonarJS 0 problemi di sicurezza, Semgrep 0 risultati, Gitleaks 0 segreti, pacchetto pubblicato senza segreti, test di sicurezza superati. Restano solo gli interventi a cura del sistemista (SEC-01, SEC-05, SEC-12). |

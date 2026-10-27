@@ -112,8 +112,8 @@ export const InpaGraduatorieSection = () => {
               <YAxis tick={{ fontSize: 11 }} />
               <Tooltip />
               <Legend />
-              <Bar dataKey="posti" name="Posti" fill="hsl(210,15%,70%)" />
-              <Bar dataKey="idonei" name="Idonei" fill="hsl(30,85%,55%)" />
+              <Bar dataKey="posti" name="Posti" fill="hsl(210,15%,57%)" />
+              <Bar dataKey="idonei" name="Idonei" fill="hsl(30,85%,47%)" />
               <Bar dataKey="assunti" name="Assunti" fill="hsl(150,60%,40%)" />
             </BarChart>
           </ResponsiveContainer>

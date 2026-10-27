@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { isKeycloakEnabled } from "@/auth/keycloak";
 import { Unauthorized } from "@/components/Unauthorized";
 import { Building2, Shield, Loader2, ChevronDown, LogIn } from "lucide-react";
+import { AccessibilityLinks } from "@/components/AccessibilityLinks";
 
 interface Ente {
   ente_id: number;
@@ -123,9 +124,10 @@ const Login = () => {
             </button>
           </div>
 
-          <p className="mt-10 text-[12px] text-muted-foreground/70">
+          <p className="mt-10 text-[12px] text-muted-foreground">
             Autenticazione gestita tramite Identity Provider (Keycloak)
           </p>
+          <AccessibilityLinks className="mt-2 block text-[12px] text-muted-foreground" />
         </div>
       </div>
     );

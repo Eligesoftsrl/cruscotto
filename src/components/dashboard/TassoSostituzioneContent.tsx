@@ -140,7 +140,7 @@ export const TassoSostituzioneContent = () => {
           valore={n1(k?.sostituzione_pct)}
         />
         <Kpi
-          accent="hsl(175,55%,42%)"
+          accent="hsl(175,55%,41%)"
           titolo="Media periodo"
           unita="%"
           valore={n1(k?.media_periodo_pct)}
@@ -153,7 +153,7 @@ export const TassoSostituzioneContent = () => {
           }
         />
         <Kpi
-          accent="hsl(25,85%,55%)"
+          accent="hsl(25,85%,50%)"
           titolo="Variazione vs anno prec."
           unita="pp"
           valore={k?.sostituzione_var_prec_pp == null ? "N/D" : signed(k.sostituzione_var_prec_pp)}
@@ -186,8 +186,8 @@ export const TassoSostituzioneContent = () => {
           <AreaChart data={evoRows} margin={{ left: 0, right: 10 }}>
             <defs>
               <linearGradient id="gradAss" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="hsl(175,55%,42%)" stopOpacity={0.5} />
-                <stop offset="95%" stopColor="hsl(175,55%,42%)" stopOpacity={0.05} />
+                <stop offset="5%" stopColor="hsl(175,55%,41%)" stopOpacity={0.5} />
+                <stop offset="95%" stopColor="hsl(175,55%,41%)" stopOpacity={0.05} />
               </linearGradient>
               <linearGradient id="gradCess" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="hsl(0,70%,50%)" stopOpacity={0.5} />
@@ -203,7 +203,7 @@ export const TassoSostituzioneContent = () => {
               type="monotone"
               dataKey="assunti"
               name="Assunti"
-              stroke="hsl(175,55%,42%)"
+              stroke="hsl(175,55%,41%)"
               strokeWidth={2}
               fill="url(#gradAss)"
             />

@@ -27,6 +27,7 @@ import { useAdminState } from "@/services/admin/adminStore";
 import { CA_INDICATOR_FLAG, KPI_INDICATOR_FLAG, SIPRO_INDICATOR_FLAG } from "@/config/schedeFlags";
 import { EXEC_FLAG_BY_SIDEBAR } from "@/config/execIndiciCatalog";
 import { affix } from "@/lib/conditional";
+import { AccessibilityLinks } from "@/components/AccessibilityLinks";
 
 /* ── NavState ── */
 export interface NavState {
@@ -685,7 +686,7 @@ export const AppSidebar = ({
         </div>
       )}
       <div
-        className="px-5 py-2.5 text-[10px] border-t flex gap-2"
+        className="px-5 py-2.5 text-xs border-t flex flex-wrap gap-x-2 gap-y-1"
         style={{ borderColor: "hsl(var(--sidebar-border))", color: "hsl(210 25% 64%)" }}
       >
         <a
@@ -704,6 +705,10 @@ export const AppSidebar = ({
           <HelpCircle className="h-3 w-3" aria-hidden="true" />
           Guida
         </button>
+        <AccessibilityLinks
+          className="basis-full"
+          linkClassName="underline hover:text-white/70 transition-colors focus:outline-none focus:ring-1 focus:ring-white/40 focus:rounded-sm"
+        />
       </div>
     </nav>
   );

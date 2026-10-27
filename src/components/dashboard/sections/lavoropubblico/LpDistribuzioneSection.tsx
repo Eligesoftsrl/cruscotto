@@ -17,7 +17,7 @@ import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleCh
 
 const COLORS = [
   "hsl(210,80%,45%)",
-  "hsl(30,85%,55%)",
+  "hsl(30,85%,47%)",
   "hsl(150,60%,40%)",
   "hsl(340,70%,55%)",
   "hsl(260,50%,55%)",

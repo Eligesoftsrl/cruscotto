@@ -133,7 +133,7 @@ export const SyllabusAssessmentSection = () => {
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="completati" name="Completati" stackId="a" fill="hsl(150,60%,40%)" />
-                <Bar dataKey="inCorso" name="In Corso" stackId="a" fill="hsl(30,85%,55%)" />
+                <Bar dataKey="inCorso" name="In Corso" stackId="a" fill="hsl(30,85%,47%)" />
               </BarChart>
             </ResponsiveContainer>
           </div>

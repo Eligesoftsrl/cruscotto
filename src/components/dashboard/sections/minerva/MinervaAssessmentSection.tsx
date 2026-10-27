@@ -20,7 +20,7 @@ import { ResponsiveContainer } from "@/components/dashboard/_shared/AccessibleCh
 import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 import { Badge } from "@/components/ui/badge";
 
-const COLORS = ["hsl(150,60%,40%)", "hsl(30,85%,55%)", "hsl(210,80%,45%)", "hsl(0,70%,55%)"];
+const COLORS = ["hsl(150,60%,40%)", "hsl(30,85%,47%)", "hsl(210,80%,45%)", "hsl(0,70%,55%)"];
 
 export const MinervaAssessmentSection = () => {
   const { data: enteIds } = useFilteredEnteIds();
@@ -234,7 +234,7 @@ export const MinervaAssessmentSection = () => {
               <Bar
                 dataKey="gapMedio"
                 name="Gap Medio"
-                fill="hsl(30,85%,55%)"
+                fill="hsl(30,85%,47%)"
                 radius={[0, 4, 4, 0]}
               />
             </BarChart>

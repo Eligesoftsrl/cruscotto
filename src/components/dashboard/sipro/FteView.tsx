@@ -18,7 +18,7 @@ import { LoadingSpinner, KpiBox, Pager, TOOLTIP_STYLE, QueryState } from "./_sha
 
 const PER_PAGE = 20;
 const COLOR_PROGR = "hsl(210, 64%, 45%)";
-const COLOR_ASSEG = "hsl(175, 55%, 42%)";
+const COLOR_ASSEG = "hsl(175, 55%, 41%)";
 const fmt = (n: number | null | undefined) =>
   (typeof n === "number" && Number.isFinite(n) ? n : 0).toLocaleString("it-IT", { maximumFractionDigits: 2 });
 

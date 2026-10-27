@@ -12,7 +12,7 @@
  */
 import { useEffect, useMemo, useRef, useState, type ComponentProps } from "react";
 import { ResponsiveContainer as RechartsResponsiveContainer } from "recharts";
-import { Table2 } from "lucide-react";
+import { FileSpreadsheet, Loader2, Table2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -22,6 +22,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { extractChartTable, type ChartTable } from "@/lib/a11y/chartTable";
+import { announce } from "@/lib/a11y/announcer";
 
 type RechartsProps = ComponentProps<typeof RechartsResponsiveContainer>;
 
@@ -93,6 +94,52 @@ export const ChartDataTable = ({ table, title }: { table: ChartTable; title: str
   </div>
 );
 
+/** Nome file sicuro a partire dal titolo del grafico. */
+const fileNameFor = (title: string) =>
+  `grafico_${
+    title
+      .normalize("NFD")
+      .replace(/[^a-zA-Z0-9]+/g, " ")
+      .trim()
+      .split(" ")
+      .join("_")
+      .toLowerCase() || "dati"
+  }`;
+
+/** Scarica la tabella del grafico in Excel (file con titolo e intestazioni, leggibile dai lettori di schermo). */
+const ExcelDownloadButton = ({ table, title }: { table: ChartTable; title: string }) => {
+  const [busy, setBusy] = useState(false);
+  const download = async () => {
+    setBusy(true);
+    try {
+      const { exportTables } = await import("@/lib/tableExport");
+      await exportTables("xlsx", [{ title, headers: table.columns, rows: table.raw }], fileNameFor(title), title);
+      announce("File Excel scaricato");
+    } catch {
+      announce("Download del file Excel non riuscito");
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <button
+      type="button"
+      onClick={download}
+      disabled={busy}
+      aria-busy={busy}
+      data-testid="chart-table-excel"
+      className="inline-flex items-center gap-1.5 rounded-md border bg-card px-3 py-1.5 text-sm font-medium text-primary hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
+    >
+      {busy ? (
+        <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
+      ) : (
+        <FileSpreadsheet aria-hidden="true" className="h-4 w-4" />
+      )}
+      Scarica in Excel
+    </button>
+  );
+};
+
 const ChartTableButton = ({ table, title }: { table: ChartTable; title: string }) => (
   <Dialog>
     <DialogTrigger asChild>
@@ -114,6 +161,9 @@ const ChartTableButton = ({ table, title }: { table: ChartTable; title: string }
         </DialogDescription>
       </DialogHeader>
       <ChartDataTable table={table} title={title} />
+      <div className="flex justify-end">
+        <ExcelDownloadButton table={table} title={title} />
+      </div>
     </DialogContent>
   </Dialog>
 );

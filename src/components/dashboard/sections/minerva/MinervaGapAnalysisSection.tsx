@@ -103,7 +103,7 @@ export const MinervaGapAnalysisSection = () => {
               <Bar
                 dataKey="gapMedio"
                 name="Gap Medio"
-                fill="hsl(30,85%,55%)"
+                fill="hsl(30,85%,47%)"
                 radius={[0, 4, 4, 0]}
               />
               <Bar

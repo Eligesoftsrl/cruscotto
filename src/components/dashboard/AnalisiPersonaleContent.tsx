@@ -34,8 +34,8 @@ const signed = (v: number | null | undefined) =>
   v == null ? "N/D" : fmtSigned(v, n1);
 const PALETTE = [
   "hsl(215,70%,50%)",
-  "hsl(175,55%,42%)",
-  "hsl(25,85%,55%)",
+  "hsl(175,55%,41%)",
+  "hsl(25,85%,50%)",
   "hsl(330,65%,55%)",
   "hsl(260,55%,55%)",
   "hsl(160,60%,40%)",
@@ -170,12 +170,12 @@ export const AnalisiPersonaleContent = () => {
           valore={loadingOr(loading, k?.personale, nf.format)}
         />
         <Kpi
-          accent="hsl(25,85%,55%)"
+          accent="hsl(25,85%,50%)"
           titolo="Dirigenti"
           valore={loadingOr(loading, k?.dirigenti, nf.format)}
         />
         <Kpi
-          accent="hsl(175,55%,42%)"
+          accent="hsl(175,55%,41%)"
           titolo="Non dirigenti"
           valore={loadingOr(loading, k?.non_dirigenti, nf.format)}
         />

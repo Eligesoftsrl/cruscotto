@@ -2,11 +2,11 @@ import type { ReactNode } from "react";
 import { Loader2 } from "lucide-react";
 
 export const PIE_COLORS = [
-  "hsl(210, 64%, 30%)", "hsl(330, 55%, 55%)", "hsl(40, 90%, 55%)",
-  "hsl(120, 45%, 45%)", "hsl(210, 64%, 50%)", "hsl(175, 60%, 50%)",
+  "hsl(210, 64%, 30%)", "hsl(330, 55%, 55%)", "hsl(40, 90%, 40%)",
+  "hsl(120, 45%, 45%)", "hsl(210, 64%, 50%)", "hsl(175, 60%, 40%)",
   "hsl(0, 60%, 55%)", "hsl(270, 50%, 55%)",
 ];
-export const BAR_COLOR = "hsl(175, 60%, 50%)";
+export const BAR_COLOR = "hsl(175, 60%, 40%)";
 export const TOOLTIP_STYLE = {
   background: "hsl(var(--card))",
   border: "1px solid hsl(var(--border))",

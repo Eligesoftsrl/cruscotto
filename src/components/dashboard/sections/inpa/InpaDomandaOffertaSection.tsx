@@ -112,7 +112,7 @@ export const InpaDomandaOffertaSection = () => {
                     key={i}
                     fill={pickFirst(
                       [
-                        [entry.diffPct > 50, "hsl(30,85%,55%)"],
+                        [entry.diffPct > 50, "hsl(30,85%,47%)"],
                         [entry.diffPct < -100, "hsl(0,70%,55%)"],
                       ],
                       "hsl(210,80%,45%)",
@@ -135,7 +135,7 @@ export const InpaDomandaOffertaSection = () => {
               <YAxis tick={{ fontSize: 11 }} />
               <Tooltip />
               <Legend />
-              <Bar dataKey="posti" name="Posti Disponibili" fill="hsl(210,15%,70%)" />
+              <Bar dataKey="posti" name="Posti Disponibili" fill="hsl(210,15%,57%)" />
               <Bar dataKey="candidature" name="Candidature" fill="hsl(210,80%,45%)" />
             </BarChart>
           </ResponsiveContainer>

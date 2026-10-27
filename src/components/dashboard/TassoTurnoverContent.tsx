@@ -141,14 +141,14 @@ export const TassoTurnoverContent = () => {
       {/* KPI */}
       <div className="flex flex-wrap gap-4">
         <Kpi
-          accent="hsl(25,85%,55%)"
+          accent="hsl(25,85%,50%)"
           titolo="Tasso turnover"
           unita="%"
           valore={n1(k?.turnover_pct)}
           delta={deltaPP(k?.turnover_var_prec_pp)}
         />
         <Kpi accent="hsl(0,70%,50%)" titolo="Cessati" valore={k ? nf.format(k.cessati) : "N/D"} />
-        <Kpi accent="hsl(175,55%,42%)" titolo="Assunti" valore={k ? nf.format(k.assunti) : "N/D"} />
+        <Kpi accent="hsl(175,55%,41%)" titolo="Assunti" valore={k ? nf.format(k.assunti) : "N/D"} />
         <Kpi accent={saldoAccent} titolo="Saldo netto" valore={signed(k?.saldo)} />
       </div>
 
@@ -183,7 +183,7 @@ export const TassoTurnoverContent = () => {
               yAxisId="left"
               dataKey="assunti"
               name="Assunti"
-              fill="hsl(175,55%,42%)"
+              fill="hsl(175,55%,41%)"
               radius={[3, 3, 0, 0]}
             />
             <Bar
@@ -198,7 +198,7 @@ export const TassoTurnoverContent = () => {
               type="monotone"
               dataKey="turnover_pct"
               name="Tasso turnover"
-              stroke="hsl(25,85%,55%)"
+              stroke="hsl(25,85%,50%)"
               strokeWidth={2}
               dot={{ r: 3 }}
             />
@@ -215,7 +215,7 @@ export const TassoTurnoverContent = () => {
             <XAxis dataKey="anno" tick={{ fontSize: 10 }} />
             <YAxis tick={{ fontSize: 10 }} tickFormatter={(v: number) => nf.format(v)} />
             <Tooltip formatter={(v: number) => [nf.format(Number(v)), "Saldo cumulato"]} />
-            <ReferenceLine y={0} stroke="hsl(220,10%,60%)" />
+            <ReferenceLine y={0} stroke="hsl(220,10%,58%)" />
             <Bar
               dataKey="saldo_cumulato"
               name="Saldo cumulato"

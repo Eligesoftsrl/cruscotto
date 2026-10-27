@@ -11,8 +11,21 @@ import { Area, Bar, Line, Pie, PolarAngleAxis, Radar, Scatter, XAxis, YAxis } fr
 export interface ChartTable {
   /** Intestazioni di colonna (la prima è l'intestazione delle righe). */
   columns: string[];
-  /** Righe: la prima cella è l'intestazione di riga. */
+  /** Righe formattate per la lettura: la prima cella è l'intestazione di riga. */
   rows: string[][];
+  /** Stesse righe con i numeri non formattati (per l'esportazione in Excel). */
+  raw: (string | number)[][];
+}
+
+/** Valore per l'esportazione: numeri come numeri, il resto come testo formattato. */
+export function rawCell(v: unknown): string | number {
+  return typeof v === "number" && Number.isFinite(v) ? v : formatCell(v);
+}
+
+/** Costruisce la tabella a partire dalle righe grezze. */
+function build(columns: string[], raw: (string | number)[][]): ChartTable | null {
+  if (!raw.length) return null;
+  return { columns, raw, rows: raw.map((r) => r.map(formatCell)) };
 }
 
 type AnyProps = Record<string, unknown>;
@@ -62,7 +75,7 @@ function axisLabel(axis: El | undefined, fallback: string): string {
 
 function pieTable(pies: El[]): ChartTable | null {
   const multi = pies.length > 1;
-  const rows: string[][] = [];
+  const raw: (string | number)[][] = [];
   for (const pie of pies) {
     const data = (pie.props.data as Row[] | undefined) ?? [];
     const nameKey = asString(pie.props.nameKey) ?? "name";
@@ -72,27 +85,26 @@ function pieTable(pies: El[]): ChartTable | null {
       const value = Number(getValue(d, dataKey)) || 0;
       const pct = total ? `${formatCell(Math.round((value / total) * 1000) / 10)}%` : "—";
       const head = formatCell(getValue(d, nameKey));
-      const cells = [formatCell(getValue(d, dataKey)), pct];
-      rows.push(multi ? [`${asString(pie.props.name) ?? "Serie"} · ${head}`, ...cells] : [head, ...cells]);
+      const cells = [rawCell(getValue(d, dataKey)), pct];
+      raw.push(multi ? [`${asString(pie.props.name) ?? "Serie"} · ${head}`, ...cells] : [head, ...cells]);
     }
   }
-  return rows.length ? { columns: ["Voce", "Valore", "Quota"], rows } : null;
+  return build(["Voce", "Valore", "Quota"], raw);
 }
 
 function scatterTable(scatters: El[], xAxis?: El, yAxis?: El): ChartTable | null {
   const xKey = asString(xAxis?.props.dataKey) ?? "x";
   const yKey = asString(yAxis?.props.dataKey) ?? "y";
-  const rows: string[][] = [];
+  const raw: (string | number)[][] = [];
   for (const sc of scatters) {
     const data = (sc.props.data as Row[] | undefined) ?? [];
     const name = asString(sc.props.name) ?? "Serie";
     data.forEach((d, i) => {
       const label = asString(d.name) ?? asString(d.label) ?? `${name} ${i + 1}`;
-      rows.push([label, formatCell(getValue(d, xKey)), formatCell(getValue(d, yKey))]);
+      raw.push([label, rawCell(getValue(d, xKey)), rawCell(getValue(d, yKey))]);
     });
   }
-  const columns = ["Punto", axisLabel(xAxis, xKey), axisLabel(yAxis, yKey)];
-  return rows.length ? { columns, rows } : null;
+  return build(["Punto", axisLabel(xAxis, xKey), axisLabel(yAxis, yKey)], raw);
 }
 
 /** Asse delle categorie: Y per i grafici orizzontali, angolare per i radar, altrimenti X. */
@@ -135,9 +147,9 @@ export function extractChartTable(chart: ReactNode): ChartTable | null {
   if (!seriesList.length) return null;
 
   const columns = [axisLabel(axis, "Categoria"), ...seriesList.map((s) => s.name)];
-  const rows = data.map((d, i) => [
+  const raw = data.map((d, i) => [
     catKey ? formatCell(getValue(d, catKey)) : String(i + 1),
-    ...seriesList.map((s) => formatCell(getValue(d, s.key))),
+    ...seriesList.map((s) => rawCell(getValue(d, s.key))),
   ]);
-  return { columns, rows };
+  return build(columns, raw);
 }

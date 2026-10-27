@@ -41,13 +41,13 @@ import type { KpiSchedaRow } from "@/services/kpi/kpiRiformaService";
 /** Colore statico per dimensione (blu, arancio, verde, rosa, viola, ottanio). */
 const DIM_COLORS: Record<string, string> = {
   D1: "hsl(210,80%,45%)",
-  D2: "hsl(30,85%,55%)",
+  D2: "hsl(30,85%,47%)",
   D3: "hsl(150,60%,40%)",
   D4: "hsl(340,70%,55%)",
   D5: "hsl(260,50%,55%)",
   D6: "hsl(180,60%,40%)",
 };
-const NEUTRAL_DOT = "#9CA3AF";
+const NEUTRAL_DOT = "#6B7280";
 
 /** Corregge i caratteri Windows-1252 arrivati come controlli C1 (es. \u0092 → ’). */
 const cleanText = (s: string | null | undefined) =>
@@ -266,7 +266,7 @@ export const KpiAbilitantiSection = () => {
       const b = map.get(r.dimensione) ?? {
         dim: r.dimensione,
         nome: sentenceCase(cleanText(r.descrizione_dimensione) || r.dimensione),
-        color: DIM_COLORS[r.dimensione] ?? "hsl(210,15%,60%)",
+        color: DIM_COLORS[r.dimensione] ?? "hsl(210,15%,57%)",
         kpis: [],
       };
       b.kpis.push(r);

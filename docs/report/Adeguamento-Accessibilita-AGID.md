@@ -25,8 +25,8 @@ interrompere l'uso del Cruscotto e senza cambiare in modo visibile la grafica at
 | **Fase 1 · Componenti** | Uso da tastiera, nomi dei controlli, tabelle, annunci, schermi piccoli e zoom | ✅ Completata |
 | **Fase 1-bis · Verifiche avanzate e WCAG 2.2** | Scadenza della sessione, spaziatura del testo, suggerimenti, movimento, focus non coperto, dimensione dei pulsanti, file esportati, controllo automatico permanente | ✅ Completata |
 | **Verifiche specialistiche** | Prove con lettori di schermo reali, pagina di accesso Keycloak | ⏳ A cura di esperti / gestore Keycloak |
-| **Fase 2 · Adempimenti** | Dichiarazione di Accessibilità e canale per le segnalazioni | ⏳ In attesa di informazioni dal committente |
-| **Fase 3 · Grafici** | Tabella dei dati per ogni grafico («Visualizza in tabella») | ✅ Tabelle completate · ⏳ verifica del contrasto di linee e barre |
+| **Fase 2 · Adempimenti** | Dichiarazione di Accessibilità e canale per le segnalazioni | 🟡 Pronta: bozza della dichiarazione e link già predisposti · ⏳ dati del committente |
+| **Fase 3 · Grafici** | Tabella dei dati per ogni grafico, scaricabile in Excel; contrasto di linee e barre | ✅ Completata |
 
 **Risultato della verifica attuale**: controllo automatico permanente su **28 pagine** del
 Cruscotto, ciascuna verificata con **due profili** (utente del Dipartimento e responsabile HR
@@ -113,9 +113,22 @@ Lavoro Pubblico, Pannello di Governo, Amministrazione, pagina di benvenuto e pag
 | **Regola permanente** | Il controllo del codice impedisce di aggiungere nuovi grafici senza il pulsante della tabella. | — |
 | **Testi in italiano** | Il pulsante di chiusura delle finestre e gli altri testi nascosti per i lettori di schermo («Chiudi», «Altre pagine», «Slide precedente»…) sono ora in italiano. | 3.1.1 Lingua della pagina |
 
+| **Scarica in Excel** | Nella finestra della tabella il pulsante «Scarica in Excel» salva i dati del grafico in un file Excel con titolo e intestazioni (numeri non arrotondati). L'esito del download viene annunciato al lettore di schermo. | EN 301 549 cap. 10 · 4.1.3 Messaggi di stato |
+| **Contrasto di barre, linee e fette** | I colori dei dati con contrasto inferiore a 3:1 rispetto allo sfondo (arancio, giallo, ocra, verde acqua, grigi delle serie di confronto) sono stati scuriti mantenendo la stessa tonalità, fino a raggiungere almeno 3:1. Verificati tutti i colori usati nei grafici. | 1.4.11 Contrasto non testuale |
+| **Testi più leggibili** | Il piè del menu laterale passa da 10 a 12 pixel; la nota della pagina di accesso non è più schiarita. | 1.4.3 Contrasto (minimo) |
+
 Il pulsante non compare nella stampa della pagina.
 
-### 3.5 Cosa resta invariato
+### 3.5 Fase 2 · Predisposizione degli adempimenti
+
+- **Bozza della Dichiarazione di Accessibilità** secondo il modello AgID:
+  `Dichiarazione-Accessibilita-BOZZA.md`, con i campi da compilare a cura dell'amministrazione.
+- **Link già pronti** in posizione costante (pagina di accesso, piè del menu laterale, Bussola):
+  «Dichiarazione di accessibilità» e «Segnala un problema di accessibilità». Si attivano
+  impostando `VITE_A11Y_STATEMENT_URL` e `VITE_A11Y_FEEDBACK_EMAIL`, senza modificare il codice;
+  sono accettati solo link https e indirizzi email semplici.
+
+### 3.6 Cosa resta invariato
 
 - La **grafica complessiva** del Cruscotto (colori istituzionali, font Titillium Web,
   impaginazione su schermo grande) resta quella attuale: le modifiche ai colori sono
@@ -159,8 +172,8 @@ Il pulsante non compare nella stampa della pagina.
 
 ### Fase 3 · Grafici (residuo)
 
-- ✅ Tabella dei dati per ogni grafico (vedi 3.4).
-- Verifica del contrasto di linee, barre e legende rispetto allo sfondo (3:1, criterio 1.4.11).
+- ✅ Tabella dei dati per ogni grafico, scaricabile in Excel (vedi 3.4).
+- ✅ Contrasto di linee, barre e fette di almeno 3:1 (criterio 1.4.11).
 
 ---
 
@@ -168,8 +181,8 @@ Il pulsante non compare nella stampa della pagina.
 
 | Ambito | Situazione attuale | Intervento previsto |
 |---|---|---|
-| Grafici | Ogni grafico ha la sua tabella dati; il contrasto di linee e barre non è ancora stato verificato. | Fase 3 (residuo) |
-| Dichiarazione di Accessibilità | Non ancora pubblicata. | Fase 2 |
+| Dichiarazione di Accessibilità | Bozza pronta; da compilare e pubblicare su form.agid.gov.it. | Fase 2 (committente) |
+| Voce «Metadati» del menu laterale | È un collegamento senza destinazione. | Da definire la pagina o rimuovere la voce |
 | Tabelle molto larghe | Su schermi stretti scorrono orizzontalmente al loro interno (comportamento ammesso dalle WCAG). | — |
 | PDF esportati | I PDF prodotti dal Cruscotto non sono «taggati» (struttura per i lettori di schermo). Per ogni esportazione è disponibile la versione Excel della stessa tabella, accessibile. | Valutazione di un generatore di PDF taggati |
 | Tema scuro | Non disponibile per gli utenti: i contrasti sono verificati sul tema chiaro, l'unico in uso. | Da verificare se verrà introdotto |
@@ -185,3 +198,4 @@ Il pulsante non compare nella stampa della pagina.
 | 1.0 | Ottobre 2026 | Prima emissione: Fase 0 e Fase 1 completate, Fasi 2 e 3 pianificate. |
 | 1.1 | Ottobre 2026 | Fase 1-bis completata (criteri WCAG 2.2, sessione, spaziatura, movimento, file esportati, controllo automatico permanente); aggiunte verifiche specialistiche e adempimenti ricorrenti. |
 | 1.2 | Ottobre 2026 | Fase 3: pulsante «Visualizza in tabella» con tabella dei dati su tutti i grafici; testi nascosti dei componenti in italiano. |
+| 1.3 | Ottobre 2026 | Fase 3 completata (Excel dalla tabella dei grafici, contrasto 3:1 dei colori dei dati); Fase 2 predisposta (bozza della dichiarazione, link configurabili). |

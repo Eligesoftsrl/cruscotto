@@ -20,8 +20,8 @@ const fmt = (n: number | null | undefined) =>
 
 const CLASSE_COLORS: Record<string, string> = {
   "Ottimale": "hsl(152, 55%, 42%)",
-  "Accettabile": "hsl(175, 55%, 45%)",
-  "Attenzione": "hsl(38, 85%, 50%)",
+  "Accettabile": "hsl(175, 55%, 41%)",
+  "Attenzione": "hsl(38, 85%, 42%)",
   "Criticità grave": "hsl(0, 65%, 52%)",
 };
 

@@ -17,11 +17,11 @@ import { PaginatedTable } from "@/components/dashboard/charts/PaginatedTable";
 const COLORS = [
   "hsl(210,80%,45%)",
   "hsl(150,60%,40%)",
-  "hsl(30,85%,55%)",
+  "hsl(30,85%,47%)",
   "hsl(0,70%,50%)",
   "hsl(270,60%,55%)",
-  "hsl(180,50%,45%)",
-  "hsl(45,90%,50%)",
+  "hsl(180,50%,42%)",
+  "hsl(45,90%,38%)",
   "hsl(330,60%,50%)",
   "hsl(120,40%,40%)",
 ];

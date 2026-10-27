@@ -56,12 +56,12 @@ const Kpi = ({
 /* Palette per le causali (barre e donut). */
 const CAUSALE_COLORS = [
   "hsl(220,60%,50%)",
-  "hsl(25,85%,55%)",
-  "hsl(175,55%,42%)",
+  "hsl(25,85%,50%)",
+  "hsl(175,55%,41%)",
   "hsl(280,45%,55%)",
   "hsl(0,70%,50%)",
   "hsl(145,50%,42%)",
-  "hsl(45,90%,50%)",
+  "hsl(45,90%,38%)",
 ];
 
 export const AssuntiCausaleContent = () => {
@@ -160,7 +160,7 @@ export const AssuntiCausaleContent = () => {
           valore={k ? nf.format(k.assunti) : "\u2014"}
         />
         <Kpi
-          accent="hsl(25,85%,55%)"
+          accent="hsl(25,85%,50%)"
           titolo="Causale prevalente"
           valore={k?.causale_prevalente ?? "\u2014"}
         />
@@ -209,7 +209,7 @@ export const AssuntiCausaleContent = () => {
               <Bar
                 dataKey="donne"
                 stackId="s"
-                fill="hsl(25,85%,55%)"
+                fill="hsl(25,85%,50%)"
                 fillOpacity={opDonne}
                 radius={[0, 3, 3, 0]}
               />

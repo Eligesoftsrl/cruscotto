@@ -19,7 +19,7 @@ const GENERE_LABEL: Record<string, string> = { F: "Donne", M: "Uomini" };
 const COLORS = [
   "hsl(210,80%,45%)",
   "hsl(150,60%,40%)",
-  "hsl(30,85%,55%)",
+  "hsl(30,85%,47%)",
   "hsl(0,70%,50%)",
   "hsl(270,60%,55%)",
 ];

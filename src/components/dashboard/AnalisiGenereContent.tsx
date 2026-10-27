@@ -153,7 +153,7 @@ export const AnalisiGenereContent = () => {
           valore={loading ? "…" : n1(k?.uomini_pct)}
         />
         <Kpi
-          accent="hsl(25,85%,55%)"
+          accent="hsl(25,85%,50%)"
           titolo="Gender gap"
           unita="%"
           valore={loading ? "…" : n1(k?.gender_gap_pp)}

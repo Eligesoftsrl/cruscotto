@@ -27,8 +27,8 @@ const n1 = (v: number | null | undefined) =>
   v == null ? "N/D" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
 const DONNE = "hsl(330,65%,55%)";
 const UOMINI = "hsl(215,70%,50%)";
-const AGILE = "hsl(175,55%,42%)";
-const TOT = "hsl(25,85%,55%)";
+const AGILE = "hsl(175,55%,41%)";
+const TOT = "hsl(25,85%,50%)";
 
 const Kpi = ({
   titolo,
@@ -228,7 +228,7 @@ export const LavoroAgileContent = () => {
               <Tooltip
                 formatter={(v: number) => [nf.format(Math.round(Number(v))), "Variazione"]}
               />
-              <ReferenceLine y={0} stroke="hsl(220,10%,60%)" />
+              <ReferenceLine y={0} stroke="hsl(220,10%,58%)" />
               <Bar
                 dataKey="variazione_assoluta"
                 name="Variazione"

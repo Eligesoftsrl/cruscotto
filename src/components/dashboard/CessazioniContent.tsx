@@ -203,13 +203,13 @@ export const CessazioniContent = () => {
           valore={k ? nf.format(k.cessati) : "\u2014"}
         />
         <Kpi
-          accent="hsl(175,55%,42%)"
+          accent="hsl(175,55%,41%)"
           titolo="Assunti"
           valore={k ? nf.format(k.assunti) : "\u2014"}
         />
         <Kpi accent={saldoAccent} titolo="Saldo netto" valore={signed(k?.saldo)} />
         <Kpi
-          accent="hsl(25,85%,55%)"
+          accent="hsl(25,85%,50%)"
           titolo="Tasso turnover"
           unita="%"
           valore={n1(k?.turnover_pct)}
@@ -244,12 +244,12 @@ export const CessazioniContent = () => {
             <YAxis tick={{ fontSize: 10 }} tickFormatter={(v: number) => nf.format(v)} />
             <Tooltip formatter={(v: number, name) => [nf.format(Number(v)), name]} />
             <Legend />
-            <ReferenceLine y={0} stroke="hsl(220,10%,60%)" strokeDasharray="3 3" />
+            <ReferenceLine y={0} stroke="hsl(220,10%,58%)" strokeDasharray="3 3" />
             <Line
               type="monotone"
               dataKey="assunti"
               name="Assunti"
-              stroke="hsl(175,55%,42%)"
+              stroke="hsl(175,55%,41%)"
               strokeWidth={2}
               dot={{ r: 3 }}
             />
@@ -265,7 +265,7 @@ export const CessazioniContent = () => {
               type="monotone"
               dataKey="saldo"
               name="Saldo"
-              stroke="hsl(25,85%,55%)"
+              stroke="hsl(25,85%,50%)"
               strokeWidth={2}
               strokeDasharray="5 5"
               dot={{ r: 3 }}

@@ -299,7 +299,7 @@ function IndicatorRow({
     yellow: {
       bar: "bg-[hsl(45,100%,42%)]",
       text: "text-[hsl(45,80%,30%)]",
-      icon: "hsl(45,100%,42%)",
+      icon: "hsl(45,100%,36%)",
     },
     red: { bar: "bg-destructive", text: "text-destructive", icon: "hsl(var(--destructive))" },
   };

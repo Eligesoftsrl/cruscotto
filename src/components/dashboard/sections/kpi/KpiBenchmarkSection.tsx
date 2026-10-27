@@ -117,7 +117,7 @@ export const KpiBenchmarkSection = () => {
 
   const colors = [
     "hsl(210,80%,45%)",
-    "hsl(30,85%,55%)",
+    "hsl(30,85%,47%)",
     "hsl(150,60%,40%)",
     "hsl(340,70%,55%)",
     "hsl(260,50%,55%)",
@@ -125,7 +125,7 @@ export const KpiBenchmarkSection = () => {
   ];
   const quadrantColor = (x: number, y: number) => {
     if (x >= 50 && y >= 50) return "hsl(150,60%,40%)";
-    if (x >= 50 && y < 50) return "hsl(30,85%,55%)";
+    if (x >= 50 && y < 50) return "hsl(30,85%,47%)";
     if (x < 50 && y >= 50) return "hsl(260,50%,55%)";
     return "hsl(0,70%,55%)";
   };
@@ -235,7 +235,7 @@ export const KpiBenchmarkSection = () => {
                 <div
                   className="text-2xl font-bold mt-1"
                   style={{
-                    color: byMinThreshold(b.media, [[60, "hsl(150,60%,40%)"], [40, "hsl(30,85%,55%)"]], "hsl(0,70%,55%)"),
+                    color: byMinThreshold(b.media, [[60, "hsl(150,60%,40%)"], [40, "hsl(30,85%,47%)"]], "hsl(0,70%,55%)"),
                   }}
                 >
                   {b.media}%

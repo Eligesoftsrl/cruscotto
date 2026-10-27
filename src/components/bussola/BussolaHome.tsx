@@ -30,6 +30,7 @@ import { useNavigate } from "react-router-dom";
 import { CommunityJourneys } from "./CommunityJourneys";
 import { TemplateGallery } from "./TemplateGallery";
 import type { JourneyTemplate } from "@/data/journeyTemplates";
+import { AccessibilityLinks } from "@/components/AccessibilityLinks";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   AlertTriangle,
@@ -508,6 +509,7 @@ export const BussolaHome = ({
             <footer className="text-center text-xs text-muted-foreground pt-4 border-t">
               Dati aggiornati al 31/12/2023 · Percorsi analitici generati sui dati
               dell'Amministrazione
+              <AccessibilityLinks className="mt-1 block" />
             </footer>
           </>
         )}

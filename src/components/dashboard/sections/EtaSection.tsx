@@ -46,7 +46,7 @@ export const EtaSection = () => {
               <XAxis dataKey="fascia" tick={{ fontSize: 11 }} />
               <YAxis tick={{ fontSize: 11 }} />
               <Tooltip />
-              <Bar dataKey="totale" name="Totale" fill="hsl(38,80%,55%)" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="totale" name="Totale" fill="hsl(38,80%,43%)" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

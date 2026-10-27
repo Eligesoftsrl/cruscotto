@@ -30,6 +30,11 @@ describe("extractChartTable", () => {
       ["2022", "10", "12,5"],
       ["2023", "15.000", "—"],
     ]);
+    // Excel: numeri non formattati
+    expect(t?.raw).toEqual([
+      ["2022", 10, 12.5],
+      ["2023", 15000, "—"],
+    ]);
   });
 
   it("grafico orizzontale: categoria dall'asse Y", () => {
@@ -105,6 +110,7 @@ describe("ResponsiveContainer accessibile", () => {
     expect(within(dialog).getAllByRole("columnheader").map((c) => c.textContent)).toEqual(["Anno", "Uomini"]);
     expect(within(dialog).getAllByRole("rowheader").map((c) => c.textContent)).toEqual(["2022", "2023"]);
     expect(within(dialog).getByRole("button", { name: "Chiudi" })).toBeInTheDocument();
+    expect(within(dialog).getByRole("button", { name: "Scarica in Excel" })).toBeEnabled();
   });
 
   it("table={false}: nessun pulsante", () => {

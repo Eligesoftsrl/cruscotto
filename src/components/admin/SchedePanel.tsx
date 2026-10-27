@@ -35,7 +35,7 @@ import {
 import { tooltipStyle } from "@/components/dashboard/chartTheme";
 
 const COLOR_ON = "hsl(var(--primary))";
-const COLOR_OFF = "hsl(215 16% 65%)";
+const COLOR_OFF = "hsl(215 16% 57%)";
 
 export const SchedePanel = () => {
   const { flags, eventi } = useAdminState();

@@ -26,7 +26,7 @@ const n1 = (v: number | null | undefined) =>
   v == null ? "N/D" : new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 }).format(v);
 const DONNE = "hsl(330,65%,55%)";
 const UOMINI = "hsl(215,70%,50%)";
-const FLEX = "hsl(175,55%,42%)";
+const FLEX = "hsl(175,55%,41%)";
 const TEAL = "hsl(160,60%,40%)";
 
 const Kpi = ({

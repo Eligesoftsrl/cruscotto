@@ -18,7 +18,7 @@ import { Pager, TOOLTIP_STYLE, QueryState } from "./_shared";
 import { bySign } from "@/lib/conditional";
 
 const PER_PAGE = 20;
-const COLOR_DOTAZIONE = "hsl(175, 55%, 42%)";
+const COLOR_DOTAZIONE = "hsl(175, 55%, 41%)";
 const COLOR_SERVIZIO = "hsl(35, 75%, 42%)";
 
 // Formattatore null-safe: i valori NULL dal DB sono trattati come 0.
