@@ -44,6 +44,32 @@ const PROFILES = {
   ente: { role: "ente_hr", is_admin: false, ente_id: null, enti_cf: ["02438750586"], full_name: "Verifica Ente" },
 };
 
+/*
+ * Modalità STAGING (login Keycloak reale): A11Y_KC_USERS="dfp:utente:password,ente:utente:password"
+ * più, se il sito è protetto da un accesso preliminare, A11Y_HTTP_USER / A11Y_HTTP_PASS.
+ */
+const KC_USERS = (process.env.A11Y_KC_USERS || "")
+  .split(",")
+  .filter(Boolean)
+  .map((x) => {
+    const [name, user, ...pw] = x.split(":");
+    return { name, user, pass: pw.join(":") };
+  });
+const HTTP_CREDENTIALS = process.env.A11Y_HTTP_USER
+  ? { username: process.env.A11Y_HTTP_USER, password: process.env.A11Y_HTTP_PASS || "" }
+  : undefined;
+
+async function keycloakLogin(page, user, pass) {
+  await page.goto(BASE + "/login", { waitUntil: "networkidle" });
+  await page.locator("button").first().click();
+  await page.waitForSelector("#username", { timeout: 30000 });
+  await page.fill("#username", user);
+  await page.fill("#password", pass);
+  await page.keyboard.press("Enter");
+  await page.waitForURL((u) => u.toString().startsWith(BASE) && !u.toString().includes("/login"), { timeout: 30000 });
+  await page.waitForLoadState("networkidle");
+}
+
 const TEXT_SPACING_CSS = `* { line-height: 1.5 !important; letter-spacing: .12em !important;
   word-spacing: .16em !important; } p { margin-bottom: 2em !important; }`;
 
@@ -79,16 +105,34 @@ const OBSCURED_JS = () => {
 
 const browser = await chromium.launch();
 let problems = 0;
-for (const [name, profile] of Object.entries(PROFILES)) {
-  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-  await ctx.addInitScript((p) => {
-    sessionStorage.setItem("mock_profile", JSON.stringify(p));
-    localStorage.setItem("cruscotto_hr_tour_completed_v3", "true");
-  }, profile);
+const RUNS = KC_USERS.length
+  ? KC_USERS.map((u) => [u.name, u])
+  : Object.entries(PROFILES);
+for (const [name, profile] of RUNS) {
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, httpCredentials: HTTP_CREDENTIALS });
+  await ctx.addInitScript(
+    (p) => {
+      if (p) sessionStorage.setItem("mock_profile", JSON.stringify(p));
+      localStorage.setItem("cruscotto_hr_tour_completed_v3", "true");
+    },
+    KC_USERS.length ? null : profile,
+  );
   const page = await ctx.newPage();
+  if (KC_USERS.length) await keycloakLogin(page, profile.user, profile.pass);
   for (const path of PAGES) {
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto(BASE + path, { waitUntil: "networkidle" }).catch(() => {});
+    if (KC_USERS.length) {
+      // Sessione Keycloak in memoria: si naviga dentro l'app (come un utente), senza ricaricare.
+      await page.evaluate((p) => {
+        history.pushState({}, "", p);
+        dispatchEvent(new PopStateEvent("popstate"));
+      }, path);
+      await page.waitForLoadState("networkidle").catch(() => {});
+      await page.waitForTimeout(1500);
+      if (page.url().includes("/login")) throw new Error(`Sessione persa su ${path}`);
+    } else {
+      await page.goto(BASE + path, { waitUntil: "networkidle" }).catch(() => {});
+    }
     await page.waitForTimeout(800);
     const res = await new AxeBuilder({ page }).withTags(TAGS).exclude(".recharts-wrapper").analyze();
     const issues = res.violations.map((v) => `${v.id} (${v.nodes.length})`);
@@ -125,7 +169,7 @@ for (const [name, profile] of Object.entries(PROFILES)) {
       problems += issues.length;
       console.log(`✗ [${name}] ${path}\n    ${issues.join("\n    ")}`);
     } else {
-      console.log(`✓ [${name}] ${path}`);
+      console.log(`✓ [${name}] ${path} — «${await page.title()}» · grafici con tabella: ${await page.getByRole("button", { name: /Visualizza in tabella/ }).count()}`);
     }
   }
   await ctx.close();

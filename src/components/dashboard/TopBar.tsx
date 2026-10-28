@@ -34,23 +34,31 @@ export const TopBar = ({ nav, onNavigate, onToggleMenu, menuOpen = false }: TopB
   return (
     <header className="sticky top-0 z-40">
       {/* Row 1: Institutional dark bar */}
-      <div className="bg-[#004080] text-white h-10 flex items-center px-6 text-xs">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-bold">
+      <div className="bg-[#004080] text-white h-10 flex items-center gap-2 px-3 sm:px-6 text-xs">
+        <div className="flex min-w-0 items-center gap-2">
+          <div
+            aria-hidden="true"
+            className="w-6 h-6 shrink-0 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold"
+          >
             🏛
           </div>
-          <span className="font-semibold tracking-wide">Dipartimento della Funzione Pubblica</span>
+          <span className="truncate font-semibold tracking-wide">Dipartimento della Funzione Pubblica</span>
         </div>
 
         <div className="flex-1" />
 
         {profile && (
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-2 rounded px-2 py-1 outline-none transition hover:bg-white/10 focus:ring-2 focus:ring-white/40">
-              <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold bg-white/20">
+            <DropdownMenuTrigger
+              className="flex shrink-0 items-center gap-2 rounded px-2 py-1 outline-none transition hover:bg-white/10 focus:ring-2 focus:ring-white/40"
+            >
+              <div
+                aria-hidden="true"
+                className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold bg-white/20"
+              >
                 {profile.full_name?.[0]?.toUpperCase() ?? "U"}
               </div>
-              <span className="text-white/90 text-[11px] font-medium truncate max-w-[140px]">
+              <span className="sr-only sm:not-sr-only sm:truncate text-white/90 text-xs font-medium max-w-[140px]">
                 {profile.full_name}
               </span>
               <ChevronDown aria-hidden="true" className="h-3 w-3 text-white/60" />

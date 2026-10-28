@@ -205,3 +205,4 @@ Il pulsante non compare nella stampa della pagina.
 | 1.2 | Ottobre 2026 | Fase 3: pulsante «Visualizza in tabella» con tabella dei dati su tutti i grafici; testi nascosti dei componenti in italiano. |
 | 1.3 | Ottobre 2026 | Fase 3 completata (Excel dalla tabella dei grafici, contrasto 3:1 dei colori dei dati); Fase 2 predisposta (bozza della dichiarazione, link configurabili). |
 | 1.4 | Ottobre 2026 | PDF esportati accessibili (PDF/UA taggati) al posto dei PDF non strutturati. |
+| 1.5 | Ottobre 2026 | Verifica finale: controllo automatico su 27 pagine × 2 profili senza problemi (ambiente locale con l'ultima versione); su staging (login Keycloak reale) unico rilievo il riflusso a 320 px della barra superiore, già corretto e da pubblicare. Prove su staging superate: tabelle dei grafici, Excel, PDF/UA, registri tramite proxy, console pulita. |
